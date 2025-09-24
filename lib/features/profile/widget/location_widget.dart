@@ -1,14 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-
 import '../../../utils/app_color.dart';
 import '../../../utils/app_size.dart';
-import '../../../utils/app_text_styles.dart';
 import '../../../utils/assets_path.dart';
 import '../../widgets/custom_asset_image.dart';
 import '../../widgets/custom_card_widget.dart';
 import '../../widgets/custom_text.dart';
-import '../../widgets/custom_text_field_widget.dart';
 import '../../widgets/text_field_title_widget.dart';
 
 class LocationWidget extends StatelessWidget {
@@ -33,20 +30,17 @@ class LocationWidget extends StatelessWidget {
           children: [
             Expanded(
               child: CustomCard(
-                height: 52.h,
-                width: double.infinity,
+
+
                 child: Row(
                   children: [
                     CustomAssetsImage(assetsPath: AssetsPath.locationIcon),
                     SizedBox(width: 8.w),
-                    CustomText(text: fieldText,fontSize: 14.sp,color: AppColors.blackTextColor,fontWeight: FontWeight.w400,),
+                    CustomText(text: fieldText,fontSize: 14.sp,color: AppColors.blackTextColor,fontWeight: FontWeight.w400,
+                    overflow:TextOverflow.ellipsis ,
+                    ),
 
-                    // Text(
-                    //   fieldText,
-                    //   style: AppTextStyle.mediumStyle.copyWith(
-                    //     color: AppColors.blackTextColor,
-                    //   ),
-                    // ),
+
                   ],
                 ),
               ),
