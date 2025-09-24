@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
+
 import 'package:organization/features/on_boarding/widgets/onboarding_appbar.dart';
 import 'package:organization/features/on_boarding/widgets/under_button_widget.dart';
 import 'package:organization/features/widgets/custom_asset_image.dart';
+import 'package:organization/features/widgets/custom_text.dart';
 import 'package:organization/utils/app_text.dart';
 import 'package:organization/utils/assets_path.dart';
 import '../../../utils/app_color.dart';
 import '../../../utils/app_size.dart';
-import '../../../utils/app_text_styles.dart';
 import '../../core/routes/route_path.dart';
 import '../widgets/custom_text_field_widget.dart';
 import '../widgets/heading_text_widget.dart';
@@ -39,6 +40,7 @@ class AccountCreationScreen extends StatelessWidget {
             HeadingTextWidget(
               title: AppText.accountTitle,
               subTitle: AppText.accountSubTitle,
+
             ),
             SizedBox(height: 50.h),
 
@@ -68,15 +70,51 @@ class AccountCreationScreen extends StatelessWidget {
                 ],
               ),
             ),
+            SizedBox(height: 8.h,),
+
+            Row(
+              children: List.generate(4, (index) {
+                return Expanded(
+                  child: Container(
+                    height: 4.h,
+                    color: Color(0xFFD1FF43),
+                    margin: EdgeInsets.symmetric(horizontal: 2.w),
+                  ),
+                );
+              }),
+            ),
+            SizedBox(height: 8.h),
+
+
+
+
+
+
+
+
+
+            SizedBox(height: 8.h,),
             Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 CustomAssetsImage(assetsPath: AssetsPath.infoIcon),
                 Expanded(
-                  child: Text(
-                    AppText.passwordRequirements,
-                    style: AppTextStyle.mediumStyle.copyWith(fontSize: 12.sp),
-                  ),
+                  child:
+             CustomText(
+               textAlign: TextAlign.justify,
+               text:AppText.passwordRequirements,
+             language: false,
+               fontSize: 12.sp,
+               fontWeight: FontWeight.w400,
+               color: AppColors.secondaryTextColor,
+               overflow: TextOverflow.visible,
+             ),
+
+
+                  // Text(
+                  //   AppText.passwordRequirements,
+                  //   style: AppTextStyle.mediumStyle.copyWith(fontSize: 12.sp),
+                  // ),
                 ),
               ],
             ),

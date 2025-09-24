@@ -37,6 +37,8 @@ class HeadingTextWidget extends StatelessWidget {
           fontSize: 14.sp,
           color: AppColors.secondaryTextColor,
           language: false,
+          overflow: TextOverflow.visible,
+          textAlign: TextAlign.justify,
         ),
 
 

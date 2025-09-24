@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:organization/features/widgets/custom_asset_image.dart';
 import 'package:organization/features/widgets/custom_button_widget.dart';
+import 'package:organization/features/widgets/custom_text.dart';
 import 'package:organization/utils/app_color.dart';
 import 'package:organization/utils/app_size.dart';
 import 'package:organization/utils/app_text.dart';
@@ -22,64 +23,71 @@ class GetStartedScreen extends StatelessWidget {
       child: Scaffold(
         backgroundColor: AppColors.white,
         body: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              SizedBox(height: 60.h),
-              /// heading text
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Image.asset(
-                    AssetsPath.moonIcon,
-                    height: AppSizes.moonIconH,
-                    width: AppSizes.moonIconW,
-                  ),
-                  Text(
-                    AppText.crescentChange,
-                    style: AppTextStyle.headlineLStyle.copyWith(
-                      fontSize: AppSizes.headlineM,
+          child: Padding(
+            padding:  EdgeInsets.symmetric(horizontal: 16.w),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                SizedBox(height: 60.h),
+                /// heading text
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Image.asset(
+                      AssetsPath.moonIcon,
+                      height: AppSizes.moonIconH,
+                      width: AppSizes.moonIconW,
                     ),
-                  ),
-                ],
-              ),
-              /// welcome image
-              Image.asset(
-                AssetsPath.getStartedImage,
-                height: AppSizes.getStartedImageH,
-                width: AppSizes.getStartedImageW,
-              ),
-              /// text  section
-              Text(
-                textAlign: TextAlign.center,
-                AppText.turnSpareChange,
-                style: AppTextStyle.headlineLStyle,
-              ),
-              Padding(
-                padding: EdgeInsets.only(
-                  left: 40.w,
-                  right: 40.w,
-                  top: 12.h,
-                  bottom: 30.h,
+                    CustomText(text: AppText.crescentChange,
+                         fontWeight: FontWeight.w700,
+                      language: true,
+                      color: AppColors.headlineTColor,
+                      fontSize: 20.sp,
+                    )
+
+
+                  ],
                 ),
-                child: Text(
+                /// welcome image
+                Image.asset(
+                  AssetsPath.getStartedImage,
+                  height: AppSizes.getStartedImageH,
+                  width: AppSizes.getStartedImageW,
+                ),
+                /// text  section
+
+                CustomText(text: AppText.turnSpareChange,
+                  fontWeight: FontWeight.w700,
+                  language: true,
+                  color: AppColors.headlineTColor,
+                  fontSize: 28.sp,
                   textAlign: TextAlign.center,
-                  AppText.joinMovement,
-                  style: AppTextStyle.mediumStyle,
                 ),
-              ),
-            /// loading
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                 CustomAssetsImage(assetsPath: AssetsPath.loadingStarIcon,height: 12.5.h,width: 12.5.w,),
-                  SizedBox(width: 1.5.w,),
-                  CustomAssetsImage(assetsPath: AssetsPath.loadingDotIcon,height: 10.h,width: 10.w,),
-                  SizedBox(width: 1.5.w,),
-                  CustomAssetsImage(assetsPath: AssetsPath.loadingDotIcon,height: 10.h,width: 10.w,),
+                SizedBox(height: 4.h,),
+                CustomText(text: AppText.joinMovement,
+                  fontWeight: FontWeight.w400,
+                  language: true,
+                  color: AppColors.secondaryTextColor,
+                  fontSize: 18.sp,
+                  textAlign: TextAlign.center,
+                  overflow: TextOverflow.visible,
+                ),
+
+        SizedBox(height: 12.h,),
+
+              /// loading
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                   CustomAssetsImage(assetsPath: AssetsPath.loadingStarIcon,height: 15.h,width: 15.w,),
+                    SizedBox(width: 1.5.w,),
+                    CustomAssetsImage(assetsPath: AssetsPath.loadingDotIcon,height: 12.h,width: 12.w,),
+                    SizedBox(width: 1.5.w,),
+                    CustomAssetsImage(assetsPath: AssetsPath.loadingDotIcon,height: 12.h,width: 12.w,),
+                ],
+                ),
               ],
-              ),
-            ],
+            ),
           ),
         ),
                ///button and login text

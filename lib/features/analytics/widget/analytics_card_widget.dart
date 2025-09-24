@@ -30,6 +30,7 @@ class AnalyticsCardWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return CustomCard(
+      height: 162.h,
        color: AppColors.white,
       child:Column(
         crossAxisAlignment: CrossAxisAlignment.start,
