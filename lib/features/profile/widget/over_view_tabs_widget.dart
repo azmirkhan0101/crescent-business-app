@@ -1,0 +1,105 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:organization/features/profile/widget/profile_heading_text_widget.dart';
+import 'package:organization/features/widgets/custom_asset_image.dart';
+import 'package:organization/features/widgets/custom_card_widget.dart';
+import 'package:organization/features/widgets/custom_text.dart';
+import 'package:organization/features/widgets/info_card_widget.dart';
+import 'package:organization/utils/app_color.dart';
+import 'package:organization/utils/app_text.dart';
+import 'package:organization/utils/assets_path.dart';
+
+class OverviewTab extends StatelessWidget {
+  const OverviewTab({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return SingleChildScrollView(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Expanded(
+                child: InfoCard(
+                  gradientColor1: Color(0xFFF3EAFE), // 5% opacity
+                  gradientColor2: Color(0xFFE9D9FB), // 10% opacity
+                  gradientColor3: Color(0xFFD8C2F6), // 40% opacity
+                  icon: AssetsPath.globeIcon,
+                  title: AppText.website,
+                  subtitle: "(555) 123-4567",
+                  iconBgColor: Color(0xFFE2D4F9),
+                  iconColor: Color(0xFF9B6DFF),
+                ),
+              ),
+              SizedBox(width: 12.w),
+              Expanded(
+                child: InfoCard(
+                  iconColor: Color(0xFF4CAF50),
+                  gradientColor1: Color(0xFFF0FFD9), // 5% opacity
+                  gradientColor2: Color(0xFFE6FBCB), // 10% opacity
+                  gradientColor3: Color(0xFFD2F7A2), // 40% opacity
+                  icon: AssetsPath.callIcon,
+                  title: AppText.businessPhone,
+
+                  subtitle: AppText.enterWebsite,
+                  iconBgColor: Color(0xFFDBF7B6),
+                ),
+              ),
+            ],
+          ),
+          SizedBox(height: 12.h),
+          InfoCard(
+            height: 120.h,
+            width: double.infinity,
+            gradientColor1: Color(0xFFFFFFE0), // 5% opacity
+            gradientColor2: Color(0xFFFFF9D9), // 10% opacity
+            gradientColor3: Color(0xFFFFF2B0), // 40% opacity
+            icon: AssetsPath.mailIcon,
+            title: AppText.email,
+            subtitle: "contact@sweetwhiskbakery.com",
+            iconBgColor: Color(0xFFFFF2C2),
+            iconColor: Color(0xFFFFC107),
+          ),
+          SizedBox(height: 12.h),
+          ProfileHeadingTextWidget(title: "Overview"),
+          SizedBox(height: 12.h),
+          CustomCard(
+
+            child:
+                CustomText(text: AppText.businessDescription,
+                  overflow: TextOverflow.visible,
+                  textAlign: TextAlign.justify,
+                  maxLines: null,
+                language: false,
+                  fontSize: 14.sp,
+                  fontWeight: FontWeight.w400,
+                  color: AppColors.blackTextColor,
+                )
+
+          ),
+          ProfileHeadingTextWidget(title: AppText.location),
+          CustomCard(
+            height: 52.h,
+            width: double.infinity,
+            child: Row(
+              children: [
+                CustomAssetsImage(assetsPath: AssetsPath.locationIcon),
+                SizedBox(width: 8.w),
+                CustomText(
+                  text: "Address of Store #1",
+                  language: false,
+                  fontWeight: FontWeight.w500,
+                  fontSize: 14.sp,
+                  color: AppColors.blackTextColor,
+                ),
+
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}

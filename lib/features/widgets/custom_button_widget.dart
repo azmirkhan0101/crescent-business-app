@@ -1,0 +1,51 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import '../../utils/app_color.dart';
+import '../../utils/app_text_styles.dart';
+
+class CustomButton extends StatelessWidget {
+  final String text;
+  final VoidCallback? onPressed; // ❗ nullable
+  final Color? backgroundColor;
+  final Color? textColor;
+  final double? height;
+  final double? width;
+  final TextStyle buttonTextStyle;
+  final Widget? widget;
+
+  const CustomButton({
+    super.key,
+
+    this.onPressed,
+    this.backgroundColor,
+    this.textColor,
+    this.height,
+    this.width,
+
+    this.widget, required this.text, required this.buttonTextStyle,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      width: width ?? 263.w,
+      height: height ?? 52.h,
+      child: ElevatedButton(
+        style: ElevatedButton.styleFrom(
+          backgroundColor: backgroundColor ?? AppColors.primaryColor,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12.r),
+          ),
+          elevation: 0,
+        ),
+        onPressed: onPressed,
+        child: widget ??
+            Text(
+              text,
+              style: buttonTextStyle
+
+            ),
+      ),
+    );
+  }
+}
