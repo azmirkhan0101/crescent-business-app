@@ -70,7 +70,7 @@ class AnalyticsCardChart extends StatelessWidget {
                       style: GoogleFonts.inter(
                           fontSize: 14.sp,
                           fontWeight: FontWeight.w500,
-                          color: AppColors.buttonTextColor
+                          color: AppColors.blackTextColor
                       ),
 
                     ),

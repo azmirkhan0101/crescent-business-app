@@ -77,25 +77,30 @@ class SignInScreen extends GetView<SignInController> {
 
               /// Remember & Forgot Password Row
               Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Checkbox(
-                    value: true,
-                    onChanged: (bool? value) {},
-                    activeColor: const Color(0xFFD1FF43),
-                    checkColor: AppColors.white,
-                    materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                    visualDensity: VisualDensity.compact,
+                  Row(
+                    children: [
+                      Checkbox(
+                        value: true,
+                        onChanged: (bool? value) {},
+                        activeColor: const Color(0xFFD1FF43),
+                        checkColor: AppColors.white,
+                        materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                        visualDensity: VisualDensity.compact,
+                      ),
+
+                      CustomText(text:AppText.rememberPassword,
+                       language: false,
+                        fontWeight: FontWeight.w400,
+                        color: AppColors.blackTextColor,
+                        fontSize: 14.sp,
+
+                      ),
+                    ],
                   ),
 
-                  CustomText(text:AppText.rememberPassword,
-                   language: false,
-                    fontWeight: FontWeight.w400,
-                    color: AppColors.blackTextColor,
-                    fontSize: 14.sp,
 
-                  ),
-
-                  const Spacer(),
                   GestureDetector(
                     onTap: () {
                       context.push(RoutesPath.forgotPassword);
@@ -108,7 +113,7 @@ class SignInScreen extends GetView<SignInController> {
                             language: false,
                             fontWeight: FontWeight.w400,
                             color: AppColors.blackTextColor,
-                            fontSize: 14.sp,
+                            fontSize: 12.sp,
 
                           ),
                           Container(
@@ -141,9 +146,7 @@ class SignInScreen extends GetView<SignInController> {
                     color: AppColors.buttonTextColor,fontSize: 18.sp,fontWeight: FontWeight.w700),
                 text: "Login",
                 onPressed: () {
-                  // if (formKey.currentState!.validate()) {
-                  //   controller.signIn(context);
-                  // }
+
 
                    context.push(RoutesPath.home);
 

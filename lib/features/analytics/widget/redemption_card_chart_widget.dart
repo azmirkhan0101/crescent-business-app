@@ -45,11 +45,13 @@ class RedemptionChartWidget extends StatelessWidget {
                              width: AppSizes.iconS24W,
                              color: AppColors.primaryColor,
                            ),
-                        SizedBox(width: 6.w),
-                        CustomText(text: "Total Redemptions",
-                        fontWeight: FontWeight.w500,
-                          color: AppColors.blackTextColor,
-                          fontSize: 14.sp,
+                        SizedBox(width: 5.w),
+                        Expanded(
+                          child: CustomText(text: "Total Redemptions",
+                          fontWeight: FontWeight.w500,
+                            color: AppColors.blackTextColor,
+                            fontSize: 14.sp,
+                          ),
                         ),
 
                       ],
