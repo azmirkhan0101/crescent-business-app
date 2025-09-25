@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:organization/features/widgets/custom_card_widget.dart';
+import 'package:organization/features/widgets/custom_text.dart';
 import 'package:organization/utils/app_color.dart';
 import 'add_discount_codes_section.dart';
 
@@ -62,10 +63,16 @@ class _OnlineOptionsState extends State<OnlineOptions> {
           visualDensity: const VisualDensity(horizontal: -4, vertical: -4),
         ),
         SizedBox(width: 8.w),
-        Text(
-          title,
-          style: TextStyle(fontWeight: FontWeight.w500, fontSize: 14.sp),
+        CustomText(text: title,
+        fontSize: 12.sp,
+          fontWeight: FontWeight.w400,
+          color: AppColors.blackTextColor,
+          language: false,
         ),
+        // Text(
+        //   title,
+        //   style: TextStyle(fontWeight: FontWeight.w500, fontSize: 14.sp),
+        // ),
       ],
     );
   }

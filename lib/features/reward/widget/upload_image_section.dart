@@ -71,12 +71,51 @@ class UploadImageSection extends StatelessWidget {
               ),
 
               const SizedBox(height: 10),
-              CustomButton(
-                buttonTextStyle: AppTextStyle.buttonTextStyle.copyWith(fontSize: 12.sp,fontWeight: FontWeight.w600),
-                 height: 40.h,
-                  width: 130.w,
-                  backgroundColor: Color(0x26C08FFF),
-                  text: "Open Camera", onPressed: (){}),
+              // CustomButton(
+              //   buttonTextStyle: AppTextStyle.buttonTextStyle.copyWith(fontSize: 12.sp,fontWeight: FontWeight.w600),
+              //
+              //     backgroundColor: Color(0x26C08FFF),
+              //     text: "Open Camera", onPressed: (){}),
+
+
+
+
+              ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: AppColors.primaryColor,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12.r),
+                  ),
+                  padding: EdgeInsets.symmetric(
+                    vertical: 12.h,
+                    horizontal: 24.w,
+                  ),
+                  elevation: 0,
+                ),
+                onPressed: () {
+                  // এখানে তোমার camera open করার কোড যাবে
+                },
+                child: Text(
+                  "Open Camera",
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: TextStyle(
+                    fontSize: 16.sp,
+                    fontWeight: FontWeight.w600,
+                    color: AppColors.buttonTextColor,
+                  ),
+                ),
+              )
+
+
+
+
+
+
+
+
+
+
             ],
           ),
         ),

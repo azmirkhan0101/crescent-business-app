@@ -263,7 +263,7 @@ class BusinessSetupCompleteOneScreen extends StatelessWidget {
             right: 0,
             child: Center(
               child: CustomButton(
-                width: 263.w,
+
                 backgroundColor: Color(0xFFD1FF43),
                 textColor: AppColors.black,
                 text: AppText.done,

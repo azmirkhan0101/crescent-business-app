@@ -75,8 +75,7 @@ class RewardScreens extends StatelessWidget {
             ),
             SizedBox(height: 12.h),
             CustomButton(
-              height: 40.h,
-              width: 144.w,
+
               backgroundColor: const Color(0x26C08FFF),
               widget: Row(
                 children: [

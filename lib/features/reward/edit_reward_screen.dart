@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
 
 import 'package:organization/features/reward/widget/expiry_limit_section.dart';
 import 'package:organization/features/reward/widget/redemption_methods_section.dart';
@@ -35,7 +36,10 @@ class EditRewardScreen extends StatelessWidget {
         elevation: 0,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back_ios, color: Colors.black, size: 20),
-          onPressed: () {},
+          onPressed: () {
+            context.pop();
+
+          },
         ),
         title: Text(
           'Edit Reward',
@@ -98,8 +102,7 @@ class EditRewardScreen extends StatelessWidget {
                         fontSize: 12.sp,
                         fontWeight: FontWeight.w600,
                       ),
-                      height: 40.h,
-                      width: 130.w,
+
                       backgroundColor: Color(0x26C08FFF),
 
                       text: "Change Image",
