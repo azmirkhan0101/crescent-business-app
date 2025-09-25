@@ -3,14 +3,13 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:organization/features/widgets/custom_asset_image.dart';
 import 'package:organization/utils/assets_path.dart';
-
 import '../../../utils/app_color.dart';
-import '../../../utils/app_text_styles.dart';
+
 
 class RewardListItem extends StatelessWidget {
   final String rewardText;
   final double percentage;
-  final bool isGrowth; // True for an upward arrow, false for downward
+  final bool isGrowth;
   final String assetsIcon;
   const RewardListItem({
     super.key,

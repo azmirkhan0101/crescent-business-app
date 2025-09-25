@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:organization/features/auth/widgets/custom_auth_appbar.dart';
@@ -14,16 +13,13 @@ import '../../core/routes/route_path.dart';
 import '../../core/show_snackbar.dart';
 import '../widgets/custom_button_widget.dart';
 
-import '../../controller/auth/otp_verification_controller.dart';
-
 class OtpVerificationScreen extends StatelessWidget {
   const OtpVerificationScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-
-    final controller = Get.find<OtpVerificationController>();
-
+    // final controller = Get.find<OtpVerificationController>();
+    final TextEditingController pinController = TextEditingController();
     return Scaffold(
       backgroundColor: AppColors.white,
       body: SingleChildScrollView(
@@ -61,9 +57,10 @@ class OtpVerificationScreen extends StatelessWidget {
 
             /// Pin Field
             PinFieldWidget(
-              controller: controller.pinController,
+              controller: pinController,
+              //  controller: controller.pinController,
               length: 5,
-              onChanged: controller.onPinChanged,
+              // onChanged: controller.onPinChanged,
               onCompleted: (val) => debugPrint("Completed: $val"),
             ),
           ],
@@ -80,23 +77,24 @@ class OtpVerificationScreen extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           children: [
             /// Reactive Button
-             CustomButton(
-                 buttonTextStyle: GoogleFonts.familjenGrotesk(
-                     color: AppColors.buttonTextColor,fontSize: 18.sp,fontWeight: FontWeight.w700),
+            CustomButton(
+              buttonTextStyle: GoogleFonts.familjenGrotesk(
+                color: AppColors.buttonTextColor,
+                fontSize: 18.sp,
+                fontWeight: FontWeight.w700,
+              ),
               text: AppText.continueText,
-              onPressed: (){
+              onPressed: () {
                 context.push(RoutesPath.resetPassword);
-              }
-// functionally disabled, color stays same
+              },
             ),
-
 
             SizedBox(height: AppSizes.paddingMedium),
             RichTextWidget(
               firstText: AppText.dontHaveAccount,
               lastText: AppText.signup,
               onTap: () {
-                CustomSnackbar.show(
+                CustomSnackBar.show(
                   context,
                   message: "sign up screen",
                   icon: Icons.check_circle,
@@ -109,7 +107,4 @@ class OtpVerificationScreen extends StatelessWidget {
       ),
     );
   }
-
-
-
 }

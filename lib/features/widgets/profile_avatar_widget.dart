@@ -2,17 +2,12 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:organization/utils/app_color.dart';
 
 class ProfileAvatar extends StatefulWidget {
-  final String assetImage; // placeholder asset
-  final VoidCallback? onTap; // extra action optional
+  final String assetImage;
+  final VoidCallback? onTap;
 
-  const ProfileAvatar({
-    super.key,
-    required this.assetImage,
-    this.onTap,
-  });
+  const ProfileAvatar({super.key, required this.assetImage, this.onTap});
 
   @override
   State<ProfileAvatar> createState() => _ProfileAvatarState();
@@ -48,20 +43,20 @@ class _ProfileAvatarState extends State<ProfileAvatar> {
             color: _selectedImage == null ? const Color(0xFFFAFAFA) : null,
             image: _selectedImage != null
                 ? DecorationImage(
-              image: FileImage(_selectedImage!),
-              fit: BoxFit.cover,
-            )
+                    image: FileImage(_selectedImage!),
+                    fit: BoxFit.cover,
+                  )
                 : null,
           ),
           child: _selectedImage == null
               ? Center(
-            child: Image.asset(
-              widget.assetImage,
-              height: 36.w,
-              width: 36.w,
-              color: Colors.grey,
-            ),
-          )
+                  child: Image.asset(
+                    widget.assetImage,
+                    height: 36.w,
+                    width: 36.w,
+                    color: Colors.grey,
+                  ),
+                )
               : null,
         ),
 

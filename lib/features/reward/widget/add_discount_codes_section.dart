@@ -1,15 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:organization/features/widgets/custom_asset_image.dart';
 import 'package:organization/utils/app_color.dart';
 import 'package:organization/utils/assets_path.dart';
-
 import '../../../utils/app_text_styles.dart';
-import '../../widgets/custom_card_widget.dart';
 import '../../widgets/text_field_title_widget.dart';
 import 'dash_divider_widget.dart';
 import 'discount_card_widget.dart';
-import 'link_preview_box_widget.dart';
+
 
 class AddDiscountCodesSection extends StatefulWidget {
   const AddDiscountCodesSection({super.key});
@@ -24,7 +21,7 @@ class _AddDiscountCodesSectionState extends State<AddDiscountCodesSection> {
 
   @override
   Widget build(BuildContext context) {
-    final ColorScheme colorScheme = Theme.of(context).colorScheme;
+
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,

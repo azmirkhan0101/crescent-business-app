@@ -19,13 +19,11 @@ class RedemptionChartWidget extends StatelessWidget {
     ];
 
     return SizedBox(
-      height: 174.h, // ✅ fixed card height
+      height: 174.h,
       child: Card(
         color: AppColors.white,
         margin: EdgeInsets.all(12.w),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(3.r),
-        ),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(3.r)),
         elevation: 4,
         child: Padding(
           padding: EdgeInsets.all(16.w),
@@ -40,34 +38,37 @@ class RedemptionChartWidget extends StatelessWidget {
                   children: [
                     Row(
                       children: [
-                           Image.asset(AssetsPath.scanQrIcon,
-                           height: AppSizes.iconS24H,
-                             width: AppSizes.iconS24W,
-                             color: AppColors.primaryColor,
-                           ),
+                        Image.asset(
+                          AssetsPath.scanQrIcon,
+                          height: AppSizes.iconS24H,
+                          width: AppSizes.iconS24W,
+                          color: AppColors.primaryColor,
+                        ),
                         SizedBox(width: 5.w),
                         Expanded(
-                          child: CustomText(text: "Total Redemptions",
-                          fontWeight: FontWeight.w500,
+                          child: CustomText(
+                            text: "Total Redemptions",
+                            fontWeight: FontWeight.w500,
                             color: AppColors.blackTextColor,
                             fontSize: 14.sp,
                           ),
                         ),
-
                       ],
                     ),
 
                     Text(
                       "120",
-                        style: AppTextStyle.headlineLStyle.copyWith(fontSize: AppSizes.headlineXL)
+                      style: AppTextStyle.headlineLStyle.copyWith(
+                        fontSize: AppSizes.headlineXL,
+                      ),
                     ),
                     SizedBox(width: 6.h),
                     Row(
                       children: [
                         _buildLegendRow('QR', '45', const Color(0xFFC4E862)),
-                        SizedBox(width: 18.w,),
+                        SizedBox(width: 18.w),
                         _buildLegendRow('NFC', '23', const Color(0xFFC0A4E8)),
-                        SizedBox(width: 18.w,),
+                        SizedBox(width: 18.w),
                         _buildLegendRow('Code', '74', const Color(0xFFFF7BD7)),
                       ],
                     ),
@@ -77,8 +78,8 @@ class RedemptionChartWidget extends StatelessWidget {
 
               /// Right side chart
               SizedBox(
-                height: 120.w, // ✅ chart height
-                width: 120.w,  // ✅ chart width
+                height: 120.w,
+                width: 120.w,
                 child: SfCircularChart(
                   margin: EdgeInsets.zero,
                   series: <DoughnutSeries<ChartData, String>>[
@@ -115,16 +116,21 @@ class RedemptionChartWidget extends StatelessWidget {
               borderRadius: BorderRadius.circular(2.r),
             ),
           ),
-         SizedBox(width: 5.w,),
+          SizedBox(width: 5.w),
           Column(
             children: [
               Text(
                 title,
-                style: AppTextStyle.mediumStyle.copyWith(fontSize: AppSizes.smallTSize)
+                style: AppTextStyle.mediumStyle.copyWith(
+                  fontSize: AppSizes.smallTSize,
+                ),
               ),
               Text(
                 value,
-                  style: AppTextStyle.mediumStyle.copyWith(fontWeight: FontWeight.w600,color: AppColors.blackTextColor)
+                style: AppTextStyle.mediumStyle.copyWith(
+                  fontWeight: FontWeight.w600,
+                  color: AppColors.blackTextColor,
+                ),
               ),
             ],
           ),

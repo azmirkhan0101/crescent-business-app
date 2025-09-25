@@ -1,8 +1,6 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:organization/utils/assets_path.dart';
-import '../../../utils/app_color.dart';
 
 class BusinessProfileWidget extends StatelessWidget {
   const BusinessProfileWidget({
@@ -11,10 +9,8 @@ class BusinessProfileWidget extends StatelessWidget {
     this.profileCenterEdit,
   });
 
-  /// Cover image edit button → তুমি বাইরে থেকে `Positioned` widget pass করতে পারবে
   final Positioned? topEdit;
 
-  /// Profile image edit button → এটাও বাইরে থেকে pass করা যাবে
   final Positioned? profileCenterEdit;
 
   @override
@@ -73,4 +69,3 @@ class BusinessProfileWidget extends StatelessWidget {
     );
   }
 }
-

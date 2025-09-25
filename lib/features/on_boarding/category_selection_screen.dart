@@ -46,8 +46,6 @@ class _CategorySelectionScreenState extends State<CategorySelectionScreen> {
               subTitle: AppText.categoryDescription,
             ),
 
-
-
             SizedBox(height: 16.h),
 
             /// GridView দিয়ে category selection
@@ -57,10 +55,10 @@ class _CategorySelectionScreenState extends State<CategorySelectionScreen> {
               shrinkWrap: true,
               physics: const NeverScrollableScrollPhysics(),
               gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2,
-                  crossAxisSpacing: 8.w,
-                  mainAxisSpacing: 8.h,
-                  mainAxisExtent: 90.h
+                crossAxisCount: 2,
+                crossAxisSpacing: 8.w,
+                mainAxisSpacing: 8.h,
+                mainAxisExtent: 90.h,
               ),
               itemBuilder: (context, index) {
                 final category = categories[index];
@@ -77,9 +75,6 @@ class _CategorySelectionScreenState extends State<CategorySelectionScreen> {
                     });
                   },
                 );
-
-
-
               },
             ),
           ],
@@ -91,7 +86,6 @@ class _CategorySelectionScreenState extends State<CategorySelectionScreen> {
         onPressed: () {
           if (selectedIndex != null) {
             context.push(RoutesPath.businessInfo);
-
           } else {
             ScaffoldMessenger.of(context).showSnackBar(
               const SnackBar(content: Text("Please select a category")),

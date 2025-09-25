@@ -3,7 +3,7 @@ class AppText {
   //get started screen text
   static const crescentChange = "Crescent Change";
   static const turnSpareChange =
-      "Turn spare change into\nloyal customers.";
+      "Turn spare change into loyal customers.";
   static const joinMovement =
       "Join the movement to reward generosity, grow loyalty, and make a meaningful impact.";
   static const getStarted = "Get Started";

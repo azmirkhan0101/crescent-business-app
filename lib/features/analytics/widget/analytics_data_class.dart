@@ -1,9 +1,5 @@
-
-
-
 import '../../../utils/assets_path.dart';
 
-/// demo data list (future এ API থেকে আসতে পারে)
 final List<Map<String, String>> analyticsData = [
   {
     "topIcon": AssetsPath.clickIcon,

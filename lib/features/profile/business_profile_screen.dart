@@ -9,7 +9,6 @@ import 'package:organization/features/widgets/custom_text.dart';
 import 'package:organization/utils/app_color.dart';
 import 'package:organization/utils/app_text_styles.dart';
 import 'package:organization/utils/assets_path.dart';
-
 import '../../core/routes/route_path.dart';
 
 class BusinessProfileScreen extends StatefulWidget {
@@ -37,26 +36,22 @@ class _BusinessProfileScreenState extends State<BusinessProfileScreen>
 
   @override
   Widget build(BuildContext context) {
-
-
-
     return Scaffold(
       backgroundColor: AppColors.white,
-
 
       appBar: AppBar(
         clipBehavior: Clip.none,
         backgroundColor: AppColors.white,
-        title:CustomText(text: "Business Profile",
-        fontWeight: FontWeight.w700,
+        title: CustomText(
+          text: "Business Profile",
+          fontWeight: FontWeight.w700,
           fontSize: 24.sp,
           color: AppColors.blackTextColor,
         ),
 
-
         actions: [
           GestureDetector(
-            onTap: (){
+            onTap: () {
               context.push(RoutesPath.editProfile);
             },
             child: Container(
@@ -67,8 +62,7 @@ class _BusinessProfileScreenState extends State<BusinessProfileScreen>
                 shape: BoxShape.circle,
               ),
               child: Center(
-                child:
-                 Image.asset(
+                child: Image.asset(
                   AssetsPath.editIcon,
                   color: AppColors.blackTextColor,
                   width: 16.w,
@@ -77,30 +71,32 @@ class _BusinessProfileScreenState extends State<BusinessProfileScreen>
               ),
             ),
           ),
-          SizedBox(width: 8.w,),
+          SizedBox(width: 8.w),
         ],
       ),
 
       body: Padding(
-        padding:  EdgeInsets.all(16.w),
+        padding: EdgeInsets.all(16.w),
         child: Column(
           children: [
-
             BusinessProfileWidget(),
-             SizedBox(height: 60.h),
-             Text(
+            SizedBox(height: 60.h),
+            Text(
               'Sweet Whisk Bakery',
               style: AppTextStyle.headlineLStyle.copyWith(fontSize: 18.sp),
             ),
-             SizedBox(height: 8.h),
-             Text(
+            SizedBox(height: 8.h),
+            Text(
               'Business Category',
-              style: AppTextStyle.mediumStyle.copyWith(fontSize: 13.sp,color: Color(0xFF848484)),
+              style: AppTextStyle.mediumStyle.copyWith(
+                fontSize: 13.sp,
+                color: Color(0xFF848484),
+              ),
             ),
-             SizedBox(height: 8.h),
-             Text(
+            SizedBox(height: 8.h),
+            Text(
               'Whipping Up Smiles, One Treat at a Time!',
-              style: AppTextStyle.cardTextStyle.copyWith(fontSize: 12.sp,),
+              style: AppTextStyle.cardTextStyle.copyWith(fontSize: 12.sp),
             ),
             const SizedBox(height: 16),
 
@@ -111,37 +107,22 @@ class _BusinessProfileScreenState extends State<BusinessProfileScreen>
               labelColor: Colors.black,
               unselectedLabelColor: Colors.grey,
               indicatorSize: TabBarIndicatorSize.tab,
-              labelStyle:GoogleFonts.inter(
+              labelStyle: GoogleFonts.inter(
                 fontWeight: FontWeight.w600,
                 color: AppColors.blackTextColor,
-                fontSize: 14.sp
-              ) ,
+                fontSize: 14.sp,
+              ),
               tabs: [
-                Tab(
-                  child: Text(
-                    'Overview',
-
-                  ),
-                ),
-                Tab(
-
-                  child:
-            Text("Rewards"),
-
-                ),
+                Tab(child: Text('Overview')),
+                Tab(child: Text("Rewards")),
               ],
-
             ),
             SizedBox(height: 12.h),
             // TabBarView
             Expanded(
-
               child: TabBarView(
                 controller: _tabController,
-                children: const [
-                  OverviewTab(),
-                  RewardsTab(),
-                ],
+                children: const [OverviewTab(), RewardsTab()],
               ),
             ),
           ],

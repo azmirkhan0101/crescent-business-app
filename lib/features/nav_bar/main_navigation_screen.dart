@@ -17,7 +17,7 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
   final List<_NavItem> _items = [
     _NavItem(icon: Icons.home, route: RoutesPath.home),
     _NavItem(icon: Icons.bar_chart, route: RoutesPath.analytics),
-    _NavItem(icon: Icons.qr_code_scanner, route: RoutesPath.radeemScanner),
+    _NavItem(icon: Icons.qr_code_scanner, route: RoutesPath.redeemScanner),
     _NavItem(icon: Icons.star, route: RoutesPath.tabScreen),
     _NavItem(icon: Icons.person, route: RoutesPath.businessProfile),
   ];

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:organization/features/home/widget/acticity_listtile_widget.dart';
-import 'package:organization/features/home/widget/activity_data_class.dart';
+import 'package:organization/features/home/widget/activity_list_tile_widget.dart';
+import 'package:organization/features/home/data/models/activity_data_class.dart';
 import 'package:organization/features/home/widget/bar_chart_widget.dart';
 import 'package:organization/features/home/widget/home_card_widget.dart';
 import 'package:organization/features/home/widget/home_header_widget.dart';
@@ -11,7 +11,6 @@ import 'package:organization/utils/assets_path.dart';
 import '../../utils/app_color.dart';
 import '../../utils/app_text_styles.dart';
 import '../analytics/widget/analytics_card_widget.dart';
-
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -28,7 +27,7 @@ class HomeScreen extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 /// header profile
-                HomeHeaderWidget(userName: 'Talha S.',),
+                HomeHeaderWidget(userName: 'Talha S.'),
                 Text(
                   "Overview",
                   style: GoogleFonts.familjenGrotesk(
@@ -43,7 +42,7 @@ class HomeScreen extends StatelessWidget {
                   children: [
                     Expanded(
                       child: AnalyticsCardWidget(
-                         topIconColor: Color(0xFFC08FFF),
+                        topIconColor: Color(0xFFC08FFF),
                         topIcon: AssetsPath.scanQrIcon,
                         bottomIcon: AssetsPath.playIcon,
                         title: 'Redemptions',
@@ -62,11 +61,11 @@ class HomeScreen extends StatelessWidget {
                     ),
                   ],
                 ),
+
                 ///bar chart
                 HomeBarChartWidget(),
+
                 ///activity text
-
-
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -78,13 +77,19 @@ class HomeScreen extends StatelessWidget {
                         fontWeight: FontWeight.w600,
                       ),
                     ),
-                    TextButton(onPressed: (){}, child:  Text(
-                      "View All",
-                      style: AppTextStyle.mediumStyle.copyWith(color: AppColors.primaryColor),
-                    ),)
+                    TextButton(
+                      onPressed: () {},
+                      child: Text(
+                        "View All",
+                        style: AppTextStyle.mediumStyle.copyWith(
+                          color: AppColors.primaryColor,
+                        ),
+                      ),
+                    ),
                   ],
                 ),
-               ///activity section
+
+                ///activity section
                 Card(
                   elevation: 4,
                   shape: RoundedRectangleBorder(
@@ -99,32 +104,31 @@ class HomeScreen extends StatelessWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        CustomText(text: "Today",
-                        language: false,
+                        CustomText(
+                          text: "Today",
+                          language: false,
                           fontSize: 11.sp,
                           fontWeight: FontWeight.w500,
                           color: AppColors.secondaryTextColor,
-
                         ),
 
-                       SizedBox(height: 8.h,),
+                        SizedBox(height: 8.h),
                         ListView.separated(
                           itemCount: activityItems.length,
                           shrinkWrap: true,
                           physics: const NeverScrollableScrollPhysics(),
                           itemBuilder: (context, index) {
-                            return ActivityListTileWidget(item: activityItems[index]);
+                            return ActivityListTileWidget(
+                              item: activityItems[index],
+                            );
                           },
-                          separatorBuilder: (context, index) => SizedBox(height: 8.h),
-                        )
-
+                          separatorBuilder: (context, index) =>
+                              SizedBox(height: 8.h),
+                        ),
                       ],
                     ),
                   ),
-                )
-
-
-
+                ),
               ],
             ),
           ),
@@ -133,12 +137,3 @@ class HomeScreen extends StatelessWidget {
     );
   }
 }
-
-
-
-
-
-
-
-
-

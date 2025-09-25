@@ -10,19 +10,18 @@ import '../../../utils/app_text_styles.dart';
 
 class LinkPreviewBox extends StatelessWidget {
   const LinkPreviewBox({super.key, this.textColor});
- final Color?textColor;
+  final Color? textColor;
   Future<void> _pickFile(BuildContext context) async {
     final result = await FilePicker.platform.pickFiles(
-      allowMultiple: false, // একবারে একটাই ফাইল সিলেক্ট
-      type: FileType.any,   // চাইলে FileType.image / FileType.custom দিতে পারো
-      // allowedExtensions: ['jpg', 'pdf', 'doc'], // custom হলে
+      allowMultiple: false,
+      type: FileType.any,
     );
 
     if (result != null && result.files.isNotEmpty) {
       final file = result.files.first;
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text("Picked file: ${file.name}")),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text("Picked file: ${file.name}")));
     }
   }
 
@@ -36,7 +35,6 @@ class LinkPreviewBox extends StatelessWidget {
           const Icon(Icons.link, size: 20, color: Colors.black54),
           const SizedBox(width: 8),
 
-          // লিঙ্ক টেক্সট/প্রিভিউ
           Expanded(
             child: AnyLinkPreview(
               link: "https://google.com/..",
@@ -46,29 +44,23 @@ class LinkPreviewBox extends StatelessWidget {
               bodyTextOverflow: TextOverflow.ellipsis,
               removeElevation: true,
               backgroundColor: Colors.transparent,
-              errorWidget:  Text(
+              errorWidget: Text(
                 "https://google.com/..",
-                style: AppTextStyle.mediumStyle.copyWith(fontSize: 12.sp,color:textColor?? AppColors.blackTextColor)
+                style: AppTextStyle.mediumStyle.copyWith(
+                  fontSize: 12.sp,
+                  color: textColor ?? AppColors.blackTextColor,
+                ),
               ),
             ),
           ),
 
-          // ডানপাশে ছোট grey vertical bar
-          Container(
-            width: 2,
-            height: 20,
-            color: Colors.grey.shade400,
-          ),
+          Container(width: 2, height: 20, color: Colors.grey.shade400),
           const SizedBox(width: 8),
 
-          // Upload Icon (clickable)
-
           InkWell(
-              onTap: () => _pickFile(context),
-              child: Image.asset(AssetsPath.cloudIcon)
+            onTap: () => _pickFile(context),
+            child: Image.asset(AssetsPath.cloudIcon),
           ),
-
-
         ],
       ),
     );

@@ -24,7 +24,7 @@ class _InStoreOptionsState extends State<InStoreOptions> {
           child: _buildCheckboxRow(
             'Discount Code',
             isDiscountCodeChecked,
-                (val) => setState(() => isDiscountCodeChecked = val ?? false),
+            (val) => setState(() => isDiscountCodeChecked = val ?? false),
           ),
         ),
         SizedBox(height: 8.h),
@@ -33,7 +33,7 @@ class _InStoreOptionsState extends State<InStoreOptions> {
           child: _buildCheckboxRow(
             'Gift Card',
             isGiftCardChecked,
-                (val) => setState(() => isGiftCardChecked = val ?? false),
+            (val) => setState(() => isGiftCardChecked = val ?? false),
           ),
         ),
         SizedBox(height: 8.h),
@@ -42,7 +42,7 @@ class _InStoreOptionsState extends State<InStoreOptions> {
           child: _buildCheckboxRow(
             'Static Code',
             isStaticCodeChecked,
-                (val) => setState(() => isStaticCodeChecked = val ?? false),
+            (val) => setState(() => isStaticCodeChecked = val ?? false),
           ),
         ),
       ],
@@ -50,10 +50,10 @@ class _InStoreOptionsState extends State<InStoreOptions> {
   }
 
   Widget _buildCheckboxRow(
-      String title,
-      bool isChecked,
-      Function(bool?) onChanged,
-      ) {
+    String title,
+    bool isChecked,
+    Function(bool?) onChanged,
+  ) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
@@ -62,15 +62,14 @@ class _InStoreOptionsState extends State<InStoreOptions> {
           onChanged: onChanged,
           activeColor: AppColors.primaryColor,
           checkColor: Colors.white,
-          materialTapTargetSize: MaterialTapTargetSize.shrinkWrap, // বড় padding কেটে যাবে
+          materialTapTargetSize:
+              MaterialTapTargetSize.shrinkWrap, // বড় padding কেটে যাবে
           visualDensity: const VisualDensity(horizontal: -4, vertical: -4),
-        ),SizedBox(width: 8.w,),
+        ),
+        SizedBox(width: 8.w),
         Text(
           title,
-          style: TextStyle(
-            fontWeight: FontWeight.w500,
-            fontSize: 14.sp,
-          ),
+          style: TextStyle(fontWeight: FontWeight.w500, fontSize: 14.sp),
         ),
       ],
     );

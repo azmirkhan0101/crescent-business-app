@@ -9,17 +9,14 @@ class RedeemCompleteCardWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    //icon gulo boro hy na figma ar
     return Card(
       elevation: 4.0,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(16.0),
-      ),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16.0)),
       color: Colors.white,
       child: SizedBox(
         height: 152.h,
         child: Padding(
-          padding:  EdgeInsets.all(12.w),
+          padding: EdgeInsets.all(12.w),
           child: Column(
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -39,7 +36,7 @@ class RedeemCompleteCardWidget extends StatelessWidget {
                       fontSize: 16.sp,
                       fontWeight: FontWeight.w600,
                       fontFamily: 'inter',
-                      color: AppColors.blackTextColor
+                      color: AppColors.blackTextColor,
                     ),
                   ),
                 ],
@@ -49,11 +46,14 @@ class RedeemCompleteCardWidget extends StatelessWidget {
                 children: [
                   Text(
                     'Redeemed On:',
-                    style: AppTextStyle.mediumStyle.copyWith(fontSize: 12.sp)
+                    style: AppTextStyle.mediumStyle.copyWith(fontSize: 12.sp),
                   ),
                   Text(
-                      ' 2/7/2025 - 12:20:30',
-                      style: AppTextStyle.mediumStyle.copyWith(fontWeight: FontWeight.w500,color: AppColors.blackTextColor)
+                    ' 2/7/2025 - 12:20:30',
+                    style: AppTextStyle.mediumStyle.copyWith(
+                      fontWeight: FontWeight.w500,
+                      color: AppColors.blackTextColor,
+                    ),
                   ),
                 ],
               ),
@@ -70,12 +70,15 @@ class RedeemCompleteCardWidget extends StatelessWidget {
                           fontSize: 20.sp,
                           fontWeight: FontWeight.w600,
                           color: AppColors.blackTextColor,
-                          fontFamily: 'inter'
+                          fontFamily: 'inter',
                         ),
                       ),
                       Text(
                         'redemptions',
-                        style: AppTextStyle.mediumStyle.copyWith(fontSize: 12.sp,color: AppColors.blackTextColor)
+                        style: AppTextStyle.mediumStyle.copyWith(
+                          fontSize: 12.sp,
+                          color: AppColors.blackTextColor,
+                        ),
                       ),
                     ],
                   ),
@@ -84,9 +87,12 @@ class RedeemCompleteCardWidget extends StatelessWidget {
                     children: [
                       Text(
                         'Redeemed via',
-                          style: AppTextStyle.mediumStyle.copyWith(fontSize: 12.sp,color: AppColors.blackTextColor)
+                        style: AppTextStyle.mediumStyle.copyWith(
+                          fontSize: 12.sp,
+                          color: AppColors.blackTextColor,
+                        ),
                       ),
-                       SizedBox(height: 4.h,),
+                      SizedBox(height: 4.h),
                       // Assuming you have an asset for the QR code
                       Image.asset(
                         AssetsPath.qrCodeIcon,

@@ -6,7 +6,6 @@ import 'package:organization/features/auth/otp_verification_screen.dart';
 import 'package:organization/features/get_started_screen.dart';
 import 'package:organization/features/on_boarding/category_selection_screen.dart';
 import 'package:organization/features/on_boarding/setup_complete_one_screen.dart';
-import 'package:organization/features/radeem_rewards/on_boarding_store_screen.dart';
 import 'package:organization/features/on_boarding/setup_complete_screen.dart';
 import 'package:organization/features/auth/forgot_password_screen.dart';
 import 'package:organization/features/auth/reset_password_screen.dart';
@@ -19,15 +18,16 @@ import 'package:organization/features/on_boarding/upload_logo_screen.dart';
 /// Bottom Nav Screens
 import 'package:organization/features/home/home_screen.dart';
 import 'package:organization/features/analytics/analytics_screen.dart';
-import 'package:organization/features/radeem_rewards/redeem_scanner_screen.dart';
 import 'package:organization/features/profile/business_profile_screen.dart';
-import 'package:organization/features/radeem_rewards/scanner_complete_screen.dart';
 import 'package:organization/features/reward/edit_reward_screen.dart';
 import 'package:organization/features/reward/reward_screens.dart';
 import 'package:organization/features/reward/tab_reward_screen.dart';
 /// Main Nav Wrapper
 import '../../features/nav_bar/main_navigation_screen.dart';
 import '../../features/profile/edit_profile_screen.dart';
+import '../../features/redeem_rewards/on_boarding_store_screen.dart';
+import '../../features/redeem_rewards/redeem_scanner_screen.dart';
+import '../../features/redeem_rewards/scanner_complete_screen.dart';
 import '../../features/reward/create_reward_screen.dart';
 
 class AppRoutes {
@@ -98,7 +98,7 @@ class AppRoutes {
       ),
       GoRoute(
         path: RoutesPath.scannerComplete,
-        builder: (context, state) => RadeemScannerCompleteScreen(),
+        builder: (context, state) => RedeemScannerCompleteScreen(),
       ),
       GoRoute(
         path: RoutesPath.editReward,
@@ -108,15 +108,6 @@ class AppRoutes {
         path: RoutesPath.createReward,
         builder: (context, state) => const CreateRewardScreen(),
       ),
-      // GoRoute(
-      //   path: RoutesPath.addReward,
-      //   builder: (context, state) => const AddRewardScreens(),
-      // ),
-      // GoRoute(
-      //   path: RoutesPath.tabScreen,
-      //   builder: (context, state) => const TabRewardScreen(),
-      // ),
-
       GoRoute(
         path: RoutesPath.reward,
         builder: (context, state) => const RewardScreens(),
@@ -138,13 +129,9 @@ class AppRoutes {
             builder: (context, state) => const AnalyticsScreen(),
           ),
           GoRoute(
-            path: RoutesPath.radeemScanner,
+            path: RoutesPath.redeemScanner,
             builder: (context, state) => const RedeemScannerScreen(),
           ),
-          // GoRoute(
-          //   path: RoutesPath.reward,
-          //   builder: (context, state) => const RewardScreens(),
-          // ),
 
           GoRoute(
             path: RoutesPath.tabScreen,

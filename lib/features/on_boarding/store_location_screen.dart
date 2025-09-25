@@ -3,15 +3,11 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:organization/features/on_boarding/widgets/onboarding_appbar.dart';
 import 'package:organization/features/on_boarding/widgets/under_button_widget.dart';
-import 'package:organization/features/widgets/custom_asset_image.dart';
-
 import 'package:organization/utils/app_text.dart';
 import 'package:organization/utils/assets_path.dart';
-
 import '../../../utils/app_color.dart';
 import '../../../utils/app_size.dart';
 import '../../../utils/app_text_styles.dart';
-
 import '../../core/routes/route_path.dart';
 import '../profile/widget/location_widget.dart';
 import '../widgets/custom_text_field_widget.dart';

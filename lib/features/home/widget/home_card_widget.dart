@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:organization/features/widgets/custom_text.dart';
-
 import '../../../utils/app_color.dart';
-import '../../../utils/app_text_styles.dart';
 import '../../widgets/custom_card_widget.dart';
 
 class HomeCardWidget extends StatelessWidget {
@@ -39,9 +37,6 @@ class HomeCardWidget extends StatelessWidget {
               color: AppColors.blackTextColor,
              language: false,
             ),
-
-
-
 
           ],
         ),

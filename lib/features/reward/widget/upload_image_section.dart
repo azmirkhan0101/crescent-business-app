@@ -5,7 +5,6 @@ import 'package:organization/features/widgets/custom_button_widget.dart';
 import 'package:organization/utils/app_color.dart';
 import 'package:organization/utils/app_text_styles.dart';
 import 'package:organization/utils/assets_path.dart';
-
 import '../../widgets/text_field_title_widget.dart';
 
 class UploadImageSection extends StatelessWidget {
@@ -29,7 +28,7 @@ class UploadImageSection extends StatelessWidget {
             children: [
             GestureDetector(
                 onTap:(){
-                  print("upload");
+                  debugPrint("upload");
                 },
                 child: CustomAssetsImage(assetsPath: AssetsPath.cloudIcon,height: 24.h,width: 24.w,)),
               const SizedBox(height: 5),

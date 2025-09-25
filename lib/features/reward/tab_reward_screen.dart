@@ -6,7 +6,6 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:organization/features/reward/widget/reward_card_widget.dart';
 import 'package:organization/features/reward/widget/row_widget.dart';
 import 'package:organization/utils/app_color.dart';
-import 'package:organization/utils/app_text_styles.dart';
 import 'package:organization/utils/assets_path.dart';
 
 class TabRewardScreen extends StatefulWidget {

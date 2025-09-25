@@ -8,7 +8,6 @@ import 'package:organization/features/profile/widget/profile_heading_text_widget
 import 'package:organization/features/widgets/custom_asset_image.dart';
 import 'package:organization/utils/app_color.dart';
 import 'package:organization/utils/assets_path.dart';
-
 import '../../utils/app_size.dart';
 import '../../utils/app_text.dart';
 import '../../utils/app_text_styles.dart';
@@ -59,7 +58,6 @@ class EditProfileScreen extends StatelessWidget {
                 top: 20.h,
                 child: Container(
                  padding: EdgeInsets.all(8.w),
-                  //padding: const EdgeInsets.all(4.0),
                   decoration: const BoxDecoration(
                     color: AppColors.black,
                     shape: BoxShape.circle,

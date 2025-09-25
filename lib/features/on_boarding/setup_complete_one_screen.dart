@@ -22,11 +22,7 @@ class BusinessSetupCompleteOneScreen extends StatelessWidget {
       backgroundColor: AppColors.white,
       body: Stack(
         children: [
-
-          SizedBox(
-            height: size.height,
-            width: size.width,
-          ),
+          SizedBox(height: size.height, width: size.width),
 
           // Main content scrollable
           SingleChildScrollView(
@@ -43,7 +39,7 @@ class BusinessSetupCompleteOneScreen extends StatelessWidget {
                     children: [
                       const SizedBox(),
                       GestureDetector(
-                        onTap: (){
+                        onTap: () {
                           context.push(RoutesPath.home);
                         },
                         child: Container(
@@ -109,7 +105,7 @@ class BusinessSetupCompleteOneScreen extends StatelessWidget {
                       ),
                       boxShadow: [
                         BoxShadow(
-                          color:  Color(0x0D000000),
+                          color: Color(0x0D000000),
                           blurRadius: 6,
                           offset: const Offset(0, 3),
                         ),
@@ -257,16 +253,19 @@ class BusinessSetupCompleteOneScreen extends StatelessWidget {
           Positioned(
             bottom: 50.h,
             left: 0,
-              right: 0,
+            right: 0,
             child: Center(
               child: CustomButton(
                 width: 263.w,
-                backgroundColor:     Color(0xFFD1FF43),
+                backgroundColor: Color(0xFFD1FF43),
                 textColor: AppColors.black,
                 text: AppText.done,
 
                 buttonTextStyle: GoogleFonts.familjenGrotesk(
-                    color: AppColors.black,fontSize: 18.sp,fontWeight: FontWeight.w700),
+                  color: AppColors.black,
+                  fontSize: 18.sp,
+                  fontWeight: FontWeight.w700,
+                ),
                 onPressed: () {
                   context.go(RoutesPath.setupComplete);
                 },

@@ -85,7 +85,8 @@ class _CustomTextFieldState extends State<CustomTextField> {
       keyboardType: widget.keyboardType,
       textInputAction: widget.textInputAction,
       cursorColor: widget.cursorColor,
-      style: widget.inputTextStyle ??
+      style:
+          widget.inputTextStyle ??
           GoogleFonts.inter(
             fontSize: 14.sp,
             fontWeight: FontWeight.w500,
@@ -102,7 +103,8 @@ class _CustomTextFieldState extends State<CustomTextField> {
         isDense: widget.isDens,
         errorMaxLines: 2,
         hintText: widget.hintText,
-        hintStyle: widget.hintStyle ??
+        hintStyle:
+            widget.hintStyle ??
             GoogleFonts.inter(
               fontSize: 14.sp,
               fontWeight: FontWeight.w500,
@@ -114,84 +116,60 @@ class _CustomTextFieldState extends State<CustomTextField> {
         // 🔹 Prefix Image
         prefixIcon: widget.prefixImagePath != null
             ? Padding(
-          padding: EdgeInsets.all(12.w),
-          child: Image.asset(
-            widget.prefixImagePath!,
-            width: 20.w,
-            height: 20.h,
-            fit: BoxFit.contain,
-          ),
-        )
+                padding: EdgeInsets.all(12.w),
+                child: Image.asset(
+                  widget.prefixImagePath!,
+                  width: 20.w,
+                  height: 20.h,
+                  fit: BoxFit.contain,
+                ),
+              )
             : null,
 
         // 🔹 Suffix Image / Password toggle
         suffixIcon: widget.isPassword
             ? GestureDetector(
-          onTap: toggle,
-          child: Padding(
-            padding: EdgeInsets.all(12.w),
-            child: Image.asset(
-              obscureText
-                  ? AssetsPath.eyeIcon
-                  : AssetsPath.eyeIcon,
-              width: 20.w,
-              height: 20.h,
-              fit: BoxFit.contain,
-            ),
-          ),
-        )
+                onTap: toggle,
+                child: Padding(
+                  padding: EdgeInsets.all(12.w),
+                  child: Image.asset(
+                    obscureText ? AssetsPath.eyeIcon : AssetsPath.eyeIcon,
+                    width: 20.w,
+                    height: 20.h,
+                    fit: BoxFit.contain,
+                  ),
+                ),
+              )
             : (widget.suffixImagePath != null
-            ? Padding(
-          padding: EdgeInsets.all(12.w),
-          child: Image.asset(
-            widget.suffixImagePath!,
-            width: 20.w,
-            height: 20.h,
-            fit: BoxFit.contain,
-          ),
-        )
-            : null),
-
+                  ? Padding(
+                      padding: EdgeInsets.all(12.w),
+                      child: Image.asset(
+                        widget.suffixImagePath!,
+                        width: 20.w,
+                        height: 20.h,
+                        fit: BoxFit.contain,
+                      ),
+                    )
+                  : null),
 
         focusedErrorBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12.r),
           borderSide: BorderSide(color: Colors.red, width: 1),
         ),
 
-
-
-
-
-
-
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12.r),
-          borderSide: BorderSide(
-            color:Color(0xFFE4E4E4),
-            width: 1.w,
-          ),
-
-
+          borderSide: BorderSide(color: Color(0xFFE4E4E4), width: 1.w),
         ),
-        focusedBorder:  OutlineInputBorder(
-        borderRadius: BorderRadius.circular(12.r),
-        borderSide: BorderSide(
-          color:Color(0xFFE4E4E4),
-          width: 1.w,
-        ),
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(12.r),
+          borderSide: BorderSide(color: Color(0xFFE4E4E4), width: 1.w),
         ),
         // error border – পুরো outline লাল
         errorBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12.r),
           borderSide: BorderSide(color: Colors.red, width: 1),
         ),
-
-
-
-
-
-
-
       ),
     );
   }

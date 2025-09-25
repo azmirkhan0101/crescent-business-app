@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
-
-
 import '../../../../utils/assets_path.dart';
 
 class CustomAuthAppbar extends StatelessWidget {

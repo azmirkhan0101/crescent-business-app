@@ -10,7 +10,7 @@ class AppColors {
   static const white = Color(0xFFFFFFFF);
   static const black = Color(0xFF000000);
   static const blackTextColor = Color(0xFF000C0B);
-  static const fieldBorderColor=Color(0xFFE4E4E4);
+  static const fieldBorderColor = Color(0xFFE4E4E4);
   static const bottomItemColor = Color(0xFF978EA3);
 
   // Lime base
@@ -21,9 +21,8 @@ class AppColors {
   static const lime10 = Color(0xFF222B0A); // 10%
   static const lime05 = Color(0xFF111505); // 5%
 
-//yellow shade
+  //yellow shade
   static const yellow35 = Color(0xFFE74359); // 40%
-
 
   static const primaryGradient = LinearGradient(
     colors: [
@@ -31,7 +30,6 @@ class AppColors {
 
       Color(0x1AD1FF43), // 10% opacity
       Color(0xFFD1FF43),
-
     ],
 
     begin: Alignment.topRight,
@@ -44,27 +42,22 @@ class AppColors {
   static const websiteBg = Color(0xFFF3E8FF);
   static const phoneBg = Color(0xFFE9FFCC);
   static const emailBg = Color(0xFFFFF7CC);
-////////////////////////
-
-
+  ////////////////////////
 
   static const Color appColors = Color(0xffFBB03B);
 
   static const Color black_02 = Color(0xff181818);
   static const Color red = Color(0xffFF0000);
 
-
   static const Color black_80 = Color(0xff181818);
   static const Color black_03 = Color(0xff171717);
   static const Color black_04 = Color(0xff4F4F59);
 
-
   static const Color lightGreen = Color(0xff5BD7BC);
   static const Color lightWhite = Color(0xffF8F8F8);
-  static const Color light_Blue = Color(0xffE9EBF3);
+  static const Color lightBlueColor = Color(0xffE9EBF3);
   static const Color lightBlue = Color(0xff0097B2);
   static const Color orange = Color(0xffFF9800);
-
 
   static const Color onboardingCard = Color(0xffDFDDDA);
   static const Color brinkPink = Color(0xffE1B791); // #E1B791
@@ -96,9 +89,6 @@ class AppColors {
   static const Color cancle = Color(0xfffB7185);
   static const Color normal = Color(0xff1B2D51);
 
-
-
-
   static const Color primary = contentColorCyan;
   static const Color menuBackground = Color(0xFF090912);
   static const Color itemsBackground = Color(0xFF1B2339);
@@ -121,15 +111,8 @@ class AppColors {
   static const Color contentColorRed = Color(0xFFE80054);
   static const Color contentColorCyan = Color(0xFF50E4FF);
 
-
   static Color primaryDarkBlue = Color(0xFF13224B);
   static Color primaryYellow = Color(0xFFFFC000);
   static Color cardBorderBlue = Color(0xFF1E88E5);
   static Color unselectedTextColor = Color(0xFF6A6A6A);
-
-
-
-
-
-
 }

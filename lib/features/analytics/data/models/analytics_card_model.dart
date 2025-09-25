@@ -1,12 +1,12 @@
 import 'package:organization/utils/assets_path.dart';
 
 class StatsModel {
-  final String title;         // যেমন Website Visits
-  final String subTitle;      // যেমন Last 7 days
-  final String bottomText;    // যেমন 120
-  final String bottomEndText; // যেমন 10.5%
-  final String topIcon;       // উপরের icon (asset path)
-  final String bottomIcon;    // নিচের icon (asset path)
+  final String title;
+  final String subTitle;
+  final String bottomText;
+  final String bottomEndText;
+  final String topIcon;
+  final String bottomIcon;
 
   const StatsModel({
     required this.title,

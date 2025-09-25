@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:organization/utils/app_color.dart';
-import 'package:organization/utils/app_text.dart';
 import 'package:organization/utils/app_text_styles.dart';
-import 'package:organization/utils/assets_path.dart';
 import '../../utils/app_size.dart';
 
 class InfoCard extends StatelessWidget {
@@ -30,7 +28,8 @@ class InfoCard extends StatelessWidget {
     required this.gradientColor2,
     required this.gradientColor3,
     this.height,
-    this.width, required this.iconColor,
+    this.width,
+    required this.iconColor,
   });
 
   @override
@@ -41,12 +40,8 @@ class InfoCard extends StatelessWidget {
       padding: EdgeInsets.all(AppSizes.padding),
       decoration: BoxDecoration(
         gradient: LinearGradient(
-          colors: [
-            gradientColor1,
-            gradientColor2,
-            gradientColor3,
-          ],
-          begin: Alignment.topRight,   // gradient starts top-right
+          colors: [gradientColor1, gradientColor2, gradientColor3],
+          begin: Alignment.topRight,
           end: Alignment.bottomLeft,
         ),
         borderRadius: BorderRadius.circular(AppSizes.cardRadius),

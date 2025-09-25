@@ -4,7 +4,6 @@ import 'package:organization/features/widgets/custom_asset_image.dart';
 import 'package:organization/utils/app_color.dart';
 import 'package:organization/utils/app_text_styles.dart';
 import 'package:organization/utils/assets_path.dart';
-
 import 'custom_switch.dart';
 
 // ---------------------- Reward Card ----------------------

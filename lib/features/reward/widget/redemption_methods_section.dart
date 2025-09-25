@@ -1,11 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:organization/utils/app_color.dart';
-
 import '../../widgets/text_field_title_widget.dart';
-
 import 'in_store_options_widget.dart';
-
 import 'online_options_widget.dart';
 
 class RedemptionMethodsSection extends StatefulWidget {

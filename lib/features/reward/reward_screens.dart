@@ -62,29 +62,25 @@ class RewardScreens extends StatelessWidget {
               height: 176.h,
               width: 285.w,
             ),
-        Text(
-          "Manage Your Rewards",
-          style: AppTextStyle.headlineLStyle.copyWith(fontSize: 18.sp),
-        ),
-           SizedBox(height: 12.h,),
+            Text(
+              "Manage Your Rewards",
+              style: AppTextStyle.headlineLStyle.copyWith(fontSize: 18.sp),
+            ),
+            SizedBox(height: 12.h),
             Text(
               textAlign: TextAlign.center,
               maxLines: 3,
               "Track redemptions, edit existing rewards, or add something new to surprise your customers.",
               style: AppTextStyle.mediumStyle,
             ),
-            SizedBox(height: 12.h,),
+            SizedBox(height: 12.h),
             CustomButton(
               height: 40.h,
               width: 144.w,
               backgroundColor: const Color(0x26C08FFF),
               widget: Row(
                 children: [
-                  Icon(
-                    Icons.add,
-                    size: 20,
-                    color: AppColors.buttonTextColor,
-                  ),
+                  Icon(Icons.add, size: 20, color: AppColors.buttonTextColor),
                   SizedBox(width: 3.w),
                   Text(
                     "Add Reward",
@@ -97,13 +93,14 @@ class RewardScreens extends StatelessWidget {
               ),
               onPressed: () {
                 context.push(RoutesPath.tabScreen);
-
-              }, text: AppText.continueText,         buttonTextStyle: GoogleFonts.familjenGrotesk(
-                color: AppColors.buttonTextColor,fontSize: 18.sp,fontWeight: FontWeight.w700),
+              },
+              text: AppText.continueText,
+              buttonTextStyle: GoogleFonts.familjenGrotesk(
+                color: AppColors.buttonTextColor,
+                fontSize: 18.sp,
+                fontWeight: FontWeight.w700,
+              ),
             ),
-
-
-
           ],
         ),
       ),

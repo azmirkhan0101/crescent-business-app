@@ -25,11 +25,19 @@ class BusinessInfoScreen extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             SizedBox(height: 60.h),
-            OnBoardingAppbarWidget(totalSteps: 6,currentStep: 2, title:AppText.details,),
+            OnBoardingAppbarWidget(
+              totalSteps: 6,
+              currentStep: 2,
+              title: AppText.details,
+            ),
 
             SizedBox(height: 30.h),
+
             /// heading Text
-            HeadingTextWidget(title:  AppText.businessInfoTitle, subTitle:  AppText.businessInfoSubtitle,),
+            HeadingTextWidget(
+              title: AppText.businessInfoTitle,
+              subTitle: AppText.businessInfoSubtitle,
+            ),
             SizedBox(height: 50.h),
 
             /// Form fields
@@ -41,21 +49,15 @@ class BusinessInfoScreen extends StatelessWidget {
                   //name
                   TextFieldTitleWidget(text: AppText.name),
                   SizedBox(height: AppSizes.paddingSmallH),
-                  CustomTextField(
-                    hintText:  AppText.enterName,
-
-                  ),
+                  CustomTextField(hintText: AppText.enterName),
 
                   // CustomTextFieldWidget(
                   //   hintText: AppText.enterName,
                   // ),
                   SizedBox(height: 16.h),
-                 // tagline
+                  // tagline
                   TextFieldTitleWidget(text: AppText.tagline),
-                  CustomTextField(
-                    hintText: AppText.enterTagline,
-
-                  ),
+                  CustomTextField(hintText: AppText.enterTagline),
 
                   // CustomTextFieldWidget(
                   //   hintText: AppText.enterTagline,
@@ -64,11 +66,7 @@ class BusinessInfoScreen extends StatelessWidget {
                   //description
                   TextFieldTitleWidget(text: AppText.description),
                   SizedBox(height: AppSizes.paddingSmallH),
-                  CustomTextField(
-                    hintText: AppText.description,
-                    maxLines: 3,
-
-                  ),
+                  CustomTextField(hintText: AppText.description, maxLines: 3),
                   // Description field (height 120, maxLines 4)
                   // CustomTextFieldWidget(
                   //   hintText: AppText.description,
@@ -81,17 +79,12 @@ class BusinessInfoScreen extends StatelessWidget {
           ],
         ),
       ),
-      bottomNavigationBar: UnderButtonWidget(onPressed: () {
-        context.push(RoutesPath.accountCreation);
-
-      }, buttonText: AppText.continueText,),
+      bottomNavigationBar: UnderButtonWidget(
+        onPressed: () {
+          context.push(RoutesPath.accountCreation);
+        },
+        buttonText: AppText.continueText,
+      ),
     );
   }
 }
-
-
-
-
-
-
-

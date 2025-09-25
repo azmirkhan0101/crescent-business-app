@@ -1,10 +1,7 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
-
 import '../../utils/app_color.dart';
-
 
 class CustomTextField extends StatefulWidget {
   const CustomTextField({
@@ -87,11 +84,13 @@ class _CustomTextFieldState extends State<CustomTextField> {
       keyboardType: widget.keyboardType,
       textInputAction: widget.textInputAction,
       cursorColor: widget.cursorColor,
-      style: widget.inputTextStyle ??
+      style:
+          widget.inputTextStyle ??
           GoogleFonts.lexend(
-              fontSize: 16,
-              fontWeight: FontWeight.w400,
-              color: AppColors.grey002),
+            fontSize: 16,
+            fontWeight: FontWeight.w400,
+            color: AppColors.grey002,
+          ),
       onChanged: widget.onChanged,
       maxLines: widget.maxLines,
       obscureText: widget.isPassword ? obscureText : false,
@@ -103,20 +102,25 @@ class _CustomTextFieldState extends State<CustomTextField> {
         isDense: widget.isDens,
         errorMaxLines: 2,
         hintText: widget.hintText,
-        hintStyle: widget.hintStyle ??
+        hintStyle:
+            widget.hintStyle ??
             GoogleFonts.poppins(
-                fontSize: 16,
-                fontWeight: FontWeight.w400,
-                color: AppColors.black_80),
+              fontSize: 16,
+              fontWeight: FontWeight.w400,
+              color: AppColors.black_80,
+            ),
         //  fillColor: widget.fillColor,
         fillColor: Colors.blueGrey.shade50,
         filled: true,
         prefixIcon: widget.prefixIcon,
         suffixIcon: widget.isPassword
             ? GestureDetector(
-          onTap: toggle,
-          child: Icon(obscureText ? Icons.visibility : Icons.visibility_off, color: AppColors.lightBlue,),
-        )
+                onTap: toggle,
+                child: Icon(
+                  obscureText ? Icons.visibility : Icons.visibility_off,
+                  color: AppColors.lightBlue,
+                ),
+              )
             : widget.suffixIcon,
         suffixIconColor: widget.suffixIconColor,
         border: OutlineInputBorder(
@@ -136,7 +140,6 @@ class _CustomTextFieldState extends State<CustomTextField> {
           // borderSide: BorderSide(color: widget.fieldBorderColor, width: 1),
           borderSide: BorderSide.none,
           gapPadding: 0,
-
         ),
       ),
     );

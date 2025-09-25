@@ -1,12 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:organization/features/widgets/custom_button_widget.dart';
 import 'package:organization/features/widgets/custom_card_widget.dart';
 import 'package:organization/utils/app_color.dart';
-
 import 'add_discount_codes_section.dart';
-import 'expiry_limit_section.dart';
-import 'link_preview_box_widget.dart';
 
 class OnlineOptions extends StatefulWidget {
   const OnlineOptions({super.key});
@@ -29,7 +25,7 @@ class _OnlineOptionsState extends State<OnlineOptions> {
           child: _buildCheckboxRow(
             'Discount Code',
             isDiscountCodeChecked,
-                (val) => setState(() => isDiscountCodeChecked = val ?? false),
+            (val) => setState(() => isDiscountCodeChecked = val ?? false),
           ),
         ),
         SizedBox(height: 8.h),
@@ -40,7 +36,7 @@ class _OnlineOptionsState extends State<OnlineOptions> {
           child: _buildCheckboxRow(
             'Gift Card',
             isGiftCardChecked,
-                (val) => setState(() => isGiftCardChecked = val ?? false),
+            (val) => setState(() => isGiftCardChecked = val ?? false),
           ),
         ),
 
@@ -51,10 +47,10 @@ class _OnlineOptionsState extends State<OnlineOptions> {
   }
 
   Widget _buildCheckboxRow(
-      String title,
-      bool isChecked,
-      Function(bool?) onChanged,
-      ) {
+    String title,
+    bool isChecked,
+    Function(bool?) onChanged,
+  ) {
     return Row(
       children: [
         Checkbox(
@@ -65,13 +61,10 @@ class _OnlineOptionsState extends State<OnlineOptions> {
           materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
           visualDensity: const VisualDensity(horizontal: -4, vertical: -4),
         ),
-        SizedBox(width: 8.w,),
+        SizedBox(width: 8.w),
         Text(
           title,
-          style: TextStyle(
-            fontWeight: FontWeight.w500,
-            fontSize: 14.sp,
-          ),
+          style: TextStyle(fontWeight: FontWeight.w500, fontSize: 14.sp),
         ),
       ],
     );

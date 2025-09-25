@@ -1,27 +1,28 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
 import 'package:organization/features/on_boarding/widgets/text_progress_widget.dart';
-
 import '../../../utils/assets_path.dart';
-
 
 class OnBoardingAppbarWidget extends StatelessWidget {
   const OnBoardingAppbarWidget({
-    super.key, required this.totalSteps, required this.currentStep, required this.title, this.suffix,
+    super.key,
+    required this.totalSteps,
+    required this.currentStep,
+    required this.title,
+    this.suffix,
   });
-  final int  totalSteps;
-  final int  currentStep;
+  final int totalSteps;
+  final int currentStep;
   final String title;
-  final Widget?suffix;
+  final Widget? suffix;
   @override
   Widget build(BuildContext context) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         GestureDetector(
-          onTap: (){
+          onTap: () {
             context.pop();
           },
           child: Container(
@@ -32,7 +33,7 @@ class OnBoardingAppbarWidget extends StatelessWidget {
               color: Color(0xFFF5F4F6),
             ),
             child: Center(
-              child:    Image.asset(
+              child: Image.asset(
                 AssetsPath.backIcon,
                 height: 20.h,
                 width: 19.w,
@@ -40,8 +41,13 @@ class OnBoardingAppbarWidget extends StatelessWidget {
             ),
           ),
         ),
-        TextProgressWidget(totalSteps: totalSteps,currentStep: currentStep, title: title,),
-        suffix??SizedBox(),
-      ],);
+        TextProgressWidget(
+          totalSteps: totalSteps,
+          currentStep: currentStep,
+          title: title,
+        ),
+        suffix ?? SizedBox(),
+      ],
+    );
   }
 }

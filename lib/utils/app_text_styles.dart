@@ -5,7 +5,6 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:organization/utils/app_color.dart';
 import 'package:organization/utils/app_size.dart';
 
-
 class AppTextStyle {
   static TextStyle headlineLStyle = GoogleFonts.familjenGrotesk(
     fontWeight: FontWeight.bold,
@@ -24,20 +23,16 @@ class AppTextStyle {
     color: AppColors.buttonTextColor,
   );
 
-
   static TextStyle cardTextStyle = GoogleFonts.inter(
     fontWeight: FontWeight.w500,
     fontSize: 16.sp,
     color: AppColors.blackTextColor,
   );
 
-
-
   static final TextStyle bodyText = GoogleFonts.poppins(
     fontSize: 16,
     color: AppColors.black,
   );
-
 
   static final title = GoogleFonts.familjenGrotesk(
     fontSize: 22,
@@ -56,6 +51,4 @@ class AppTextStyle {
     fontWeight: FontWeight.bold,
     color: AppColors.white,
   );
-
-
 }

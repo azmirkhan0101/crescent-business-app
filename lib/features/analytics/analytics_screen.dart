@@ -106,13 +106,7 @@ class _AnalyticsScreenState extends State<AnalyticsScreen> {
                           color: AppColors.blackTextColor,
                         ),
 
-                        // Text(
-                        //   "Top Rewards",
-                        //   style: AppTextStyle.mediumStyle.copyWith(
-                        //     fontWeight: FontWeight.w500,
-                        //     color: AppColors.blackTextColor,
-                        //   ),
-                        // ),
+
                       ],
                     ),
                     RewardListItem(

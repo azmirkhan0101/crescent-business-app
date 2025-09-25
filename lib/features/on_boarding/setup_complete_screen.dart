@@ -46,7 +46,7 @@ class BusinessSetupCompleteScreen extends StatelessWidget {
                     children: [
                       const SizedBox(),
                       GestureDetector(
-                        onTap: (){
+                        onTap: () {
                           context.push(RoutesPath.home);
                         },
                         child: Container(
@@ -54,7 +54,6 @@ class BusinessSetupCompleteScreen extends StatelessWidget {
                           decoration: const BoxDecoration(
                             shape: BoxShape.circle,
                             color: Color(0xFFF5F4F6),
-
                           ),
                           child: CustomAssetsImage(
                             assetsPath: AssetsPath.crossIcon,
@@ -112,7 +111,7 @@ class BusinessSetupCompleteScreen extends StatelessWidget {
                       ),
                       boxShadow: [
                         BoxShadow(
-                          color:Color(0x0D000000),
+                          color: Color(0x0D000000),
                           blurRadius: 6,
                           offset: const Offset(0, 3),
                         ),
@@ -259,11 +258,15 @@ class BusinessSetupCompleteScreen extends StatelessWidget {
           // Bottom button
           Positioned(
             bottom: 50.h,
-           left: 0,right: 0,
+            left: 0,
+            right: 0,
             child: Center(
               child: CustomButton(
                 buttonTextStyle: GoogleFonts.familjenGrotesk(
-                    color: AppColors.white,fontSize: 18.sp,fontWeight: FontWeight.w700),
+                  color: AppColors.white,
+                  fontSize: 18.sp,
+                  fontWeight: FontWeight.w700,
+                ),
                 backgroundColor: AppColors.black,
                 textColor: AppColors.white,
                 text: AppText.done,

@@ -4,7 +4,6 @@ import 'package:mobile_scanner/mobile_scanner.dart';
 import 'package:organization/features/widgets/custom_card_widget.dart';
 import 'package:organization/utils/app_color.dart';
 import 'package:organization/utils/app_text_styles.dart';
-
 import 'apply_widget.dart';
 
 class QRCodeWidget extends StatefulWidget {
@@ -21,16 +20,21 @@ class _QRCodeWidgetState extends State<QRCodeWidget> {
   @override
   Widget build(BuildContext context) {
     return Column(
-      mainAxisAlignment: MainAxisAlignment.start, // 👈 সবকিছু vertically center
-      crossAxisAlignment: CrossAxisAlignment.center, // 👈 horizontally center
+      mainAxisAlignment: MainAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-         Text(
+        Text(
           "Scan QR code",
-          style: AppTextStyle.headlineLStyle.copyWith(fontWeight: FontWeight.w600),
+          style: AppTextStyle.headlineLStyle.copyWith(
+            fontWeight: FontWeight.w600,
+          ),
         ),
-         SizedBox(height: 8.h),
-         Text("Please point the camera at the QR Code",style: AppTextStyle.mediumStyle,),
-         SizedBox(height: 24.h),
+        SizedBox(height: 8.h),
+        Text(
+          "Please point the camera at the QR Code",
+          style: AppTextStyle.mediumStyle,
+        ),
+        SizedBox(height: 24.h),
         // ✅ Scanner Box
         SizedBox(
           width: 200.h,
@@ -64,17 +68,15 @@ class _QRCodeWidgetState extends State<QRCodeWidget> {
             ),
           ),
         ),
-         SizedBox(height: 24.h),
+        SizedBox(height: 24.h),
+
         ///divider text
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             SizedBox(
               width: 75.w, // 👈 fixed width
-              child: Divider(
-                color: Color(0xFF777777),
-                thickness: 1.w,
-              ),
+              child: Divider(color: Color(0xFF777777), thickness: 1.w),
             ),
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 8.w),
@@ -88,10 +90,7 @@ class _QRCodeWidgetState extends State<QRCodeWidget> {
             ),
             SizedBox(
               width: 75.w, // 👈 fixed width
-              child: Divider(
-                color: Color(0xFF777777),
-                thickness: 1.w,
-              ),
+              child: Divider(color: Color(0xFF777777), thickness: 1.w),
             ),
           ],
         ),
@@ -126,7 +125,7 @@ class _QRCodeWidgetState extends State<QRCodeWidget> {
         //   ),
         //
         // ],
-          CustomCard(
+        CustomCard(
           height: 52.h,
           width: 279.w,
           child: Center(
@@ -139,7 +138,7 @@ class _QRCodeWidgetState extends State<QRCodeWidget> {
           ),
         ),
         SizedBox(height: 16.h),
-        ApplyWidget(onPressed: () {  },),
+        ApplyWidget(onPressed: () {}),
       ],
     );
   }
@@ -151,8 +150,6 @@ class _QRCodeWidgetState extends State<QRCodeWidget> {
   }
 }
 
-
-
 /// =============================
 /// 🎨 Only Corner Painter
 /// =============================
@@ -161,8 +158,8 @@ class _ScannerCornerPainter extends CustomPainter {
   void paint(Canvas canvas, Size size) {
     final Paint paint = Paint()
       ..color = Colors.black
-      ..strokeWidth =
-          8.w // ✅ মোটা লাইন
+      ..strokeWidth = 8
+          .w // ✅ মোটা লাইন
       ..style = PaintingStyle.stroke
       ..strokeCap = StrokeCap.round; // ✅ লাইনের শেষ গোল হবে
 

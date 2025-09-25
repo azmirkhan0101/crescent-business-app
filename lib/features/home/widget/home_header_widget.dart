@@ -3,17 +3,13 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:organization/core/routes/route_path.dart';
 import 'package:organization/features/widgets/custom_asset_image.dart';
-
 import '../../../utils/app_text_styles.dart';
 import '../../../utils/assets_path.dart';
 
 class HomeHeaderWidget extends StatelessWidget {
   final String userName;
 
-  const HomeHeaderWidget({
-    super.key,
-    required this.userName,
-  });
+  const HomeHeaderWidget({super.key, required this.userName});
 
   @override
   Widget build(BuildContext context) {
@@ -24,25 +20,23 @@ class HomeHeaderWidget extends StatelessWidget {
         children: [
           Row(
             children: [
-      // User/Business Logo
-      GestureDetector(
-        onTap: (){
-
-          context.push(RoutesPath.businessProfile);
-
-        },
-        child: Container(
-        height: 44.h,
-          width: 44.w,
-          decoration: BoxDecoration(
-            shape: BoxShape.circle,
-            image: DecorationImage(
-              image: AssetImage(AssetsPath.businessProfileImage),
-              fit: BoxFit.cover,
-            ),
-          ),
-        ),
-      ),
+              // User/Business Logo
+              GestureDetector(
+                onTap: () {
+                  context.push(RoutesPath.businessProfile);
+                },
+                child: Container(
+                  height: 44.h,
+                  width: 44.w,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    image: DecorationImage(
+                      image: AssetImage(AssetsPath.businessProfileImage),
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                ),
+              ),
 
               const SizedBox(width: 12),
               // Welcome text and user name
@@ -50,14 +44,13 @@ class HomeHeaderWidget extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                   Text(
-                    'Welcome Back!',
-                    style: AppTextStyle.mediumStyle
-                  ),
-                   SizedBox(height: 2.h),
+                  Text('Welcome Back!', style: AppTextStyle.mediumStyle),
+                  SizedBox(height: 2.h),
                   Text(
                     userName,
-                    style:AppTextStyle.headlineLStyle.copyWith(fontSize: 20.sp)
+                    style: AppTextStyle.headlineLStyle.copyWith(
+                      fontSize: 20.sp,
+                    ),
                   ),
                 ],
               ),
@@ -72,24 +65,21 @@ class HomeHeaderWidget extends StatelessWidget {
               color: Colors.white,
               boxShadow: [
                 BoxShadow(
-                  color: Colors.grey.withOpacity(0.1),
+                  color: const Color(0x199E9E9E),
                   spreadRadius: 1,
                   blurRadius: 5,
                   offset: const Offset(0, 2),
                 ),
               ],
             ),
-            child:  Stack(
+            child: Stack(
               alignment: Alignment.center,
               children: [
                 CustomAssetsImage(assetsPath: AssetsPath.alertIcon),
                 Positioned(
                   top: 10,
                   right: 10,
-                  child: CircleAvatar(
-                    radius: 4.r,
-                    backgroundColor: Colors.red,
-                  ),
+                  child: CircleAvatar(radius: 4.r, backgroundColor: Colors.red),
                 ),
               ],
             ),

@@ -3,9 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:organization/utils/app_color.dart';
-
 import '../../../core/routes/route_path.dart';
-import '../../../utils/app_text_styles.dart';
 
 class CustomRowWidget extends StatelessWidget {
   const CustomRowWidget({super.key});
@@ -14,10 +12,10 @@ class CustomRowWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children:  [
+      children: [
         Text(
           'Rewards',
-          style:GoogleFonts.familjenGrotesk(
+          style: GoogleFonts.familjenGrotesk(
             fontWeight: FontWeight.bold,
             fontSize: 24.sp,
             color: AppColors.blackTextColor,
@@ -27,15 +25,13 @@ class CustomRowWidget extends StatelessWidget {
         IconButton(
           style: IconButton.styleFrom(
             shape: CircleBorder(),
-            backgroundColor: AppColors.white
+            backgroundColor: AppColors.white,
           ),
-          icon:  Icon(Icons.add, color: Colors.black,size: 20.w,),
+          icon: Icon(Icons.add, color: Colors.black, size: 20.w),
           onPressed: () {
             context.push(RoutesPath.createReward);
           },
         ),
-
-
       ],
     );
   }

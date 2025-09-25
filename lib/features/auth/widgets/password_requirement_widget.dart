@@ -13,11 +13,8 @@ class PasswordRequirements extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          'A strong password must have:',
-            style: AppTextStyle.mediumStyle,
-        ),
-         SizedBox(height: 8.h),
+        Text('A strong password must have:', style: AppTextStyle.mediumStyle),
+        SizedBox(height: 8.h),
         _buildRequirementItem(AppText.passwordRequirementCharacters),
         _buildRequirementItem(AppText.passwordRequirementLetters),
         _buildRequirementItem(AppText.passwordRequirementNumber),
@@ -33,7 +30,12 @@ class PasswordRequirements extends StatelessWidget {
         children: [
           Icon(Icons.check_circle, color: Colors.green),
           const SizedBox(width: 8),
-          Text(text, style: AppTextStyle.mediumStyle.copyWith(fontSize: AppSizes.smallTSize)),
+          Text(
+            text,
+            style: AppTextStyle.mediumStyle.copyWith(
+              fontSize: AppSizes.smallTSize,
+            ),
+          ),
         ],
       ),
     );

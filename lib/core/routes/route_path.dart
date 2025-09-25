@@ -25,7 +25,7 @@ class RoutesPath {
   // Bottom Nav items
   static const String home = '/home';
   static const String analytics = '/analytics';
-  static const String radeemScanner = '/radeem-scanner';
+  static const String redeemScanner = '/redeem-scanner';
   static const String reward = '/reward';
   static const String businessProfile = '/business-profile';
   static const String editProfile = '/edit-profile';

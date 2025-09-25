@@ -11,7 +11,6 @@ import '../../core/routes/route_path.dart';
 import '../../utils/app_text_styles.dart';
 import '../widgets/heading_text_widget.dart';
 import '../widgets/profile_avatar_widget.dart';
-import '../widgets/profile_avatar_widget.dart';
 
 class UploadLogoScreen extends StatefulWidget {
   const UploadLogoScreen({super.key});
@@ -32,6 +31,7 @@ class _UploadLogoScreenState extends State<UploadLogoScreen> {
         child: Column(
           children: [
             SizedBox(height: 60.h),
+
             /// Top AppBar
             OnBoardingAppbarWidget(
               totalSteps: 6,
@@ -39,13 +39,11 @@ class _UploadLogoScreenState extends State<UploadLogoScreen> {
               title: AppText.branding,
               suffix: GestureDetector(
                 onTap: () {},
-                child: Text(
-                  AppText.skip,
-                  style: AppTextStyle.mediumStyle,
-                ),
+                child: Text(AppText.skip, style: AppTextStyle.mediumStyle),
               ),
             ),
             SizedBox(height: 20.h),
+
             /// Heading Text
             Padding(
               padding: EdgeInsets.symmetric(horizontal: AppSizes.paddingLarge),
@@ -87,7 +85,7 @@ class _UploadLogoScreenState extends State<UploadLogoScreen> {
         onPressed: () {
           context.push(RoutesPath.businessContactInfo);
         },
-        buttonText: _hasImage ?AppText.continueText : "Add Logo",
+        buttonText: _hasImage ? AppText.continueText : "Add Logo",
       ),
     );
   }

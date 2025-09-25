@@ -18,7 +18,7 @@ class MyApp extends StatelessWidget {
         splitScreenMode: true,
         builder: (context, child) {
           return GetMaterialApp.router(
-            initialBinding: ControllerBinding(),
+        //    initialBinding: ControllerBinding(),
             debugShowCheckedModeBanner: false,
             routerDelegate: AppRoutes.router.routerDelegate,
             routeInformationParser: AppRoutes.router.routeInformationParser,

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
-
 import 'package:organization/features/on_boarding/widgets/onboarding_appbar.dart';
 import 'package:organization/features/on_boarding/widgets/under_button_widget.dart';
 import 'package:organization/features/widgets/custom_asset_image.dart';
@@ -40,7 +39,6 @@ class AccountCreationScreen extends StatelessWidget {
             HeadingTextWidget(
               title: AppText.accountTitle,
               subTitle: AppText.accountSubTitle,
-
             ),
             SizedBox(height: 50.h),
 
@@ -58,6 +56,7 @@ class AccountCreationScreen extends StatelessWidget {
                     prefixImagePath: AssetsPath.mailIcon,
                   ),
                   SizedBox(height: 10.h),
+
                   /// Password Field
                   TextFieldTitleWidget(text: AppText.password),
                   SizedBox(height: AppSizes.paddingSmallH),
@@ -66,11 +65,10 @@ class AccountCreationScreen extends StatelessWidget {
                     suffixImagePath: AssetsPath.eyeIcon,
                     prefixImagePath: AssetsPath.lockIcon,
                   ),
-
                 ],
               ),
             ),
-            SizedBox(height: 8.h,),
+            SizedBox(height: 8.h),
 
             Row(
               children: List.generate(4, (index) {
@@ -85,31 +83,21 @@ class AccountCreationScreen extends StatelessWidget {
             ),
             SizedBox(height: 8.h),
 
-
-
-
-
-
-
-
-
-            SizedBox(height: 8.h,),
+            SizedBox(height: 8.h),
             Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 CustomAssetsImage(assetsPath: AssetsPath.infoIcon),
                 Expanded(
-                  child:
-             CustomText(
-               textAlign: TextAlign.justify,
-               text:AppText.passwordRequirements,
-             language: false,
-               fontSize: 12.sp,
-               fontWeight: FontWeight.w400,
-               color: AppColors.secondaryTextColor,
-               overflow: TextOverflow.visible,
-             ),
-
+                  child: CustomText(
+                    textAlign: TextAlign.justify,
+                    text: AppText.passwordRequirements,
+                    language: false,
+                    fontSize: 12.sp,
+                    fontWeight: FontWeight.w400,
+                    color: AppColors.secondaryTextColor,
+                    overflow: TextOverflow.visible,
+                  ),
 
                   // Text(
                   //   AppText.passwordRequirements,

@@ -9,17 +9,17 @@ class NFCWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.only(top: 40.h, left: 43.w, right: 43.w), // 🔥 fixed gap
+      padding: EdgeInsets.only(top: 40.h, left: 43.w, right: 43.w),
       child: SizedBox(
         height: 409.h,
-        width: double.infinity, // width এখন responsive হবে
+        width: double.infinity,
         child: Stack(
           alignment: Alignment.center,
           children: [
             // Background Image
             Image.asset(
               AssetsPath.vectorCoverImage,
-              fit: BoxFit.contain, // crop হবে না
+              fit: BoxFit.contain,
               width: double.infinity,
               height: double.infinity,
             ),
@@ -55,4 +55,3 @@ class NFCWidget extends StatelessWidget {
     );
   }
 }
-

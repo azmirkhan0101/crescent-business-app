@@ -4,10 +4,7 @@ class HalfTabIndicator extends Decoration {
   final Color color;
   final double thickness;
 
-  const HalfTabIndicator({
-    this.color = Colors.black,
-    this.thickness = 2.0,
-  });
+  const HalfTabIndicator({this.color = Colors.black, this.thickness = 2.0});
 
   @override
   BoxPainter createBoxPainter([VoidCallback? onChanged]) {
@@ -29,7 +26,7 @@ class _HalfPainter extends BoxPainter {
       ..strokeWidth = thickness;
 
     final double tabWidth = cfg.size!.width;
-    final double lineWidth = tabWidth / 2; // ✅ half of tab width
+    final double lineWidth = tabWidth / 2;
     final double startX = offset.dx + (tabWidth - lineWidth) / 2;
     final double endX = startX + lineWidth;
     final double y = offset.dy + cfg.size!.height - thickness / 2;

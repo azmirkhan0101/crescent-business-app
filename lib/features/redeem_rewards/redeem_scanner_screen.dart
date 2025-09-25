@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:organization/features/radeem_rewards/widgeets/nfc_redeem.dart';
-import 'package:organization/features/radeem_rewards/widgeets/qr_code_redeem.dart';
-import 'package:organization/features/radeem_rewards/widgeets/static_code_redeem.dart';
+import 'package:organization/features/redeem_rewards/widgets/nfc_redeem.dart';
+import 'package:organization/features/redeem_rewards/widgets/qr_code_redeem.dart';
+import 'package:organization/features/redeem_rewards/widgets/static_code_redeem.dart';
 import 'package:organization/utils/app_color.dart';
 import 'package:organization/utils/app_text_styles.dart';
 

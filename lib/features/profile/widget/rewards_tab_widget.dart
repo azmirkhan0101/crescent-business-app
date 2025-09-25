@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:organization/features/profile/widget/profile_reward_card_widget.dart';
-
-
-import '../data/models/reward_model.dart'; // 👈 rewardOptions import
+import '../data/models/reward_model.dart';
 
 
 class RewardsTab extends StatelessWidget {
@@ -13,7 +11,7 @@ class RewardsTab extends StatelessWidget {
   Widget build(BuildContext context) {
     return GridView.builder(
       shrinkWrap: true,
-      //physics: const NeverScrollableScrollPhysics(),
+
       padding: EdgeInsets.zero,
       itemCount: rewardOptions.length,
       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(

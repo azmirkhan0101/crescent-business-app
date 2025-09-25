@@ -66,18 +66,16 @@ class OverviewTab extends StatelessWidget {
           ProfileHeadingTextWidget(title: "Overview"),
           SizedBox(height: 12.h),
           CustomCard(
-
-            child:
-                CustomText(text: AppText.businessDescription,
-                  overflow: TextOverflow.visible,
-                  textAlign: TextAlign.justify,
-                  maxLines: null,
-                language: false,
-                  fontSize: 14.sp,
-                  fontWeight: FontWeight.w400,
-                  color: AppColors.blackTextColor,
-                )
-
+            child: CustomText(
+              text: AppText.businessDescription,
+              overflow: TextOverflow.visible,
+              textAlign: TextAlign.justify,
+              maxLines: null,
+              language: false,
+              fontSize: 14.sp,
+              fontWeight: FontWeight.w400,
+              color: AppColors.blackTextColor,
+            ),
           ),
           ProfileHeadingTextWidget(title: AppText.location),
           CustomCard(
@@ -94,7 +92,6 @@ class OverviewTab extends StatelessWidget {
                   fontSize: 14.sp,
                   color: AppColors.blackTextColor,
                 ),
-
               ],
             ),
           ),

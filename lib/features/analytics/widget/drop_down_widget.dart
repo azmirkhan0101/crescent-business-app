@@ -54,7 +54,7 @@ class _DropDownConWidgetState extends State<DropDownConWidget> {
             borderRadius: BorderRadius.circular(10.r),
             boxShadow: [
               BoxShadow(
-                color: Colors.grey.withOpacity(0.1),
+                color: const Color(0x199E9E9E),
                 spreadRadius: 1,
                 blurRadius: 5,
                 offset: const Offset(0, 3),
@@ -109,7 +109,7 @@ class _DropDownConWidgetState extends State<DropDownConWidget> {
             shape: BoxShape.circle,
             boxShadow: [
               BoxShadow(
-                color: Colors.grey.withOpacity(0.1),
+                color: const Color(0x199E9E9E),
                 spreadRadius: 1,
                 blurRadius: 5,
                 offset: const Offset(0, 3),
@@ -117,7 +117,7 @@ class _DropDownConWidgetState extends State<DropDownConWidget> {
             ],
           ),
           child: const Icon(Icons.arrow_back, size: 20),
-          // 👉 এখানে চাইলে Image.asset(AssetsPath.backIcon) দিতে পারবেন
+
         ),
       ],
     );

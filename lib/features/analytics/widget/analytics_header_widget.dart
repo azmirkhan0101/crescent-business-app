@@ -2,9 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:organization/utils/app_color.dart';
-import 'package:organization/utils/app_text_styles.dart';
 import 'package:organization/utils/assets_path.dart';
-
 import '../../../utils/app_size.dart';
 
 class AnalyticsHeader extends StatelessWidget {
@@ -33,7 +31,7 @@ class AnalyticsHeader extends StatelessWidget {
                   borderRadius: BorderRadius.circular(10),
                   boxShadow: [
                     BoxShadow(
-                      color: Colors.grey.withOpacity(0.1),
+                      color: const Color(0x199E9E9E),
                       spreadRadius: 1,
                       blurRadius: 5,
                       offset: const Offset(0, 3),
@@ -75,7 +73,7 @@ class AnalyticsHeader extends StatelessWidget {
                   shape: BoxShape.circle,
                   boxShadow: [
                     BoxShadow(
-                      color: Colors.grey.withOpacity(0.1),
+                      color:const Color(0x199E9E9E),
                       spreadRadius: 1,
                       blurRadius: 5,
                       offset: const Offset(0, 3),

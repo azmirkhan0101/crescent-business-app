@@ -30,17 +30,17 @@ class LocationWidget extends StatelessWidget {
           children: [
             Expanded(
               child: CustomCard(
-
-
                 child: Row(
                   children: [
                     CustomAssetsImage(assetsPath: AssetsPath.locationIcon),
                     SizedBox(width: 8.w),
-                    CustomText(text: fieldText,fontSize: 14.sp,color: AppColors.blackTextColor,fontWeight: FontWeight.w400,
-                    overflow:TextOverflow.ellipsis ,
+                    CustomText(
+                      text: fieldText,
+                      fontSize: 14.sp,
+                      color: AppColors.blackTextColor,
+                      fontWeight: FontWeight.w400,
+                      overflow: TextOverflow.ellipsis,
                     ),
-
-
                   ],
                 ),
               ),

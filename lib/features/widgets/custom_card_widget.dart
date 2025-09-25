@@ -8,7 +8,7 @@ class CustomCard extends StatelessWidget {
   final double? width;
   final Color? color;
   final EdgeInsetsGeometry? padding;
-  final AlignmentGeometry? alignment; // ✅ নতুন
+  final AlignmentGeometry? alignment;
 
   const CustomCard({
     super.key,

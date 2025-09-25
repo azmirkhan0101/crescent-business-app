@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-
 import '../../../utils/app_text_styles.dart';
 import '../../widgets/progress_indicator_widget.dart';
 

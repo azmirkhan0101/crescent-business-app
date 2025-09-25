@@ -3,7 +3,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:organization/features/on_boarding/widgets/onboarding_appbar.dart';
 import 'package:organization/features/on_boarding/widgets/under_button_widget.dart';
-import 'package:organization/features/widgets/custom_asset_image.dart';
 import 'package:organization/utils/app_color.dart';
 import 'package:organization/utils/app_text.dart';
 import 'package:organization/utils/assets_path.dart';
@@ -51,23 +50,25 @@ class BusinessContactInfoScreen extends StatelessWidget {
                   TextFieldTitleWidget(text: AppText.businessPhoneNumber),
                   SizedBox(height: AppSizes.paddingSmallH),
 
+                  CustomTextField(
+                    hintText: AppText.enterBusinessPhoneNumber,
+                    prefixImagePath: AssetsPath.callIcon,
+                  ),
 
-                  CustomTextField(hintText: AppText.enterBusinessPhoneNumber,
-                prefixImagePath: AssetsPath.callIcon),
-            //       ),
-
+                  //       ),
                   TextFieldTitleWidget(text: AppText.businessEmail),
 
-                  CustomTextField(hintText: AppText.enterBusinessEmail,
-                      prefixImagePath: AssetsPath.mailIcon),
-
+                  CustomTextField(
+                    hintText: AppText.enterBusinessEmail,
+                    prefixImagePath: AssetsPath.mailIcon,
+                  ),
 
                   TextFieldTitleWidget(text: AppText.website),
                   SizedBox(height: AppSizes.paddingSmallH),
-                  CustomTextField(hintText:  AppText.enterWebsite,
-                      prefixImagePath: AssetsPath.globeIcon),
-
-
+                  CustomTextField(
+                    hintText: AppText.enterWebsite,
+                    prefixImagePath: AssetsPath.globeIcon,
+                  ),
                 ],
               ),
             ),

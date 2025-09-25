@@ -1,21 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:organization/utils/app_color.dart';
-import 'package:organization/utils/app_text_styles.dart';
+
 
 class RewardDetailsSection extends StatelessWidget {
   const RewardDetailsSection({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return  Column(
+    return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text('Reward Details', style: TextStyle(
-          fontSize: 16.sp,
-          fontWeight: FontWeight.w600,
-          color: AppColors.blackTextColor
-        )),
+        Text(
+          'Reward Details',
+          style: TextStyle(
+            fontSize: 16.sp,
+            fontWeight: FontWeight.w600,
+            color: AppColors.blackTextColor,
+          ),
+        ),
         SizedBox(height: 10),
         TextField(
           decoration: InputDecoration(

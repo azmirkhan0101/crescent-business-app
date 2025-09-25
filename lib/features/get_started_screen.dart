@@ -8,9 +8,7 @@ import 'package:organization/features/widgets/custom_text.dart';
 import 'package:organization/utils/app_color.dart';
 import 'package:organization/utils/app_size.dart';
 import 'package:organization/utils/app_text.dart';
-import 'package:organization/utils/app_text_styles.dart';
 import '../../utils/assets_path.dart';
-
 import '../core/routes/route_path.dart';
 import 'auth/widgets/rich_text_widget.dart';
 
@@ -24,11 +22,12 @@ class GetStartedScreen extends StatelessWidget {
         backgroundColor: AppColors.white,
         body: SingleChildScrollView(
           child: Padding(
-            padding:  EdgeInsets.symmetric(horizontal: 16.w),
+            padding: EdgeInsets.symmetric(horizontal: 16.w),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 SizedBox(height: 60.h),
+
                 /// heading text
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -38,33 +37,39 @@ class GetStartedScreen extends StatelessWidget {
                       height: AppSizes.moonIconH,
                       width: AppSizes.moonIconW,
                     ),
-                    CustomText(text: AppText.crescentChange,
-                         fontWeight: FontWeight.w700,
+                    CustomText(
+                      textAlign: TextAlign.justify,
+                      overflow: TextOverflow.visible,
+                      text: AppText.crescentChange,
+                      fontWeight: FontWeight.w700,
                       language: true,
                       color: AppColors.headlineTColor,
                       fontSize: 20.sp,
-                    )
-
-
+                    ),
                   ],
                 ),
+
                 /// welcome image
                 Image.asset(
-                  AssetsPath.getStartedImage,
+                  "assets/images/get_started_image.png",
                   height: AppSizes.getStartedImageH,
                   width: AppSizes.getStartedImageW,
                 ),
-                /// text  section
 
-                CustomText(text: AppText.turnSpareChange,
+                /// text  section
+                CustomText(
+                  //textAlign: TextAlign.justify,
+                  overflow: TextOverflow.visible,
+                  text: AppText.turnSpareChange,
                   fontWeight: FontWeight.w700,
                   language: true,
                   color: AppColors.headlineTColor,
                   fontSize: 28.sp,
                   textAlign: TextAlign.center,
                 ),
-                SizedBox(height: 4.h,),
-                CustomText(text: AppText.joinMovement,
+                SizedBox(height: 4.h),
+                CustomText(
+                  text: AppText.joinMovement,
                   fontWeight: FontWeight.w400,
                   language: true,
                   color: AppColors.secondaryTextColor,
@@ -73,49 +78,65 @@ class GetStartedScreen extends StatelessWidget {
                   overflow: TextOverflow.visible,
                 ),
 
-        SizedBox(height: 12.h,),
+                SizedBox(height: 12.h),
 
-              /// loading
+                /// loading
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                   CustomAssetsImage(assetsPath: AssetsPath.loadingStarIcon,height: 15.h,width: 15.w,),
-                    SizedBox(width: 1.5.w,),
-                    CustomAssetsImage(assetsPath: AssetsPath.loadingDotIcon,height: 12.h,width: 12.w,),
-                    SizedBox(width: 1.5.w,),
-                    CustomAssetsImage(assetsPath: AssetsPath.loadingDotIcon,height: 12.h,width: 12.w,),
-                ],
+                    CustomAssetsImage(
+                      assetsPath: AssetsPath.loadingStarIcon,
+                      height: 15.h,
+                      width: 15.w,
+                    ),
+                    SizedBox(width: 1.5.w),
+                    CustomAssetsImage(
+                      assetsPath: AssetsPath.loadingDotIcon,
+                      height: 12.h,
+                      width: 12.w,
+                    ),
+                    SizedBox(width: 1.5.w),
+                    CustomAssetsImage(
+                      assetsPath: AssetsPath.loadingDotIcon,
+                      height: 12.h,
+                      width: 12.w,
+                    ),
+                  ],
                 ),
               ],
             ),
           ),
         ),
-               ///button and login text
+
+        ///button and login text
         bottomNavigationBar: Padding(
-          padding: EdgeInsets.only(
-            bottom: 50.h,
-          ),
-          child:       Column(
+          padding: EdgeInsets.only(bottom: 50.h),
+          child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              CustomButton(text: AppText.getStarted, onPressed: () {
-                context.push(RoutesPath.signIn);
-              },
+              CustomButton(
+                text: AppText.getStarted,
+                onPressed: () {
+                  context.push(RoutesPath.signIn);
+                },
                 buttonTextStyle: GoogleFonts.familjenGrotesk(
-                color: AppColors.buttonTextColor,fontSize: 18.sp,fontWeight: FontWeight.w700),
-
+                  color: AppColors.buttonTextColor,
+                  fontSize: 18.sp,
+                  fontWeight: FontWeight.w700,
+                ),
               ),
-              SizedBox(height: 12.h,),
-              RichTextWidget(firstText:AppText.alreadyHaveAccount, lastText: AppText.login, onTap: () {
-                context.push(RoutesPath.signIn);
-              },),
+              SizedBox(height: 12.h),
+              RichTextWidget(
+                firstText: AppText.alreadyHaveAccount,
+                lastText: AppText.login,
+                onTap: () {
+                  context.push(RoutesPath.signIn);
+                },
+              ),
             ],
-          )
+          ),
         ),
-
       ),
     );
   }
 }
-
-

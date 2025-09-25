@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-
 import '../../../utils/app_color.dart';
 import '../../../utils/app_text_styles.dart';
 import '../../../utils/assets_path.dart';
 import '../../widgets/custom_asset_image.dart';
 import '../data/models/category_item_model.dart';
-
 
 class CategoryCard extends StatelessWidget {
   final CategoryModel category;
@@ -26,21 +24,27 @@ class CategoryCard extends StatelessWidget {
       onTap: onTap,
       child: Card(
         color: isSelected
-            ? Color(0x33C08FFF)// deep background when selected
+            ? Color(0x33C08FFF) // deep background when selected
             : AppColors.white,
         elevation: 2,
         shadowColor: const Color(0x05000000), // #00000005 (2% opacity)
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(12.r),
           side: BorderSide(
-            color: isSelected ? AppColors.primaryColor : const Color(0xFFEDEDED),
+            color: isSelected
+                ? AppColors.primaryColor
+                : const Color(0xFFEDEDED),
             width: 1.5,
           ),
         ),
         child: Container(
           height: 80.h,
           padding: EdgeInsets.only(
-              top: 8.h, right: 8.w, bottom: 10.h, left: 10.w),
+            top: 8.h,
+            right: 8.w,
+            bottom: 10.h,
+            left: 10.w,
+          ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -56,7 +60,6 @@ class CategoryCard extends StatelessWidget {
                     height: isSelected ? 14.h : 10.h, // bigger when selected
                     width: isSelected ? 14.h : 10.h,
                   ),
-
                 ],
               ),
               SizedBox(height: 2.h),
@@ -65,19 +68,14 @@ class CategoryCard extends StatelessWidget {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-
-                  Image.asset(category.image,
-                    height:18.h, // bigger when selected
+                  Image.asset(
+                    category.image,
+                    height: 18.h, // bigger when selected
                     width: 16.w,
                   ),
 
-
                   SizedBox(height: 2.h),
-                  Text(
-                    category.title,
-                      style: AppTextStyle.cardTextStyle
-
-                  ),
+                  Text(category.title, style: AppTextStyle.cardTextStyle),
                 ],
               ),
             ],
@@ -87,12 +85,6 @@ class CategoryCard extends StatelessWidget {
     );
   }
 }
-
-
-
-
-
-
 
 //
 //

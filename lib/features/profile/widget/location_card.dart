@@ -5,10 +5,10 @@ class LocationCard extends StatelessWidget {
   final VoidCallback onDelete;
 
   const LocationCard({
-    Key? key,
+    super.key,
     required this.address,
     required this.onDelete,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import '../../utils/assets_path.dart';
 
 class CustomAssetsImage extends StatelessWidget {
   const CustomAssetsImage({

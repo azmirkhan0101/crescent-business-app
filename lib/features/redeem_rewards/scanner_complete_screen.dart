@@ -2,9 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:organization/features/radeem_rewards/widgeets/redeem_complete_card_widget.dart';
+import 'package:organization/features/redeem_rewards/widgets/redeem_complete_card_widget.dart';
 import 'package:organization/features/widgets/custom_asset_image.dart';
-import 'package:organization/features/widgets/info_card_widget.dart';
 import 'package:organization/utils/assets_path.dart';
 
 import '../../core/routes/route_path.dart';
@@ -13,15 +12,15 @@ import '../../utils/app_text.dart';
 import '../../utils/app_text_styles.dart';
 import '../widgets/custom_button_widget.dart';
 
-class RadeemScannerCompleteScreen extends StatelessWidget {
-  const RadeemScannerCompleteScreen({super.key});
+class RedeemScannerCompleteScreen extends StatelessWidget {
+  const RedeemScannerCompleteScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    //button ar pechone black ta remove  hoy na
+
 
     return Scaffold(
-      /// ✅ Button সবসময় নিচে fix থাকবে
+
       bottomNavigationBar: Padding(
         padding: EdgeInsets.all(16.w),
         child: CustomButton(
