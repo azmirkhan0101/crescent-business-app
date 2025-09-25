@@ -136,7 +136,7 @@ class AppText {
       "Sweet Whisk Bakery is your go-to neighborhood spot for handcrafted cupcakes, cookies, and custom cakes made with love. With playful charm and quality ingredients, we whip up sweet treats that turn everyday moments into something special.";
 
   static const String store1Address =
-      "Sweet Whisk Bakery,";
+      "Address of Store #1";
   static const String businessDescription =
       "Sweet Whisk Bakery is your go-to neighborhood spot for handcrafted "
       "cupcakes, cookies, and custom cakes made with love. With playful charm "

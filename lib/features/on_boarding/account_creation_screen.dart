@@ -61,14 +61,14 @@ class AccountCreationScreen extends StatelessWidget {
                   TextFieldTitleWidget(text: AppText.password),
                   SizedBox(height: AppSizes.paddingSmallH),
                   CustomTextField(
-                    hintText: "******",
+                    hintText: "**********",
                     suffixImagePath: AssetsPath.eyeIcon,
                     prefixImagePath: AssetsPath.lockIcon,
                   ),
                 ],
               ),
             ),
-            SizedBox(height: 8.h),
+            SizedBox(height: 16.h),
 
             Row(
               children: List.generate(4, (index) {
@@ -81,9 +81,7 @@ class AccountCreationScreen extends StatelessWidget {
                 );
               }),
             ),
-            SizedBox(height: 8.h),
-
-            SizedBox(height: 8.h),
+            SizedBox(height: 16.h),
             Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -99,10 +97,6 @@ class AccountCreationScreen extends StatelessWidget {
                     overflow: TextOverflow.visible,
                   ),
 
-                  // Text(
-                  //   AppText.passwordRequirements,
-                  //   style: AppTextStyle.mediumStyle.copyWith(fontSize: 12.sp),
-                  // ),
                 ),
               ],
             ),

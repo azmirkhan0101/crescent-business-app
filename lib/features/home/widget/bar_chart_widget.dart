@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:organization/features/widgets/custom_text.dart';
 import 'package:organization/utils/app_size.dart';
 import 'package:organization/utils/app_text_styles.dart';
 import 'package:organization/utils/assets_path.dart';
@@ -12,10 +13,10 @@ class HomeBarChartWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 343.h, // 🔹 Fixed card height
+      height: 343.h,
       child: Card(
         color: AppColors.white,
-        shadowColor:Colors.grey.shade200,
+        shadowColor: Colors.grey.shade200,
         elevation: 2,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(12.r),
@@ -25,72 +26,59 @@ class HomeBarChartWidget extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // 🔹 Top Row with icon & title
+              // Top Row with icon & title
               Row(
-                children: [Image.asset(AssetsPath.dataTrendingIcon,height: AppSizes.iconS24H,width: AppSizes.iconS24W,),
+                children: [
+                  Image.asset(
+                    AssetsPath.dataTrendingIcon,
+                    height: AppSizes.iconS24H,
+                    width: AppSizes.iconS24W,
+                  ),
                   SizedBox(width: 8.w),
                   Text(
                     'Bar Chart',
-                    style: AppTextStyle.cardTextStyle
+                    style: AppTextStyle.cardTextStyle,
                   ),
                 ],
               ),
               SizedBox(height: 10.h),
 
-              // 🔹 Percentage + Subtitle
+              // Percentage + Subtitle
               Row(
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
                   Text(
                     '57%',
-                    style: AppTextStyle.headlineLStyle.copyWith(fontSize: AppSizes.headlineXL),
+                    style: AppTextStyle.headlineLStyle
+                        .copyWith(fontSize: AppSizes.headlineXL),
                   ),
-                  SizedBox(width: 12.w,),
-                  Text(
-                    'Total activity\nof dummy data',
-                    style: AppTextStyle.mediumStyle.copyWith(fontSize: AppSizes.smallTSize),
+                  SizedBox(width: 12.w),
+                  CustomText(
+                    text: "Total activity of dummy data",
+                    fontSize: 12.sp,
+                    fontWeight: FontWeight.w400,
+                    language: false,
+                    color: AppColors.secondaryTextColor,
+                    textAlign: TextAlign.justify,
+                    overflow: TextOverflow.visible,
                   ),
                 ],
               ),
               SizedBox(height: 5.h),
 
-              // 🔹 Chart Area (fixed height 210.h)
+              // Chart Area
               SizedBox(
                 height: 210.h,
                 child: BarChart(
                   BarChartData(
                     maxY: 60000,
-                    titlesData: FlTitlesData(
-                      show: true,
-                      topTitles: const AxisTitles(
-                        sideTitles: SideTitles(showTitles: false),
-                      ),
-                      rightTitles: const AxisTitles(
-                        sideTitles: SideTitles(showTitles: false),
-                      ),
-                      bottomTitles: AxisTitles(
-                        sideTitles: SideTitles(
-                          showTitles: true,
-                          getTitlesWidget: getTitles,
-                          reservedSize: 38,
-                        ),
-                      ),
-                      leftTitles: AxisTitles(
-                        sideTitles: SideTitles(
-                          showTitles: true,
-                          getTitlesWidget: leftTitles,
-                          reservedSize: 40,
-                        ),
-                      ),
-                    ),
-                    borderData: FlBorderData(show: false),
                     barGroups: [
                       BarChartGroupData(
                         x: 0,
                         barRods: [
                           BarChartRodData(
                             toY: 25000,
-                            color: Color(0xFFFF6F61),
+                            color: const Color(0xFFFF6F61),
                             width: 11.43.w,
                             borderRadius: BorderRadius.circular(5.r),
                           ),
@@ -101,7 +89,7 @@ class HomeBarChartWidget extends StatelessWidget {
                         barRods: [
                           BarChartRodData(
                             toY: 45000,
-                            color: Color(0xFFFF6F61),
+                            color: const Color(0xFFFF6F61),
                             width: 11.43.w,
                             borderRadius: BorderRadius.circular(5.r),
                           ),
@@ -112,7 +100,7 @@ class HomeBarChartWidget extends StatelessWidget {
                         barRods: [
                           BarChartRodData(
                             toY: 32000,
-                            color: Color(0xFFFF6F61),
+                            color: const Color(0xFFFF6F61),
                             width: 11.43.w,
                             borderRadius: BorderRadius.circular(5.r),
                           ),
@@ -123,7 +111,7 @@ class HomeBarChartWidget extends StatelessWidget {
                         barRods: [
                           BarChartRodData(
                             toY: 52000,
-                            color: Color(0xFFFF6F61),
+                            color: const Color(0xFFFF6F61),
                             width: 11.43.w,
                             borderRadius: BorderRadius.circular(5.r),
                           ),
@@ -134,7 +122,7 @@ class HomeBarChartWidget extends StatelessWidget {
                         barRods: [
                           BarChartRodData(
                             toY: 18000,
-                            color: Color(0xFFFF6F61),
+                            color: const Color(0xFFFF6F61),
                             width: 11.43.w,
                             borderRadius: BorderRadius.circular(5.r),
                           ),
@@ -145,7 +133,7 @@ class HomeBarChartWidget extends StatelessWidget {
                         barRods: [
                           BarChartRodData(
                             toY: 39000,
-                            color: Color(0xFFFF6F61),
+                            color: const Color(0xFFFF6F61),
                             width: 11.43.w,
                             borderRadius: BorderRadius.circular(5.r),
                           ),
@@ -156,7 +144,7 @@ class HomeBarChartWidget extends StatelessWidget {
                         barRods: [
                           BarChartRodData(
                             toY: 25000,
-                            color: Color(0xFFFF6F61),
+                            color: const Color(0xFFFF6F61),
                             width: 11.43.w,
                             borderRadius: BorderRadius.circular(5.r),
                           ),
@@ -175,8 +163,29 @@ class HomeBarChartWidget extends StatelessWidget {
                         );
                       },
                     ),
-
-
+                    borderData: FlBorderData(show: false),
+                    titlesData: FlTitlesData(
+                      show: true,
+                      bottomTitles: AxisTitles(
+                        sideTitles: SideTitles(
+                          showTitles: true,
+                          reservedSize: 38,
+                          getTitlesWidget: getTitles,
+                        ),
+                      ),
+                      leftTitles: AxisTitles(
+                        sideTitles: SideTitles(
+                          showTitles: true,
+                          reservedSize: 40,
+                          interval: 10000,
+                          getTitlesWidget: leftTitles,
+                        ),
+                      ),
+                      topTitles:
+                      const AxisTitles(sideTitles: SideTitles(showTitles: false)),
+                      rightTitles:
+                      const AxisTitles(sideTitles: SideTitles(showTitles: false)),
+                    ),
                     extraLinesData: ExtraLinesData(
                       horizontalLines: [
                         HorizontalLine(
@@ -186,8 +195,6 @@ class HomeBarChartWidget extends StatelessWidget {
                         ),
                       ],
                     ),
-
-
                   ),
                 ),
               ),
@@ -198,13 +205,13 @@ class HomeBarChartWidget extends StatelessWidget {
     );
   }
 
-  // 🔹 Bottom Titles (X-Axis)
+  // Bottom Titles (X-axis)
   static Widget getTitles(double value, TitleMeta meta) {
     const style = TextStyle(
       color: AppColors.blackTextColor,
       fontFamily: 'inter',
       fontWeight: FontWeight.w400,
-      fontSize: 10
+      fontSize: 10,
     );
     Widget text;
     switch (value.toInt()) {
@@ -221,13 +228,13 @@ class HomeBarChartWidget extends StatelessWidget {
         text = const Text('Apr', style: style);
         break;
       case 4:
-        text = const Text('May', style: style);
+        text = const Text('Text', style: style);
         break;
       case 5:
-        text = const Text('Jun', style: style);
+        text = const Text('Text', style: style);
         break;
       case 6:
-        text = const Text('Jul', style: style);
+        text = const Text('Text', style: style);
         break;
       default:
         text = const Text('', style: style);
@@ -240,29 +247,40 @@ class HomeBarChartWidget extends StatelessWidget {
     );
   }
 
-  // 🔹 Left Titles (Y-Axis)
+  // Left Titles (Y-axis)
   static Widget leftTitles(double value, TitleMeta meta) {
     const style = TextStyle(
-        color: AppColors.blackTextColor,
-        fontFamily: 'inter',
-        fontWeight: FontWeight.w400,
-        fontSize: 10
+      color: AppColors.blackTextColor,
+      fontFamily: 'inter',
+      fontWeight: FontWeight.w400,
+      fontSize: 10,
     );
     String text;
-    if (value == 0) {
-      text = '0';
-    } else if (value == 10000) {
-      text = '10K';
-    } else if (value == 20000) {
-      text = '20K';
-    } else if (value == 30000) {
-      text = '30K';
-    } else if (value == 40000) {
-      text = '40K';
-    } else if (value == 50000) {
-      text = '50K';
-    } else {
-      return Container();
+    switch (value.toInt()) {
+      case 0:
+        text = '0';
+        break;
+      case 10000:
+        text = '10K';
+        break;
+      case 20000:
+        text = '20K';
+        break;
+      case 30000:
+        text = '30K';
+        break;
+      case 40000:
+        text = '40K';
+        break;
+      case 50000:
+        text = '50K';
+        break;
+      case 60000:
+        text = '60K';
+        break;
+      default:
+        text = '';
+        break;
     }
     return Text(text, style: style, textAlign: TextAlign.left);
   }

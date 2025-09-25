@@ -1,13 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
+import 'package:organization/core/routes/route_path.dart';
 import 'package:organization/features/reward/widget/expiry_limit_section.dart';
 import 'package:organization/features/reward/widget/redemption_methods_section.dart';
 import 'package:organization/features/reward/widget/upload_image_section.dart';
+import 'package:organization/features/widgets/custom_text.dart';
 import 'package:organization/utils/app_text_styles.dart';
 import '../../utils/app_color.dart';
 import '../../utils/app_text.dart';
 import '../on_boarding/widgets/under_button_widget.dart';
+import '../widgets/custom_text_field_widget.dart';
 import '../widgets/text_field_title_widget.dart';
 
 class CreateRewardScreen extends StatelessWidget {
@@ -16,13 +19,17 @@ class CreateRewardScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+
       bottomNavigationBar: UnderButtonWidget(
-        onPressed: () {},
+        onPressed: () {
+          context.push(RoutesPath.editReward);
+
+        },
         buttonText: "Create",
       ),
 
       appBar: AppBar(
-        backgroundColor: Colors.white,
+        backgroundColor: Colors.transparent,
         elevation: 0,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back_ios, color: Colors.black, size: 20),
@@ -42,37 +49,43 @@ class CreateRewardScreen extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
-              'Reward Details',
-              style: TextStyle(
-                fontSize: 16.sp,
-                fontWeight: FontWeight.w600,
-                color: AppColors.blackTextColor,
-              ),
+            CustomText(text: 'Reward Details',
+            language: true,
+              fontWeight: FontWeight.w600,
+              color: AppColors.blackTextColor,
+              fontSize: 18.sp,
             ),
-            SizedBox(height: 12.h),
-            // tagline
-            TextFieldTitleWidget(text: AppText.tagline),
-            SizedBox(height: 8.h),
-            // CustomTextFieldWidget(
-            //   hintText: AppText.enterTagline,
+
+            // Text(
+            //   'Reward Details',
+            //   style: TextStyle(
+            //     fontSize: 16.sp,
+            //     fontWeight: FontWeight.w600,
+            //     color: AppColors.blackTextColor,
+            //   ),
             // ),
             SizedBox(height: 12.h),
+            // reward name
+            TextFieldTitleWidget(text: "Reward name"),
+            SizedBox(height: 8.h),
+            CustomTextField(
+              hintText: "10% Off Latte",
+            ),
+            SizedBox(height: 16.h),
             //description
             TextFieldTitleWidget(text: AppText.description),
             SizedBox(height: 8.h),
-            // Description field (height 120, maxLines 4)
-            // CustomTextFieldWidget(
-            //   hintText: AppText.description,
-            //   maxLines: 4,
-            // ),
+            CustomTextField(
+              hintText: "Get a free coffee on your next visit.",
+              maxLines: 3,
+            ),
             ///upload image section
-            const SizedBox(height: 25),
+             SizedBox(height: 20.h),
             const UploadImageSection(),
-            const SizedBox(height: 25),
+            SizedBox(height: 20.h),
 
             const ExpiryLimitSection(),
-            const SizedBox(height: 25),
+            SizedBox(height: 20.h),
 
             /// RedemptionMethodsSection
             const RedemptionMethodsSection(),

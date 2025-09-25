@@ -16,6 +16,7 @@ import '../on_boarding/widgets/under_button_widget.dart';
 
 import '../widgets/custom_button_widget.dart';
 
+import '../widgets/custom_text_field_widget.dart';
 import '../widgets/text_field_title_widget.dart';
 
 class EditRewardScreen extends StatelessWidget {
@@ -57,26 +58,24 @@ class EditRewardScreen extends StatelessWidget {
               ),
             ),
             SizedBox(height: 12.h),
-            // name
+
+            // reward name
             TextFieldTitleWidget(text: "Reward name"),
             SizedBox(height: 8.h),
-            // CustomTextFieldWidget(
-            //   hintText: "reward name",
-            // ),
-            SizedBox(height: 12.h),
+            CustomTextField(
+              hintText: "10% Off Latte",
+            ),
+            SizedBox(height: 16.h),
             //description
             TextFieldTitleWidget(text: AppText.description),
-            SizedBox(height: 8.h),
-            // Description field (height 120, maxLines 4)
-            //  CustomTextField(
-            //   height: 112.h,
-            //   hintText: AppText.description,
-            //   maxLines: 4,
-            // ),
+            CustomTextField(
+              hintText: "Get a free coffee on your next visit.",
+              maxLines: 3,
+            ),
             ///upload image section
-            //  const SizedBox(height: 25),
-            //  const UploadImageSection(),
-            const SizedBox(height: 25),
+            SizedBox(height: 20.h),
+            ///upload image section
+
 
             Row(
               mainAxisAlignment: MainAxisAlignment.start,

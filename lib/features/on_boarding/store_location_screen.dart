@@ -10,6 +10,7 @@ import '../../../utils/app_size.dart';
 import '../../../utils/app_text_styles.dart';
 import '../../core/routes/route_path.dart';
 import '../profile/widget/location_widget.dart';
+import '../widgets/custom_text.dart';
 import '../widgets/custom_text_field_widget.dart';
 import '../widgets/heading_text_widget.dart';
 import '../widgets/text_field_title_widget.dart';
@@ -30,12 +31,13 @@ class StoreLocationScreen extends StatelessWidget {
           children: [
             SizedBox(height: 60.h),
             OnBoardingAppbarWidget(
+
               totalSteps: 6,
               currentStep: 6,
               title: AppText.location,
               suffix: GestureDetector(
                 onTap: () {},
-                child: Text(AppText.skip, style: AppTextStyle.mediumStyle),
+                child:CustomText(text: AppText.skip,fontSize: 14.sp,color: AppColors.secondaryTextColor,fontWeight: FontWeight.w400,),
               ),
             ),
             SizedBox(height: 30.h),

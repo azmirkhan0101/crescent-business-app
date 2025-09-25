@@ -51,7 +51,7 @@ class ResetPasswordScreen extends StatelessWidget {
                   /// Password Field
 
                   CustomTextField(
-                    hintText: "******",
+                    hintText: "Enter New Password",
                     suffixImagePath: AssetsPath.eyeIcon,
                     prefixImagePath: AssetsPath.lockIcon,
                   ),
@@ -61,7 +61,7 @@ class ResetPasswordScreen extends StatelessWidget {
 
                   SizedBox(height: AppSizes.paddingSmallH),
                   CustomTextField(
-                    hintText: "******",
+                    hintText: "Confirmed New Password",
                     suffixImagePath: AssetsPath.eyeIcon,
                     prefixImagePath: AssetsPath.lockIcon,
                   ),

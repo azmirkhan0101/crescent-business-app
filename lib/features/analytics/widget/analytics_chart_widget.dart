@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:organization/features/widgets/custom_text.dart';
 import 'package:organization/utils/app_color.dart';
 import 'package:organization/utils/app_text_styles.dart';
 import 'package:organization/utils/assets_path.dart';
@@ -16,7 +17,7 @@ class AnalyticsCardChart extends StatelessWidget {
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.r)),
       elevation: 2,
       child: SizedBox(
-        height: 384.h,
+       // height: 400.h,
         child: Padding(
           padding: EdgeInsets.all(12.w),
           child: Column(
@@ -28,7 +29,7 @@ class AnalyticsCardChart extends StatelessWidget {
                   Image.asset(AssetsPath.dataTrendingIcon, height: 24.h, width: 24.w),
                   SizedBox(width: 8.w),
                   Text(
-                    "Analytics Overview",
+                    "Reward Performance",
                     style: TextStyle(
                       fontSize: 16.sp,
                       fontWeight: FontWeight.w600,
@@ -37,16 +38,17 @@ class AnalyticsCardChart extends StatelessWidget {
                 ],
               ),
 
-              SizedBox(height: 8.h),
+              SizedBox(height: 12.h),
 
               // 🔹 Subtitle Text
-              Text(
-                "Select a reward:",
-                style: AppTextStyle.mediumStyle.copyWith(
-                  fontSize: 12.sp,
-                  color: const Color(0xFF6E6E6E),
-                ),
+
+              CustomText(text: "Select a reward:",
+              fontSize: 12.sp,
+                color: const Color(0xFF6E6E6E),
+                fontWeight: FontWeight.w400,
+                language: false,
               ),
+
 
               SizedBox(height: 12.h),
 
@@ -96,13 +98,16 @@ class AnalyticsCardChart extends StatelessWidget {
               // 🔹 Chart (200.h)
               // 🔹 Chart (200.h)
               SizedBox(
-                height: 200.h,
+                height: 210.h,
                 child: SfCartesianChart(
                   primaryXAxis: NumericAxis(
                     minimum: 0,
                     maximum: 7, // 0 + 23..29 = 8 points
                     interval: 1,
-                    majorGridLines: const MajorGridLines(width: 0),
+                    majorGridLines: MajorGridLines(
+                      width: 1,
+                      color: Colors.transparent,
+                    ),
                     axisLabelFormatter: (AxisLabelRenderDetails args) {
                       const labels = ["0", "23", "24", "25", "26", "27", "28", "29"];
                       int index = args.value.toInt();
@@ -121,7 +126,7 @@ class AnalyticsCardChart extends StatelessWidget {
                     interval: 50,
                     majorGridLines: MajorGridLines(
                       width: 1,
-                      color: Colors.transparent, // sob grey line remove
+                      color: Colors.grey.shade100,
                     ),
                     axisLine: const AxisLine(width: 0),
                     // 0 point er jonno special blue line

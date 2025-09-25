@@ -91,12 +91,12 @@ class OtpVerificationScreen extends StatelessWidget {
 
             SizedBox(height: AppSizes.paddingMedium),
             RichTextWidget(
-              firstText: AppText.dontHaveAccount,
-              lastText: AppText.signup,
+              firstText: "Haven’t receive any code?",
+              lastText: "Resend Code",
               onTap: () {
                 CustomSnackBar.show(
                   context,
-                  message: "sign up screen",
+                  message: "Resend Code",
                   icon: Icons.check_circle,
                   backgroundColor: Colors.green,
                 );

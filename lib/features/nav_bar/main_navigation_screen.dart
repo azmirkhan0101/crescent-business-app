@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:organization/core/routes/route_path.dart';
+import 'package:organization/utils/assets_path.dart';
 import '../../utils/app_size.dart';
 
 class MainNavigationScreen extends StatefulWidget {
@@ -15,11 +16,11 @@ class MainNavigationScreen extends StatefulWidget {
 
 class _MainNavigationScreenState extends State<MainNavigationScreen> {
   final List<_NavItem> _items = [
-    _NavItem(icon: Icons.home, route: RoutesPath.home),
-    _NavItem(icon: Icons.bar_chart, route: RoutesPath.analytics),
-    _NavItem(icon: Icons.qr_code_scanner, route: RoutesPath.redeemScanner),
-    _NavItem(icon: Icons.star, route: RoutesPath.tabScreen),
-    _NavItem(icon: Icons.person, route: RoutesPath.businessProfile),
+    _NavItem(assetPath: AssetsPath.homeIcon, route: RoutesPath.home),
+    _NavItem(assetPath:AssetsPath.chartIcon,  route: RoutesPath.analytics),
+    _NavItem(assetPath: AssetsPath.scanQrIcon,  route: RoutesPath.redeemScanner),
+    _NavItem(assetPath: AssetsPath.starEmphasisIcon,  route: RoutesPath.tabScreen),
+    _NavItem(assetPath: AssetsPath.userIcon, route: RoutesPath.businessProfile),
   ];
 
   int _getCurrentIndex(BuildContext context) {
@@ -68,13 +69,16 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
                   height: selected ? 56.h : 40.h,
                   width: selected ? 64.w : 40.w,
                   decoration: BoxDecoration(
-                    color: selected ? Colors.purple : Colors.transparent,
+                    color: selected ? const Color(0xFFC08FFF) : Colors.transparent,
                     borderRadius: BorderRadius.circular(24.r),
                   ),
-                  child: Icon(
-                    _items[index].icon,
-                    size: 24.sp,
-                    color: selected ? Colors.white : Colors.grey,
+                  child: Center(
+                    child: Image.asset(
+                      _items[index].assetPath,
+                      width: 24.sp,
+                      height: 24.sp,
+                      color: selected ? const Color(0xFF51238D) : Colors.grey,
+                    ),
                   ),
                 ),
               );
@@ -87,8 +91,8 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
 }
 
 class _NavItem {
-  final IconData icon;
+  final String assetPath;
   final String route;
 
-  _NavItem({required this.icon, required this.route});
+  _NavItem({required this.assetPath, required this.route});
 }

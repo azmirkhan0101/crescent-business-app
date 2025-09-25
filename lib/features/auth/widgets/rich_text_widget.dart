@@ -1,6 +1,8 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:organization/utils/app_color.dart';
 
 import '../../../../utils/app_text_styles.dart';
 
@@ -23,11 +25,21 @@ class RichTextWidget extends StatelessWidget {
         children: [
           TextSpan(
             text: firstText,
-            style: AppTextStyle.mediumStyle,
+            style: GoogleFonts.inter(
+              fontSize: 14.sp,
+              fontWeight: FontWeight.w400,
+              color: AppColors.secondaryTextColor
+            ),
+            //style: AppTextStyle.mediumStyle,
           ),
           TextSpan(
             text: lastText,
-            style: AppTextStyle.headlineLStyle.copyWith(fontSize: 16.sp),
+         style: GoogleFonts.familjenGrotesk(
+           fontSize: 16.sp,
+           fontWeight: FontWeight.w700,
+           color: AppColors.headlineTColor
+         ),
+         //   style: AppTextStyle.headlineLStyle.copyWith(fontSize: 16.sp),
             recognizer: TapGestureRecognizer()..onTap = onTap,
           ),
         ],

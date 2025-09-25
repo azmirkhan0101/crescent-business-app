@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:organization/features/on_boarding/widgets/onboarding_appbar.dart';
 import 'package:organization/features/on_boarding/widgets/under_button_widget.dart';
+import 'package:organization/features/widgets/custom_text.dart';
 import 'package:organization/utils/app_color.dart';
 import 'package:organization/utils/app_text.dart';
 import 'package:organization/utils/assets_path.dart';
@@ -39,7 +40,9 @@ class _UploadLogoScreenState extends State<UploadLogoScreen> {
               title: AppText.branding,
               suffix: GestureDetector(
                 onTap: () {},
-                child: Text(AppText.skip, style: AppTextStyle.mediumStyle),
+                child:
+                CustomText(text: AppText.skip,fontSize: 14.sp,color: AppColors.secondaryTextColor,fontWeight: FontWeight.w400,),
+
               ),
             ),
             SizedBox(height: 20.h),
@@ -68,10 +71,7 @@ class _UploadLogoScreenState extends State<UploadLogoScreen> {
                       },
                     ),
                     SizedBox(height: 10.h),
-                    Text(
-                      "Tap to add your business logo.",
-                      style: AppTextStyle.mediumStyle,
-                    ),
+                    CustomText(text:"Tap to add your business logo.",fontSize: 14.sp,color: AppColors.secondaryTextColor,fontWeight: FontWeight.w400,),
                   ],
                 ),
               ),

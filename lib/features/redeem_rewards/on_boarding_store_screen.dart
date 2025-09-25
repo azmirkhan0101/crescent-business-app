@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:organization/features/widgets/custom_asset_image.dart';
+import 'package:organization/features/widgets/custom_text.dart';
 import 'package:organization/utils/assets_path.dart';
 import '../../core/routes/route_path.dart';
 import '../../utils/app_color.dart';
@@ -64,24 +65,41 @@ class OnBoardingStoreScreen extends StatelessWidget {
                    SizedBox(height: 8.h),
 
                   /// complete text
-                  Text(
-                    "Rewards Redeem Successfully",
-                    style: AppTextStyle.headlineLStyle.copyWith(
-                      fontSize: 20.sp,
-                    ),
+
+                  CustomText(text:  "Rewards Redeem Successfully",
+                  fontWeight: FontWeight.w700,
+                    language: true,
+                    fontSize: 20.sp,
+                    color: AppColors.headlineTextColor,
                   ),
 
-                  Text(
-                    "Customer reward redeemed successfully.",
-                    style: AppTextStyle.mediumStyle,
+                  // Text(
+                  //   "Rewards Redeem Successfully",
+                  //   style: AppTextStyle.headlineLStyle.copyWith(
+                  //     fontSize: 20.sp,
+                  //   ),
+                  // ),
+
+                  CustomText(text:"Customer reward redeemed successfully.",
+                    fontWeight: FontWeight.w400,
+                    language: false,
+                    fontSize: 14.sp,
                     textAlign: TextAlign.center,
+                    color: AppColors.secondaryTextColor,
                   ),
+
+                  //
+                  // Text(
+                  //   "Customer reward redeemed successfully.",
+                  //   style: AppTextStyle.mediumStyle,
+                  //   textAlign: TextAlign.center,
+                  // ),
 
                  SizedBox(height: 24.h,),
 
 
               Container(
-                height: 152.h,
+               // height: 152.h,
                 padding: EdgeInsets.all(16.w),
                 decoration: BoxDecoration(
                   color: Colors.white,
@@ -103,18 +121,30 @@ class OnBoardingStoreScreen extends StatelessWidget {
                     Row(
                       children: [
                         Image.asset(
-                          AssetsPath.rankBadge1Icon, // ✅ fixed
+                          AssetsPath.rankBadgeIcon,
                           height: 24.h,
                           width: 24.w,
                         ),
 
                         SizedBox(width: 8.w),
-                        Text(
-                          "Free Coffee",
-                          style: AppTextStyle.cardTextStyle.copyWith(
-                            fontWeight: FontWeight.w600,
-                          ),
+
+
+                        CustomText(text:   "Free Coffee",
+                          fontWeight: FontWeight.w600,
+                          language: false,
+                          fontSize: 16.sp,
+                          color: AppColors.blackTextColor,
                         ),
+
+
+                        // Text(
+                        //   "Free Coffee",
+                        //   style: AppTextStyle.cardTextStyle.copyWith(
+                        //     fontWeight: FontWeight.w600,
+                        //   ),
+                        // ),
+
+
 
                       ],
                     ),
@@ -125,14 +155,29 @@ class OnBoardingStoreScreen extends StatelessWidget {
                     Row(
 
                       children: [
-                        Text(
-                          'Redeemed On: ',
-                          style: AppTextStyle.mediumStyle.copyWith(fontSize: 12.sp),
+                        CustomText(text:   "Redeemed On: ",
+                          fontWeight: FontWeight.w400,
+                          language: false,
+                          fontSize: 12.sp,
+                          color: AppColors.secondaryTextColor,
                         ),
-                        Text(
-                          '2/7/2025 - 12:20:30',
-                          style: AppTextStyle.mediumStyle.copyWith(fontWeight: FontWeight.w500,color: AppColors.blackTextColor),
+
+                        // Text(
+                        //   'Redeemed On: ',
+                        //   style: AppTextStyle.mediumStyle.copyWith(fontSize: 12.sp),
+                        // ),
+
+                        CustomText(text:  '2/7/2025 - 12:20:30',
+                          fontWeight: FontWeight.w500,
+                          language: false,
+                          fontSize: 14.sp,
+                          color: AppColors.blackTextColor,
                         ),
+
+                        // Text(
+                        //   '2/7/2025 - 12:20:30',
+                        //   style: AppTextStyle.mediumStyle.copyWith(fontWeight: FontWeight.w500,color: AppColors.blackTextColor),
+                        // ),
                       ],
                     ),
 
@@ -146,33 +191,69 @@ class OnBoardingStoreScreen extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           mainAxisSize: MainAxisSize.min,
                           children: [
-                            Text(
-                              "120",
-                              style: AppTextStyle.headlineLStyle.copyWith(
-                                fontSize: 20.sp,
-                                fontWeight: FontWeight.w600,
-                              ),
+                            CustomText(text:  '120',
+                              fontWeight: FontWeight.w700,
+                              language: true,
+                              fontSize: 20.sp,
+                              color: AppColors.headlineTextColor,
                             ),
-                            Text(
-                              'redemptions',
-                              style: AppTextStyle.mediumStyle.copyWith(
-                                fontSize: 12.sp,
-                                color: AppColors.blackTextColor,
-                              ),
+
+
+
+                            // Text(
+                            //   "120",
+                            //   style: AppTextStyle.headlineLStyle.copyWith(
+                            //     fontSize: 20.sp,
+                            //     fontWeight: FontWeight.w600,
+                            //   ),
+                            // ),
+
+                            CustomText(text:  'redemptions',
+                              fontWeight: FontWeight.w400,
+                              language: true,
+                              fontSize: 12.sp,
+                              color: AppColors.blackTextColor,
                             ),
+
+
+                            // Text(
+                            //   'redemptions',
+                            //   style: AppTextStyle.mediumStyle.copyWith(
+                            //     fontSize: 12.sp,
+                            //     color: AppColors.blackTextColor,
+                            //   ),
+                            // ),
                           ],
                         ),
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.end,
                           mainAxisSize: MainAxisSize.min,
                           children: [
-                            Text(
-                              "Redeem via",
-                              style: AppTextStyle.mediumStyle.copyWith(
-                                fontSize: 12.sp,
-                                color: AppColors.blackTextColor,
-                              ),
+
+
+                            CustomText(text:  'Redeem via',
+                              fontWeight: FontWeight.w400,
+                              language: true,
+                              fontSize: 12.sp,
+                              color: AppColors.blackTextColor,
                             ),
+
+
+
+
+
+
+
+
+
+                            // Text(
+                            //   "Redeem via",
+                            //   style: AppTextStyle.mediumStyle.copyWith(
+                            //     fontSize: 12.sp,
+                            //     color: AppColors.blackTextColor,
+                            //   ),
+                            // ),
+                            //
                             CustomAssetsImage(
                               assetsPath: AssetsPath.qrCodeIcon,
                               height: 24.h,

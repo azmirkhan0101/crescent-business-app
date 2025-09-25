@@ -23,11 +23,9 @@ class ExpiryLimitSection extends StatelessWidget {
             style:AppTextStyle.mediumStyle.copyWith(fontSize: 12.sp)
         ),
         const SizedBox(height: 10),
-        // CustomTextFieldWidget(hintText:"Enter Date" ,
-        //    suffixIcon: Image.asset(AssetsPath.calenderIcon),
-        // ),
 
 
+        CustomTextField(hintText:"30/06/2025" ,suffixImagePath: AssetsPath.calenderIcon,),
         const SizedBox(height: 5),
 //////////////////////////////////////////////////////
         TextFieldTitleWidget(text: "'Redemption Limit'"),
@@ -35,11 +33,7 @@ class ExpiryLimitSection extends StatelessWidget {
             style:AppTextStyle.mediumStyle.copyWith(fontSize: 12.sp)
         ),
         const SizedBox(height: 10),
-        // CustomTextFieldWidget(hintText:"Enter Limit" ,
-        //
-        // ),
-
-
+        CustomTextField(hintText:"200" ,),
       ],
     );
   }

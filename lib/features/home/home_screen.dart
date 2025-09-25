@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:organization/features/home/widget/activity_list_tile_widget.dart';
 import 'package:organization/features/home/data/models/activity_data_class.dart';
@@ -79,12 +80,11 @@ class HomeScreen extends StatelessWidget {
                     ),
                     TextButton(
                       onPressed: () {},
-                      child: Text(
-                        "View All",
-                        style: AppTextStyle.mediumStyle.copyWith(
-                          color: AppColors.primaryColor,
-                        ),
+                      child: CustomText(text:  "View All",
+                      fontWeight: FontWeight.w400,color: AppColors.primaryColor,language: false,
+                        fontSize: 14.sp,
                       ),
+
                     ),
                   ],
                 ),
@@ -107,7 +107,7 @@ class HomeScreen extends StatelessWidget {
                         CustomText(
                           text: "Today",
                           language: false,
-                          fontSize: 11.sp,
+                          fontSize: 16.sp,
                           fontWeight: FontWeight.w500,
                           color: AppColors.secondaryTextColor,
                         ),

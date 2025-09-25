@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:organization/features/widgets/custom_text.dart';
 
 import '../../../utils/app_color.dart';
 import '../../../utils/app_text_styles.dart';
@@ -24,6 +25,7 @@ class AnalyticsCardWidget extends StatelessWidget {
   final String subtitle;
   final String bottomText;
   final Color? topIconColor;
+
   @override
   Widget build(BuildContext context) {
     return CustomCard(
@@ -56,19 +58,34 @@ class AnalyticsCardWidget extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text(
-                bottomText,
-                style: AppTextStyle.headlineLStyle.copyWith(fontSize: 24.sp),
+              CustomText(text: bottomText,
+              fontWeight: FontWeight.w700,
+                fontSize: 24.sp,
+                color: AppColors.headlineTColor,
               ),
+
+              // Text(
+              //   bottomText,
+              //   style: AppTextStyle.headlineLStyle.copyWith(fontSize: 24.sp),
+              // ),
               SizedBox(width: 8.w),
               Row(
                 children: [
-                  Text(
-                    bottomEndText,
-                    style: AppTextStyle.mediumStyle.copyWith(
-                      color: AppColors.blackTextColor,
-                    ),
+
+                  CustomText(text: bottomEndText,
+                    fontWeight: FontWeight.w400,
+                    fontSize: 14.sp,
+                    color: AppColors.blackTextColor,
+                    language: false,
                   ),
+
+
+                  // Text(
+                  //   bottomEndText,
+                  //   style: AppTextStyle.mediumStyle.copyWith(
+                  //     color: AppColors.blackTextColor,
+                  //   ),
+                  // ),
                   SizedBox(width: 4.w),
                   Image.asset(bottomIcon, height: 14.w, width: 14.w),
                 ],

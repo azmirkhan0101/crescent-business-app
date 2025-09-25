@@ -38,7 +38,7 @@ class LocationWidget extends StatelessWidget {
                       text: fieldText,
                       fontSize: 14.sp,
                       color: AppColors.blackTextColor,
-                      fontWeight: FontWeight.w400,
+                      fontWeight: FontWeight.w500,
                       overflow: TextOverflow.ellipsis,
                     ),
                   ],

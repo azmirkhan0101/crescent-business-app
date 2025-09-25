@@ -6,6 +6,7 @@ import 'package:organization/features/profile/widget/business_profile_image_widg
 import 'package:organization/features/profile/widget/location_widget.dart';
 import 'package:organization/features/profile/widget/profile_heading_text_widget.dart';
 import 'package:organization/features/widgets/custom_asset_image.dart';
+import 'package:organization/features/widgets/custom_text.dart';
 import 'package:organization/utils/app_color.dart';
 import 'package:organization/utils/assets_path.dart';
 import '../../utils/app_size.dart';
@@ -23,8 +24,9 @@ class EditProfileScreen extends StatelessWidget {
       backgroundColor: AppColors.white,
       ///app bar
       appBar: AppBar(
+        scrolledUnderElevation:0,
         clipBehavior: Clip.none,
-        backgroundColor: AppColors.white,
+        backgroundColor: Colors.transparent,
         centerTitle: true,
         leading: IconButton(
           icon: Icon(Icons.arrow_back_ios, size: 20.w),
@@ -32,10 +34,16 @@ class EditProfileScreen extends StatelessWidget {
             context.pop();
           },
         ),
-        title: Text(
-          'Bakery Profile',
-          style: AppTextStyle.headlineLStyle.copyWith(fontSize: 17.sp),
+        title:
+        CustomText(text:   'Edit Profile',fontSize: 18.sp,fontWeight: FontWeight.w700,
+        color: AppColors.blackTextColor,
         ),
+
+
+        // Text(
+        //   'Edit Profile',
+        //   style: AppTextStyle.headlineLStyle.copyWith(fontSize: 17.sp),
+        // ),
         actions: [
           IconButton(
             icon: Icon(Icons.done, size: 20.w),
@@ -98,16 +106,15 @@ class EditProfileScreen extends StatelessWidget {
                   ProfileHeadingTextWidget(title: AppText.name),
                   SizedBox(height: AppSizes.paddingSmallH),
                   CustomTextField(
-
                     hintText: "Sweet Whisk Bakery",
                   ),
-
+                  SizedBox(height: 16.h),
                   /// tagline
                   ProfileHeadingTextWidget(title: AppText.tagline),
                   CustomTextField(
                     hintText: "Whipping Up Smiles, One Treat at a Time!",
                   ),
-
+                  SizedBox(height: 16.h),
                   /// description
                   ProfileHeadingTextWidget(title: AppText.description),
                   SizedBox(height: AppSizes.paddingSmallH),
@@ -119,7 +126,7 @@ class EditProfileScreen extends StatelessWidget {
 
 
 
-
+                  SizedBox(height: 16.h),
                   /// globalization
                   ProfileHeadingTextWidget(title: AppText.website),
                   SizedBox(height: AppSizes.paddingSmallH),
@@ -130,7 +137,7 @@ class EditProfileScreen extends StatelessWidget {
 
                     hintText: "sweetwhiskbakery.com",
                   ),
-
+                  SizedBox(height: 16.h),
                   /// business phone
                   ProfileHeadingTextWidget(title: AppText.businessPhone),
                   CustomTextField(
@@ -138,7 +145,7 @@ class EditProfileScreen extends StatelessWidget {
                       AssetsPath.callIcon,
                     hintText: "(555) 123-4567",
                   ),
-
+                  SizedBox(height: 16.h),
                   /// email
                   ProfileHeadingTextWidget(title: AppText.email),
                   SizedBox(height: AppSizes.paddingSmallH),
@@ -150,7 +157,7 @@ class EditProfileScreen extends StatelessWidget {
                 ],
               ),
             ),
-            SizedBox(height: 12.h),
+            SizedBox(height: 16.h),
 
             /// location title row
             Row(
@@ -167,7 +174,7 @@ class EditProfileScreen extends StatelessWidget {
 
             /// location 1
             LocationWidget(
-              headingText: AppText.location2,
+              headingText: AppText.location1,
               fieldText: AppText.store1Address,
               deleteTap: () {},
             ),

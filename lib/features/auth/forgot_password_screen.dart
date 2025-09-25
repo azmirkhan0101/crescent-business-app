@@ -8,6 +8,7 @@ import '../../utils/app_color.dart';
 import '../../utils/app_size.dart';
 import '../../utils/app_text.dart';
 import '../widgets/custom_button_widget.dart';
+import '../widgets/custom_text.dart';
 import '../widgets/custom_text_field_widget.dart';
 import '../widgets/heading_text_widget.dart';
 import '../widgets/text_field_title_widget.dart';
@@ -34,10 +35,32 @@ class ForgotPasswordScreen extends StatelessWidget {
               SizedBox(height: 60.h),
               const CustomAuthAppbar(),
               SizedBox(height: 30.h),
-              HeadingTextWidget(
-                title: AppText.forgotPasswordTitle,
-                subTitle: AppText.forgotPasswordSubtitle,
-              ),
+
+            //heading text
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                CustomText(
+                  text: AppText.forgotPasswordTitle,
+                  fontWeight: FontWeight.w700,
+                  fontSize: 20.sp,
+                  color: AppColors.headlineTColor,
+                  language: true,
+                ),
+
+                SizedBox(height: AppSizes.paddingSmallH),
+                CustomText(
+                  text: AppText.forgotPasswordSubtitle,
+                  fontWeight: FontWeight.w400,
+                  fontSize: 14.sp,
+                  color: AppColors.secondaryTextColor,
+                  language: false,
+                  overflow: TextOverflow.visible,
+                  textAlign: TextAlign.justify,
+                ),
+              ],
+            ),
+
               SizedBox(height: 50.h),
               Form(
                 //  key: controller.formKey,
@@ -78,13 +101,7 @@ class ForgotPasswordScreen extends StatelessWidget {
                 backgroundColor: AppColors.primaryColor,
                 onPressed: () {
                   context.push(RoutesPath.otpVerify);
-                  // if (controller.formKey.currentState?.validate() ?? false) {
-                  //   controller.submit((email) {
-                  //     context.push(RoutesPath.otpVerify);
-                  //   });
-                  // } else {
-                  //   Toast.errorToast("Please enter a valid email");
-                  // }
+
                 },
               ),
               SizedBox(height: AppSizes.paddingMedium),

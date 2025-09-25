@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:organization/features/widgets/custom_asset_image.dart';
+import 'package:organization/features/widgets/custom_text.dart';
 import 'package:organization/features/widgets/info_card_widget.dart';
 import 'package:organization/utils/assets_path.dart';
 
@@ -72,21 +73,37 @@ class BusinessSetupCompleteScreen extends StatelessWidget {
                   const SizedBox(height: 12),
 
                   /// complete text
-                  Text(
-                    AppText.businessComplete,
-                    style: AppTextStyle.headlineLStyle.copyWith(
-                      fontSize: 20.sp,
-                    ),
+                  CustomText(text:AppText.businessComplete,
+                  fontWeight: FontWeight.w700,
+                    language: true,
+                    fontSize: 20.sp,
+                    color: AppColors.headlineTColor,
                   ),
 
-                  Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 16.w),
-                    child: Text(
-                      AppText.businessDesc,
-                      style: AppTextStyle.mediumStyle,
-                      textAlign: TextAlign.center,
-                    ),
+                  // Text(
+                  //   AppText.businessComplete,
+                  //   style: AppTextStyle.headlineLStyle.copyWith(
+                  //     fontSize: 20.sp,
+                  //   ),
+                  // ),
+
+                  Text(
+                    AppText.businessDesc,
+                    style: AppTextStyle.mediumStyle,
+                    textAlign: TextAlign.center,
                   ),
+
+
+                  CustomText(text:   AppText.businessDesc,
+                    fontWeight: FontWeight.w400,
+                    language: true,
+                    fontSize: 14.sp,
+                    color: AppColors.secondaryTextColor,
+                    textAlign: TextAlign.center,
+                  ),
+
+
+
                   const SizedBox(height: 24),
                   Container(
                     decoration: BoxDecoration(

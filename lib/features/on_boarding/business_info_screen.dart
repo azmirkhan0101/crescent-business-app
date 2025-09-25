@@ -50,29 +50,16 @@ class BusinessInfoScreen extends StatelessWidget {
                   TextFieldTitleWidget(text: AppText.name),
                   SizedBox(height: AppSizes.paddingSmallH),
                   CustomTextField(hintText: AppText.enterName),
-
-                  // CustomTextFieldWidget(
-                  //   hintText: AppText.enterName,
-                  // ),
                   SizedBox(height: 16.h),
                   // tagline
                   TextFieldTitleWidget(text: AppText.tagline),
+                  SizedBox(height: AppSizes.paddingSmallH),
                   CustomTextField(hintText: AppText.enterTagline),
-
-                  // CustomTextFieldWidget(
-                  //   hintText: AppText.enterTagline,
-                  // ),
                   SizedBox(height: 16.h),
                   //description
-                  TextFieldTitleWidget(text: AppText.description),
+                  TextFieldTitleWidget(text: AppText.enterDescription),
                   SizedBox(height: AppSizes.paddingSmallH),
-                  CustomTextField(hintText: AppText.description, maxLines: 3),
-                  // Description field (height 120, maxLines 4)
-                  // CustomTextFieldWidget(
-                  //   hintText: AppText.description,
-                  //   height: 120,
-                  //   maxLines: 4,
-                  // ),
+                  CustomTextField(hintText: AppText.description, maxLines: 4),
                 ],
               ),
             ),

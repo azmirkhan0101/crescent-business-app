@@ -34,8 +34,8 @@ class GetStartedScreen extends StatelessWidget {
                   children: [
                     Image.asset(
                       AssetsPath.moonIcon,
-                      height: AppSizes.moonIconH,
-                      width: AppSizes.moonIconW,
+                      height: 32.h,
+                      width: 32.w,
                     ),
                     CustomText(
                       textAlign: TextAlign.justify,
@@ -52,8 +52,7 @@ class GetStartedScreen extends StatelessWidget {
                 /// welcome image
                 Image.asset(
                   "assets/images/get_started_image.png",
-                  height: AppSizes.getStartedImageH,
-                  width: AppSizes.getStartedImageW,
+                  height: 304.h,
                 ),
 
                 /// text  section

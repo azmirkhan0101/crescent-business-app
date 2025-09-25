@@ -30,7 +30,7 @@ class _AddDiscountCodesSectionState extends State<AddDiscountCodesSection> {
 
        const SizedBox(height: 5),
 
-        Text('Use https:// to link to the gift card system’',
+        Text('Upload via .csv or add a URL to the gift card system',
             style:AppTextStyle.mediumStyle.copyWith(fontSize: 12.sp)
         ),
 

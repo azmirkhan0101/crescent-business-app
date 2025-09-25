@@ -49,7 +49,7 @@ class StatsModel {
       bottomText: "12",
       bottomEndText: "4.1%",
       topIcon: AssetsPath.bookMarkIcon,
-      bottomIcon: AssetsPath.playIcon,
+      bottomIcon: AssetsPath.redPlayIcon,
     ),
   ];
 }

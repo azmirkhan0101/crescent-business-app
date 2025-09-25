@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:organization/features/redeem_rewards/widgets/nfc_redeem.dart';
 import 'package:organization/features/redeem_rewards/widgets/qr_code_redeem.dart';
 import 'package:organization/features/redeem_rewards/widgets/static_code_redeem.dart';
+import 'package:organization/features/widgets/custom_text.dart';
 import 'package:organization/utils/app_color.dart';
 import 'package:organization/utils/app_text_styles.dart';
 
@@ -71,10 +72,18 @@ class _RedeemScannerScreenState extends State<RedeemScannerScreen> {
                 padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
                 child: Align(
                   alignment: Alignment.centerLeft,
-                  child: Text(
-                    "Redeem",
-                    style: AppTextStyle.headlineLStyle.copyWith(color: AppColors.blackTextColor),
+                  child: CustomText(text: "Redeem",
+                  color: AppColors.blackTextColor,
+                    fontWeight: FontWeight.w700,
+                    fontSize: 24.sp,
+                    language: true,
                   ),
+
+
+                  // Text(
+                  //   "Redeem",
+                  //   style: AppTextStyle.headlineLStyle.copyWith(color: AppColors.blackTextColor),
+                  // ),
                 ),
               ),
 

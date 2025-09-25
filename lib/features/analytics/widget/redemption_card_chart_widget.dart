@@ -119,19 +119,36 @@ class RedemptionChartWidget extends StatelessWidget {
           SizedBox(width: 5.w),
           Column(
             children: [
-              Text(
-                title,
-                style: AppTextStyle.mediumStyle.copyWith(
-                  fontSize: AppSizes.smallTSize,
-                ),
+
+              CustomText(text: title,
+              fontSize: 12.sp,
+                color: AppColors.secondaryTextColor,
+                fontWeight: FontWeight.w400,
+                language: false,
               ),
-              Text(
-                value,
-                style: AppTextStyle.mediumStyle.copyWith(
-                  fontWeight: FontWeight.w600,
-                  color: AppColors.blackTextColor,
-                ),
+
+              // Text(
+              //   title,
+              //   style: AppTextStyle.mediumStyle.copyWith(
+              //     fontSize: AppSizes.smallTSize,
+              //   ),
+              // ),
+              //
+
+              CustomText(text: value,
+                fontSize: 12.sp,
+                color: AppColors.blackTextColor,
+                fontWeight: FontWeight.w600,
+                language: false,
               ),
+
+              // Text(
+              //   value,
+              //   style: AppTextStyle.mediumStyle.copyWith(
+              //     fontWeight: FontWeight.w600,
+              //     color: AppColors.blackTextColor,
+              //   ),
+              // ),
             ],
           ),
         ],

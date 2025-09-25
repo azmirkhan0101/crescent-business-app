@@ -8,6 +8,7 @@ import 'package:organization/utils/app_text.dart';
 import 'package:organization/utils/assets_path.dart';
 import '../../../utils/app_size.dart';
 import '../../core/routes/route_path.dart';
+import '../widgets/custom_text.dart';
 import '../widgets/custom_text_field_widget.dart';
 import '../widgets/heading_text_widget.dart';
 import '../widgets/text_field_title_widget.dart';
@@ -27,6 +28,7 @@ class BusinessContactInfoScreen extends StatelessWidget {
           children: [
             SizedBox(height: 60.h),
             OnBoardingAppbarWidget(
+              suffix:CustomText(text: AppText.skip,fontSize: 14.sp,color: AppColors.secondaryTextColor,fontWeight: FontWeight.w400,),
               totalSteps: 6,
               currentStep: 5,
               title: "Contact",

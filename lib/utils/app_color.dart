@@ -28,7 +28,8 @@ class AppColors {
     colors: [
       Color(0x0DD1FF43), // 5% opacity
 
-      Color(0x1AD1FF43), // 10% opacity
+      Color(0x1AD1FF43),
+      Color(0xFFD1FF43),// 10% opacity
       Color(0xFFD1FF43),
     ],
 

@@ -10,6 +10,7 @@ import '../../utils/app_color.dart';
 import '../../utils/app_text.dart';
 import '../../utils/app_text_styles.dart';
 import '../widgets/custom_button_widget.dart';
+import '../widgets/custom_text.dart';
 
 class BusinessSetupCompleteOneScreen extends StatelessWidget {
   const BusinessSetupCompleteOneScreen({super.key});
@@ -66,21 +67,27 @@ class BusinessSetupCompleteOneScreen extends StatelessWidget {
                   const SizedBox(height: 12),
 
                   /// complete text
-                  Text(
-                    AppText.businessComplete,
-                    style: AppTextStyle.headlineLStyle.copyWith(
-                      fontSize: 20.sp,
-                    ),
+                  CustomText(text:AppText.businessComplete,
+                    fontWeight: FontWeight.w700,
+                    language: true,
+                    fontSize: 20.sp,
+                    color: AppColors.headlineTColor,
                   ),
 
-                  Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 16.w),
-                    child: Text(
-                      AppText.businessDesc,
-                      style: AppTextStyle.mediumStyle,
-                      textAlign: TextAlign.center,
-                    ),
+                  // Text(
+                  //   AppText.businessComplete,
+                  //   style: AppTextStyle.headlineLStyle.copyWith(
+                  //     fontSize: 20.sp,
+                  //   ),
+                  // ),
+
+                  Text(
+                    AppText.businessDesc,
+                    style: AppTextStyle.mediumStyle,
+                    textAlign: TextAlign.center,
                   ),
+
+
                   const SizedBox(height: 24),
                   Container(
                     decoration: BoxDecoration(

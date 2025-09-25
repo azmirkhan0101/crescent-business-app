@@ -4,6 +4,7 @@ import 'package:mobile_scanner/mobile_scanner.dart';
 import 'package:organization/features/widgets/custom_card_widget.dart';
 import 'package:organization/utils/app_color.dart';
 import 'package:organization/utils/app_text_styles.dart';
+import '../../widgets/custom_text.dart';
 import 'apply_widget.dart';
 
 class QRCodeWidget extends StatefulWidget {
@@ -23,17 +24,32 @@ class _QRCodeWidgetState extends State<QRCodeWidget> {
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        Text(
-          "Scan QR code",
-          style: AppTextStyle.headlineLStyle.copyWith(
-            fontWeight: FontWeight.w600,
-          ),
+        CustomText(text: "Scan QR code",
+          color: AppColors.headlineTextColor,
+          fontWeight: FontWeight.w600,
+          fontSize: 24.sp,
+          language: true,
         ),
+
+        // Text(
+        //   "Scan QR code",
+        //   style: AppTextStyle.headlineLStyle.copyWith(
+        //     fontWeight: FontWeight.w600,
+        //   ),
+        // ),
         SizedBox(height: 8.h),
-        Text(
-          "Please point the camera at the QR Code",
-          style: AppTextStyle.mediumStyle,
+
+        CustomText(text: "Please point the camera at the QR Code",
+          color: AppColors.blackTextColor,
+          fontWeight: FontWeight.w400,
+          fontSize: 14.sp,
+          language: false,
         ),
+
+        // Text(
+        //   "Please point the camera at the QR Code",
+        //   style: AppTextStyle.mediumStyle,
+        // ),
         SizedBox(height: 24.h),
         // ✅ Scanner Box
         SizedBox(
@@ -75,18 +91,26 @@ class _QRCodeWidgetState extends State<QRCodeWidget> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             SizedBox(
-              width: 75.w, // 👈 fixed width
+              width: 75.w,
               child: Divider(color: Color(0xFF777777), thickness: 1.w),
             ),
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 8.w),
-              child: Text(
-                "Enter code manually",
-                style: AppTextStyle.mediumStyle.copyWith(
-                  fontSize: 12.sp,
-                  color: AppColors.blackTextColor,
-                ),
+              child:         CustomText(text: "Enter code manually",
+                color: AppColors.blackTextColor,
+                fontWeight: FontWeight.w400,
+                fontSize: 12.sp,
+                language: false,
               ),
+
+
+              // Text(
+              //   "Enter code manually",
+              //   style: AppTextStyle.mediumStyle.copyWith(
+              //     fontSize: 12.sp,
+              //     color: AppColors.blackTextColor,
+              //   ),
+              // ),
             ),
             SizedBox(
               width: 75.w, // 👈 fixed width
@@ -129,12 +153,22 @@ class _QRCodeWidgetState extends State<QRCodeWidget> {
           height: 52.h,
           width: 279.w,
           child: Center(
-            child: Text(
-              "SWB-QR-9842736590",
-              style: AppTextStyle.mediumStyle.copyWith(
-                color: AppColors.buttonTextColor,
-              ),
+            child:  CustomText(text: "SWB-QR-9842736590",
+              color: AppColors.buttonTextColor,
+              fontWeight: FontWeight.w400,
+              fontSize: 12.sp,
+              language: false,
             ),
+
+
+
+
+            // Text(
+            //   "SWB-QR-9842736590",
+            //   style: AppTextStyle.mediumStyle.copyWith(
+            //     color: AppColors.buttonTextColor,
+            //   ),
+            // ),
           ),
         ),
         SizedBox(height: 16.h),

@@ -28,7 +28,7 @@ class OverviewTab extends StatelessWidget {
                   gradientColor3: Color(0xFFD8C2F6), // 40% opacity
                   icon: AssetsPath.globeIcon,
                   title: AppText.website,
-                  subtitle: "(555) 123-4567",
+                  subtitle: AppText.enterWebsite,
                   iconBgColor: Color(0xFFE2D4F9),
                   iconColor: Color(0xFF9B6DFF),
                 ),
@@ -42,8 +42,8 @@ class OverviewTab extends StatelessWidget {
                   gradientColor3: Color(0xFFD2F7A2), // 40% opacity
                   icon: AssetsPath.callIcon,
                   title: AppText.businessPhone,
+                  subtitle: "(555) 123-4567",
 
-                  subtitle: AppText.enterWebsite,
                   iconBgColor: Color(0xFFDBF7B6),
                 ),
               ),

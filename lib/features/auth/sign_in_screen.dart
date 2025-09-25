@@ -55,7 +55,7 @@ class _SignInScreenState extends State<SignInScreen> {
                     TextFieldTitleWidget(text: AppText.email),
                     SizedBox(height: AppSizes.paddingSmallH),
                     CustomTextField(
-                      hintText: "Enter Email",
+                      hintText: "Enter Email Address",
                       prefixImagePath: AssetsPath.mailIcon,
                       //  onChanged: (val) => controller.email.value = val,
                     ),
@@ -65,7 +65,7 @@ class _SignInScreenState extends State<SignInScreen> {
                     TextFieldTitleWidget(text: AppText.password),
                     SizedBox(height: AppSizes.paddingSmallH),
                     CustomTextField(
-                      hintText: "******",
+                      hintText: "**********",
                       prefixImagePath: AssetsPath.lockIcon,
                       suffixImagePath: AssetsPath.eyeIcon,
                       // onChanged: (val) => controller.password.value = val,
@@ -113,7 +113,7 @@ class _SignInScreenState extends State<SignInScreen> {
                             text: AppText.forgotPassword,
                             language: false,
                             fontWeight: FontWeight.w400,
-                            color: AppColors.blackTextColor,
+                            color: AppColors.buttonTextColor,
                             fontSize: 12.sp,
                           ),
                           Container(
