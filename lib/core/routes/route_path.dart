@@ -18,6 +18,11 @@ class RoutesPath {
  // static const String addReward = '/add-reward';
   static const String tabScreen = '/tab-screen';
   static const String boardingStore = '/boarding-store';
+  static const String subscription = '/subscription';
+  static const String myProfile = '/my-profile';
+  static const String changePassword = '/change-password';
+  static const String notification = '/notification';
+  static const String termsCondition = '/terms';
  // static const String stackScreen = '/stack-screen';
   // Main Navigation (Bottom Nav parent)
   static const String mainNav = '/main-nav';

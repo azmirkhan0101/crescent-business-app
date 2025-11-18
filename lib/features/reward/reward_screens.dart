@@ -16,7 +16,7 @@ class RewardScreens extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.white,
+      backgroundColor: const Color(0xFFF7F7F7),
       appBar: AppBar(
         backgroundColor: AppColors.white,
         elevation: 0, // চাইলে shadow remove করতে

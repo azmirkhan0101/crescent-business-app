@@ -20,7 +20,7 @@ class BusinessSetupCompleteOneScreen extends StatelessWidget {
     final size = MediaQuery.of(context).size;
 
     return Scaffold(
-      backgroundColor: AppColors.white,
+      backgroundColor: const Color(0xFFF7F7F7),
       body: Stack(
         children: [
           SizedBox(height: size.height, width: size.width),

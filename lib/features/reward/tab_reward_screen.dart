@@ -29,7 +29,7 @@ class _TabRewardScreenState extends State<TabRewardScreen> with SingleTickerProv
       initialIndex: 0,
       length: 4,
       child: Scaffold(
-        backgroundColor: AppColors.white,
+        backgroundColor: const Color(0xFFF7F7F7),
         body: Padding(
           padding:  EdgeInsets.symmetric(horizontal:16.w),
           child: Column(

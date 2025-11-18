@@ -37,7 +37,7 @@ class _BusinessProfileScreenState extends State<BusinessProfileScreen>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.white,
+      backgroundColor: const Color(0xFFF7F7F7),
 
       appBar: AppBar(
         clipBehavior: Clip.none,

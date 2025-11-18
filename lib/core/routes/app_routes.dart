@@ -4,6 +4,9 @@ import 'package:organization/core/routes/route_path.dart';
 import 'package:organization/features/auth/otp_verification_screen.dart';
 /// Auth & Onboarding Screens
 import 'package:organization/features/get_started_screen.dart';
+import 'package:organization/features/my_profile/change_password_screen.dart';
+import 'package:organization/features/my_profile/my_profile_screen.dart';
+import 'package:organization/features/notification/notification_screen.dart';
 import 'package:organization/features/on_boarding/category_selection_screen.dart';
 import 'package:organization/features/on_boarding/setup_complete_one_screen.dart';
 import 'package:organization/features/on_boarding/setup_complete_screen.dart';
@@ -22,6 +25,8 @@ import 'package:organization/features/profile/business_profile_screen.dart';
 import 'package:organization/features/reward/edit_reward_screen.dart';
 import 'package:organization/features/reward/reward_screens.dart';
 import 'package:organization/features/reward/tab_reward_screen.dart';
+import 'package:organization/features/subscription/subscription_screen.dart';
+import 'package:organization/features/terms_condition/terms_condition_screen.dart';
 /// Main Nav Wrapper
 import '../../features/nav_bar/main_navigation_screen.dart';
 import '../../features/profile/edit_profile_screen.dart';
@@ -36,6 +41,27 @@ class AppRoutes {
     routes: [
       /// ----------------- Auth & Onboarding -----------------
 
+      GoRoute(
+        path: RoutesPath.myProfile,
+        builder: (context, state) => const MyProfileScreen(),
+      ),
+      GoRoute(
+        path: RoutesPath.termsCondition,
+        builder: (context, state) => const TermsConditionScreen(),
+      ),
+      GoRoute(
+        path: RoutesPath.changePassword,
+        builder: (context, state) => const ChangePasswordScreen(),
+      ),
+      GoRoute(
+        path: RoutesPath.notification,
+        builder: (context, state) => const NotificationScreen(),
+      ),
+
+      GoRoute(
+        path: RoutesPath.subscription,
+        builder: (context, state) => const SubscriptionPage(),
+      ),
       GoRoute(
         path: RoutesPath.getStarted,
         builder: (context, state) => const GetStartedScreen(),

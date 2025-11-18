@@ -26,6 +26,7 @@ class EditRewardScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+
       bottomNavigationBar: UnderButtonWidget(
         onPressed: () {},
         buttonText: "Create",
@@ -47,7 +48,7 @@ class EditRewardScreen extends StatelessWidget {
         ),
         centerTitle: true,
       ),
-      backgroundColor: Colors.white,
+      backgroundColor: const Color(0xFFF7F7F7),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(20),
         child: Column(

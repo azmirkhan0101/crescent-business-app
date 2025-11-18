@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:organization/features/analytics/widget/analytics_card_widget.dart';
 import 'package:organization/features/analytics/widget/analytics_chart_widget.dart';
@@ -49,7 +50,7 @@ class _AnalyticsScreenState extends State<AnalyticsScreen> {
     return SafeArea(
       child: Scaffold(
         extendBody: true,
-        backgroundColor: AppColors.white,
+        backgroundColor: const Color(0xFFF7F7F7),
         body: SingleChildScrollView(
           padding: EdgeInsets.symmetric(horizontal: 16.w),
           child: Column(
@@ -111,22 +112,33 @@ class _AnalyticsScreenState extends State<AnalyticsScreen> {
                         ),
                       ),
                       const SizedBox(width: 8),
-                      Container(
-                        height: 40.h,
-                        width: 40.w,
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          shape: BoxShape.circle,
-                          boxShadow: [
-                            BoxShadow(
-                              color:const Color(0x199E9E9E),
-                              spreadRadius: 1,
-                              blurRadius: 5,
-                              offset: const Offset(0, 3),
-                            ),
-                          ],
+                      GestureDetector(
+                        onTap: (){
+                     _openBottomSheet();
+                            },
+                        child: Container(
+                          height: 40.h,
+                          width: 40.w,
+                          padding: EdgeInsets.all(8),
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            shape: BoxShape.circle,
+                            boxShadow: [
+                              BoxShadow(
+                                color:const Color(0x199E9E9E),
+                                spreadRadius: 1,
+                                blurRadius: 5,
+                                offset: const Offset(0, 3),
+                              ),
+                            ],
+                          ),
+                          child: SvgPicture.asset(
+                            AssetsPath.export,
+                            height: 10.h,
+                            width: 10.w,
+                            fit: BoxFit.contain,
+                          ),
                         ),
-                        child:Image.asset(AssetsPath.backIcon,height: 20.h,width: 20.w,),
                       ),
                     ],
                   ),
@@ -213,14 +225,7 @@ class _AnalyticsScreenState extends State<AnalyticsScreen> {
                   ],
                 ),
               ),
-              Center(
-                child: TextButton(
-                  onPressed: (){
-                    _openBottomSheet();
-                  },
-                  child: const Text("Open Bottom Sheet"),
-                ),
-              ),
+
 
             ],
           ),

@@ -25,7 +25,7 @@ class _CategorySelectionScreenState extends State<CategorySelectionScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.white,
+      backgroundColor: const Color(0xFFF7F7F7),
       body: SingleChildScrollView(
         padding: EdgeInsets.symmetric(horizontal: 16.w),
         child: Column(

@@ -18,14 +18,15 @@ class HomeHeaderWidget extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Row(
-            children: [
-              // User/Business Logo
-              GestureDetector(
-                onTap: () {
-                  context.push(RoutesPath.businessProfile);
-                },
-                child: Container(
+          GestureDetector(
+            onTap: (){
+              context.push(RoutesPath.myProfile);
+            },
+
+            child: Row(
+              children: [
+                // User/Business Logo
+                Container(
                   height: 44.h,
                   width: 44.w,
                   decoration: BoxDecoration(
@@ -36,25 +37,25 @@ class HomeHeaderWidget extends StatelessWidget {
                     ),
                   ),
                 ),
-              ),
 
-              const SizedBox(width: 12),
-              // Welcome text and user name
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text('Welcome Back!', style: AppTextStyle.mediumStyle),
-                  SizedBox(height: 2.h),
-                  Text(
-                    userName,
-                    style: AppTextStyle.headlineLStyle.copyWith(
-                      fontSize: 20.sp,
+                const SizedBox(width: 12),
+                // Welcome text and user name
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text('Welcome Back!', style: AppTextStyle.mediumStyle),
+                    SizedBox(height: 2.h),
+                    Text(
+                      userName,
+                      style: AppTextStyle.headlineLStyle.copyWith(
+                        fontSize: 20.sp,
+                      ),
                     ),
-                  ),
-                ],
-              ),
-            ],
+                  ],
+                ),
+              ],
+            ),
           ),
           // Notification icon
           Container(

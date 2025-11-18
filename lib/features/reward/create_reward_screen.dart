@@ -43,7 +43,7 @@ class CreateRewardScreen extends StatelessWidget {
         ),
         centerTitle: true,
       ),
-      backgroundColor: Colors.white,
+      backgroundColor: const Color(0xFFF7F7F7),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(20),
         child: Column(

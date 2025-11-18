@@ -21,7 +21,7 @@ class EditProfileScreen extends StatelessWidget {
   Widget build(BuildContext context) {
 
     return Scaffold(
-      backgroundColor: AppColors.white,
+      backgroundColor: const Color(0xFFF7F7F7),
       ///app bar
       appBar: AppBar(
         scrolledUnderElevation:0,

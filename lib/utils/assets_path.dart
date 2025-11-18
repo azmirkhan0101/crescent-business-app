@@ -68,6 +68,8 @@ class AssetsPath {
   static const String pdfIcon = "assets/icons/pdf_icon.png";
   static const String csvIcon = "assets/icons/csv_icon.png";
   static const String redPlayIcon = "assets/icons/red_play_icon.png";
+  static const String export = "assets/icons/export.svg";
+  static const String exportPng = "assets/icons/export.png";
   // image
   static const String salonImage = "assets/images/salon_image.png";
   static const String stackCardImage = "assets/icons/stack_card_image.png";
