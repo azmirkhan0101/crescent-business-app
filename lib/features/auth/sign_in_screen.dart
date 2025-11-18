@@ -156,7 +156,7 @@ class _SignInScreenState extends State<SignInScreen> {
                 firstText: AppText.dontHaveAccount,
                 lastText: AppText.signup,
                 onTap: () {
-                  // Navigate to signup
+                  context.push(RoutesPath.categorySelection);
                 },
               ),
             ],
