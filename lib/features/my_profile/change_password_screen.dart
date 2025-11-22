@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:go_router/go_router.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:organization/features/auth/widgets/custom_auth_appbar.dart';
 import 'package:organization/features/auth/widgets/password_requirement_widget.dart';
 import 'package:organization/features/auth/widgets/rich_text_widget.dart';
 import 'package:organization/features/widgets/text_field_title_widget.dart';
+import 'package:organization/routes/app_pages.dart';
 import 'package:organization/utils/app_text.dart';
 import 'package:organization/utils/assets_path.dart';
 import '../../../utils/app_color.dart';
 import '../../../utils/app_size.dart';
-import '../../core/routes/route_path.dart';
 import '../widgets/custom_button_widget.dart';
 import '../widgets/custom_text_field_widget.dart';
 import '../widgets/heading_text_widget.dart';
@@ -144,8 +144,7 @@ class ChangePasswordScreen extends StatelessWidget {
                     color: AppColors.buttonTextColor,fontSize: 18.sp,fontWeight: FontWeight.w700),
                 text: "Save",
                 onPressed: () {
-                  context.push(RoutesPath.categorySelection);
-
+                  Get.toNamed(AppRoutes.categorySelection);
                 },
               ),
             ),

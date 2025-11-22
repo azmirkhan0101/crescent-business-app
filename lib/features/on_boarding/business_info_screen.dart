@@ -1,21 +1,28 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:go_router/go_router.dart';
+import 'package:get/get.dart';
+import 'package:organization/controller/auth/sign_in_controller.dart';
 import 'package:organization/features/on_boarding/widgets/onboarding_appbar.dart';
 import 'package:organization/features/on_boarding/widgets/under_button_widget.dart';
-import 'package:organization/utils/app_color.dart';
+import 'package:organization/routes/app_pages.dart';
 import 'package:organization/utils/app_text.dart';
+
 import '../../../utils/app_size.dart';
-import '../../core/routes/route_path.dart';
 import '../widgets/custom_text_field_widget.dart';
 import '../widgets/heading_text_widget.dart';
 import '../widgets/text_field_title_widget.dart';
 
 class BusinessInfoScreen extends StatelessWidget {
-  const BusinessInfoScreen({super.key});
+
+  final SignInController controller = Get.find<SignInController>();
+  static const String categoryTitleKey = "category-title-key";
+
 
   @override
   Widget build(BuildContext context) {
+
+    String categoryTitle = controller.businessModel.category!;
+
     return Scaffold(
       backgroundColor: const Color(0xFFF7F7F7),
       body: SingleChildScrollView(
@@ -68,7 +75,7 @@ class BusinessInfoScreen extends StatelessWidget {
       ),
       bottomNavigationBar: UnderButtonWidget(
         onPressed: () {
-          context.push(RoutesPath.accountCreation);
+          Get.toNamed(AppRoutes.accountCreation);
         },
         buttonText: AppText.continueText,
       ),

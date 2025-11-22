@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:go_router/go_router.dart';
-import 'package:organization/core/routes/route_path.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 import 'package:organization/utils/app_color.dart';
 import 'package:organization/utils/app_text_styles.dart';
+import '../../../routes/app_pages.dart';
 import '../../widgets/custom_card_widget.dart';
 import 'apply_widget.dart';
 
@@ -37,7 +38,7 @@ class StaticCodeWidget extends StatelessWidget {
           SizedBox(height: 20.h),
           ApplyWidget(
             onPressed: () {
-              context.push(RoutesPath.boardingStore);
+              Get.toNamed(AppRoutes.boardingStore);
             },
           ),
         ],

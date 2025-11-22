@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:go_router/go_router.dart';
+import 'package:get/get.dart';
 import '../../../../utils/assets_path.dart';
 
 class CustomAuthAppbar extends StatelessWidget {
@@ -14,7 +14,7 @@ class CustomAuthAppbar extends StatelessWidget {
       children: [
         GestureDetector(
           onTap: (){
-            context.pop();
+            Get.back();
           },
           child: Container(
             height: 40,

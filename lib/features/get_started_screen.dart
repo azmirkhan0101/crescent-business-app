@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:go_router/go_router.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:organization/features/widgets/custom_asset_image.dart';
 import 'package:organization/features/widgets/custom_button_widget.dart';
 import 'package:organization/features/widgets/custom_text.dart';
+import 'package:organization/routes/app_pages.dart';
 import 'package:organization/utils/app_color.dart';
-import 'package:organization/utils/app_size.dart';
 import 'package:organization/utils/app_text.dart';
+
 import '../../utils/assets_path.dart';
-import '../core/routes/route_path.dart';
 import 'auth/widgets/rich_text_widget.dart';
 
 class GetStartedScreen extends StatelessWidget {
@@ -116,7 +116,7 @@ class GetStartedScreen extends StatelessWidget {
               CustomButton(
                 text: AppText.getStarted,
                 onPressed: () {
-                  context.push(RoutesPath.signIn);
+                  Get.toNamed(AppRoutes.categorySelection);
                 },
                 buttonTextStyle: GoogleFonts.familjenGrotesk(
                   color: AppColors.buttonTextColor,
@@ -129,7 +129,7 @@ class GetStartedScreen extends StatelessWidget {
                 firstText: AppText.alreadyHaveAccount,
                 lastText: AppText.login,
                 onTap: () {
-                  context.push(RoutesPath.signIn);
+                  Get.toNamed(AppRoutes.logIn);
                 },
               ),
             ],

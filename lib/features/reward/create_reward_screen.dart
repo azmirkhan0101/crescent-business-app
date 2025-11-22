@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:go_router/go_router.dart';
-import 'package:organization/core/routes/route_path.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 import 'package:organization/features/reward/widget/expiry_limit_section.dart';
 import 'package:organization/features/reward/widget/redemption_methods_section.dart';
 import 'package:organization/features/reward/widget/upload_image_section.dart';
 import 'package:organization/features/widgets/custom_text.dart';
 import 'package:organization/utils/app_text_styles.dart';
+import '../../routes/app_pages.dart';
 import '../../utils/app_color.dart';
 import '../../utils/app_text.dart';
 import '../on_boarding/widgets/under_button_widget.dart';
@@ -22,8 +23,7 @@ class CreateRewardScreen extends StatelessWidget {
 
       bottomNavigationBar: UnderButtonWidget(
         onPressed: () {
-          context.push(RoutesPath.editReward);
-
+          Get.toNamed(AppRoutes.editReward);
         },
         buttonText: "Create",
       ),
@@ -34,7 +34,7 @@ class CreateRewardScreen extends StatelessWidget {
         leading: IconButton(
           icon: const Icon(Icons.arrow_back_ios, color: Colors.black, size: 20),
           onPressed: () {
-            context.pop();
+            Get.back();
           },
         ),
         title: Text(

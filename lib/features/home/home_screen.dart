@@ -40,6 +40,7 @@ class HomeScreen extends StatelessWidget {
 
                 /// home card
                 Row(
+                  spacing: 5.w,
                   children: [
                     Expanded(
                       child: AnalyticsCardWidget(
@@ -52,7 +53,6 @@ class HomeScreen extends StatelessWidget {
                         bottomEndText: '40.2%',
                       ),
                     ),
-                    SizedBox(width: 12.w),
                     Expanded(
                       child: HomeCardWidget(
                         topIcon: AssetsPath.starEmphasisIcon,

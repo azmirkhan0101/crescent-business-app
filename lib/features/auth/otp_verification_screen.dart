@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:go_router/go_router.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:organization/features/auth/widgets/custom_auth_appbar.dart';
 import 'package:organization/features/auth/widgets/pin_field_widget.dart';
@@ -9,8 +10,8 @@ import '../../../utils/app_color.dart';
 import '../../../utils/app_size.dart';
 import '../../../utils/app_text.dart';
 import '../../../utils/app_text_styles.dart';
-import '../../core/routes/route_path.dart';
 import '../../core/show_snackbar.dart';
+import '../../routes/app_pages.dart';
 import '../widgets/custom_button_widget.dart';
 
 class OtpVerificationScreen extends StatelessWidget {
@@ -85,7 +86,7 @@ class OtpVerificationScreen extends StatelessWidget {
               ),
               text: AppText.continueText,
               onPressed: () {
-                context.push(RoutesPath.resetPassword);
+                Get.toNamed(AppRoutes.resetPassword);
               },
             ),
 

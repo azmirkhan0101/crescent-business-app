@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:go_router/go_router.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 import 'package:google_fonts/google_fonts.dart';
-import '../../core/routes/route_path.dart';
 import '../../core/toast_message.dart';
+import '../../routes/app_pages.dart';
 import '../../utils/app_color.dart';
 import '../../utils/app_size.dart';
 import '../../utils/app_text.dart';
@@ -100,8 +101,7 @@ class ForgotPasswordScreen extends StatelessWidget {
                 text: AppText.continueText,
                 backgroundColor: AppColors.primaryColor,
                 onPressed: () {
-                  context.push(RoutesPath.otpVerify);
-
+                  Get.toNamed(AppRoutes.mainNav);
                 },
               ),
               SizedBox(height: AppSizes.paddingMedium),

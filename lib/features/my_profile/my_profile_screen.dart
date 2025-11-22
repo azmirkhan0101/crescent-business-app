@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:go_router/go_router.dart';
-import 'package:organization/core/routes/route_path.dart';
+import 'package:get/get.dart';
 import 'package:organization/features/profile/widget/business_profile_image_widget.dart';
 import 'package:organization/features/widgets/custom_text.dart';
+import 'package:organization/routes/app_pages.dart';
 import 'package:organization/utils/app_color.dart';
 import 'package:organization/utils/assets_path.dart';
 
@@ -27,7 +27,7 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
         leading: IconButton(
           icon: Icon(Icons.arrow_back_ios, size: 20.w),
           onPressed: () {
-            context.pop();
+            Get.back();
           },
         ),
         title: CustomText(
@@ -97,9 +97,7 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
                   title: "Notification",
                   icon: Icons.notifications_none_outlined,
                   onTap: () {
-
-                    context.push(RoutesPath.notification);
-
+                    Get.toNamed(AppRoutes.notification);
                   },
                 ),
 
@@ -107,7 +105,7 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
                   title: "Change Password",
                   icon: Icons.lock_outline,
                   onTap: () {
-                    context.push(RoutesPath.changePassword);
+                    Get.toNamed(AppRoutes.changePassword);
                   },
                 ),
 
@@ -115,7 +113,7 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
                   title: "Subscriptions",
                   icon: Icons.subscriptions_outlined,
                   onTap: () {
-                    context.push(RoutesPath.subscription);
+                    Get.toNamed(AppRoutes.subscription);
                   },
                 ),
                 _buildProfileOption(
@@ -136,7 +134,7 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
             height: 56,
             child: OutlinedButton(
               onPressed: () {
-                context.push(RoutesPath.signIn);
+                Get.toNamed(AppRoutes.logIn);
               },
               style: OutlinedButton.styleFrom(
                 shape: RoundedRectangleBorder(

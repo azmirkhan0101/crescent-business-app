@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:go_router/go_router.dart';
-import 'package:organization/core/routes/route_path.dart';
+import 'package:get/get.dart';
 import 'package:organization/features/profile/widget/business_profile_image_widget.dart';
 import 'package:organization/features/profile/widget/location_widget.dart';
 import 'package:organization/features/profile/widget/profile_heading_text_widget.dart';
@@ -9,6 +8,7 @@ import 'package:organization/features/widgets/custom_asset_image.dart';
 import 'package:organization/features/widgets/custom_text.dart';
 import 'package:organization/utils/app_color.dart';
 import 'package:organization/utils/assets_path.dart';
+import '../../routes/app_pages.dart';
 import '../../utils/app_size.dart';
 import '../../utils/app_text.dart';
 import '../../utils/app_text_styles.dart';
@@ -31,7 +31,7 @@ class EditProfileScreen extends StatelessWidget {
         leading: IconButton(
           icon: Icon(Icons.arrow_back_ios, size: 20.w),
           onPressed: () {
-            context.pop();
+            Get.back();
           },
         ),
         title:
@@ -80,7 +80,7 @@ class EditProfileScreen extends StatelessWidget {
                 right: 0,
                 child:GestureDetector(
                   onTap: (){
-                    context.push(RoutesPath.uploadLogo);
+                    Get.toNamed(AppRoutes.uploadLogo);
                   },
                   child: Container(
                     padding: EdgeInsets.all(8.w),

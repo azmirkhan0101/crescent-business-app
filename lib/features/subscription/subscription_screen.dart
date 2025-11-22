@@ -2,8 +2,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:get/get.dart';
 import 'package:get/get_utils/get_utils.dart';
-import 'package:go_router/go_router.dart';
 import 'package:organization/features/widgets/custom_text.dart';
 import 'package:organization/utils/app_color.dart';
 
@@ -475,7 +475,6 @@ class _SubscriptionPageState extends State<SubscriptionPage> {
   void _handleSubscribe(BuildContext context) {
     // TODO: Implement subscription logic based on selected plan
     final planName = _selectedPlan == 0 ? 'Free Plan' : '6 Months Plan';
-
-    GoRouter.of(context).pop();
+    Get.back();
   }
 }

@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:go_router/go_router.dart';
+import 'package:get/get.dart';
+import 'package:organization/controller/auth/sign_in_controller.dart';
 import 'package:organization/features/on_boarding/widgets/category_card_widget.dart';
 import 'package:organization/features/on_boarding/widgets/onboarding_appbar.dart';
 import 'package:organization/features/on_boarding/widgets/under_button_widget.dart';
+import 'package:organization/routes/app_pages.dart';
 import 'package:organization/utils/app_color.dart';
 import 'package:organization/utils/app_text.dart';
-import '../../core/routes/route_path.dart';
 import '../widgets/heading_text_widget.dart';
 import 'data/models/category_item_model.dart';
 
 class CategorySelectionScreen extends StatefulWidget {
-  const CategorySelectionScreen({super.key});
 
   @override
   State<CategorySelectionScreen> createState() =>
@@ -19,6 +19,7 @@ class CategorySelectionScreen extends StatefulWidget {
 }
 
 class _CategorySelectionScreenState extends State<CategorySelectionScreen> {
+  final SignInController controller = Get.find<SignInController>();
   final List<CategoryModel> categories = CategoryModel.sampleList;
   int? selectedIndex;
 
@@ -85,7 +86,8 @@ class _CategorySelectionScreenState extends State<CategorySelectionScreen> {
       bottomNavigationBar: UnderButtonWidget(
         onPressed: () {
           if (selectedIndex != null) {
-            context.push(RoutesPath.businessInfo);
+            controller.businessModel.category = categories[selectedIndex!].title;
+            Get.toNamed(AppRoutes.businessInfo);
           } else {
             ScaffoldMessenger.of(context).showSnackBar(
               const SnackBar(content: Text("Please select a category")),

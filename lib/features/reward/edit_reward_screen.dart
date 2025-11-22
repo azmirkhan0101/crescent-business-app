@@ -1,22 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:go_router/go_router.dart';
-
+import 'package:get/get.dart';
 import 'package:organization/features/reward/widget/expiry_limit_section.dart';
 import 'package:organization/features/reward/widget/redemption_methods_section.dart';
-
 import 'package:organization/features/widgets/custom_card_widget.dart';
-
 import 'package:organization/utils/app_text_styles.dart';
 import 'package:organization/utils/assets_path.dart';
 
+import '../../routes/app_pages.dart';
 import '../../utils/app_color.dart';
-
 import '../../utils/app_text.dart';
 import '../on_boarding/widgets/under_button_widget.dart';
-
 import '../widgets/custom_button_widget.dart';
-
 import '../widgets/custom_text_field_widget.dart';
 import '../widgets/text_field_title_widget.dart';
 
@@ -38,8 +33,7 @@ class EditRewardScreen extends StatelessWidget {
         leading: IconButton(
           icon: const Icon(Icons.arrow_back_ios, color: Colors.black, size: 20),
           onPressed: () {
-            context.pop();
-
+            Get.toNamed(AppRoutes.mainNav);
           },
         ),
         title: Text(
@@ -94,32 +88,34 @@ class EditRewardScreen extends StatelessWidget {
                     width: 40.w,
                   ),
                 ),
-                SizedBox(width: 8.w),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    CustomButton(
-                      buttonTextStyle: AppTextStyle.buttonTextStyle.copyWith(
-                        fontSize: 12.sp,
-                        fontWeight: FontWeight.w600,
+                SizedBox(width: 3.w),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      CustomButton(
+                        buttonTextStyle: AppTextStyle.buttonTextStyle.copyWith(
+                          fontSize: 12.sp,
+                          fontWeight: FontWeight.w600,
+                        ),
+
+                        backgroundColor: Color(0x26C08FFF),
+                        width: double.infinity,
+                        text: "Change Image",
+                        onPressed: () {},
                       ),
-
-                      backgroundColor: Color(0x26C08FFF),
-
-                      text: "Change Image",
-                      onPressed: () {},
-                    ),
-                    SizedBox(width: 8.h),
-                    TextButton(
-                      onPressed: () {},
-                      child: Text(
-                        "delete image",
-                        style: AppTextStyle.mediumStyle.copyWith(
-                          color: Color(0xFFF0323C),
+                      SizedBox(width: 8.h),
+                      TextButton(
+                        onPressed: () {},
+                        child: Text(
+                          "delete image",
+                          style: AppTextStyle.mediumStyle.copyWith(
+                            color: Color(0xFFF0323C),
+                          ),
                         ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ],
             ),

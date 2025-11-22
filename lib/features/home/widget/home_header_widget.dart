@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:go_router/go_router.dart';
-import 'package:organization/core/routes/route_path.dart';
+import 'package:get/get.dart';
 import 'package:organization/features/widgets/custom_asset_image.dart';
+import 'package:organization/routes/app_pages.dart';
 import '../../../utils/app_text_styles.dart';
 import '../../../utils/assets_path.dart';
 
@@ -20,7 +20,8 @@ class HomeHeaderWidget extends StatelessWidget {
         children: [
           GestureDetector(
             onTap: (){
-              context.push(RoutesPath.myProfile);
+              //TODO
+              Get.toNamed(AppRoutes.myProfile);
             },
 
             child: Row(

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:go_router/go_router.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:organization/features/auth/widgets/custom_auth_appbar.dart';
 import 'package:organization/features/auth/widgets/password_requirement_widget.dart';
@@ -9,7 +10,7 @@ import 'package:organization/utils/app_text.dart';
 import 'package:organization/utils/assets_path.dart';
 import '../../../utils/app_color.dart';
 import '../../../utils/app_size.dart';
-import '../../core/routes/route_path.dart';
+import '../../routes/app_pages.dart';
 import '../widgets/custom_button_widget.dart';
 import '../widgets/custom_text_field_widget.dart';
 import '../widgets/heading_text_widget.dart';
@@ -101,8 +102,7 @@ class ResetPasswordScreen extends StatelessWidget {
                   color: AppColors.buttonTextColor,fontSize: 18.sp,fontWeight: FontWeight.w700),
               text: AppText.resetPasswordButton,
               onPressed: () {
-                context.push(RoutesPath.categorySelection);
-
+                Get.toNamed(AppRoutes.categorySelection);
               },
             ),
             SizedBox(height: AppSizes.paddingMedium),
@@ -110,7 +110,7 @@ class ResetPasswordScreen extends StatelessWidget {
               firstText: AppText.changedYourMind,
               lastText: AppText.login,
               onTap: () {
-               context.push(RoutesPath.signIn);
+               Get.toNamed(AppRoutes.logIn);
               },
             ),
           ],

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:go_router/go_router.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:organization/features/auth/widgets/custom_auth_appbar.dart';
 import 'package:organization/features/auth/widgets/rich_text_widget.dart';
@@ -8,22 +9,22 @@ import 'package:organization/utils/app_text.dart';
 import 'package:organization/utils/assets_path.dart';
 import '../../../utils/app_color.dart';
 import '../../../utils/app_size.dart';
-import '../../core/routes/route_path.dart';
+import '../../routes/app_pages.dart';
 import '../widgets/custom_button_widget.dart';
 import '../widgets/custom_text.dart';
 import '../widgets/custom_text_field_widget.dart';
 import '../widgets/heading_text_widget.dart';
 import '../widgets/text_field_title_widget.dart';
 
-class SignInScreen extends StatefulWidget {
-  const SignInScreen({super.key});
+class LoginScreen extends StatefulWidget {
+  const LoginScreen({super.key});
 
   @override
-  State<SignInScreen> createState() => _SignInScreenState();
+  State<LoginScreen> createState() => _LoginScreenState();
 }
 
-class _SignInScreenState extends State<SignInScreen> {
-  // final SignInController controller = Get.find<SignInController>();
+class _LoginScreenState extends State<LoginScreen> {
+   //final SignInController controller = Get.find<SignInController>();
   final formKey = GlobalKey<FormState>();
   bool isChecked = true;
   @override
@@ -104,7 +105,9 @@ class _SignInScreenState extends State<SignInScreen> {
                  ),
 
                   GestureDetector(
-                    onTap: () => context.push(RoutesPath.forgotPassword),
+                    onTap: () {
+                      Get.toNamed(AppRoutes.forgotPassword);
+                    },
                     child: IntrinsicWidth(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -143,7 +146,8 @@ class _SignInScreenState extends State<SignInScreen> {
               CustomButton(
                 text: "Login",
                 onPressed: () {
-                  context.push(RoutesPath.home);
+                  //TODO: validate credentials and AUTH
+                  Get.toNamed(AppRoutes.mainNav);
                 },
                 buttonTextStyle: GoogleFonts.familjenGrotesk(
                   color: AppColors.buttonTextColor,
@@ -156,7 +160,7 @@ class _SignInScreenState extends State<SignInScreen> {
                 firstText: AppText.dontHaveAccount,
                 lastText: AppText.signup,
                 onTap: () {
-                  context.push(RoutesPath.categorySelection);
+                  Get.toNamed(AppRoutes.categorySelection);
                 },
               ),
             ],

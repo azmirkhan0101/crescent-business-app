@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:oktoast/oktoast.dart';
-import 'binding/controller_binder.dart';
-import 'core/routes/app_routes.dart';
+import 'package:organization/routes/app_pages.dart';
+import 'binding/initial_binding.dart';
 
 
 class MyApp extends StatelessWidget {
@@ -17,12 +17,11 @@ class MyApp extends StatelessWidget {
         minTextAdapt: true,
         splitScreenMode: true,
         builder: (context, child) {
-          return GetMaterialApp.router(
-        //    initialBinding: ControllerBinding(),
+          return GetMaterialApp(
             debugShowCheckedModeBanner: false,
-            routerDelegate: AppRoutes.router.routerDelegate,
-            routeInformationParser: AppRoutes.router.routeInformationParser,
-            routeInformationProvider: AppRoutes.router.routeInformationProvider,
+            initialBinding: InitialBinding(),
+            getPages: AppPages.pages,
+            initialRoute: AppRoutes.getStarted,
           );
         },
       ),

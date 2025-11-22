@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:go_router/go_router.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:organization/features/profile/widget/business_profile_image_widget.dart';
 import 'package:organization/features/profile/widget/over_view_tabs_widget.dart';
@@ -9,7 +10,8 @@ import 'package:organization/features/widgets/custom_text.dart';
 import 'package:organization/utils/app_color.dart';
 import 'package:organization/utils/app_text_styles.dart';
 import 'package:organization/utils/assets_path.dart';
-import '../../core/routes/route_path.dart';
+
+import '../../routes/app_pages.dart';
 
 class BusinessProfileScreen extends StatefulWidget {
   const BusinessProfileScreen({super.key});
@@ -52,7 +54,7 @@ class _BusinessProfileScreenState extends State<BusinessProfileScreen>
         actions: [
           GestureDetector(
             onTap: () {
-              context.push(RoutesPath.editProfile);
+              Get.toNamed(AppRoutes.editProfile);
             },
             child: Container(
               width: 40.w,

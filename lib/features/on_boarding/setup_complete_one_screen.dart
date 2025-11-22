@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:go_router/go_router.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:organization/features/widgets/custom_asset_image.dart';
 import 'package:organization/features/widgets/info_card_widget.dart';
+import 'package:organization/routes/app_pages.dart';
 import 'package:organization/utils/assets_path.dart';
-import '../../core/routes/route_path.dart';
 import '../../utils/app_color.dart';
 import '../../utils/app_text.dart';
 import '../../utils/app_text_styles.dart';
@@ -41,7 +41,7 @@ class BusinessSetupCompleteOneScreen extends StatelessWidget {
                       const SizedBox(),
                       GestureDetector(
                         onTap: () {
-                          context.push(RoutesPath.home);
+                          Get.toNamed(AppRoutes.mainNav);
                         },
                         child: Container(
                           padding: EdgeInsets.all(8.w),
@@ -274,7 +274,7 @@ class BusinessSetupCompleteOneScreen extends StatelessWidget {
                   fontWeight: FontWeight.w700,
                 ),
                 onPressed: () {
-                  context.go(RoutesPath.setupComplete);
+                  Get.toNamed(AppRoutes.setupComplete);
                 },
               ),
             ),

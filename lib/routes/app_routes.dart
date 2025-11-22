@@ -1,6 +1,11 @@
-class RoutesPath {
+part of 'app_pages.dart';
+
+class AppRoutes {
+
+  AppRoutes._();
+
   static const String getStarted = '/get-started';
-  static const String signIn = '/sign-in';
+  static const String logIn = '/log-in';
   static const String resetPassword = '/reset-password';
   static const String otpVerify = '/otp-verify';
   static const String forgotPassword = '/forgot-password';
@@ -27,11 +32,13 @@ class RoutesPath {
   // Main Navigation (Bottom Nav parent)
   static const String mainNav = '/main-nav';
 
+ static const String reward = '/reward';
+
+ static const String editProfile = '/edit-profile';
+
   // Bottom Nav items
-  static const String home = '/home';
-  static const String analytics = '/analytics';
-  static const String redeemScanner = '/redeem-scanner';
-  static const String reward = '/reward';
-  static const String businessProfile = '/business-profile';
-  static const String editProfile = '/edit-profile';
+  // static const String home = '/home';
+  // static const String analytics = '/analytics';
+  // static const String redeemScanner = '/redeem-scanner';
+  // static const String businessProfile = '/business-profile';
 }

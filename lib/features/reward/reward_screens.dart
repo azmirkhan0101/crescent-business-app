@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:go_router/go_router.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:organization/core/routes/route_path.dart';
 import 'package:organization/features/widgets/custom_asset_image.dart';
 import 'package:organization/features/widgets/custom_button_widget.dart';
 import 'package:organization/utils/app_color.dart';
 import 'package:organization/utils/app_text.dart';
 import 'package:organization/utils/app_text_styles.dart';
 import 'package:organization/utils/assets_path.dart';
+
+import '../../routes/app_pages.dart';
 
 class RewardScreens extends StatelessWidget {
   const RewardScreens({super.key});
@@ -29,7 +30,7 @@ class RewardScreens extends StatelessWidget {
             padding: EdgeInsets.only(right: 16.w), // right spacing
             child: GestureDetector(
               onTap: () {
-                context.push(RoutesPath.createReward);
+                Get.toNamed(AppRoutes.mainNav);
               },
 
               child: Container(
@@ -91,7 +92,7 @@ class RewardScreens extends StatelessWidget {
                 ],
               ),
               onPressed: () {
-                context.push(RoutesPath.tabScreen);
+                Get.toNamed(AppRoutes.tabScreen);
               },
               text: AppText.continueText,
               buttonTextStyle: GoogleFonts.familjenGrotesk(
