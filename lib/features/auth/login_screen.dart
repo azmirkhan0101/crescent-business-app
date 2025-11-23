@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:organization/controller/auth/login_controller.dart';
 import 'package:organization/features/auth/widgets/custom_auth_appbar.dart';
 import 'package:organization/features/auth/widgets/rich_text_widget.dart';
 import 'package:organization/utils/app_text.dart';
 import 'package:organization/utils/assets_path.dart';
+
 import '../../../utils/app_color.dart';
 import '../../../utils/app_size.dart';
 import '../../routes/app_pages.dart';
@@ -24,9 +25,11 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-   //final SignInController controller = Get.find<SignInController>();
+
+  final LoginController controller = Get.find<LoginController>();
   final formKey = GlobalKey<FormState>();
   bool isChecked = true;
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -52,24 +55,24 @@ class _LoginScreenState extends State<LoginScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    /// Email
+                    // Email
                     TextFieldTitleWidget(text: AppText.email),
                     SizedBox(height: AppSizes.paddingSmallH),
                     CustomTextField(
                       hintText: "Enter Email Address",
                       prefixImagePath: AssetsPath.mailIcon,
-                      //  onChanged: (val) => controller.email.value = val,
+                      controller: controller.emailController,
                     ),
                     SizedBox(height: 10.h),
 
-                    /// Password
+                    // Password
                     TextFieldTitleWidget(text: AppText.password),
                     SizedBox(height: AppSizes.paddingSmallH),
                     CustomTextField(
                       hintText: "**********",
                       prefixImagePath: AssetsPath.lockIcon,
                       suffixImagePath: AssetsPath.eyeIcon,
-                      // onChanged: (val) => controller.password.value = val,
+                      controller: controller.passwordController,
                     ),
                   ],
                 ),
@@ -98,7 +101,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             language: false,
                             fontWeight: FontWeight.w400,
                             color: AppColors.blackTextColor,
-                            fontSize: 14.sp,
+                            fontSize: 12.sp,
                           ),
                         ],
                       ),
@@ -146,8 +149,7 @@ class _LoginScreenState extends State<LoginScreen> {
               CustomButton(
                 text: "Login",
                 onPressed: () {
-                  //TODO: validate credentials and AUTH
-                  Get.toNamed(AppRoutes.mainNav);
+                  controller.login();
                 },
                 buttonTextStyle: GoogleFonts.familjenGrotesk(
                   color: AppColors.buttonTextColor,

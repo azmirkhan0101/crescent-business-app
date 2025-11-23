@@ -49,6 +49,7 @@ dependencies:
   get_storage: ^2.1.1
   oktoast: ^3.4.0
   flutter_svg: ^2.2.2
+  http: ^1.6.0
 
 
 

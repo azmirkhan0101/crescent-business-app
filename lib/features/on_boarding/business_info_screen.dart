@@ -4,7 +4,6 @@ import 'package:get/get.dart';
 import 'package:organization/controller/auth/sign_in_controller.dart';
 import 'package:organization/features/on_boarding/widgets/onboarding_appbar.dart';
 import 'package:organization/features/on_boarding/widgets/under_button_widget.dart';
-import 'package:organization/routes/app_pages.dart';
 import 'package:organization/utils/app_text.dart';
 
 import '../../../utils/app_size.dart';
@@ -15,13 +14,9 @@ import '../widgets/text_field_title_widget.dart';
 class BusinessInfoScreen extends StatelessWidget {
 
   final SignInController controller = Get.find<SignInController>();
-  static const String categoryTitleKey = "category-title-key";
-
 
   @override
   Widget build(BuildContext context) {
-
-    String categoryTitle = controller.businessModel.category!;
 
     return Scaffold(
       backgroundColor: const Color(0xFFF7F7F7),
@@ -40,14 +35,14 @@ class BusinessInfoScreen extends StatelessWidget {
 
             SizedBox(height: 30.h),
 
-            /// heading Text
+            //heading Text
             HeadingTextWidget(
               title: AppText.businessInfoTitle,
               subTitle: AppText.businessInfoSubtitle,
             ),
             SizedBox(height: 50.h),
 
-            /// Form fields
+            //Form fields
             Form(
               child: Column(
                 mainAxisSize: MainAxisSize.min,
@@ -56,17 +51,26 @@ class BusinessInfoScreen extends StatelessWidget {
                   //name
                   TextFieldTitleWidget(text: AppText.name),
                   SizedBox(height: AppSizes.paddingSmallH),
-                  CustomTextField(hintText: AppText.enterName),
+                  CustomTextField(
+                      hintText: AppText.enterName,
+                    controller: controller.nameController,
+                  ),
                   SizedBox(height: 16.h),
                   // tagline
                   TextFieldTitleWidget(text: AppText.tagline),
                   SizedBox(height: AppSizes.paddingSmallH),
-                  CustomTextField(hintText: AppText.enterTagline),
+                  CustomTextField(
+                      hintText: AppText.enterTagline,
+                    controller: controller.taglineController,
+                  ),
                   SizedBox(height: 16.h),
                   //description
                   TextFieldTitleWidget(text: AppText.enterDescription),
                   SizedBox(height: AppSizes.paddingSmallH),
-                  CustomTextField(hintText: AppText.description, maxLines: 4),
+                  CustomTextField(
+                      hintText: AppText.description, maxLines: 4,
+                    controller: controller.descriptionController,
+                  ),
                 ],
               ),
             ),
@@ -75,7 +79,7 @@ class BusinessInfoScreen extends StatelessWidget {
       ),
       bottomNavigationBar: UnderButtonWidget(
         onPressed: () {
-          Get.toNamed(AppRoutes.accountCreation);
+          controller.validateBusinessInfo();
         },
         buttonText: AppText.continueText,
       ),

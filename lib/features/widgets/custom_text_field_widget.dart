@@ -11,7 +11,7 @@ class CustomTextField extends StatefulWidget {
     super.key,
     this.inputFormatters,
     this.onFieldSubmitted,
-    this.textEditingController,
+    this.controller,
     this.focusNode,
     this.keyboardType = TextInputType.text,
     this.textInputAction = TextInputAction.next,
@@ -36,7 +36,7 @@ class CustomTextField extends StatefulWidget {
     this.suffixImagePath,
   });
 
-  final TextEditingController? textEditingController;
+  final TextEditingController? controller;
   final FocusNode? focusNode;
   final TextInputType keyboardType;
   final TextInputAction textInputAction;
@@ -79,7 +79,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
       inputFormatters: widget.inputFormatters,
       onFieldSubmitted: widget.onFieldSubmitted,
       readOnly: widget.readOnly,
-      controller: widget.textEditingController,
+      controller: widget.controller,
       focusNode: widget.focusNode,
       maxLength: widget.maxLength,
       keyboardType: widget.keyboardType,

@@ -38,6 +38,7 @@ class AppColors {
   );
 
   static const green = Color(0xFF1DB954);
+  static const successGreen = Color(0xFF34C724);
   static const gray = Color(0xFF808080);
 
   static const websiteBg = Color(0xFFF3E8FF);
@@ -49,6 +50,7 @@ class AppColors {
 
   static const Color black_02 = Color(0xff181818);
   static const Color red = Color(0xffFF0000);
+  static const Color errorRed = Color(0xFFF54A45);
 
   static const Color black_80 = Color(0xff181818);
   static const Color black_03 = Color(0xff171717);

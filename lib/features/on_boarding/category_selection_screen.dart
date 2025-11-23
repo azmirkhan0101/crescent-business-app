@@ -82,7 +82,7 @@ class _CategorySelectionScreenState extends State<CategorySelectionScreen> {
         ),
       ),
 
-      /// Bottom Button
+      // Bottom Button
       bottomNavigationBar: UnderButtonWidget(
         onPressed: () {
           if (selectedIndex != null) {
