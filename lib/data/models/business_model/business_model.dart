@@ -28,5 +28,21 @@ class BusinessModel{
     this.locations
   });
 
+  Map<String, dynamic> toJson() {
+    return {
+      "email": email,
+      "password": password,
+      "category": category,
+      "name": name,
+      "tagLine": tagline,
+      "description": description,
+      "businessPhoneNumber": businessPhoneNumber,
+      "businessEmail": businessEmail,
+      "businessWebsite": businessWebsite,
+      "locations": locations,
+      "role": "BUSINESS",
+    };
+  }
+
 
 }

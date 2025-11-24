@@ -6,6 +6,7 @@ import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:organization/data/models/business_model/business_model.dart';
 import 'package:organization/routes/app_pages.dart';
+import 'package:organization/utils/api_endpoints.dart';
 
 import '../../utils/app_color.dart';
 
@@ -32,6 +33,9 @@ class SignUpController extends GetxController {
       );
       return;
     }
+    businessModel.name = nameController.text.trim();
+    businessModel.tagline = taglineController.text.trim();
+    businessModel.description = descriptionController.text.trim();
     Get.toNamed(AppRoutes.accountCreation);
   }
 
@@ -69,9 +73,6 @@ class SignUpController extends GetxController {
   //VALIDATE ALL BUSINESS CONTACT INFORMATION
   void validateBusinessContactInfo(){
     if( !validatePhoneNumber() || !validateBusinessEmail() || !validateWebsite() ){
-      if( !validatePhoneNumber() ) print("Phone errrrrrrrrrrrrr");
-      if( !validateBusinessEmail() ) print("Email errrrrrrrrrrrrr");
-      if( !validateWebsite() ) print("Website errrrrrrrrrrrrr");
       showSnackBar(
           title: "Invalid information!",
           message: "Please provide valid business contact information.",
@@ -96,57 +97,9 @@ class SignUpController extends GetxController {
       );
       return;
     }
+    businessModel.email = emailController.text.trim();
+    businessModel.password = passwordController.text.trim();
     Get.toNamed(AppRoutes.uploadLogo);
-  }
-  void signUp() {
-
-  }
-
-  Future<void> signupBusiness({
-    required String role,
-    required String name,
-    required String category,
-    required String tagLine,
-    required String description,
-    required String businessPhoneNumber,
-    required String businessEmail,
-    required String businessWebsite,
-    required List<String> locations,
-    File? businessImage,
-  }) async {
-    final url = Uri.parse("http://10.10.20.42:5000/api/v1/auth/create-Profile");
-
-    var request = http.MultipartRequest("POST", url);
-
-    // ---------- TEXT FIELDS ----------
-    request.fields["role"] = role;
-    request.fields["name"] = name;
-    request.fields["category"] = category;
-    request.fields["tagLine"] = tagLine;
-    request.fields["description"] = description;
-    request.fields["businessPhoneNumber"] = businessPhoneNumber;
-    request.fields["businessEmail"] = businessEmail;
-    request.fields["businessWebsite"] = businessWebsite;
-
-    // ---------- LIST<String> AS JSON ----------
-    request.fields["locations"] = jsonEncode(locations);
-    // example: ["Banani","Uttara"]
-
-    // ---------- OPTIONAL IMAGE ----------
-    if (businessImage != null) {
-      request.files.add(
-        await http.MultipartFile.fromPath(
-          'logo', // field name from backend
-          businessImage.path,
-        ),
-      );
-    }
-    // ---------- SEND REQUEST ----------
-    var streamedResponse = await request.send();
-    var response = await http.Response.fromStream(streamedResponse);
-
-    print("Status: ${response.statusCode}");
-    print("Response: ${response.body}");
   }
 
   showSnackBar({required String title, required String message, required Color backgroundColor}){
@@ -156,6 +109,48 @@ class SignUpController extends GetxController {
         backgroundColor: backgroundColor,
         colorText: AppColors.white
     );
+  }
+
+  Future<void> signup() async {
+
+    final url = Uri.parse( ApiEndpoints.baseUrl + ApiEndpoints.signup );
+    File? logo = businessModel.logo;
+
+    // Convert model to JSON string (because backend expects "data" as string)
+    final jsonString = jsonEncode(businessModel.toJson());
+    print("Json Of Model: ${jsonString}");
+
+    // Create multipart request
+    var request = http.MultipartRequest("POST", url);
+
+    // Add data field (this is a text field in form-data)
+    request.fields["data"] = jsonString;
+
+    // Add profileImage (optional)
+    if (logo != null) {
+      request.files.add(
+        await http.MultipartFile.fromPath(
+          "coverImage",
+          logo.path,
+        ),
+      );
+    } else {
+      // If backend allows sending null (most do), send empty field
+      request.fields["coverImage"] = "";
+    }
+
+    // Send request
+    var response = await request.send();
+    var responseBody = await response.stream.bytesToString();
+    print("status codeeeeeeeee: ${response.statusCode}");
+    print("Response: $responseBody");
+
+    if (response.statusCode == 200 || response.statusCode == 201) {
+      print("Signup Success: $responseBody");
+      Get.toNamed(AppRoutes.otpVerify);
+    } else {
+      print("Signup Failed: ${response.statusCode}");
+    }
   }
 
   @override

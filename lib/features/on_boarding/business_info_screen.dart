@@ -51,6 +51,7 @@ class BusinessInfoScreen extends StatelessWidget {
                   //name
                   TextFieldTitleWidget(text: AppText.name),
                   SizedBox(height: AppSizes.paddingSmallH),
+                  //NAME
                   CustomTextField(
                       hintText: AppText.enterName,
                     controller: controller.nameController,
@@ -59,6 +60,7 @@ class BusinessInfoScreen extends StatelessWidget {
                   // tagline
                   TextFieldTitleWidget(text: AppText.tagline),
                   SizedBox(height: AppSizes.paddingSmallH),
+                  //TAGLINE
                   CustomTextField(
                       hintText: AppText.enterTagline,
                     controller: controller.taglineController,
