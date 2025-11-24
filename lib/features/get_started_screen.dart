@@ -107,7 +107,7 @@ class GetStartedScreen extends StatelessWidget {
           ),
         ),
 
-        ///button and login text
+        ///button and auth text
         bottomNavigationBar: Padding(
           padding: EdgeInsets.only(bottom: 50.h),
           child: Column(

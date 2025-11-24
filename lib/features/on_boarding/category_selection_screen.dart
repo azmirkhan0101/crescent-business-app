@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:organization/controller/auth/sign_in_controller.dart';
+import 'package:organization/controller/auth/sign_up_controller.dart';
 import 'package:organization/features/on_boarding/widgets/category_card_widget.dart';
 import 'package:organization/features/on_boarding/widgets/onboarding_appbar.dart';
 import 'package:organization/features/on_boarding/widgets/under_button_widget.dart';
@@ -19,7 +19,7 @@ class CategorySelectionScreen extends StatefulWidget {
 }
 
 class _CategorySelectionScreenState extends State<CategorySelectionScreen> {
-  final SignInController controller = Get.find<SignInController>();
+  final SignUpController controller = Get.find<SignUpController>();
   final List<CategoryModel> categories = CategoryModel.sampleList;
   int? selectedIndex;
 

@@ -9,15 +9,20 @@ import 'package:organization/routes/app_pages.dart';
 
 import '../../utils/app_color.dart';
 
-class SignInController extends GetxController {
+class SignUpController extends GetxController {
   final TextEditingController nameController = TextEditingController();
   final TextEditingController taglineController = TextEditingController();
   final TextEditingController descriptionController = TextEditingController();
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
+  final TextEditingController businessPhoneController = TextEditingController();
+  final TextEditingController businessEmailController = TextEditingController();
+  final TextEditingController businessWebsiteController = TextEditingController();
+  final TextEditingController locationSearchController = TextEditingController();
 
   BusinessModel businessModel = BusinessModel();
 
+  //VALIDATE INFORMATION OF BUSINESS INFO
   void validateBusinessInfo(){
     if( nameController.text.trim().isEmpty || taglineController.text.trim().isEmpty || descriptionController.text.trim().isEmpty ){
       showSnackBar(
@@ -30,22 +35,71 @@ class SignInController extends GetxController {
     Get.toNamed(AppRoutes.accountCreation);
   }
 
-  bool get isValid =>
-      emailController.text.trim().isNotEmpty &&
-          passwordController.text.trim().isNotEmpty;
-
-  void signIn(BuildContext context) {
-    if (!isValid) {
-      Get.snackbar(
-        "Error",
-        "Please enter both email and password",
-        snackPosition: SnackPosition.BOTTOM,
-        backgroundColor: Colors.red,
-        colorText: Colors.white,
+  //VALIDATE INFORMATION OF ACCOUNT CREATION- EMAIL, PASSWORD
+  bool isEmailValid() {
+    return RegExp(
+        r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$'
+    ).hasMatch(emailController.text.trim());
+  }
+  bool isPasswordValid() {
+    final regex = RegExp(
+        r'^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[!@#\$&*~?%^()_\-+=<>.,;:{}\[\]|/]).{8,}$'
+    );
+    return regex.hasMatch(passwordController.text.trim());
+  }
+  //BUSINESS PHONE NUMBER VALIDATION
+  bool validatePhoneNumber() {
+    final regex = RegExp(r'^\+?1?\d{9,15}$');  // Supports optional country code and 9-15 digits
+    return regex.hasMatch(businessPhoneController.text.trim());
+  }
+  //BUSINESS PHONE NUMBER VALIDATION
+  bool validateBusinessEmail() {
+    return RegExp(
+        r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$'
+    ).hasMatch(businessEmailController.text.trim());
+  }
+  //BUSINESS WEBSITE VALIDATION
+  bool validateWebsite() {
+    final regex = RegExp(
+      r'^(https?:\/\/)?([a-z0-9-]+\.)+[a-z]{2,6}(\S*)$',
+      caseSensitive: false,
+    );
+    return regex.hasMatch(businessWebsiteController.text.trim());
+  }
+  //VALIDATE ALL BUSINESS CONTACT INFORMATION
+  void validateBusinessContactInfo(){
+    if( !validatePhoneNumber() || !validateBusinessEmail() || !validateWebsite() ){
+      if( !validatePhoneNumber() ) print("Phone errrrrrrrrrrrrr");
+      if( !validateBusinessEmail() ) print("Email errrrrrrrrrrrrr");
+      if( !validateWebsite() ) print("Website errrrrrrrrrrrrr");
+      showSnackBar(
+          title: "Invalid information!",
+          message: "Please provide valid business contact information.",
+          backgroundColor: AppColors.errorRed
       );
       return;
     }
-    Get.toNamed(AppRoutes.mainNav);
+    businessModel.businessPhoneNumber = businessPhoneController.text.trim();
+    businessModel.businessEmail = businessEmailController.text.trim();
+    businessModel.businessWebsite = businessWebsiteController.text.trim();
+    Get.toNamed(AppRoutes.storeLocation);
+  }
+
+
+  //ACCOUNT CREATION CONTINUE CLICK -> VALIDATE INFO -> GO TO BUSINESS LOGO SCREEN
+  void accountCreationContinue(){
+    if( !isEmailValid() || !isPasswordValid() ){
+      showSnackBar(
+          title: "Invalid Email or Password Format!",
+          message: "Please ensure your email is valid and your password meets the specified criteria.",
+          backgroundColor: AppColors.errorRed
+      );
+      return;
+    }
+    Get.toNamed(AppRoutes.uploadLogo);
+  }
+  void signUp() {
+
   }
 
   Future<void> signupBusiness({
@@ -106,8 +160,8 @@ class SignInController extends GetxController {
 
   @override
   void onClose() {
-    emailController.dispose();
-    passwordController.dispose();
+    // emailController.dispose();
+    // passwordController.dispose();
     super.onClose();
   }
 }

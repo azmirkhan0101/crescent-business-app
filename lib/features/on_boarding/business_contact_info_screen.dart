@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:organization/controller/auth/sign_up_controller.dart';
 import 'package:organization/features/on_boarding/widgets/onboarding_appbar.dart';
 import 'package:organization/features/on_boarding/widgets/under_button_widget.dart';
 import 'package:organization/routes/app_pages.dart';
@@ -14,7 +15,8 @@ import '../widgets/heading_text_widget.dart';
 import '../widgets/text_field_title_widget.dart';
 
 class BusinessContactInfoScreen extends StatelessWidget {
-  const BusinessContactInfoScreen({super.key});
+
+  final SignUpController controller = Get.find<SignUpController>();
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +30,14 @@ class BusinessContactInfoScreen extends StatelessWidget {
           children: [
             SizedBox(height: 60.h),
             OnBoardingAppbarWidget(
-              suffix:CustomText(text: AppText.skip,fontSize: 14.sp,color: AppColors.secondaryTextColor,fontWeight: FontWeight.w400,),
+              suffix:GestureDetector(
+                onTap: (){
+                  controller.businessModel.businessPhoneNumber = "";
+                  controller.businessModel.businessEmail = "";
+                  controller.businessModel.businessWebsite = "";
+                  Get.toNamed(AppRoutes.storeLocation);
+                },
+                  child: CustomText(text: AppText.skip,fontSize: 14.sp,color: AppColors.secondaryTextColor,fontWeight: FontWeight.w400,)),
               totalSteps: 6,
               currentStep: 5,
               title: "Contact",
@@ -55,6 +64,7 @@ class BusinessContactInfoScreen extends StatelessWidget {
                   CustomTextField(
                     hintText: AppText.enterBusinessPhoneNumber,
                     prefixImagePath: AssetsPath.callIcon,
+                    controller: controller.businessPhoneController,
                   ),
 
                   //       ),
@@ -63,6 +73,7 @@ class BusinessContactInfoScreen extends StatelessWidget {
                   CustomTextField(
                     hintText: AppText.enterBusinessEmail,
                     prefixImagePath: AssetsPath.mailIcon,
+                    controller: controller.businessEmailController,
                   ),
 
                   TextFieldTitleWidget(text: AppText.website),
@@ -70,6 +81,7 @@ class BusinessContactInfoScreen extends StatelessWidget {
                   CustomTextField(
                     hintText: AppText.enterWebsite,
                     prefixImagePath: AssetsPath.globeIcon,
+                    controller: controller.businessWebsiteController,
                   ),
                 ],
               ),
@@ -81,7 +93,7 @@ class BusinessContactInfoScreen extends StatelessWidget {
       /// continue Button
       bottomNavigationBar: UnderButtonWidget(
         onPressed: () {
-          Get.toNamed(AppRoutes.storeLocation);
+          controller.validateBusinessContactInfo();
         },
         buttonText: AppText.continueText,
       ),

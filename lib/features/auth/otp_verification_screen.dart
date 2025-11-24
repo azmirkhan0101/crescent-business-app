@@ -77,7 +77,7 @@ class OtpVerificationScreen extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            /// Reactive Button
+            //Reactive Button
             CustomButton(
               buttonTextStyle: GoogleFonts.familjenGrotesk(
                 color: AppColors.buttonTextColor,
@@ -86,6 +86,7 @@ class OtpVerificationScreen extends StatelessWidget {
               ),
               text: AppText.continueText,
               onPressed: () {
+                //TODO: VERIFY CODE AND SHOW SNACK OR GO TO RESET PASSWORD SCREEN
                 Get.toNamed(AppRoutes.resetPassword);
               },
             ),
@@ -95,9 +96,10 @@ class OtpVerificationScreen extends StatelessWidget {
               firstText: "Haven’t receive any code?",
               lastText: "Resend Code",
               onTap: () {
+                //TODO: SHOW THIS SNACKBAR AFTER CODE SENT FROM CONTROLLER
                 CustomSnackBar.show(
                   context,
-                  message: "Resend Code",
+                  message: "A verification code has been sent to your email,",
                   icon: Icons.check_circle,
                   backgroundColor: Colors.green,
                 );

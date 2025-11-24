@@ -72,7 +72,7 @@ class ForgotPasswordScreen extends StatelessWidget {
                     TextFieldTitleWidget(text: AppText.email),
                     SizedBox(height: AppSizes.paddingSmallH),
                     CustomTextField(
-                      hintText: AppText.emailText,
+                      hintText: AppText.enterEmail,
                       prefixImagePath: AssetsPath.mailIcon,
                     ),
                   ],
@@ -101,7 +101,7 @@ class ForgotPasswordScreen extends StatelessWidget {
                 text: AppText.continueText,
                 backgroundColor: AppColors.primaryColor,
                 onPressed: () {
-                  Get.toNamed(AppRoutes.mainNav);
+                  Get.toNamed(AppRoutes.otpVerify);
                 },
               ),
               SizedBox(height: AppSizes.paddingMedium),
@@ -109,7 +109,7 @@ class ForgotPasswordScreen extends StatelessWidget {
                 firstText: AppText.dontHaveAccount,
                 lastText: AppText.signup,
                 onTap: () {
-                  Toast.successToast("Sign up screen");
+                  Get.offAllNamed(AppRoutes.categorySelection);
                 },
               ),
             ],

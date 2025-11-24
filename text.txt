@@ -1,2 +1,10 @@
 login email: narole2449@fantastu.com
 login pass: test123@PASS
+
+
+
+
+location screen:
+temporary array for loction listview
+delete button
+location auto search feature

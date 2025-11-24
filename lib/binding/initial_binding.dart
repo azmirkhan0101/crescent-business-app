@@ -1,7 +1,7 @@
 import 'package:get/get.dart';
 import 'package:organization/controller/auth/login_controller.dart';
 import 'package:organization/controller/main_navigation_screen_controller/main_navigation_screen_controller.dart';
-import '../controller/auth/sign_in_controller.dart';
+import '../controller/auth/sign_up_controller.dart';
 import '../controller/auth/forgot_pass_controller.dart';
 import '../controller/auth/otp_verification_controller.dart';
 
@@ -12,8 +12,8 @@ class InitialBinding extends Bindings {
       return MainNavigationScreenController();
     }, fenix: true);
 
-    Get.lazyPut<SignInController>((){
-      return SignInController();
+    Get.lazyPut<SignUpController>((){
+      return SignUpController();
     }, fenix: true);
 
     Get.lazyPut<LoginController>((){

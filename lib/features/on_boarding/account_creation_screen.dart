@@ -5,17 +5,19 @@ import 'package:organization/features/on_boarding/widgets/onboarding_appbar.dart
 import 'package:organization/features/on_boarding/widgets/under_button_widget.dart';
 import 'package:organization/features/widgets/custom_asset_image.dart';
 import 'package:organization/features/widgets/custom_text.dart';
-import 'package:organization/routes/app_pages.dart';
 import 'package:organization/utils/app_text.dart';
 import 'package:organization/utils/assets_path.dart';
+
 import '../../../utils/app_color.dart';
 import '../../../utils/app_size.dart';
+import '../../controller/auth/sign_up_controller.dart';
 import '../widgets/custom_text_field_widget.dart';
 import '../widgets/heading_text_widget.dart';
 import '../widgets/text_field_title_widget.dart';
 
 class AccountCreationScreen extends StatelessWidget {
-  const AccountCreationScreen({super.key});
+
+  final SignUpController controller = Get.find<SignUpController>();
 
   @override
   Widget build(BuildContext context) {
@@ -54,6 +56,7 @@ class AccountCreationScreen extends StatelessWidget {
                   CustomTextField(
                     hintText: "Enter Email",
                     prefixImagePath: AssetsPath.mailIcon,
+                    controller: controller.emailController,
                   ),
                   SizedBox(height: 10.h),
 
@@ -64,6 +67,7 @@ class AccountCreationScreen extends StatelessWidget {
                     hintText: "**********",
                     suffixImagePath: AssetsPath.eyeIcon,
                     prefixImagePath: AssetsPath.lockIcon,
+                    controller: controller.passwordController,
                   ),
                 ],
               ),
@@ -106,10 +110,10 @@ class AccountCreationScreen extends StatelessWidget {
         ),
       ),
 
-      /// continue Button
+      // continue Button
       bottomNavigationBar: UnderButtonWidget(
         onPressed: () {
-          Get.toNamed(AppRoutes.uploadLogo);
+          controller.accountCreationContinue();
         },
         buttonText: AppText.continueText,
       ),

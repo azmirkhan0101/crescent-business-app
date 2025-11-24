@@ -1,6 +1,10 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:organization/controller/auth/sign_up_controller.dart';
 import 'package:organization/features/on_boarding/widgets/onboarding_appbar.dart';
 import 'package:organization/features/on_boarding/widgets/under_button_widget.dart';
 import 'package:organization/features/widgets/custom_text.dart';
@@ -21,7 +25,10 @@ class UploadLogoScreen extends StatefulWidget {
 }
 
 class _UploadLogoScreenState extends State<UploadLogoScreen> {
+
+  final SignUpController controller = Get.find<SignUpController>();
   bool _hasImage = false; // initially no image
+  File? _selectedImage;
 
   @override
   Widget build(BuildContext context) {
@@ -39,7 +46,9 @@ class _UploadLogoScreenState extends State<UploadLogoScreen> {
               currentStep: 4,
               title: AppText.branding,
               suffix: GestureDetector(
-                onTap: () {},
+                onTap: () {
+                  Get.toNamed(AppRoutes.businessContactInfo);
+                },
                 child:
                 CustomText(text: AppText.skip,fontSize: 14.sp,color: AppColors.secondaryTextColor,fontWeight: FontWeight.w400,),
 
@@ -65,9 +74,9 @@ class _UploadLogoScreenState extends State<UploadLogoScreen> {
                     ProfileAvatar(
                       assetImage: AssetsPath.addProfileIcon,
                       onTap: () {
-                        setState(() {
-                          _hasImage = true; // image selected
-                        });
+                        // setState(() {
+                        //   _hasImage = true; // image selected
+                        // });
                       },
                     ),
                     SizedBox(height: 10.h),
@@ -83,10 +92,27 @@ class _UploadLogoScreenState extends State<UploadLogoScreen> {
       /// continue Button
       bottomNavigationBar: UnderButtonWidget(
         onPressed: () {
-          Get.toNamed(AppRoutes.storeLocation);
+          if( _hasImage ){
+            controller.businessModel.logo = _selectedImage;
+            Get.toNamed(AppRoutes.businessContactInfo);
+          }else{
+            _pickImage();
+          }
         },
         buttonText: _hasImage ? AppText.continueText : "Add Logo",
       ),
     );
+  }
+
+  Future<void> _pickImage() async {
+    final picker = ImagePicker();
+    final XFile? image = await picker.pickImage(source: ImageSource.gallery);
+
+    if (image != null) {
+      setState(() {
+        _selectedImage = File(image.path);
+        _hasImage = true;
+      });
+    }
   }
 }

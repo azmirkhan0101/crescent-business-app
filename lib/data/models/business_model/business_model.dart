@@ -3,13 +3,16 @@ import 'dart:io';
 class BusinessModel{
 
   String? category;
-  final String? name;
-  final String? tagline;
-  final String? description;
-  final String? email;
-  final String? password;
-  final File? logo;
-  final List<String>? locations;
+  String? name;
+  String? tagline;
+  String? description;
+  String? email;
+  String? password;
+  String? businessPhoneNumber;
+  String? businessEmail;
+  String? businessWebsite;
+  File? logo;
+  List<String>? locations;
 
   BusinessModel({
     this.category,
@@ -18,6 +21,9 @@ class BusinessModel{
     this.description,
     this.email,
     this.password,
+    this.businessEmail,
+    this.businessPhoneNumber,
+    this.businessWebsite,
     this.logo,
     this.locations
   });
