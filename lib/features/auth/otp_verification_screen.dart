@@ -89,7 +89,6 @@ class OtpVerificationScreen extends StatelessWidget {
               ),
               text: AppText.continueText,
               onPressed: () {
-                //TODO: VERIFY CODE AND SHOW SNACK OR GO TO RESET PASSWORD SCREEN
                 controller.email = email;
                 controller.isSignup = isSignup;
                 if( isSignup ){//OTP FOR SIGNUP
