@@ -24,7 +24,7 @@ class SignUpController extends GetxController {
   final TextEditingController locationSearchController = TextEditingController();
 
   BusinessModel businessModel = BusinessModel();
-  //final storage = GetStorage();
+  final storage = GetStorage();
 
   //VALIDATE INFORMATION OF BUSINESS INFO
   void validateBusinessInfo(){
@@ -144,14 +144,24 @@ class SignUpController extends GetxController {
 
     // Send request
     var response = await request.send();
-    var responseBody = await response.stream.bytesToString();
     print("status codeeeeeeeee: ${response.statusCode}");
-    print("Response: $responseBody");
+    var responseBody = await response.stream.bytesToString();
+    var responseData = jsonDecode(responseBody);
 
     if (response.statusCode == 200 || response.statusCode == 201) {
-      print("Signup Success: $responseBody");
+      print("Response: $responseBody");
       //storage.write( emailKey, businessModel.email );
-      Get.toNamed(AppRoutes.otpVerify, arguments: businessModel.email );
+      Map<String, dynamic> arguments = {
+        emailKey : businessModel.email,
+        isSignupKey : true
+      };
+      Get.toNamed(AppRoutes.otpVerify, arguments: arguments );
+    }else if( response.statusCode == 400 ){
+      print("Tokennn: ${storage.read(accessTokenKey)}");
+      Get.snackbar(
+        "User Exists!",
+        responseData["message"] ?? "User already exist with this email. Try login instead",
+      );
     } else {
       print("Signup Failed: ${response.statusCode}");
     }

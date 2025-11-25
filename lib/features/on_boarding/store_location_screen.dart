@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:google_places_flutter/google_places_flutter.dart';
+import 'package:google_places_flutter/model/prediction.dart';
 import 'package:organization/features/on_boarding/widgets/onboarding_appbar.dart';
 import 'package:organization/features/on_boarding/widgets/under_button_widget.dart';
 import 'package:organization/utils/app_text.dart';
@@ -18,7 +21,10 @@ import '../widgets/text_field_title_widget.dart';
 class StoreLocationScreen extends StatelessWidget {
 
   final SignUpController controller = Get.find<SignUpController>();
+  final TextEditingController textEditingController = TextEditingController();
   RxList<String> locationNames = <String>[].obs;
+  final String googleApiKey = dotenv.env['GOOGLE_API_KEY']!;
+
 
   @override
   Widget build(BuildContext context) {
@@ -59,6 +65,7 @@ class StoreLocationScreen extends StatelessWidget {
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                placesAutoCompleteTextField(),
                 /// Email Field
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -117,6 +124,59 @@ class StoreLocationScreen extends StatelessWidget {
           controller.signup();
         },
         buttonText: AppText.continueText,
+      ),
+    );
+  }
+
+  placesAutoCompleteTextField() {
+    return Container(
+      padding: EdgeInsets.symmetric(horizontal: 20),
+      child: GooglePlaceAutoCompleteTextField(
+        textEditingController: textEditingController,
+        googleAPIKey:googleApiKey,
+        inputDecoration: InputDecoration(
+          hintText: "Search your location",
+          border: InputBorder.none,
+          enabledBorder: InputBorder.none,
+        ),
+        debounceTime: 400,
+        countries: ["in", "fr"],
+        isLatLngRequired: true,
+        getPlaceDetailWithLatLng: (Prediction prediction) {
+          print("placeDetails" + prediction.lat.toString());
+        },
+
+        itemClick: (Prediction prediction) {
+          textEditingController.text = prediction.description ?? "";
+          textEditingController.selection = TextSelection.fromPosition(
+              TextPosition(offset: prediction.description?.length ?? 0));
+        },
+        seperatedBuilder: Divider(),
+        containerHorizontalPadding: 10,
+
+        // Optional: specify keyboard type (defaults to TextInputType.streetAddress)
+        // keyboardType: TextInputType.text,
+
+
+        // OPTIONAL// If you want to customize list view item builder
+        itemBuilder: (context, index, Prediction prediction) {
+          return Container(
+            padding: EdgeInsets.all(10),
+            child: Row(
+              children: [
+                Icon(Icons.location_on),
+                SizedBox(
+                  width: 7,
+                ),
+                Expanded(child: Text("${prediction.description ?? ""}"))
+              ],
+            ),
+          );
+        },
+
+        isCrossBtnShown: true,
+
+        // default 600 ms ,
       ),
     );
   }

@@ -1,30 +1,27 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:organization/features/auth/widgets/custom_auth_appbar.dart';
 import 'package:organization/features/auth/widgets/pin_field_widget.dart';
 import 'package:organization/features/auth/widgets/rich_text_widget.dart';
+import 'package:organization/utils/app_constants.dart';
+
 import '../../../utils/app_color.dart';
 import '../../../utils/app_size.dart';
 import '../../../utils/app_text.dart';
 import '../../../utils/app_text_styles.dart';
 import '../../controller/auth/otp_verification_controller.dart';
-import '../../core/show_snackbar.dart';
-import '../../routes/app_pages.dart';
 import '../widgets/custom_button_widget.dart';
 
 class OtpVerificationScreen extends StatelessWidget {
 
   final OtpVerificationController controller = Get.find<OtpVerificationController>();
-
+  String email = Get.arguments[emailKey];
+  bool isSignup = Get.arguments[isSignupKey];
 
   @override
   Widget build(BuildContext context) {
-
-    final TextEditingController pinController = TextEditingController();
-    String email = Get.arguments;
 
     return Scaffold(
       backgroundColor: AppColors.white,
@@ -48,7 +45,7 @@ class OtpVerificationScreen extends StatelessWidget {
                     Text(AppText.otpSubtitle, style: AppTextStyle.mediumStyle),
                     SizedBox(width: 3.w),
                     Text(
-                      AppText.emailText,
+                      email,
                       style: AppTextStyle.mediumStyle.copyWith(
                         color: AppColors.blackTextColor,
                         fontWeight: FontWeight.w600,
@@ -94,7 +91,13 @@ class OtpVerificationScreen extends StatelessWidget {
               onPressed: () {
                 //TODO: VERIFY CODE AND SHOW SNACK OR GO TO RESET PASSWORD SCREEN
                 controller.email = email;
-                controller.submitOtp();
+                controller.isSignup = isSignup;
+                if( isSignup ){//OTP FOR SIGNUP
+                  controller.submitSignupOtp();
+                }else{//OTP FOR FORGOT PASSWORD
+
+                }
+
                 //Get.toNamed(AppRoutes.resetPassword);
               },
             ),
@@ -102,15 +105,11 @@ class OtpVerificationScreen extends StatelessWidget {
             SizedBox(height: AppSizes.paddingMedium),
             RichTextWidget(
               firstText: "Haven’t receive any code?",
-              lastText: "Resend Code",
+              lastText: "  Resend Code",
               onTap: () {
-                //TODO: SHOW THIS SNACKBAR AFTER CODE SENT FROM CONTROLLER
-                CustomSnackBar.show(
-                  context,
-                  message: "A verification code has been sent to your email,",
-                  icon: Icons.check_circle,
-                  backgroundColor: Colors.green,
-                );
+                controller.email = email;
+                controller.isSignup = isSignup;
+                controller.resendSignupOtp();
               },
             ),
           ],
