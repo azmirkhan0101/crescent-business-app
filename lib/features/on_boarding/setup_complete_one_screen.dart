@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:organization/features/widgets/custom_asset_image.dart';
 import 'package:organization/features/widgets/info_card_widget.dart';
 import 'package:organization/routes/app_pages.dart';
+import 'package:organization/utils/app_constants.dart';
 import 'package:organization/utils/assets_path.dart';
 import '../../utils/app_color.dart';
 import '../../utils/app_text.dart';
@@ -13,7 +15,8 @@ import '../widgets/custom_button_widget.dart';
 import '../widgets/custom_text.dart';
 
 class BusinessSetupCompleteOneScreen extends StatelessWidget {
-  const BusinessSetupCompleteOneScreen({super.key});
+
+  final storage = GetStorage();
 
   @override
   Widget build(BuildContext context) {
@@ -274,7 +277,9 @@ class BusinessSetupCompleteOneScreen extends StatelessWidget {
                   fontWeight: FontWeight.w700,
                 ),
                 onPressed: () {
-                  Get.toNamed(AppRoutes.setupComplete);
+                  String accessToken = storage.read( accessTokenKey );
+                  print("Access tokennnnnnnnnnnnnnn: ${accessToken}");
+                  //Get.toNamed(AppRoutes.setupComplete);
                 },
               ),
             ),

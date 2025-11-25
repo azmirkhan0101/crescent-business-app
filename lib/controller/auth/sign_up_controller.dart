@@ -3,10 +3,12 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:http/http.dart' as http;
 import 'package:organization/data/models/business_model/business_model.dart';
 import 'package:organization/routes/app_pages.dart';
 import 'package:organization/utils/api_endpoints.dart';
+import 'package:organization/utils/app_constants.dart';
 
 import '../../utils/app_color.dart';
 
@@ -22,6 +24,7 @@ class SignUpController extends GetxController {
   final TextEditingController locationSearchController = TextEditingController();
 
   BusinessModel businessModel = BusinessModel();
+  //final storage = GetStorage();
 
   //VALIDATE INFORMATION OF BUSINESS INFO
   void validateBusinessInfo(){
@@ -147,7 +150,8 @@ class SignUpController extends GetxController {
 
     if (response.statusCode == 200 || response.statusCode == 201) {
       print("Signup Success: $responseBody");
-      Get.toNamed(AppRoutes.otpVerify);
+      //storage.write( emailKey, businessModel.email );
+      Get.toNamed(AppRoutes.otpVerify, arguments: businessModel.email );
     } else {
       print("Signup Failed: ${response.statusCode}");
     }

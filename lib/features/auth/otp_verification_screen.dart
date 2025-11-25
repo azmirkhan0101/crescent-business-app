@@ -10,17 +10,22 @@ import '../../../utils/app_color.dart';
 import '../../../utils/app_size.dart';
 import '../../../utils/app_text.dart';
 import '../../../utils/app_text_styles.dart';
+import '../../controller/auth/otp_verification_controller.dart';
 import '../../core/show_snackbar.dart';
 import '../../routes/app_pages.dart';
 import '../widgets/custom_button_widget.dart';
 
 class OtpVerificationScreen extends StatelessWidget {
-  const OtpVerificationScreen({super.key});
+
+  final OtpVerificationController controller = Get.find<OtpVerificationController>();
+
 
   @override
   Widget build(BuildContext context) {
-    // final controller = Get.find<OtpVerificationController>();
+
     final TextEditingController pinController = TextEditingController();
+    String email = Get.arguments;
+
     return Scaffold(
       backgroundColor: AppColors.white,
       body: SingleChildScrollView(
@@ -58,10 +63,11 @@ class OtpVerificationScreen extends StatelessWidget {
 
             /// Pin Field
             PinFieldWidget(
-              controller: pinController,
-              //  controller: controller.pinController,
-              length: 5,
-              // onChanged: controller.onPinChanged,
+              controller: controller.otpController,
+              length: 6,
+              onChanged: (val){
+                controller.onOtpChanged(val);
+                },
               onCompleted: (val) => debugPrint("Completed: $val"),
             ),
           ],
@@ -87,7 +93,9 @@ class OtpVerificationScreen extends StatelessWidget {
               text: AppText.continueText,
               onPressed: () {
                 //TODO: VERIFY CODE AND SHOW SNACK OR GO TO RESET PASSWORD SCREEN
-                Get.toNamed(AppRoutes.resetPassword);
+                controller.email = email;
+                controller.submitOtp();
+                //Get.toNamed(AppRoutes.resetPassword);
               },
             ),
 
