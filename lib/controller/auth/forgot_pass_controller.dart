@@ -1,5 +1,8 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:organization/routes/app_pages.dart';
 import 'package:organization/utils/api_endpoints.dart';
 import 'package:organization/utils/app_constants.dart';
@@ -8,7 +11,9 @@ import '../../utils/app_color.dart';
 import 'package:http/http.dart' as http;
 
 class ForgotPasswordController extends GetxController {
+
   final TextEditingController emailController = TextEditingController();
+  final storage = GetStorage();
 
   bool isEmailValid() {
     return RegExp(
@@ -26,28 +31,55 @@ class ForgotPasswordController extends GetxController {
       );
       return;
     }
-    //TODO: CHECK POSTMAN, CHECK IF ACCOUNT EXIST->SEND VERIFY CODE->ELSE SHOW SNACKBAR
 
-    Uri uri = Uri.parse( ApiEndpoints.baseUrl + ApiEndpoints.otpForgotPassword );
+    try{
+      Uri uri = Uri.parse( ApiEndpoints.baseUrl + ApiEndpoints.otpForgotPassword );
 
-    Map<String, String> payLoad = {
-      "email": emailController.text.trim()
-    };
-    http.Response response = await http.post( uri, body: payLoad );
-    //TODO: CHECK UI(is email field editable or coming from login screen) AND POSTMAN FOR RESPONSE
-    if( response.statusCode == 200 ){//TODO: MAY BE ACCOUNT EXIST->CODE SENT
-      Map<String, dynamic> arguments = {
-        emailKey : emailController.text.trim(),
-        isSignupKey : false
+      Map<String, String> payLoad = {
+        "email": emailController.text.trim()
       };
-      Get.toNamed( AppRoutes.otpVerify, arguments: arguments );
-    }else if( response.statusCode == 400 ){//TODO: MAY BE NO ACCOUNT FOUND
+      http.Response response = await http.post( uri, body: payLoad );
+      print("Status codeeee: ${response.statusCode}");
+      print("Response: ${response.body}");
+
+      if( response.statusCode == 200 ){//OTP SENT TO EMAIL
+
+        storage.write( forgotPasswordTokenKey, "" );//EMPTY TOKEN ON SUCCESS
+        var responseData = jsonDecode( response.body );
+        final String forgotPasswordToken = responseData['data']['token'];
+        storage.write( forgotPasswordTokenKey, forgotPasswordToken );
+        Map<String, dynamic> arguments = {
+          emailKey : emailController.text.trim(),
+          isSignupKey : false
+        };
+        Get.toNamed( AppRoutes.otpVerify, arguments: arguments );
+      }else if( response.statusCode == 400 ){//OTP STILL VALID
+        showSnackBar(
+            title: "OTP already sent!",
+            message: "Check your email or request a new otp after 5 minutes!.",
+            backgroundColor: AppColors.warningYellow
+        );
+        Map<String, dynamic> arguments = {
+          emailKey : emailController.text.trim(),
+          isSignupKey : false
+        };
+        Get.toNamed( AppRoutes.otpVerify, arguments: arguments );
+      }else if( response.statusCode == 404 ){//NO ACCOUNT FOUND
+        showSnackBar(
+            title: "Incorrect Email!",
+            message: "No account found matching this email.",
+            backgroundColor: AppColors.errorRed
+        );
+      }
+    }catch(e){
       showSnackBar(
-          title: "Incorrect Email!",
-          message: "No account found matching this email.",
+          title: "Error!",
+          message: "Something went wrong. Please try again",
           backgroundColor: AppColors.errorRed
       );
     }
+
+
   }
 
   showSnackBar({required String title, required String message, required Color backgroundColor, Color textColor = AppColors.white}) {

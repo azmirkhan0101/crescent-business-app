@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:organization/controller/auth/reset_password_controller.dart';
 import 'package:organization/features/auth/widgets/custom_auth_appbar.dart';
 import 'package:organization/features/auth/widgets/password_requirement_widget.dart';
 import 'package:organization/features/auth/widgets/rich_text_widget.dart';
@@ -17,11 +18,12 @@ import '../widgets/heading_text_widget.dart';
 
 
 class ResetPasswordScreen extends StatelessWidget {
-  const ResetPasswordScreen({super.key});
+
+  final ResetPasswordController controller = ResetPasswordController();
+  String resetPasswordToken = Get.arguments;
 
   @override
   Widget build(BuildContext context) {
-
 
     return Scaffold(
       backgroundColor: AppColors.white,
@@ -55,6 +57,7 @@ class ResetPasswordScreen extends StatelessWidget {
                     hintText: "Enter New Password",
                     suffixImagePath: AssetsPath.eyeIcon,
                     prefixImagePath: AssetsPath.lockIcon,
+                    controller: controller.newPasswordController,
                   ),
 
 
@@ -62,9 +65,10 @@ class ResetPasswordScreen extends StatelessWidget {
 
                   SizedBox(height: AppSizes.paddingSmallH),
                   CustomTextField(
-                    hintText: "Confirmed New Password",
+                    hintText: "Confirm New Password",
                     suffixImagePath: AssetsPath.eyeIcon,
                     prefixImagePath: AssetsPath.lockIcon,
+                    controller: controller.confirmPasswordController,
                   ),
 
                   // CustomTextFieldWidget(
@@ -102,13 +106,14 @@ class ResetPasswordScreen extends StatelessWidget {
                   color: AppColors.buttonTextColor,fontSize: 18.sp,fontWeight: FontWeight.w700),
               text: AppText.resetPasswordButton,
               onPressed: () {
-                Get.toNamed(AppRoutes.categorySelection);
+                controller.resetPasswordToken = resetPasswordToken;
+                controller.resetPassword();
               },
             ),
             SizedBox(height: AppSizes.paddingMedium),
             RichTextWidget(
               firstText: AppText.changedYourMind,
-              lastText: AppText.login,
+              lastText: "  ${AppText.login}",
               onTap: () {
                Get.toNamed(AppRoutes.logIn);
               },

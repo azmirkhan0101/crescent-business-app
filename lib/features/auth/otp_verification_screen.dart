@@ -40,23 +40,20 @@ class OtpVerificationScreen extends StatelessWidget {
               children: [
                 Text(AppText.otpHeadline, style: AppTextStyle.headlineLStyle),
                 SizedBox(height: 8.h),
-                Row(
-                  children: [
-                    Text(AppText.otpSubtitle, style: AppTextStyle.mediumStyle),
-                    SizedBox(width: 3.w),
-                    Text(
-                      email,
-                      style: AppTextStyle.mediumStyle.copyWith(
-                        color: AppColors.blackTextColor,
-                        fontWeight: FontWeight.w600,
-                      ),
+                Center(child: Text(AppText.otpSubtitle, style: AppTextStyle.mediumStyle)),
+                Center(
+                  child: Text(
+                    email,
+                    style: AppTextStyle.mediumStyle.copyWith(
+                      color: AppColors.blackTextColor,
+                      fontWeight: FontWeight.w600,
                     ),
-                  ],
+                  ),
                 ),
               ],
             ),
 
-            SizedBox(height: 50.h),
+            SizedBox(height: 30.h),
 
             /// Pin Field
             PinFieldWidget(
@@ -94,7 +91,7 @@ class OtpVerificationScreen extends StatelessWidget {
                 if( isSignup ){//OTP FOR SIGNUP
                   controller.submitSignupOtp();
                 }else{//OTP FOR FORGOT PASSWORD
-
+                  controller.submitForgotPasswordOtp();
                 }
 
                 //Get.toNamed(AppRoutes.resetPassword);
@@ -108,7 +105,11 @@ class OtpVerificationScreen extends StatelessWidget {
               onTap: () {
                 controller.email = email;
                 controller.isSignup = isSignup;
-                controller.resendSignupOtp();
+                if( isSignup ){
+                  controller.resendSignupOtp();
+                }else{
+                  controller.resendForgotPasswordOTP();
+                }
               },
             ),
           ],

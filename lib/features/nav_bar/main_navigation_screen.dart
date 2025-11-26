@@ -1,14 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:organization/controller/main_navigation_screen_controller/main_navigation_screen_controller.dart';
+import 'package:organization/utils/app_constants.dart';
 
 import '../../utils/app_size.dart';
 
 class MainNavigationScreen extends StatelessWidget {
 
   final MainNavigationScreenController controller = Get.find<MainNavigationScreenController>();
-
+  final storage = GetStorage();
 
   @override
   Widget build(BuildContext context) {
@@ -18,6 +20,9 @@ class MainNavigationScreen extends StatelessWidget {
       body: Obx((){
         return controller.bottomNavScreens[controller.currentIndex.value];
       }),
+      floatingActionButton: ElevatedButton(onPressed: (){
+        print("Tokennnnnn: ${storage.read(accessTokenKey)}");
+      }, child: Text("Click")),
       bottomNavigationBar: Padding(
         padding: EdgeInsets.only(
           left: AppSizes.paddingLarge,

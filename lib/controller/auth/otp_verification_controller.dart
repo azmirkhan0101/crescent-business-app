@@ -11,6 +11,8 @@ import 'package:organization/utils/api_endpoints.dart';
 import 'package:http/http.dart' as http;
 import 'package:organization/utils/app_constants.dart';
 
+import '../../utils/app_color.dart';
+
 class OtpVerificationController extends GetxController {
 
   final TextEditingController otpController = TextEditingController();
@@ -147,7 +149,6 @@ class OtpVerificationController extends GetxController {
     }
   }
 
-  //TODO: MODIFY THIS FUNCTION
   //SUBMIT OTP FOR FORGOT PASSWORD VERIFICATION
   void submitForgotPasswordOtp() async {
     // 1. Input Validation
@@ -158,55 +159,47 @@ class OtpVerificationController extends GetxController {
 
     // 2. Setup Request
     Uri uri = Uri.parse(ApiEndpoints.baseUrl + ApiEndpoints.otpVerifyForgotPassword );
+    String token = storage.read( forgotPasswordTokenKey );
 
     Map<String, dynamic> payLoad = {
-      "email": email,
+      "token": token,
       "otp": otpController.text.trim(),
     };
 
     try {
       // 3. Send Request
-      final response =
-      await http.post(uri, body: payLoad).timeout(const Duration(seconds: 8));
+      final response = await http.post(uri, body: payLoad).timeout(const Duration(seconds: 8));
       print("Status code: ${response.statusCode}");
+      print("Forgot Password otp submit Response: ${response.body}");
 
-      // 4. Decode Response Body (needed for 4xx errors to get the message)
-      final responseData = jsonDecode(response.body);
-
-      // 5. Status Code Handling (Modified Block)
-      if (response.statusCode == 200 || response.statusCode == 201) {
-        // Success Codes: 200 OK or 201 Created
-
-        //saveOtpResponse(responseData);
-
+      if ( response.statusCode == 200 ) {//OTP VERIFIED -> GO TO RESET PASSWORD
+        final responseData = jsonDecode(response.body);
         if (responseData["success"] == true) {
-          Get.snackbar("Success!", "OTP Verified Successfully.");
-
-          // 👉 Navigate to next screen here
-          if( isSignup ){
-            Get.offAllNamed(AppRoutes.setupCompleteOne);
-          }else{
-            Get.toNamed(AppRoutes.resetPassword);
-          }
+          showSnackBar(
+              title: "Success!",
+              message: "OTP Verified Successfully.",
+              backgroundColor: AppColors.successGreen
+          );
+          String resetPasswordToken = responseData['data']['resetPasswordToken'];
+          Get.toNamed( AppRoutes.resetPassword, arguments: resetPasswordToken );
           return;
         } else {
-          // Handle cases where status code is 200/201 but 'success' field is false
           Get.snackbar(
             "Verification failed!",
             "OTP verification failed.",
           );
         }
       } else if (response.statusCode == 400) {
-        // 400 Bad Request: Usually means missing fields, malformed input.
-        Get.snackbar(
-          "Invalid OTP",
-          "OTP didn't match.",
+        showSnackBar(
+            title: "Invalid OTP!",
+            message: "The entered OTP is incorrect or has expired.",
+            backgroundColor: AppColors.errorRed
         );
       } else if (response.statusCode == 401 || response.statusCode == 403) {
-        // 401 Unauthorized / 403 Forbidden: Often used for invalid OTP or token.
-        Get.snackbar(
-          "Verification Failed",
-          "The entered OTP is incorrect or has expired.",
+        showSnackBar(
+            title: "Verification Failed!",
+            message: "The entered OTP is incorrect or has expired.",
+            backgroundColor: AppColors.errorRed
         );
       } else if (response.statusCode >= 500) {
         // 5xx Server Errors
@@ -235,6 +228,61 @@ class OtpVerificationController extends GetxController {
       );
     }
   }
+
+
+  //RESEND FORGOT PASSWORD OTP
+  void resendForgotPasswordOTP() async{
+    String token = storage.read( forgotPasswordTokenKey );
+    if( token.isEmpty ){
+      return;
+    }
+    try{
+      Uri uri = Uri.parse( ApiEndpoints.baseUrl + ApiEndpoints.otpResendForgotPassword );
+      Map<String, dynamic> payLoad = {
+        "token": token
+      };
+      http.Response response = await http.post( uri, body: payLoad );
+      print("Resend Forgot OTP status: ${response.statusCode}");
+      print("Response: ${response.body}");
+      if( response.statusCode == 200 ){//OTP SENT AGAIN
+        showSnackBar(
+            title: "Sent",
+            message: "OTP sent again. Please check your spam or junk folder too!",
+            backgroundColor: AppColors.successGreen
+        );
+      }else if( response.statusCode == 400 ){//INVALID TOKEN
+        showSnackBar(
+            title: "Session Expired!.",
+            message: "Please enter your email and try again",
+            backgroundColor: AppColors.warningYellow
+        );
+        Get.toNamed(AppRoutes.forgotPassword);
+      } else if( response.statusCode == 404 ){//LAST OTP STILL VALID
+        showSnackBar(
+            title: "Already Sent!",
+            message: "OTP already sent in your email. Request a new otp after 5 minutes.",
+            backgroundColor: AppColors.warningYellow
+        );
+      }
+    }catch(e){
+      showSnackBar(
+          title: "An error occurred!",
+          message: "Something went wrong. Please try again later",
+          backgroundColor: AppColors.errorRed
+      );
+    }
+
+  }
+
+  showSnackBar({required String title, required String message, required Color backgroundColor, Color textColor = AppColors.white}) {
+    Get.snackbar(
+        title,
+        message,
+        backgroundColor: backgroundColor,
+        colorText: textColor
+    );
+  }
+
 
   @override
   void onClose() {

@@ -66,10 +66,9 @@ class _QRCodeWidgetState extends State<QRCodeWidget> {
                     final barcode = capture.barcodes.first;
                     final String? code = barcode.rawValue;
 
-                    if (code != null &&
-                        code.isNotEmpty &&
-                        code != scannedCode) {
+                    if (code != null && code.isNotEmpty && code != scannedCode) {
                       setState(() => scannedCode = code);
+                      print("Codeeeeeeeeeeee: ${code}");
                       await _controller.stop(); // stop after scan
                     }
                   },

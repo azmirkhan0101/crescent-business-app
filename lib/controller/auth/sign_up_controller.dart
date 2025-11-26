@@ -158,6 +158,7 @@ class SignUpController extends GetxController {
       Get.toNamed(AppRoutes.otpVerify, arguments: arguments );
     }else if( response.statusCode == 400 ){
       print("Tokennn: ${storage.read(accessTokenKey)}");
+      print("Response: $responseBody");
       Get.snackbar(
         "User Exists!",
         responseData["message"] ?? "User already exist with this email. Try login instead",
