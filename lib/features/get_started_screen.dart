@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -17,123 +18,121 @@ class GetStartedScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        backgroundColor: const Color(0xFFF7F7F7),
-        body: SingleChildScrollView(
-          child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: 16.w),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                SizedBox(height: 60.h),
-
-                /// heading text
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Image.asset(
-                      AssetsPath.moonIcon,
-                      height: 32.h,
-                      width: 32.w,
-                    ),
-                    CustomText(
-                      textAlign: TextAlign.justify,
-                      overflow: TextOverflow.visible,
-                      text: AppText.crescentChange,
-                      fontWeight: FontWeight.w700,
-                      language: true,
-                      color: AppColors.headlineTColor,
-                      fontSize: 20.sp,
-                    ),
-                  ],
-                ),
-
-                /// welcome image
-                Image.asset(
-                  "assets/images/get_started_image.png",
-                  height: 304.h,
-                ),
-
-                /// text  section
-                CustomText(
-                  //textAlign: TextAlign.justify,
-                  overflow: TextOverflow.visible,
-                  text: AppText.turnSpareChange,
-                  fontWeight: FontWeight.w700,
-                  language: true,
-                  color: AppColors.headlineTColor,
-                  fontSize: 28.sp,
-                  textAlign: TextAlign.center,
-                ),
-                SizedBox(height: 4.h),
-                CustomText(
-                  text: AppText.joinMovement,
-                  fontWeight: FontWeight.w400,
-                  language: true,
-                  color: AppColors.secondaryTextColor,
-                  fontSize: 18.sp,
-                  textAlign: TextAlign.center,
-                  overflow: TextOverflow.visible,
-                ),
-
-                SizedBox(height: 12.h),
-
-                /// loading
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    CustomAssetsImage(
-                      assetsPath: AssetsPath.loadingStarIcon,
-                      height: 15.h,
-                      width: 15.w,
-                    ),
-                    SizedBox(width: 1.5.w),
-                    CustomAssetsImage(
-                      assetsPath: AssetsPath.loadingDotIcon,
-                      height: 12.h,
-                      width: 12.w,
-                    ),
-                    SizedBox(width: 1.5.w),
-                    CustomAssetsImage(
-                      assetsPath: AssetsPath.loadingDotIcon,
-                      height: 12.h,
-                      width: 12.w,
-                    ),
-                  ],
-                ),
-              ],
-            ),
-          ),
-        ),
-
-        ///button and auth text
-        bottomNavigationBar: Padding(
-          padding: EdgeInsets.only(bottom: 50.h),
+    return Scaffold(
+      backgroundColor: const Color(0xFFF7F7F7),
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: EdgeInsets.symmetric(horizontal: 16.w),
           child: Column(
-            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              CustomButton(
-                text: AppText.getStarted,
-                onPressed: () {
-                  Get.toNamed(AppRoutes.categorySelection);
-                },
-                buttonTextStyle: GoogleFonts.familjenGrotesk(
-                  color: AppColors.buttonTextColor,
-                  fontSize: 18.sp,
-                  fontWeight: FontWeight.w700,
-                ),
+              SizedBox(height: 60.h),
+
+              /// heading text
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Image.asset(
+                    AssetsPath.moonIcon,
+                    height: 32.h,
+                    width: 32.w,
+                  ),
+                  CustomText(
+                    textAlign: TextAlign.justify,
+                    overflow: TextOverflow.visible,
+                    text: AppText.crescentChange,
+                    fontWeight: FontWeight.w700,
+                    language: true,
+                    color: AppColors.headlineTColor,
+                    fontSize: 20.sp,
+                  ),
+                ],
               ),
+
+              /// welcome image
+              Image.asset(
+                "assets/images/get_started_image.png",
+                height: 304.h,
+              ),
+
+              /// text  section
+              CustomText(
+                //textAlign: TextAlign.justify,
+                overflow: TextOverflow.visible,
+                text: AppText.turnSpareChange,
+                fontWeight: FontWeight.w700,
+                language: true,
+                color: AppColors.headlineTColor,
+                fontSize: 28.sp,
+                textAlign: TextAlign.center,
+              ),
+              SizedBox(height: 4.h),
+              CustomText(
+                text: AppText.joinMovement,
+                fontWeight: FontWeight.w400,
+                language: true,
+                color: AppColors.secondaryTextColor,
+                fontSize: 18.sp,
+                textAlign: TextAlign.center,
+                overflow: TextOverflow.visible,
+              ),
+
               SizedBox(height: 12.h),
-              RichTextWidget(
-                firstText: AppText.alreadyHaveAccount,
-                lastText: AppText.login,
-                onTap: () {
-                  Get.toNamed(AppRoutes.logIn);
-                },
+
+              /// loading
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  CustomAssetsImage(
+                    assetsPath: AssetsPath.loadingStarIcon,
+                    height: 15.h,
+                    width: 15.w,
+                  ),
+                  SizedBox(width: 1.5.w),
+                  CustomAssetsImage(
+                    assetsPath: AssetsPath.loadingDotIcon,
+                    height: 12.h,
+                    width: 12.w,
+                  ),
+                  SizedBox(width: 1.5.w),
+                  CustomAssetsImage(
+                    assetsPath: AssetsPath.loadingDotIcon,
+                    height: 12.h,
+                    width: 12.w,
+                  ),
+                ],
               ),
             ],
           ),
+        ),
+      ),
+
+      ///button and auth text
+      bottomNavigationBar: Padding(
+        padding: EdgeInsets.only(bottom: 50.h),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            CustomButton(
+              text: AppText.getStarted,
+              onPressed: () {
+                Get.toNamed(AppRoutes.categorySelection);
+              },
+              buttonTextStyle: GoogleFonts.familjenGrotesk(
+                color: AppColors.buttonTextColor,
+                fontSize: 18.sp,
+                fontWeight: FontWeight.w700,
+              ),
+            ),
+            SizedBox(height: 12.h),
+            RichTextWidget(
+              firstText: AppText.alreadyHaveAccount,
+              lastText: AppText.login,
+              onTap: () {
+                Get.toNamed(AppRoutes.logIn);
+              },
+            ),
+          ],
         ),
       ),
     );

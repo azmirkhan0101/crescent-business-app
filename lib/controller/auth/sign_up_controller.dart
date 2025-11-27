@@ -105,6 +105,78 @@ class SignUpController extends GetxController {
     Get.toNamed(AppRoutes.uploadLogo);
   }
 
+  Future<void> signup() async {
+
+    try{
+      final url = Uri.parse( ApiEndpoints.baseUrl + ApiEndpoints.signup );
+      File? logo = businessModel.logo;
+
+      // Convert model to JSON string (because backend expects "data" as string)
+      final jsonString = jsonEncode(businessModel.toJson());
+      print("Json Of Model: ${jsonString}");
+
+      // Create multipart request
+      var request = http.MultipartRequest("POST", url);
+
+      // Add data field (this is a text field in form-data)
+      request.fields["data"] = jsonString;
+
+      // Add profileImage (optional)
+      if (logo != null) {
+        request.files.add(
+          await http.MultipartFile.fromPath(
+            "coverImage",
+            logo.path,
+          ),
+        );
+      } else {
+        // If backend allows sending null (most do), send empty field
+        request.fields["coverImage"] = "";
+      }
+
+      // Send request
+      var response = await request.send();
+      print("status codeeeeeeeee: ${response.statusCode}");
+      var responseBody = await response.stream.bytesToString();
+      var responseData = jsonDecode(responseBody);
+
+      if (response.statusCode == 200 || response.statusCode == 201) {//ACCOUNT CREATED -> SAVE EMAIL -> GO TO OTP VERIFY
+        print("Response: $responseBody");
+        bool isVerificationRequired = responseData['data']['requiresVerification'] ?? false;
+        storage.write( requireVerificationKey, isVerificationRequired );
+        storage.write( emailKey, businessModel.email );//saving for verify now(if user skips verification this time)
+        Map<String, dynamic> arguments = {
+          emailKey : businessModel.email,
+          isSignupKey : true
+        };
+        Get.toNamed(AppRoutes.otpVerify, arguments: arguments );
+      }else if( response.statusCode == 400 ){//USER ALREADY EXISTS
+        print("Token: ${storage.read(accessTokenKey)}");
+        print("Response: $responseBody");
+        showSnackBar(
+            title: "User Exists!",
+            message: responseData["message"] ?? "User already exist with this email. Try login instead",
+            backgroundColor: AppColors.warningYellow
+        );
+      } else {
+        print("Signup Failed: ${response.statusCode}");
+        showSnackBar(
+            title: "Error occurred!",
+            message: responseData["message"] ?? "Something went wrong. Please try again.",
+            backgroundColor: AppColors.errorRed
+        );
+      }
+    }catch(e){
+      showSnackBar(
+          title: "Error occurred!",
+          message: "Something went wrong. Please try again.",
+          backgroundColor: AppColors.errorRed
+      );
+    }
+
+
+  }
+
   showSnackBar({required String title, required String message, required Color backgroundColor}){
     Get.snackbar(
         title,
@@ -112,60 +184,6 @@ class SignUpController extends GetxController {
         backgroundColor: backgroundColor,
         colorText: AppColors.white
     );
-  }
-
-  Future<void> signup() async {
-
-    final url = Uri.parse( ApiEndpoints.baseUrl + ApiEndpoints.signup );
-    File? logo = businessModel.logo;
-
-    // Convert model to JSON string (because backend expects "data" as string)
-    final jsonString = jsonEncode(businessModel.toJson());
-    print("Json Of Model: ${jsonString}");
-
-    // Create multipart request
-    var request = http.MultipartRequest("POST", url);
-
-    // Add data field (this is a text field in form-data)
-    request.fields["data"] = jsonString;
-
-    // Add profileImage (optional)
-    if (logo != null) {
-      request.files.add(
-        await http.MultipartFile.fromPath(
-          "coverImage",
-          logo.path,
-        ),
-      );
-    } else {
-      // If backend allows sending null (most do), send empty field
-      request.fields["coverImage"] = "";
-    }
-
-    // Send request
-    var response = await request.send();
-    print("status codeeeeeeeee: ${response.statusCode}");
-    var responseBody = await response.stream.bytesToString();
-    var responseData = jsonDecode(responseBody);
-
-    if (response.statusCode == 200 || response.statusCode == 201) {
-      print("Response: $responseBody");
-      //storage.write( emailKey, businessModel.email );
-      Map<String, dynamic> arguments = {
-        emailKey : businessModel.email,
-        isSignupKey : true
-      };
-      Get.toNamed(AppRoutes.otpVerify, arguments: arguments );
-    }else if( response.statusCode == 400 ){
-      print("Tokennn: ${storage.read(accessTokenKey)}");
-      print("Response: $responseBody");
-      Get.snackbar(
-        "User Exists!",
-        responseData["message"] ?? "User already exist with this email. Try login instead",
-      );
-    } else {
-      print("Signup Failed: ${response.statusCode}");
-    }
   }
 
   @override

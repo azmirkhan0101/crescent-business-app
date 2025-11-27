@@ -1,14 +1,12 @@
 import 'dart:async';
 import 'dart:convert';
-import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:http/http.dart' as http;
 import 'package:organization/routes/app_pages.dart';
 import 'package:organization/utils/api_endpoints.dart';
-
-import 'package:http/http.dart' as http;
 import 'package:organization/utils/app_constants.dart';
 
 import '../../utils/app_color.dart';
@@ -27,7 +25,7 @@ class OtpVerificationController extends GetxController {
 
   //SUBMIT OTP FOR SIGNUP EMAIL VERIFICATION
   void submitSignupOtp() async {
-    // 1. Input Validation
+
     if (!isOtpValid.value) {
       Get.snackbar("Error", "Please enter the complete PIN");
       return;
@@ -42,25 +40,24 @@ class OtpVerificationController extends GetxController {
     };
 
     try {
-      // 3. Send Request
-      final response =
-      await http.post(uri, body: payLoad).timeout(const Duration(seconds: 8));
+      final response = await http.post(uri, body: payLoad).timeout(const Duration(seconds: 8));
       print("Status code: ${response.statusCode}");
 
-      // 4. Decode Response Body (needed for 4xx errors to get the message)
       final responseData = jsonDecode(response.body);
 
-      // 5. Status Code Handling (Modified Block)
       if (response.statusCode == 200 || response.statusCode == 201) {
-        // Success Codes: 200 OK or 201 Created
-
-        saveOtpResponse(responseData);
 
         if (responseData["success"] == true) {
-          Get.snackbar("Success!", "OTP Verified Successfully.");
+          showSnackBar(
+              title: "OTP verified!",
+              message: "OTP Verified Successfully.",
+              backgroundColor: AppColors.successGreen
+          );
 
-          // 👉 Navigate to next screen here
-          if( isSignup ){
+          if( isSignup ){//SIGNUP OTP VERIFIED -> SAVE TOKENS & GET PROFILE DATA TO SHOW IN SETUP COMPLETE SCREEN
+            saveOtpResponse(responseData);
+
+            storage.write( requireVerificationKey, false );//VERIFICATION DONE, NOT REQUIRED ANY MORE
             Get.offAllNamed(AppRoutes.setupCompleteOne);
           }else{
             Get.toNamed(AppRoutes.resetPassword);
@@ -73,17 +70,18 @@ class OtpVerificationController extends GetxController {
             "OTP verification failed.",
           );
         }
-      } else if (response.statusCode == 400) {
-        // 400 Bad Request: Usually means missing fields, malformed input.
-        Get.snackbar(
-          "Invalid OTP",
-          "OTP didn't match.",
+      } else if (response.statusCode == 400) {//OTP NOT MATCHED
+        showSnackBar(
+            title: "Invalid OTP!",
+            message: "The entered OTP is incorrect or has expired.",
+            backgroundColor: AppColors.errorRed
         );
       } else if (response.statusCode == 401 || response.statusCode == 403) {
         // 401 Unauthorized / 403 Forbidden: Often used for invalid OTP or token.
-        Get.snackbar(
-          "Verification Failed",
-          "The entered OTP is incorrect or has expired.",
+        showSnackBar(
+            title: "Invalid OTP!",
+            message: "The entered OTP is incorrect or has expired.",
+            backgroundColor: AppColors.errorRed
         );
       } else if (response.statusCode >= 500) {
         // 5xx Server Errors
@@ -113,6 +111,25 @@ class OtpVerificationController extends GetxController {
     }
   }
 
+  //GET PROFILE DATA USING TOKEN AFTER SIGNUP OTP VERIFIED
+  getProfileData() async{
+    
+    Uri uri = Uri.parse( ApiEndpoints.baseUrl + ApiEndpoints.getProfile );
+    
+    Map<String, String> headers = {
+      "Content-Type": "application/json",
+      "Authorization": "Bearer ${storage.read( accessTokenKey )}",
+    };
+    
+    http.Response response = await http.get( uri, headers: headers );
+    print("Status codeeeeee: ${response.statusCode}");
+    if( response.statusCode == 200 ){//FETCHED PROFILE DATA
+
+    }else if( response.statusCode == 400 ){//TODO: CHECK STATUS CODES IN POSTMAN
+
+    }
+  }
+
   //SAVE TOKENS IN STORAGE
   void saveOtpResponse(Map<String, dynamic> response) {
 
@@ -125,28 +142,42 @@ class OtpVerificationController extends GetxController {
 
   //RESEND SIGNUP OTP
   void resendSignupOtp() async{
-    Uri uri = Uri.parse( ApiEndpoints.baseUrl + ApiEndpoints.otpResendSignup );
-    Map<String, String> payLoad = {
-      "email": email
-    };
-    http.Response response = await http.post( uri, body: payLoad );
 
-    if( response.statusCode == 200 ){
-      Get.snackbar(
-          "",
-          "OTP sent again in your email."
-      );
-    }else if( response.statusCode == 400 ){
-      Get.snackbar(
-          "OTP already sent",
-          "Please wait before requesting a new one."
-      );
-    }else{
-      Get.snackbar(
-          "Error!",
-          "Something went wrong. Please try again,"
+    try{
+      Uri uri = Uri.parse( ApiEndpoints.baseUrl + ApiEndpoints.otpResendSignup );
+      Map<String, String> payLoad = {
+        "email": email
+      };
+      http.Response response = await http.post( uri, body: payLoad );
+
+      if( response.statusCode == 200 ){
+        showSnackBar(
+            title: "Sent again",
+            message: "OTP sent again in your email.",
+            backgroundColor: AppColors.successGreen
+        );
+      }else if( response.statusCode == 400 ){
+        showSnackBar(
+            title: "OTP already sent",
+            message:  "Please wait before requesting a new one.",
+            backgroundColor: AppColors.warningYellow
+        );
+      }else{
+        showSnackBar(
+            title: "Error occurred!",
+            message: "Something went wrong. Please try again.",
+            backgroundColor: AppColors.errorRed
+        );
+      }
+    }catch(e){
+      showSnackBar(
+          title: "Error occurred!",
+          message: "Something went wrong. Please try again.",
+          backgroundColor: AppColors.errorRed
       );
     }
+
+
   }
 
   //SUBMIT OTP FOR FORGOT PASSWORD VERIFICATION
@@ -228,7 +259,6 @@ class OtpVerificationController extends GetxController {
       );
     }
   }
-
 
   //RESEND FORGOT PASSWORD OTP
   void resendForgotPasswordOTP() async{

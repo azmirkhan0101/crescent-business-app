@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 import 'package:organization/controller/auth/login_controller.dart';
+import 'package:organization/controller/auth/verify_now_controller.dart';
 import 'package:organization/controller/main_navigation_screen_controller/main_navigation_screen_controller.dart';
 import '../controller/auth/sign_up_controller.dart';
 import '../controller/auth/forgot_pass_controller.dart';
@@ -22,6 +23,10 @@ class InitialBinding extends Bindings {
 
     Get.lazyPut<ForgotPasswordController>((){
       return ForgotPasswordController();
+    },fenix: true,);
+
+    Get.lazyPut<VerifyNowController>((){
+      return VerifyNowController();
     },fenix: true,);
 
     Get.lazyPut<OtpVerificationController>((){

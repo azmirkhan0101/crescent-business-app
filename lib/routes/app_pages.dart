@@ -16,8 +16,10 @@ import 'package:organization/features/on_boarding/setup_complete_one_screen.dart
 import 'package:organization/features/on_boarding/setup_complete_screen.dart';
 import 'package:organization/features/on_boarding/store_location_screen.dart';
 import 'package:organization/features/on_boarding/upload_logo_screen.dart';
+import 'package:organization/features/on_boarding/verify_now_screen.dart';
 import 'package:organization/features/reward/edit_reward_screen.dart';
 import 'package:organization/features/reward/reward_screens.dart';
+import 'package:organization/features/splash_screen.dart';
 import 'package:organization/features/subscription/subscription_screen.dart';
 import 'package:organization/features/terms_condition/terms_condition_screen.dart';
 
@@ -32,6 +34,12 @@ class AppPages {
 
   static final pages = [
 
+    GetPage(
+        name: AppRoutes.splashScreen,
+        page: (){
+          return SplashScreen();
+        }
+    ),
     GetPage(
         name: AppRoutes.mainNav,
         page: (){
@@ -90,6 +98,12 @@ class AppPages {
         name: AppRoutes.resetPassword,
         page: (){
           return ResetPasswordScreen();
+        }
+    ),
+    GetPage(
+        name: AppRoutes.verifyNow,
+        page: (){
+          return VerifyNowScreen();
         }
     ),
     GetPage(

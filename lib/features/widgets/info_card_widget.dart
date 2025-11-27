@@ -79,6 +79,7 @@ class InfoCard extends StatelessWidget {
                 style: AppTextStyle.mediumStyle.copyWith(
                   fontSize: 12.sp,
                   color: AppColors.blackTextColor,
+                  overflow: TextOverflow.ellipsis
                 ),
               ),
             ],

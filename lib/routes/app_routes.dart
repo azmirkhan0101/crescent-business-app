@@ -4,9 +4,11 @@ class AppRoutes {
 
   AppRoutes._();
 
+  static const String splashScreen = '/splash-screen';
   static const String getStarted = '/get-started';
   static const String logIn = '/log-in';
   static const String resetPassword = '/reset-password';
+  static const String verifyNow = '/verify-now';
   static const String otpVerify = '/otp-verify';
   static const String forgotPassword = '/forgot-password';
   static const String accountCreation = '/account-creation';
