@@ -34,12 +34,14 @@ class LocationWidget extends StatelessWidget {
                   children: [
                     CustomAssetsImage(assetsPath: AssetsPath.locationIcon),
                     SizedBox(width: 8.w),
-                    CustomText(
-                      text: fieldText,
-                      fontSize: 14.sp,
-                      color: AppColors.blackTextColor,
-                      fontWeight: FontWeight.w500,
-                      overflow: TextOverflow.ellipsis,
+                    Expanded(
+                      child: CustomText(
+                        text: fieldText,
+                        fontSize: 14.sp,
+                        color: AppColors.blackTextColor,
+                        fontWeight: FontWeight.w500,
+                        overflow: TextOverflow.ellipsis,
+                      ),
                     ),
                   ],
                 ),

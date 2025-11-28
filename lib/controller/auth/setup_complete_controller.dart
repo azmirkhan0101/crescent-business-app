@@ -11,7 +11,10 @@ class SetupCompleteController extends GetxController{
   @override
   void onInit() {
 
-    model.value = BusinessProfileModel.fromJson( storage.read( businessProfileModelKey ));
+    final profileJson = storage.read( businessProfileModelKey );
+    if( profileJson != null ){
+      model.value = BusinessProfileModel.fromJson( profileJson );
+    }
 
     super.onInit();
   }

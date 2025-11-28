@@ -28,7 +28,11 @@ class BusinessProfileModel{
 
 
   factory BusinessProfileModel.fromJson( Map<String, dynamic> json ){
+
     final data = json['data'];
+    if( data == null ){
+      print("Error in modellll: data is null ${data}");
+    }
     return BusinessProfileModel(
         category: data['category'] ?? "",
         name: data['name'] ?? "",
@@ -39,7 +43,7 @@ class BusinessProfileModel{
         businessPhoneNumber: data['businessPhoneNumber'] ?? "",
         businessWebsite: data['businessWebsite'] ?? "",
         logoPath: data['logoPath'] ?? "",
-        locations: data['locations'] ?? []
+        locations: List<String>.from(data['locations'])
     );
   }
 

@@ -138,10 +138,10 @@ class SignUpController extends GetxController {
       var response = await request.send();
       print("status codeeeeeeeee: ${response.statusCode}");
       var responseBody = await response.stream.bytesToString();
+      print("Response: $responseBody");
       var responseData = jsonDecode(responseBody);
 
       if (response.statusCode == 200 || response.statusCode == 201) {//ACCOUNT CREATED -> SAVE EMAIL -> GO TO OTP VERIFY
-        print("Response: $responseBody");
         bool isVerificationRequired = responseData['data']['requiresVerification'] ?? false;
         storage.write( requireVerificationKey, isVerificationRequired );
         storage.write( emailKey, businessModel.email );//saving for verify now(if user skips verification this time)
@@ -159,7 +159,6 @@ class SignUpController extends GetxController {
             backgroundColor: AppColors.warningYellow
         );
       } else {
-        print("Signup Failed: ${response.statusCode}");
         showSnackBar(
             title: "Error occurred!",
             message: responseData["message"] ?? "Something went wrong. Please try again.",
@@ -167,6 +166,7 @@ class SignUpController extends GetxController {
         );
       }
     }catch(e){
+      print("Signup catch :${e}");
       showSnackBar(
           title: "Error occurred!",
           message: "Something went wrong. Please try again.",

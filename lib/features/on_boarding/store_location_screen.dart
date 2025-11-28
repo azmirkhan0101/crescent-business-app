@@ -59,45 +59,46 @@ class StoreLocationScreen extends StatelessWidget {
                   "Enter one or more store locations with smart search for quick entry.",
             ),
             SizedBox(height: 50.h),
-
+            //LOCATION AUTOCOMPLETE - GOOGLE PLACES
+            placesAutoCompleteTextField(),
             /// Form fields
-            Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                placesAutoCompleteTextField(),
-                /// Email Field
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    TextFieldTitleWidget(text: "Search Location"),
-                    ElevatedButton(onPressed: (){
-                      if( controller.locationSearchController.text.trim().isNotEmpty ){
-                        locationNames.add(controller.locationSearchController.text.trim());
-                        controller.locationSearchController.clear();
-                      }
-                    },
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: AppColors.successGreen,
-                          textStyle: TextStyle(color: AppColors.white),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(12)
-                          )
-                        ),
-                        child: Text("Add", style: TextStyle(color: AppColors.white),))
-                  ],
-                ),
-                SizedBox(height: AppSizes.paddingSmallH),
-                CustomTextField(
-                  hintText: "Search",
-                  prefixImagePath:
-                  AssetsPath.searchIcon,
-                  controller: controller.locationSearchController,
-                ),
-                SizedBox(height: 16.h),
-                Divider(height: 1.w, color: Colors.grey.shade200),
-              ],
-            ),
+            // Column(
+            //   mainAxisSize: MainAxisSize.min,
+            //   crossAxisAlignment: CrossAxisAlignment.start,
+            //   children: [
+            //
+            //     /// Email Field
+            //     Row(
+            //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            //       children: [
+            //         TextFieldTitleWidget(text: "Search Location"),
+            //         ElevatedButton(onPressed: (){
+            //           if( controller.locationSearchController.text.trim().isNotEmpty ){
+            //             locationNames.add(controller.locationSearchController.text.trim());
+            //             controller.locationSearchController.clear();
+            //           }
+            //         },
+            //             style: ElevatedButton.styleFrom(
+            //               backgroundColor: AppColors.successGreen,
+            //               textStyle: TextStyle(color: AppColors.white),
+            //               shape: RoundedRectangleBorder(
+            //                 borderRadius: BorderRadius.circular(12)
+            //               )
+            //             ),
+            //             child: Text("Add", style: TextStyle(color: AppColors.white),))
+            //       ],
+            //     ),
+            //     SizedBox(height: AppSizes.paddingSmallH),
+            //     CustomTextField(
+            //       hintText: "Search",
+            //       prefixImagePath:
+            //       AssetsPath.searchIcon,
+            //       controller: controller.locationSearchController,
+            //     ),
+            //     SizedBox(height: 16.h),
+            //     Divider(height: 1.w, color: Colors.grey.shade200),
+            //   ],
+            // ),
             Obx((){
               return ListView.builder(
                   shrinkWrap: true,
@@ -140,14 +141,17 @@ class StoreLocationScreen extends StatelessWidget {
           enabledBorder: InputBorder.none,
         ),
         debounceTime: 400,
-        countries: ["in", "fr"],
+        //countries: ["in", "fr"],
         isLatLngRequired: true,
         getPlaceDetailWithLatLng: (Prediction prediction) {
           print("placeDetails" + prediction.lat.toString());
         },
 
         itemClick: (Prediction prediction) {
-          textEditingController.text = prediction.description ?? "";
+          final placeName = prediction.description ?? "";
+          textEditingController.text = placeName;
+          //ADD PLACE NAME IN LOCATIONS LIST
+          locationNames.add( placeName );
           textEditingController.selection = TextSelection.fromPosition(
               TextPosition(offset: prediction.description?.length ?? 0));
         },

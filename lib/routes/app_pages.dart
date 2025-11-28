@@ -12,7 +12,6 @@ import 'package:organization/features/on_boarding/account_creation_screen.dart';
 import 'package:organization/features/on_boarding/business_contact_info_screen.dart';
 import 'package:organization/features/on_boarding/business_info_screen.dart';
 import 'package:organization/features/on_boarding/category_selection_screen.dart';
-import 'package:organization/features/on_boarding/setup_complete_one_screen.dart';
 import 'package:organization/features/on_boarding/setup_complete_screen.dart';
 import 'package:organization/features/on_boarding/store_location_screen.dart';
 import 'package:organization/features/on_boarding/upload_logo_screen.dart';
@@ -152,12 +151,6 @@ class AppPages {
         name: AppRoutes.setupComplete,
         page: (){
           return BusinessSetupCompleteScreen();
-        }
-    ),
-    GetPage(
-        name: AppRoutes.setupCompleteOne,
-        page: (){
-          return BusinessSetupCompleteOneScreen();
         }
     ),
     GetPage(

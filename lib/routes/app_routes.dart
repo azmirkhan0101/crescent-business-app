@@ -17,7 +17,6 @@ class AppRoutes {
   static const String storeLocation = '/store-location';
   static const String uploadLogo = '/upload-logo';
   static const String setupComplete = '/setup-complete';
-  static const String setupCompleteOne = '/setup-complete-one';
   static const String categorySelection = '/category-selection';
   static const String scannerComplete = '/scanner-complete';
   static const String createReward = '/create-reward';

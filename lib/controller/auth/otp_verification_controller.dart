@@ -129,13 +129,16 @@ class OtpVerificationController extends GetxController {
       };
 
       http.Response response = await http.get( uri, headers: headers );
-      print("Status codeeeeee: ${response.statusCode}");
+      print("Get profile Status codeeeeee: ${response.statusCode}");
+      print("Get profile response: ${response.body}");
       if( response.statusCode == 200 ){//FETCHED PROFILE DATA
         BusinessProfileModel model = BusinessProfileModel.fromJson( jsonDecode( response.body ) );
+        print("This lineeeeeeeeeeeeeeeeeeeee");
         //SAVE PROFILE DATA IN STORAGE
         storage.write( businessProfileModelKey, model.toJson() );
+        print("Thennnnnnnnnnnnnnnnn");
         //GO TO SETUP COMPLETE SCREEN AND FETCH PROFILE DATA THERE
-        Get.offAllNamed(AppRoutes.setupCompleteOne);
+        Get.offAllNamed(AppRoutes.setupComplete);
       }else if( response.statusCode == 401 ){//ACCESS TOKEN INVALID
         showSnackBar(
             title: "Session Expired!",
@@ -144,12 +147,14 @@ class OtpVerificationController extends GetxController {
         );
       }
     }catch(e){
+      print("Get profile Errrorrrrrrrrrr: ${e}");
       showSnackBar(
           title: "Error!",
           message: "Something went wrong. Please try again",
           backgroundColor: AppColors.errorRed
       );
     }finally{
+      print("Inside finallyyyyyyyyyyy");
       if( Get.isDialogOpen! ){
         Get.back();
       }
