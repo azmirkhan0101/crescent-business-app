@@ -5,6 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:http/http.dart' as http;
+import 'package:organization/data/models/business_profile_model.dart';
+import 'package:organization/data/models/business_signup_model.dart';
 import 'package:organization/routes/app_pages.dart';
 import 'package:organization/utils/api_endpoints.dart';
 import 'package:organization/utils/app_constants.dart';
@@ -56,9 +58,8 @@ class OtpVerificationController extends GetxController {
 
           if( isSignup ){//SIGNUP OTP VERIFIED -> SAVE TOKENS & GET PROFILE DATA TO SHOW IN SETUP COMPLETE SCREEN
             saveOtpResponse(responseData);
-
             storage.write( requireVerificationKey, false );//VERIFICATION DONE, NOT REQUIRED ANY MORE
-            Get.offAllNamed(AppRoutes.setupCompleteOne);
+            getProfileData();
           }else{
             Get.toNamed(AppRoutes.resetPassword);
           }
@@ -113,20 +114,45 @@ class OtpVerificationController extends GetxController {
 
   //GET PROFILE DATA USING TOKEN AFTER SIGNUP OTP VERIFIED
   getProfileData() async{
-    
-    Uri uri = Uri.parse( ApiEndpoints.baseUrl + ApiEndpoints.getProfile );
-    
-    Map<String, String> headers = {
-      "Content-Type": "application/json",
-      "Authorization": "Bearer ${storage.read( accessTokenKey )}",
-    };
-    
-    http.Response response = await http.get( uri, headers: headers );
-    print("Status codeeeeee: ${response.statusCode}");
-    if( response.statusCode == 200 ){//FETCHED PROFILE DATA
 
-    }else if( response.statusCode == 400 ){//TODO: CHECK STATUS CODES IN POSTMAN
+    Get.dialog(
+      const Center(child: CircularProgressIndicator()),
+      barrierDismissible: false,
+    );
 
+    try{
+      Uri uri = Uri.parse( ApiEndpoints.baseUrl + ApiEndpoints.getProfile );
+
+      Map<String, String> headers = {
+        "Content-Type": "application/json",
+        "Authorization": "Bearer ${storage.read( accessTokenKey )}",
+      };
+
+      http.Response response = await http.get( uri, headers: headers );
+      print("Status codeeeeee: ${response.statusCode}");
+      if( response.statusCode == 200 ){//FETCHED PROFILE DATA
+        BusinessProfileModel model = BusinessProfileModel.fromJson( jsonDecode( response.body ) );
+        //SAVE PROFILE DATA IN STORAGE
+        storage.write( businessProfileModelKey, model.toJson() );
+        //GO TO SETUP COMPLETE SCREEN AND FETCH PROFILE DATA THERE
+        Get.offAllNamed(AppRoutes.setupCompleteOne);
+      }else if( response.statusCode == 401 ){//ACCESS TOKEN INVALID
+        showSnackBar(
+            title: "Session Expired!",
+            message: "Please try again.",
+            backgroundColor: AppColors.errorRed
+        );
+      }
+    }catch(e){
+      showSnackBar(
+          title: "Error!",
+          message: "Something went wrong. Please try again",
+          backgroundColor: AppColors.errorRed
+      );
+    }finally{
+      if( Get.isDialogOpen! ){
+        Get.back();
+      }
     }
   }
 

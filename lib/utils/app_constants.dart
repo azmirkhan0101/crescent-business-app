@@ -4,3 +4,4 @@ const String accessTokenKey = "accessTokenKey";
 const String refreshTokenKey = "refreshTokenKey";
 const String requireVerificationKey = "requireVerificationKey";
 const String forgotPasswordTokenKey = "forgotPasswordTokenKey";
+const String businessProfileModelKey = "businessProfileModelKey";

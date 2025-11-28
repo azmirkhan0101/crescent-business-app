@@ -28,6 +28,18 @@ class BusinessModel{
     this.locations
   });
 
+
+  factory BusinessModel.fromJson( Map<String, dynamic> json ){
+    final data = json['data'];
+    return BusinessModel(
+      category: data['category'] ?? '',
+      name: data['name'] ?? '',
+      tagline: data['tagLine'] ?? '',
+      description: data['description'] ?? '',
+      locations: data['locations'] ?? [],
+    );
+  }
+
   Map<String, dynamic> toJson() {
     return {
       "email": email,

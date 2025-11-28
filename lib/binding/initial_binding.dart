@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 import 'package:organization/controller/auth/login_controller.dart';
+import 'package:organization/controller/auth/setup_complete_controller.dart';
 import 'package:organization/controller/auth/verify_now_controller.dart';
 import 'package:organization/controller/main_navigation_screen_controller/main_navigation_screen_controller.dart';
 import '../controller/auth/sign_up_controller.dart';
@@ -16,6 +17,10 @@ class InitialBinding extends Bindings {
     Get.lazyPut<SignUpController>((){
       return SignUpController();
     }, fenix: true);
+
+    Get.lazyPut<SetupCompleteController>((){
+      return SetupCompleteController();
+    }, fenix: true,);
 
     Get.lazyPut<LoginController>((){
       return LoginController();
