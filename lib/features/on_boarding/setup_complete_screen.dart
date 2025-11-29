@@ -95,7 +95,7 @@ class BusinessSetupCompleteScreen extends StatelessWidget {
                         ),
                         padding: EdgeInsets.all( 8.h ),
 
-                        /// Scrollable card content
+                        //Scrollable card content
                         child: Column(
                           children: [
                             Container(
@@ -108,7 +108,7 @@ class BusinessSetupCompleteScreen extends StatelessWidget {
                                   BoxShadow(
                                     color: Color(0x19000000),
                                     blurRadius: 8,
-                                    offset: const Offset(0, 4), // নিচে shadow
+                                    offset: const Offset(0, 4),
                                   ),
                                 ],
                               ),
@@ -119,7 +119,7 @@ class BusinessSetupCompleteScreen extends StatelessWidget {
                                 children: [
                                   SizedBox(height: 16.h),
 
-                                  /// profile image
+                                  //LOGO
                                   Container(
                                     width: 80.w,
                                     height: 80.w,
@@ -134,7 +134,7 @@ class BusinessSetupCompleteScreen extends StatelessWidget {
                                     child: ClipRRect(
                                       borderRadius: BorderRadius.circular(40.r),
                                       child: Image.network(
-                                        controller.model.value!.logoPath,
+                                        controller.model.value!.logoImage!,
                                         fit: BoxFit.cover,
                                         errorBuilder: (context, error, stack) {
                                           return Icon(Icons.person, size: 40.r,);
@@ -143,7 +143,7 @@ class BusinessSetupCompleteScreen extends StatelessWidget {
 
                                     ),
                                   ),
-                                  /// profile texts
+                                  //profile texts - NAME, CATEGORY, TAGLINE
                                   Text(
                                     controller.model.value!.name,
                                     style: AppTextStyle.headlineLStyle.copyWith(
@@ -171,7 +171,7 @@ class BusinessSetupCompleteScreen extends StatelessWidget {
 
                             SizedBox(height: 16.h),
 
-                            /// card section (row)
+                            //card section (row)
                             Row(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
@@ -182,7 +182,7 @@ class BusinessSetupCompleteScreen extends StatelessWidget {
                                     gradientColor3: const Color(0xFFD8C2F6),
                                     icon: AssetsPath.globeIcon,
                                     title: AppText.website,
-                                    subtitle: controller.model.value!.businessPhoneNumber,
+                                    subtitle: controller.model.value!.businessWebsite,
                                     iconBgColor: const Color(0xFFE2D4F9),
                                     iconColor: const Color(0xFF9B6DFF),
                                   ),
@@ -196,7 +196,7 @@ class BusinessSetupCompleteScreen extends StatelessWidget {
                                     gradientColor3: const Color(0xFFD2F7A2),
                                     icon: AssetsPath.callIcon,
                                     title: AppText.businessPhone,
-                                    subtitle: AppText.enterWebsite,
+                                    subtitle: controller.model.value!.businessPhoneNumber,
                                     iconBgColor: const Color(0xFFDBF7B6),
                                   ),
                                 ),
@@ -243,6 +243,7 @@ class BusinessSetupCompleteScreen extends StatelessWidget {
                 onPressed: () {
                   String accessToken = storage.read( accessTokenKey );
                   print("Access tokennnnnnnnnnnnnnn: ${accessToken}");
+                  Get.offAllNamed( AppRoutes.mainNav );
                 },
               ),
             ),

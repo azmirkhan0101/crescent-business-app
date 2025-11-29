@@ -21,7 +21,6 @@ class SignUpController extends GetxController {
   final TextEditingController businessPhoneController = TextEditingController();
   final TextEditingController businessEmailController = TextEditingController();
   final TextEditingController businessWebsiteController = TextEditingController();
-  final TextEditingController locationSearchController = TextEditingController();
 
   BusinessModel businessModel = BusinessModel();
   final storage = GetStorage();
@@ -105,8 +104,10 @@ class SignUpController extends GetxController {
     Get.toNamed(AppRoutes.uploadLogo);
   }
 
+  //SIGN UP
   Future<void> signup() async {
 
+    await showLoadingAlert( title: "Signing up..." );
     try{
       final url = Uri.parse( ApiEndpoints.baseUrl + ApiEndpoints.signup );
       File? logo = businessModel.logo;
@@ -125,20 +126,19 @@ class SignUpController extends GetxController {
       if (logo != null) {
         request.files.add(
           await http.MultipartFile.fromPath(
-            "coverImage",
+            "logoImage",
             logo.path,
           ),
         );
       } else {
-        // If backend allows sending null (most do), send empty field
-        request.fields["coverImage"] = "";
+        //If backend allows sending null (most do), send empty field
+        //TODO: PASS NULL, NOT EMPTY STRING!!!!!!!!!!!!!!!!!!!!!!!!!!
+        request.fields["logoImage"] = "";
       }
 
       // Send request
       var response = await request.send();
-      print("status codeeeeeeeee: ${response.statusCode}");
       var responseBody = await response.stream.bytesToString();
-      print("Response: $responseBody");
       var responseData = jsonDecode(responseBody);
 
       if (response.statusCode == 200 || response.statusCode == 201) {//ACCOUNT CREATED -> SAVE EMAIL -> GO TO OTP VERIFY
@@ -151,8 +151,6 @@ class SignUpController extends GetxController {
         };
         Get.toNamed(AppRoutes.otpVerify, arguments: arguments );
       }else if( response.statusCode == 400 ){//USER ALREADY EXISTS
-        print("Token: ${storage.read(accessTokenKey)}");
-        print("Response: $responseBody");
         showSnackBar(
             title: "User Exists!",
             message: responseData["message"] ?? "User already exist with this email. Try login instead",
@@ -172,11 +170,35 @@ class SignUpController extends GetxController {
           message: "Something went wrong. Please try again.",
           backgroundColor: AppColors.errorRed
       );
+    }finally{
+      if( Get.isDialogOpen ?? false ){
+        Get.back();
+      }
     }
-
 
   }
 
+  //SHOW LOADING ALERT DIALOG
+  Future<void> showLoadingAlert({String title = "Loading..."}) async{
+    if( Get.isDialogOpen ?? false ){
+      Get.back();
+    }
+    return Get.dialog(
+      AlertDialog(
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            CircularProgressIndicator(),
+            SizedBox(height: 20),
+            Text( title ),
+          ],
+        ),
+      ),
+      barrierDismissible: false,
+    );
+  }
+
+  //SNACKBAR
   showSnackBar({required String title, required String message, required Color backgroundColor}){
     Get.snackbar(
         title,
@@ -188,8 +210,15 @@ class SignUpController extends GetxController {
 
   @override
   void onClose() {
-    // emailController.dispose();
-    // passwordController.dispose();
+    if( emailController != null ) emailController.dispose();
+    if( passwordController != null ) passwordController.dispose();
+    if( businessEmailController != null ) businessEmailController.dispose();
+    if( businessPhoneController != null ) businessPhoneController.dispose();
+    if( businessWebsiteController != null ) businessWebsiteController.dispose();
+    if( nameController != null ) nameController.dispose();
+    if( taglineController != null ) taglineController.dispose();
+    if( descriptionController != null ) descriptionController.dispose();
+
     super.onClose();
   }
 }

@@ -146,8 +146,8 @@ class LoginController extends GetxController{
 
     @override
     void onClose() {
-      emailController.dispose();
-      passwordController.dispose();
+      if( emailController != null ) emailController.dispose();
+      if( passwordController != null ) passwordController.dispose();
       super.onClose();
     }
   }

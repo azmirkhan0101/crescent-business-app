@@ -2,16 +2,17 @@
 
 class BusinessProfileModel{
 
-  final String category;
-  final String name;
-  final String tagline;
-  final String description;
-  final String email;
-  final String businessPhoneNumber;
-  final String businessEmail;
-  final String businessWebsite;
-  final String logoPath;
-  final List<String> locations;
+  String category;
+  String name;
+  String tagline;
+  String description;
+  String email;
+  String businessPhoneNumber;
+  String businessEmail;
+  String businessWebsite;
+  String? coverImage;
+  String? logoImage;
+  List<String>? locations;
 
   BusinessProfileModel({
     required this.category,
@@ -22,34 +23,32 @@ class BusinessProfileModel{
     required this.businessEmail,
     required this.businessPhoneNumber,
     required this.businessWebsite,
-    required this.logoPath,
+    required this.coverImage,
+    required this.logoImage,
     required this.locations
   });
 
 
   factory BusinessProfileModel.fromJson( Map<String, dynamic> json ){
 
-    final data = json['data'];
-    if( data == null ){
-      print("Error in modellll: data is null ${data}");
-    }
     return BusinessProfileModel(
-        category: data['category'] ?? "",
-        name: data['name'] ?? "",
-        tagline: data['tagLine'] ?? "",
-        description: data['description'] ?? "",
-        email: data['email'] ?? "",
-        businessEmail: data['businessEmail'],
-        businessPhoneNumber: data['businessPhoneNumber'] ?? "",
-        businessWebsite: data['businessWebsite'] ?? "",
-        logoPath: data['logoPath'] ?? "",
-        locations: List<String>.from(data['locations'])
+        category: json['category'] ?? "",
+        name: json['name'] ?? "",
+        tagline: json['tagLine'] ?? "",
+        description: json['description'] ?? "",
+        email: json['auth']['email'] ?? "",
+        businessEmail: json['businessEmail'] ?? "",
+        businessPhoneNumber: json['businessPhoneNumber'] ?? "",
+        businessWebsite: json['businessWebsite'] ?? "",
+        coverImage: json['coverImage'] ?? "",
+        logoImage: json['logoImage'] ?? "",
+        locations: List<String>.from(json['locations'])
     );
   }
 
   Map<String, dynamic> toJson() {
     return {
-      "email": email,
+      "auth": {"email": email},
       "category": category,
       "name": name,
       "tagLine": tagline,
@@ -57,8 +56,9 @@ class BusinessProfileModel{
       "businessPhoneNumber": businessPhoneNumber,
       "businessEmail": businessEmail,
       "businessWebsite": businessWebsite,
+      "coverImage": coverImage,
+      "logoImage": logoImage,
       "locations": locations,
-      "role": "BUSINESS",
     };
   }
 

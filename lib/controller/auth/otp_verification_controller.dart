@@ -28,6 +28,7 @@ class OtpVerificationController extends GetxController {
   //SUBMIT OTP FOR SIGNUP EMAIL VERIFICATION
   void submitSignupOtp() async {
 
+    await showLoadingAlert( title: "Verifying..." );
     if (!isOtpValid.value) {
       Get.snackbar("Error", "Please enter the complete PIN");
       return;
@@ -43,8 +44,6 @@ class OtpVerificationController extends GetxController {
 
     try {
       final response = await http.post(uri, body: payLoad).timeout(const Duration(seconds: 8));
-      print("Status code: ${response.statusCode}");
-
       final responseData = jsonDecode(response.body);
 
       if (response.statusCode == 200 || response.statusCode == 201) {
@@ -61,14 +60,14 @@ class OtpVerificationController extends GetxController {
             storage.write( requireVerificationKey, false );//VERIFICATION DONE, NOT REQUIRED ANY MORE
             getProfileData();
           }else{
-            Get.toNamed(AppRoutes.resetPassword);
+            Get.offAndToNamed(AppRoutes.resetPassword);
           }
           return;
         } else {
-          // Handle cases where status code is 200/201 but 'success' field is false
-          Get.snackbar(
-            "Verification failed!",
-            "OTP verification failed.",
+          showSnackBar(
+              title: "Verification failed!",
+              message: "OTP verification failed.",
+              backgroundColor: AppColors.errorRed
           );
         }
       } else if (response.statusCode == 400) {//OTP NOT MATCHED
@@ -78,43 +77,41 @@ class OtpVerificationController extends GetxController {
             backgroundColor: AppColors.errorRed
         );
       } else if (response.statusCode == 401 || response.statusCode == 403) {
-        // 401 Unauthorized / 403 Forbidden: Often used for invalid OTP or token.
         showSnackBar(
             title: "Invalid OTP!",
             message: "The entered OTP is incorrect or has expired.",
             backgroundColor: AppColors.errorRed
         );
-      } else if (response.statusCode >= 500) {
-        // 5xx Server Errors
-        Get.snackbar(
-          "Server Error",
-          "An internal server error occurred. Please try again later.",
-        );
-      } else {
-        // Handle other non-success status codes (e.g., 404, etc.)
-        Get.snackbar(
-          "Error!",
-          "An unexpected error occurred. Please try again.",
+      }else {
+        showSnackBar(
+            title: "Error!",
+            message: "An error occurred. Please try again.",
+            backgroundColor: AppColors.errorRed
         );
       }
     } on TimeoutException catch (_) {
-      // 6. Timeout Exception
-      Get.snackbar(
-        "Time out!",
-        "Request timed out. Please check your network and try again.",
+      showSnackBar(
+          title: "Time out!",
+          message: "Request timed out. Please check your network and try again.",
+          backgroundColor: AppColors.errorRed
       );
     } catch (e) {
-      // 7. General Exceptions (e.g., network error, JSON format error)
-      Get.snackbar(
-        "Error!",
-        "Something went wrong. Check your connection or try again.",
+      showSnackBar(
+          title:  "Error!",
+          message: "Something went wrong. Check your internet connection or try again.",
+          backgroundColor: AppColors.errorRed
       );
+    }finally{
+      if( Get.isDialogOpen ?? false ){
+        Get.back();
+      }
     }
   }
 
   //GET PROFILE DATA USING TOKEN AFTER SIGNUP OTP VERIFIED
   getProfileData() async{
 
+    await showLoadingAlert( title: "Loading..." );
     Get.dialog(
       const Center(child: CircularProgressIndicator()),
       barrierDismissible: false,
@@ -129,14 +126,10 @@ class OtpVerificationController extends GetxController {
       };
 
       http.Response response = await http.get( uri, headers: headers );
-      print("Get profile Status codeeeeee: ${response.statusCode}");
-      print("Get profile response: ${response.body}");
       if( response.statusCode == 200 ){//FETCHED PROFILE DATA
-        BusinessProfileModel model = BusinessProfileModel.fromJson( jsonDecode( response.body ) );
-        print("This lineeeeeeeeeeeeeeeeeeeee");
+        BusinessProfileModel model = BusinessProfileModel.fromJson( jsonDecode( response.body )['data'] );
         //SAVE PROFILE DATA IN STORAGE
         storage.write( businessProfileModelKey, model.toJson() );
-        print("Thennnnnnnnnnnnnnnnn");
         //GO TO SETUP COMPLETE SCREEN AND FETCH PROFILE DATA THERE
         Get.offAllNamed(AppRoutes.setupComplete);
       }else if( response.statusCode == 401 ){//ACCESS TOKEN INVALID
@@ -147,15 +140,13 @@ class OtpVerificationController extends GetxController {
         );
       }
     }catch(e){
-      print("Get profile Errrorrrrrrrrrr: ${e}");
       showSnackBar(
           title: "Error!",
           message: "Something went wrong. Please try again",
           backgroundColor: AppColors.errorRed
       );
     }finally{
-      print("Inside finallyyyyyyyyyyy");
-      if( Get.isDialogOpen! ){
+      if( Get.isDialogOpen ?? false ){
         Get.back();
       }
     }
@@ -174,6 +165,7 @@ class OtpVerificationController extends GetxController {
   //RESEND SIGNUP OTP
   void resendSignupOtp() async{
 
+    await showLoadingAlert(  title:  "Resending otp..." );
     try{
       Uri uri = Uri.parse( ApiEndpoints.baseUrl + ApiEndpoints.otpResendSignup );
       Map<String, String> payLoad = {
@@ -206,13 +198,16 @@ class OtpVerificationController extends GetxController {
           message: "Something went wrong. Please try again.",
           backgroundColor: AppColors.errorRed
       );
+    }finally{
+      if( Get.isDialogOpen ?? false ){
+        Get.back();
+      }
     }
-
-
   }
 
   //SUBMIT OTP FOR FORGOT PASSWORD VERIFICATION
   void submitForgotPasswordOtp() async {
+    await showLoadingAlert( title: "Verifying..." );
     // 1. Input Validation
     if (!isOtpValid.value) {
       Get.snackbar("Error", "Please enter the complete PIN");
@@ -231,8 +226,6 @@ class OtpVerificationController extends GetxController {
     try {
       // 3. Send Request
       final response = await http.post(uri, body: payLoad).timeout(const Duration(seconds: 8));
-      print("Status code: ${response.statusCode}");
-      print("Forgot Password otp submit Response: ${response.body}");
 
       if ( response.statusCode == 200 ) {//OTP VERIFIED -> GO TO RESET PASSWORD
         final responseData = jsonDecode(response.body);
@@ -251,26 +244,13 @@ class OtpVerificationController extends GetxController {
             "OTP verification failed.",
           );
         }
-      } else if (response.statusCode == 400) {
+      } else if (response.statusCode == 400 || response.statusCode == 401 || response.statusCode == 403 ) {
         showSnackBar(
             title: "Invalid OTP!",
             message: "The entered OTP is incorrect or has expired.",
             backgroundColor: AppColors.errorRed
         );
-      } else if (response.statusCode == 401 || response.statusCode == 403) {
-        showSnackBar(
-            title: "Verification Failed!",
-            message: "The entered OTP is incorrect or has expired.",
-            backgroundColor: AppColors.errorRed
-        );
-      } else if (response.statusCode >= 500) {
-        // 5xx Server Errors
-        Get.snackbar(
-          "Server Error",
-          "An internal server error occurred. Please try again later.",
-        );
-      } else {
-        // Handle other non-success status codes (e.g., 404, etc.)
+      }else {
         Get.snackbar(
           "Error!",
           "An unexpected error occurred. Please try again.",
@@ -278,21 +258,26 @@ class OtpVerificationController extends GetxController {
       }
     } on TimeoutException catch (_) {
       // 6. Timeout Exception
-      Get.snackbar(
-        "Time out!",
-        "Request timed out. Please check your network and try again.",
+      showSnackBar(
+          title: "Time out!",
+          message: "Request timed out. Please check your network and try again.",
+          backgroundColor: AppColors.errorRed
       );
     } catch (e) {
-      // 7. General Exceptions (e.g., network error, JSON format error)
       Get.snackbar(
         "Error!",
-        "Something went wrong. Check your connection or try again.",
+        "Something went wrong. Check your internet connection or try again.",
       );
+    }finally{
+      if( Get.isDialogOpen ?? false ){
+        Get.back();
+      }
     }
   }
 
   //RESEND FORGOT PASSWORD OTP
   void resendForgotPasswordOTP() async{
+    await showLoadingAlert( title: "Resending otp..." );
     String token = storage.read( forgotPasswordTokenKey );
     if( token.isEmpty ){
       return;
@@ -331,10 +316,35 @@ class OtpVerificationController extends GetxController {
           message: "Something went wrong. Please try again later",
           backgroundColor: AppColors.errorRed
       );
+    }finally{
+      if( Get.isDialogOpen ?? false ){
+        Get.back();
+      }
     }
 
   }
 
+  //SHOW LOADING ALERT DIALOG
+  Future<void> showLoadingAlert({String title = "Loading..."}) async{
+    if( Get.isDialogOpen ?? false ){
+      Get.back();
+    }
+    return Get.dialog(
+      AlertDialog(
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            CircularProgressIndicator(),
+            SizedBox(height: 20),
+            Text( title ),
+          ],
+        ),
+      ),
+      barrierDismissible: false,
+    );
+  }
+
+  //SHOW SNACKBAR
   showSnackBar({required String title, required String message, required Color backgroundColor, Color textColor = AppColors.white}) {
     Get.snackbar(
         title,
@@ -348,7 +358,9 @@ class OtpVerificationController extends GetxController {
   @override
   void onClose() {
 
-    otpController.dispose();
+    if( otpController != null ){
+      otpController.dispose();
+    }
     super.onClose();
   }
 
