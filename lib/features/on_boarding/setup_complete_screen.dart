@@ -45,9 +45,13 @@ class BusinessSetupCompleteScreen extends StatelessWidget {
             SizedBox(height: 60.h),
             Align(
               alignment: AlignmentGeometry.topRight,
-              child: IconButton(onPressed: (){
-                Get.toNamed(AppRoutes.mainNav);
-              }, icon: Icon(Icons.close)),
+              child: IconButton(
+                  onPressed: (){
+                String accessToken = storage.read( accessTokenKey );
+                print("Access tokennnnnnnnnnnnnnn: ${accessToken}");
+                Get.offAllNamed( AppRoutes.mainNav );
+              },
+                  icon: Icon(Icons.close)),
             ),
             /// complete icon
             CustomAssetsImage(

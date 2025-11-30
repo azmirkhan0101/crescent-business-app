@@ -61,44 +61,6 @@ class StoreLocationScreen extends StatelessWidget {
             SizedBox(height: 50.h),
             //LOCATION AUTOCOMPLETE - GOOGLE PLACES
             placesAutoCompleteTextField(),
-            /// Form fields
-            // Column(
-            //   mainAxisSize: MainAxisSize.min,
-            //   crossAxisAlignment: CrossAxisAlignment.start,
-            //   children: [
-            //
-            //     /// Email Field
-            //     Row(
-            //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            //       children: [
-            //         TextFieldTitleWidget(text: "Search Location"),
-            //         ElevatedButton(onPressed: (){
-            //           if( controller.locationSearchController.text.trim().isNotEmpty ){
-            //             locationNames.add(controller.locationSearchController.text.trim());
-            //             controller.locationSearchController.clear();
-            //           }
-            //         },
-            //             style: ElevatedButton.styleFrom(
-            //               backgroundColor: AppColors.successGreen,
-            //               textStyle: TextStyle(color: AppColors.white),
-            //               shape: RoundedRectangleBorder(
-            //                 borderRadius: BorderRadius.circular(12)
-            //               )
-            //             ),
-            //             child: Text("Add", style: TextStyle(color: AppColors.white),))
-            //       ],
-            //     ),
-            //     SizedBox(height: AppSizes.paddingSmallH),
-            //     CustomTextField(
-            //       hintText: "Search",
-            //       prefixImagePath:
-            //       AssetsPath.searchIcon,
-            //       controller: controller.locationSearchController,
-            //     ),
-            //     SizedBox(height: 16.h),
-            //     Divider(height: 1.w, color: Colors.grey.shade200),
-            //   ],
-            // ),
             Obx((){
               return ListView.builder(
                   shrinkWrap: true,

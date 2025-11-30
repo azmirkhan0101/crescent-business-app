@@ -28,11 +28,12 @@ class OtpVerificationController extends GetxController {
   //SUBMIT OTP FOR SIGNUP EMAIL VERIFICATION
   void submitSignupOtp() async {
 
-    await showLoadingAlert( title: "Verifying..." );
     if (!isOtpValid.value) {
       Get.snackbar("Error", "Please enter the complete PIN");
       return;
     }
+
+    showLoadingAlert( title: "Verifying..." );
 
     // 2. Setup Request
     Uri uri = Uri.parse(ApiEndpoints.baseUrl + ApiEndpoints.otpSignup);
@@ -47,7 +48,7 @@ class OtpVerificationController extends GetxController {
       final responseData = jsonDecode(response.body);
 
       if (response.statusCode == 200 || response.statusCode == 201) {
-
+        closeDialog();
         if (responseData["success"] == true) {
           showSnackBar(
               title: "OTP verified!",
@@ -102,20 +103,14 @@ class OtpVerificationController extends GetxController {
           backgroundColor: AppColors.errorRed
       );
     }finally{
-      if( Get.isDialogOpen ?? false ){
-        Get.back();
-      }
+      closeDialog();
     }
   }
 
   //GET PROFILE DATA USING TOKEN AFTER SIGNUP OTP VERIFIED
   getProfileData() async{
 
-    await showLoadingAlert( title: "Loading..." );
-    Get.dialog(
-      const Center(child: CircularProgressIndicator()),
-      barrierDismissible: false,
-    );
+    showLoadingAlert( title: "Syncing..." );
 
     try{
       Uri uri = Uri.parse( ApiEndpoints.baseUrl + ApiEndpoints.getProfile );
@@ -131,6 +126,7 @@ class OtpVerificationController extends GetxController {
         //SAVE PROFILE DATA IN STORAGE
         storage.write( businessProfileModelKey, model.toJson() );
         //GO TO SETUP COMPLETE SCREEN AND FETCH PROFILE DATA THERE
+        closeDialog();
         Get.offAllNamed(AppRoutes.setupComplete);
       }else if( response.statusCode == 401 ){//ACCESS TOKEN INVALID
         showSnackBar(
@@ -146,9 +142,7 @@ class OtpVerificationController extends GetxController {
           backgroundColor: AppColors.errorRed
       );
     }finally{
-      if( Get.isDialogOpen ?? false ){
-        Get.back();
-      }
+      closeDialog();
     }
   }
 
@@ -165,7 +159,7 @@ class OtpVerificationController extends GetxController {
   //RESEND SIGNUP OTP
   void resendSignupOtp() async{
 
-    await showLoadingAlert(  title:  "Resending otp..." );
+    showLoadingAlert(  title:  "Resending otp..." );
     try{
       Uri uri = Uri.parse( ApiEndpoints.baseUrl + ApiEndpoints.otpResendSignup );
       Map<String, String> payLoad = {
@@ -199,20 +193,18 @@ class OtpVerificationController extends GetxController {
           backgroundColor: AppColors.errorRed
       );
     }finally{
-      if( Get.isDialogOpen ?? false ){
-        Get.back();
-      }
+      closeDialog();
     }
   }
 
   //SUBMIT OTP FOR FORGOT PASSWORD VERIFICATION
   void submitForgotPasswordOtp() async {
-    await showLoadingAlert( title: "Verifying..." );
     // 1. Input Validation
     if (!isOtpValid.value) {
       Get.snackbar("Error", "Please enter the complete PIN");
       return;
     }
+    showLoadingAlert( title: "Verifying..." );
 
     // 2. Setup Request
     Uri uri = Uri.parse(ApiEndpoints.baseUrl + ApiEndpoints.otpVerifyForgotPassword );
@@ -236,6 +228,7 @@ class OtpVerificationController extends GetxController {
               backgroundColor: AppColors.successGreen
           );
           String resetPasswordToken = responseData['data']['resetPasswordToken'];
+          closeDialog();
           Get.toNamed( AppRoutes.resetPassword, arguments: resetPasswordToken );
           return;
         } else {
@@ -269,19 +262,17 @@ class OtpVerificationController extends GetxController {
         "Something went wrong. Check your internet connection or try again.",
       );
     }finally{
-      if( Get.isDialogOpen ?? false ){
-        Get.back();
-      }
+      closeDialog();
     }
   }
 
   //RESEND FORGOT PASSWORD OTP
   void resendForgotPasswordOTP() async{
-    await showLoadingAlert( title: "Resending otp..." );
     String token = storage.read( forgotPasswordTokenKey );
     if( token.isEmpty ){
       return;
     }
+    showLoadingAlert( title: "Resending otp..." );
     try{
       Uri uri = Uri.parse( ApiEndpoints.baseUrl + ApiEndpoints.otpResendForgotPassword );
       Map<String, dynamic> payLoad = {
@@ -317,19 +308,17 @@ class OtpVerificationController extends GetxController {
           backgroundColor: AppColors.errorRed
       );
     }finally{
-      if( Get.isDialogOpen ?? false ){
-        Get.back();
-      }
+     closeDialog();
     }
 
   }
 
   //SHOW LOADING ALERT DIALOG
-  Future<void> showLoadingAlert({String title = "Loading..."}) async{
+  showLoadingAlert({String title = "Loading..."}){
     if( Get.isDialogOpen ?? false ){
       Get.back();
     }
-    return Get.dialog(
+    Get.dialog(
       AlertDialog(
         content: Column(
           mainAxisSize: MainAxisSize.min,
@@ -342,6 +331,13 @@ class OtpVerificationController extends GetxController {
       ),
       barrierDismissible: false,
     );
+  }
+
+  //CLOSE ALERT DIALOG
+  closeDialog(){
+    if( Get.isDialogOpen ?? false ){
+      Get.back();
+    }
   }
 
   //SHOW SNACKBAR

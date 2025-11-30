@@ -1,6 +1,14 @@
+import 'dart:io';
+import 'dart:math';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:google_places_flutter/google_places_flutter.dart';
+import 'package:google_places_flutter/model/prediction.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:organization/controller/profile/edit_profile_controller.dart';
 import 'package:organization/features/profile/widget/business_profile_image_widget.dart';
 import 'package:organization/features/profile/widget/location_widget.dart';
 import 'package:organization/features/profile/widget/profile_heading_text_widget.dart';
@@ -15,16 +23,17 @@ import '../../utils/app_text_styles.dart';
 import '../widgets/custom_text_field_widget.dart';
 
 class EditProfileScreen extends StatelessWidget {
-  const EditProfileScreen({super.key});
+  final EditProfileController controller = Get.find<EditProfileController>();
+  final TextEditingController textEditingController = TextEditingController();
+  final String googleApiKey = dotenv.env['GOOGLE_API_KEY']!;
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       backgroundColor: const Color(0xFFF7F7F7),
-      ///app bar
+      //app bar
       appBar: AppBar(
-        scrolledUnderElevation:0,
+        scrolledUnderElevation: 0,
         clipBehavior: Clip.none,
         backgroundColor: Colors.transparent,
         centerTitle: true,
@@ -34,21 +43,17 @@ class EditProfileScreen extends StatelessWidget {
             Get.back();
           },
         ),
-        title:
-        CustomText(text:   'Edit Profile',fontSize: 18.sp,fontWeight: FontWeight.w700,
-        color: AppColors.blackTextColor,
+        title: CustomText(
+          text: 'Edit Profile',
+          fontSize: 18.sp,
+          fontWeight: FontWeight.w700,
+          color: AppColors.blackTextColor,
         ),
-
-
-        // Text(
-        //   'Edit Profile',
-        //   style: AppTextStyle.headlineLStyle.copyWith(fontSize: 17.sp),
-        // ),
         actions: [
           IconButton(
             icon: Icon(Icons.done, size: 20.w),
             onPressed: () {
-             // context.push(RoutesPath.home);
+              controller.updateBusinessProfile();
             },
           ),
         ],
@@ -58,19 +63,33 @@ class EditProfileScreen extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            /// Cover image
+            // Cover image
             BusinessProfileWidget(
-              /// Cover image edit button
+              coverImage: controller.model.coverImage,
+              logoImage: controller.model.logoImage,
+              // Cover image edit button
               topEdit: Positioned(
                 right: 12.w,
                 top: 20.h,
-                child: Container(
-                 padding: EdgeInsets.all(8.w),
-                  decoration: const BoxDecoration(
-                    color: AppColors.black,
-                    shape: BoxShape.circle,
+                child: GestureDetector(
+                  onTap: () async {
+                    controller.coverImage = await pickImage();
+                  },
+                  child: Container(
+                    padding: EdgeInsets.all(8.w),
+                    decoration: const BoxDecoration(
+                      color: AppColors.black,
+                      shape: BoxShape.circle,
+                    ),
+                    child: Center(
+                      child: CustomAssetsImage(
+                        assetsPath: AssetsPath.editIcon,
+                        color: AppColors.white,
+                        height: 14.h,
+                        width: 14.w,
+                      ),
+                    ),
                   ),
-                  child: Center(child: CustomAssetsImage(assetsPath: AssetsPath.editIcon,color: AppColors.white,height: 14.h,width: 14.w,)),
                 ),
               ),
 
@@ -78,18 +97,22 @@ class EditProfileScreen extends StatelessWidget {
               profileCenterEdit: Positioned(
                 bottom: 0,
                 right: 0,
-                child:GestureDetector(
-                  onTap: (){
-                    Get.toNamed(AppRoutes.uploadLogo);
-                  },
-                  child: Container(
-                    padding: EdgeInsets.all(8.w),
-                    //padding: const EdgeInsets.all(4.0),
-                    decoration: const BoxDecoration(
-                      color: AppColors.black,
-                      shape: BoxShape.circle,
-                    ),
-                    child: Center(child: CustomAssetsImage(assetsPath: AssetsPath.editIcon,color: AppColors.white,height: 14.h,width: 14.w,)),
+                child: Container(
+                  decoration: const BoxDecoration(
+                    color: AppColors.black,
+                    shape: BoxShape.circle,
+                  ),
+                  child: Center(
+                    child: IconButton(
+                      padding: EdgeInsets.all(0),
+                        onPressed: (){
+
+                          print("Profile icon click");
+                          pickImage();
+                          print("Finish");
+                        },
+                        icon: Icon(Icons.edit, color: Colors.white,)
+                    )
                   ),
                 ),
               ),
@@ -106,88 +129,145 @@ class EditProfileScreen extends StatelessWidget {
                   ProfileHeadingTextWidget(title: AppText.name),
                   SizedBox(height: AppSizes.paddingSmallH),
                   CustomTextField(
-                    hintText: "Sweet Whisk Bakery",
+                    hintText: controller.model.name,
+                    controller: controller.nameController,
                   ),
                   SizedBox(height: 16.h),
+
                   /// tagline
                   ProfileHeadingTextWidget(title: AppText.tagline),
                   CustomTextField(
-                    hintText: "Whipping Up Smiles, One Treat at a Time!",
+                    hintText: controller.model.tagline,
+                    controller: controller.taglineController,
                   ),
                   SizedBox(height: 16.h),
+
                   /// description
                   ProfileHeadingTextWidget(title: AppText.description),
                   SizedBox(height: AppSizes.paddingSmallH),
                   CustomTextField(
                     maxLines: 5,
-                    hintText: AppText.sweetWhiskDescription,
-
-                    ),
-
-
+                    hintText: controller.model.description,
+                    controller: controller.descriptionController,
+                  ),
 
                   SizedBox(height: 16.h),
+
                   /// globalization
                   ProfileHeadingTextWidget(title: AppText.website),
                   SizedBox(height: AppSizes.paddingSmallH),
                   CustomTextField(
-                    prefixImagePath:
-                   AssetsPath.globeIcon,
-
-
-                    hintText: "sweetwhiskbakery.com",
+                    prefixImagePath: AssetsPath.globeIcon,
+                    hintText: controller.model.businessWebsite ?? "",
+                    controller: controller.websiteController,
                   ),
                   SizedBox(height: 16.h),
+
                   /// business phone
                   ProfileHeadingTextWidget(title: AppText.businessPhone),
                   CustomTextField(
-                    prefixImagePath:
-                      AssetsPath.callIcon,
-                    hintText: "(555) 123-4567",
+                    prefixImagePath: AssetsPath.callIcon,
+                    hintText: controller.model.businessPhoneNumber ?? "",
+                    controller: controller.phoneController,
                   ),
                   SizedBox(height: 16.h),
+
                   /// email
                   ProfileHeadingTextWidget(title: AppText.email),
                   SizedBox(height: AppSizes.paddingSmallH),
                   CustomTextField(
-                    prefixImagePath:
-                       AssetsPath.mailIcon,
-                    hintText: "contact@sweetwhiskbakery.com",
-                 ),
+                    prefixImagePath: AssetsPath.mailIcon,
+                    hintText: controller.model.businessEmail ?? "",
+                    controller: controller.emailController,
+                  ),
                 ],
               ),
             ),
             SizedBox(height: 16.h),
 
             /// location title row
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                ProfileHeadingTextWidget(title: AppText.location),
-                IconButton(
-                  onPressed: () {},
-                  icon: Icon(Icons.add, color: AppColors.black, size: 20.w),
-                ),
-              ],
-            ),
+            ProfileHeadingTextWidget(title: AppText.location),
             SizedBox(height: 12.h),
 
-            /// location 1
-            LocationWidget(
-              headingText: AppText.location1,
-              fieldText: AppText.store1Address,
-              deleteTap: () {},
-            ),
-            SizedBox(height: 16.h),
-
-            /// location 2
-            LocationWidget(
-              headingText: AppText.location2,
-              fieldText: AppText.store1Address,
-              deleteTap: () {},
-            ),
+            //LOCATION AUTOCOMPLETE - GOOGLE PLACES
+            placesAutoCompleteTextField(),
+            Obx(() {
+              return ListView.builder(
+                shrinkWrap: true,
+                itemCount: controller.locationNames.length,
+                itemBuilder: (context, index) {
+                  return LocationWidget(
+                    headingText: "Location ${index + 1}",
+                    fieldText: controller.locationNames[index],
+                    deleteTap: () {
+                      controller.locationNames.removeAt(index);
+                    },
+                  );
+                },
+              );
+            }),
           ],
-       ),
+        ),
+      ),
+    );
+  }
+
+  //image picker
+  Future<File?> pickImage() async {
+    final picker = ImagePicker();
+    final XFile? image = await picker.pickImage(source: ImageSource.gallery);
+
+    if (image != null) {
+      return File(image.path);
+    } else {
+      return null;
+    }
+  }
+
+  //GOOGLE PLACE AUTOCOMPLETE
+  placesAutoCompleteTextField() {
+    return Container(
+      padding: EdgeInsets.symmetric(horizontal: 20),
+      child: GooglePlaceAutoCompleteTextField(
+        textEditingController: textEditingController,
+        googleAPIKey: googleApiKey,
+        inputDecoration: InputDecoration(
+          hintText: "Search your location",
+          border: InputBorder.none,
+          enabledBorder: InputBorder.none,
+        ),
+        debounceTime: 400,
+        //countries: ["in", "fr"],
+        isLatLngRequired: true,
+        getPlaceDetailWithLatLng: (Prediction prediction) {
+          print("placeDetails" + prediction.lat.toString());
+        },
+
+        itemClick: (Prediction prediction) {
+          final placeName = prediction.description ?? "";
+          textEditingController.text = placeName;
+          //ADD PLACE NAME IN LOCATIONS LIST
+          controller.locationNames.add(placeName);
+          textEditingController.selection = TextSelection.fromPosition(
+            TextPosition(offset: prediction.description?.length ?? 0),
+          );
+        },
+        seperatedBuilder: Divider(),
+        containerHorizontalPadding: 10,
+        itemBuilder: (context, index, Prediction prediction) {
+          return Container(
+            padding: EdgeInsets.all(10),
+            child: Row(
+              children: [
+                Icon(Icons.location_on),
+                SizedBox(width: 7),
+                Expanded(child: Text("${prediction.description ?? ""}")),
+              ],
+            ),
+          );
+        },
+        isCrossBtnShown: true,
+        // default 600 ms ,
       ),
     );
   }

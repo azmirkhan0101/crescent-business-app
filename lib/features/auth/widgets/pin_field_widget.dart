@@ -26,6 +26,7 @@ class PinFieldWidget extends StatelessWidget {
       animationType: AnimationType.fade,
       animationDuration: const Duration(milliseconds: 200),
       enableActiveFill: true,
+      autoDisposeControllers: false,
 
       // ✅ pin theme
       pinTheme: PinTheme(

@@ -107,14 +107,13 @@ class SignUpController extends GetxController {
   //SIGN UP
   Future<void> signup() async {
 
-    await showLoadingAlert( title: "Signing up..." );
+    showLoadingAlert( title: "Signing up..." );
     try{
       final url = Uri.parse( ApiEndpoints.baseUrl + ApiEndpoints.signup );
       File? logo = businessModel.logo;
 
       // Convert model to JSON string (because backend expects "data" as string)
       final jsonString = jsonEncode(businessModel.toJson());
-      print("Json Of Model: ${jsonString}");
 
       // Create multipart request
       var request = http.MultipartRequest("POST", url);
@@ -149,7 +148,8 @@ class SignUpController extends GetxController {
           emailKey : businessModel.email,
           isSignupKey : true
         };
-        Get.toNamed(AppRoutes.otpVerify, arguments: arguments );
+        closeDialog();
+        Get.offAllNamed(AppRoutes.otpVerify, arguments: arguments );
       }else if( response.statusCode == 400 ){//USER ALREADY EXISTS
         showSnackBar(
             title: "User Exists!",
@@ -171,19 +171,17 @@ class SignUpController extends GetxController {
           backgroundColor: AppColors.errorRed
       );
     }finally{
-      if( Get.isDialogOpen ?? false ){
-        Get.back();
-      }
+      closeDialog();
     }
 
   }
 
   //SHOW LOADING ALERT DIALOG
-  Future<void> showLoadingAlert({String title = "Loading..."}) async{
+  showLoadingAlert({String title = "Loading..."}){
     if( Get.isDialogOpen ?? false ){
       Get.back();
     }
-    return Get.dialog(
+    Get.dialog(
       AlertDialog(
         content: Column(
           mainAxisSize: MainAxisSize.min,
@@ -196,6 +194,13 @@ class SignUpController extends GetxController {
       ),
       barrierDismissible: false,
     );
+  }
+
+  //CLOSE ALERT DIALOG
+  closeDialog(){
+    if( Get.isDialogOpen ?? false ){
+      Get.back();
+    }
   }
 
   //SNACKBAR
