@@ -55,18 +55,12 @@ class EditProfileController extends GetxController{
     };
 
     try {
-      print("first");
       final url = Uri.parse( ApiEndpoints.baseUrl + ApiEndpoints.updateProfile );
-      print("second");
       var request = http.MultipartRequest("PATCH", url );
-      print("third");
       request.headers["Authorization"] = "Bearer ${storage.read( accessTokenKey )}";
-      print("fourth");
       request.headers["Accept"] = "application/json";
-      print("fifth");
       // Add text data
       request.fields["data"] = jsonEncode(data);
-      print("sixth");
       // Add optional cover image
       if( coverImage.value != null ){
         request.files.add(
@@ -76,7 +70,6 @@ class EditProfileController extends GetxController{
           ),
         );
       }
-      print("seven");
 
       // Add optional logo image
       if( logoImage.value != null ){
@@ -87,7 +80,6 @@ class EditProfileController extends GetxController{
           ),
         );
       }
-      print("eight");
       // Send request
       var streamedResponse = await request.send();
       var response = await http.Response.fromStream(streamedResponse);
