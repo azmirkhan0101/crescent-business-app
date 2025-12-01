@@ -25,8 +25,28 @@ class SignUpController extends GetxController {
   BusinessModel businessModel = BusinessModel();
   final storage = GetStorage();
 
+  void hideLoading() {
+    if (Get.isDialogOpen == true) {
+      Get.back(closeOverlays: true);
+    }
+  }
+
+  void hideLoadingDialog() {
+    if (Get.isDialogOpen == true) {
+      // Close until no dialog with our key exists
+      Get.until((route) {
+        if (route is GetPageRoute) return true; // ordinary route — stop here
+        return true;
+      });
+
+      Get.back();
+    }
+  }
+
+
+
   //VALIDATE INFORMATION OF BUSINESS INFO
-  void validateBusinessInfo(){
+  void validateBusinessInfo() async{
     if( nameController.text.trim().isEmpty || taglineController.text.trim().isEmpty || descriptionController.text.trim().isEmpty ){
       showSnackBar(
           title: "Information missing!",
@@ -66,6 +86,10 @@ class SignUpController extends GetxController {
   }
   //BUSINESS WEBSITE VALIDATION
   bool validateWebsite() {
+    //ACCEPT EMPTY WEBSITE
+    if( businessWebsiteController.text.trim().isEmpty ){
+      return true;
+    }
     final regex = RegExp(
       r'^(https?:\/\/)?([a-z0-9-]+\.)+[a-z]{2,6}(\S*)$',
       caseSensitive: false,
@@ -107,7 +131,6 @@ class SignUpController extends GetxController {
   //SIGN UP
   Future<void> signup() async {
 
-    showLoadingAlert( title: "Signing up..." );
     try{
       final url = Uri.parse( ApiEndpoints.baseUrl + ApiEndpoints.signup );
       File? logo = businessModel.logo;
@@ -148,7 +171,6 @@ class SignUpController extends GetxController {
           emailKey : businessModel.email,
           isSignupKey : true
         };
-        closeDialog();
         Get.offAllNamed(AppRoutes.otpVerify, arguments: arguments );
       }else if( response.statusCode == 400 ){//USER ALREADY EXISTS
         showSnackBar(
@@ -170,38 +192,29 @@ class SignUpController extends GetxController {
           message: "Something went wrong. Please try again.",
           backgroundColor: AppColors.errorRed
       );
-    }finally{
-      closeDialog();
     }
 
   }
 
   //SHOW LOADING ALERT DIALOG
-  showLoadingAlert({String title = "Loading..."}){
-    if( Get.isDialogOpen ?? false ){
-      Get.back();
-    }
-    Get.dialog(
-      AlertDialog(
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            CircularProgressIndicator(),
-            SizedBox(height: 20),
-            Text( title ),
-          ],
-        ),
-      ),
-      barrierDismissible: false,
-    );
-  }
-
-  //CLOSE ALERT DIALOG
-  closeDialog(){
-    if( Get.isDialogOpen ?? false ){
-      Get.back();
-    }
-  }
+  // showLoadingAlert({String title = "Loading..."}){
+  //   if( Get.isDialogOpen ?? false ){
+  //     Get.back();
+  //   }
+  //   Get.dialog(
+  //     AlertDialog(
+  //       content: Column(
+  //         mainAxisSize: MainAxisSize.min,
+  //         children: [
+  //           CircularProgressIndicator(),
+  //           SizedBox(height: 20),
+  //           Text( title ),
+  //         ],
+  //       ),
+  //     ),
+  //     barrierDismissible: false,
+  //   );
+  // }
 
   //SNACKBAR
   showSnackBar({required String title, required String message, required Color backgroundColor}){

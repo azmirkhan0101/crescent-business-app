@@ -27,8 +27,8 @@ class EditProfileController extends GetxController{
   final TextEditingController emailController = TextEditingController();
 
   //COVER AND LOGO IMAGES - NULLABLE
-  File? coverImage;
-  File? logoImage;
+  Rx<File?> coverImage = Rx<File?>(null);
+  Rx<File?> logoImage = Rx<File?>(null);
 
   @override
   void onInit() {
@@ -42,9 +42,9 @@ class EditProfileController extends GetxController{
 
   //UPDATE BUSINESS PROFILE
   updateBusinessProfile() async{
-    showLoadingAlert( title: "Updating..." );
+    //showLoadingAlert( title: "Updating..." );
     final Map<String, dynamic> data = {
-      "category": model.category ?? "",//CATEGORY UNCHANGED
+      "category": model.category,//CATEGORY UNCHANGED
       "name": nameController.text.trim().isEmpty ? model.name : nameController.text.trim(),
       "tagLine": taglineController.text.trim().isEmpty ? model.tagline : taglineController.text.trim(),
       "description": descriptionController.text.trim().isEmpty ? model.description : descriptionController.text.trim(),
@@ -55,39 +55,44 @@ class EditProfileController extends GetxController{
     };
 
     try {
+      print("first");
       final url = Uri.parse( ApiEndpoints.baseUrl + ApiEndpoints.updateProfile );
+      print("second");
       var request = http.MultipartRequest("PATCH", url );
-
+      print("third");
       request.headers["Authorization"] = "Bearer ${storage.read( accessTokenKey )}";
+      print("fourth");
       request.headers["Accept"] = "application/json";
+      print("fifth");
       // Add text data
       request.fields["data"] = jsonEncode(data);
-
+      print("sixth");
       // Add optional cover image
-      if (coverImage != null) {
+      if( coverImage.value != null ){
         request.files.add(
           await http.MultipartFile.fromPath(
             "coverImage",
-            coverImage!.path,
+            coverImage.value!.path,
           ),
         );
       }
+      print("seven");
 
       // Add optional logo image
-      if (logoImage != null) {
+      if( logoImage.value != null ){
         request.files.add(
           await http.MultipartFile.fromPath(
             "logoImage",
-            logoImage!.path,
+            logoImage.value!.path,
           ),
         );
       }
-
+      print("eight");
       // Send request
       var streamedResponse = await request.send();
       var response = await http.Response.fromStream(streamedResponse);
 
-      closeDialog();
+      //closeDialog();
       print("Update profile status code: ${response.statusCode}");
       if( response.statusCode == 200 ){
         print("Updated!!!!!!!!!");
@@ -101,111 +106,10 @@ class EditProfileController extends GetxController{
       }
     } catch (e) {
       print("Update error: $e");
-      closeDialog();
+      //closeDialog();
     }
 
     print("Dattaaaaaa: ${data}");
-  }
-
-
-  //UPDATE PROFILE
-  // Future<void> updateProfile() async {
-  //   //TODO: GET TEXT FIELDS , GET IMAGE FILES, VALIDATE, UPDATE
-  //
-  //   showLoadingAlert( title: "Updating..." );
-  //   try{
-  //
-  //     File? logo = businessModel.logo;
-  //
-  //     // Convert model to JSON string (because backend expects "data" as string)
-  //     final jsonString = jsonEncode(businessModel.toJson());
-  //
-  //     // Create multipart request
-  //     var request = http.MultipartRequest("POST", url);
-  //
-  //     // Add data field (this is a text field in form-data)
-  //     request.fields["data"] = jsonString;
-  //
-  //     // Add profileImage (optional)
-  //     if (logo != null) {
-  //       request.files.add(
-  //         await http.MultipartFile.fromPath(
-  //           "logoImage",
-  //           logo.path,
-  //         ),
-  //       );
-  //     } else {
-  //       //If backend allows sending null (most do), send empty field
-  //       //TODO: PASS NULL, NOT EMPTY STRING!!!!!!!!!!!!!!!!!!!!!!!!!!
-  //       request.fields["logoImage"] = "";
-  //     }
-  //
-  //     // Send request
-  //     var response = await request.send();
-  //     var responseBody = await response.stream.bytesToString();
-  //     var responseData = jsonDecode(responseBody);
-  //
-  //     if (response.statusCode == 200 || response.statusCode == 201) {//ACCOUNT CREATED -> SAVE EMAIL -> GO TO OTP VERIFY
-  //       bool isVerificationRequired = responseData['data']['requiresVerification'] ?? false;
-  //       storage.write( requireVerificationKey, isVerificationRequired );
-  //       storage.write( emailKey, businessModel.email );//saving for verify now(if user skips verification this time)
-  //       Map<String, dynamic> arguments = {
-  //         emailKey : businessModel.email,
-  //         isSignupKey : true
-  //       };
-  //       closeDialog();
-  //       Get.offAllNamed(AppRoutes.otpVerify, arguments: arguments );
-  //     }else if( response.statusCode == 400 ){//USER ALREADY EXISTS
-  //       showSnackBar(
-  //           title: "User Exists!",
-  //           message: responseData["message"] ?? "User already exist with this email. Try login instead",
-  //           backgroundColor: AppColors.warningYellow
-  //       );
-  //     } else {
-  //       showSnackBar(
-  //           title: "Error occurred!",
-  //           message: responseData["message"] ?? "Something went wrong. Please try again.",
-  //           backgroundColor: AppColors.errorRed
-  //       );
-  //     }
-  //   }catch(e){
-  //     print("Signup catch :${e}");
-  //     showSnackBar(
-  //         title: "Error occurred!",
-  //         message: "Something went wrong. Please try again.",
-  //         backgroundColor: AppColors.errorRed
-  //     );
-  //   }finally{
-  //     closeDialog();
-  //   }
-  //
-  // }
-
-  //SHOW LOADING ALERT DIALOG
-  showLoadingAlert({String title = "Loading..."}){
-    if( Get.isDialogOpen ?? false ){
-      Get.back();
-    }
-    Get.dialog(
-      AlertDialog(
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            CircularProgressIndicator(),
-            SizedBox(height: 20),
-            Text( title ),
-          ],
-        ),
-      ),
-      barrierDismissible: false,
-    );
-  }
-
-  //CLOSE ALERT DIALOG
-  closeDialog(){
-    if( Get.isDialogOpen ?? false ){
-      Get.back();
-    }
   }
 
   //SNACKBAR

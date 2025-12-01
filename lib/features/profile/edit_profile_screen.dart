@@ -64,59 +64,17 @@ class EditProfileScreen extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             // Cover image
-            BusinessProfileWidget(
-              coverImage: controller.model.coverImage,
-              logoImage: controller.model.logoImage,
-              // Cover image edit button
-              topEdit: Positioned(
-                right: 12.w,
-                top: 20.h,
-                child: GestureDetector(
-                  onTap: () async {
-                    controller.coverImage = await pickImage();
-                  },
-                  child: Container(
-                    padding: EdgeInsets.all(8.w),
-                    decoration: const BoxDecoration(
-                      color: AppColors.black,
-                      shape: BoxShape.circle,
-                    ),
-                    child: Center(
-                      child: CustomAssetsImage(
-                        assetsPath: AssetsPath.editIcon,
-                        color: AppColors.white,
-                        height: 14.h,
-                        width: 14.w,
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-
-              /// Profile image edit button
-              profileCenterEdit: Positioned(
-                bottom: 0,
-                right: 0,
-                child: Container(
-                  decoration: const BoxDecoration(
-                    color: AppColors.black,
-                    shape: BoxShape.circle,
-                  ),
-                  child: Center(
-                    child: IconButton(
-                      padding: EdgeInsets.all(0),
-                        onPressed: (){
-
-                          print("Profile icon click");
-                          pickImage();
-                          print("Finish");
-                        },
-                        icon: Icon(Icons.edit, color: Colors.white,)
-                    )
-                  ),
-                ),
-              ),
-            ),
+        BusinessProfileWidget(
+        coverImageUrl: controller.model.coverImage,
+          logoImageUrl: controller.model.logoImage,
+          isEditScreen: true,
+          onCoverPicked: (file){
+            controller.coverImage.value = file;
+          },
+          onLogoPicked: (file){
+            controller.logoImage.value = file;
+          },
+        ),
 
             SizedBox(height: 60.h),
 

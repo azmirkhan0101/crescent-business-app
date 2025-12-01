@@ -1,24 +1,48 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:organization/utils/app_color.dart';
-import 'package:organization/utils/assets_path.dart';
 
-class BusinessProfileWidget extends StatelessWidget {
+class BusinessProfileWidget extends StatefulWidget {
+  final String? coverImageUrl;
+  final String? logoImageUrl;
 
-  final String? coverImage;
-  final String? logoImage;
+  final File? coverImageFile;
+  final File? logoImageFile;
+
+  final Function(File file)? onCoverPicked;
+  final Function(File file)? onLogoPicked;
+
+  final bool isEditScreen;
 
   const BusinessProfileWidget({
     super.key,
-    this.topEdit,
-    this.profileCenterEdit,
-    required this.coverImage,
-    required this.logoImage
+    required this.coverImageUrl,
+    required this.logoImageUrl,
+    this.coverImageFile,
+    this.logoImageFile,
+    this.onCoverPicked,
+    this.onLogoPicked,
+    this.isEditScreen = false,
   });
 
-  final Positioned? topEdit;
+  @override
+  State<BusinessProfileWidget> createState() => _BusinessProfileWidgetState();
+}
 
-  final Positioned? profileCenterEdit;
+class _BusinessProfileWidgetState extends State<BusinessProfileWidget> {
+  File? _coverFile;
+  File? _logoFile;
+
+  @override
+  void initState() {
+    super.initState();
+
+    /// Initialize with parent-provided files if they exist
+    _coverFile = widget.coverImageFile;
+    _logoFile = widget.logoImageFile;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -26,27 +50,32 @@ class BusinessProfileWidget extends StatelessWidget {
       clipBehavior: Clip.none,
       alignment: Alignment.topCenter,
       children: [
-        /// Cover image
+        /// ---------------- COVER ----------------
         Container(
           height: 120.h,
           width: double.infinity,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(16.r),
-            color: AppColors.grey001
+            color: AppColors.grey001,
           ),
-          child: Image.asset(
-            coverImage ?? "",
-            fit: BoxFit.cover,
-            errorBuilder: (context, error, stack) {
-              return Icon(Icons.image_outlined, size: 100.r, color: Colors.white,);
-            },
-          ),
+          child: _buildCoverImage(),
         ),
 
-        /// Top edit button (optional)
-        if (topEdit != null) topEdit!,
+        if (widget.isEditScreen)
+          Positioned(
+            top: 8,
+            right: 8,
+            child: GestureDetector(
+              onTap: () => pickImage(true),
+              child: CircleAvatar(
+                radius: 16.r,
+                backgroundColor: Colors.black,
+                child: Icon(Icons.edit, size: 16.r, color: Colors.white),
+              ),
+            ),
+          ),
 
-        /// Profile image
+        /// ---------------- LOGO ----------------
         Positioned(
           bottom: -50.h,
           child: Stack(
@@ -54,7 +83,7 @@ class BusinessProfileWidget extends StatelessWidget {
             children: [
               Container(
                 width: 80.w,
-                height: 80.w, // keep it square for circle
+                height: 80.w,
                 decoration: BoxDecoration(
                   color: Colors.white,
                   shape: BoxShape.circle,
@@ -63,24 +92,73 @@ class BusinessProfileWidget extends StatelessWidget {
                     color: AppColors.successGreen,
                   ),
                 ),
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(40.r),
-                  child: Image.asset(
-                    coverImage ?? "",
-                    fit: BoxFit.cover,
-                    errorBuilder: (context, error, stack) {
-                      return Icon(Icons.business, size: 50.r, color: Colors.grey,);
-                    },
-                  ),
-                ),
+                child: ClipOval(child: _buildLogoImage()),
               ),
 
-              /// Profile edit button (optional)
-              if (profileCenterEdit != null) profileCenterEdit!,
+              if (widget.isEditScreen)
+                Positioned(
+                  bottom: 0,
+                  right: 0,
+                  child: GestureDetector(
+                    onTap: () => pickImage(false),
+                    child: CircleAvatar(
+                      radius: 16.r,
+                      backgroundColor: Colors.black,
+                      child: Icon(Icons.edit, size: 16.r, color: Colors.white),
+                    ),
+                  ),
+                ),
             ],
           ),
         ),
       ],
     );
+  }
+
+  // ---------------- IMAGE BUILDERS ------------------
+
+  Widget _buildCoverImage() {
+    if (_coverFile != null) {
+      return Image.file(_coverFile!, fit: BoxFit.cover);
+    } else if (widget.coverImageUrl != null && widget.coverImageUrl!.isNotEmpty) {
+      return Image.network(widget.coverImageUrl!, fit: BoxFit.cover);
+    }
+    return Icon(Icons.image, size: 100.r, color: Colors.white);
+  }
+
+  Widget _buildLogoImage() {
+    if (_logoFile != null) {
+      return Image.file(_logoFile!, fit: BoxFit.cover);
+    } else if (widget.logoImageUrl != null && widget.logoImageUrl!.isNotEmpty) {
+      return Image.network(widget.logoImageUrl!, fit: BoxFit.cover);
+    }
+    return Icon(Icons.business, size: 50.r, color: Colors.grey);
+  }
+
+  // ---------------- IMAGE PICKER ------------------
+
+  Future<void> pickImage(bool isCover) async {
+    final picker = ImagePicker();
+    final picked = await picker.pickImage(source: ImageSource.gallery);
+
+    if (picked != null) {
+      final file = File(picked.path);
+
+      setState(() {
+        if (isCover) {
+          _coverFile = file;
+        } else {
+          _logoFile = file;
+        }
+      });
+
+      /// Call callback to notify parent
+      if (isCover && widget.onCoverPicked != null) {
+        widget.onCoverPicked!(file);
+      }
+      if (!isCover && widget.onLogoPicked != null) {
+        widget.onLogoPicked!(file);
+      }
+    }
   }
 }

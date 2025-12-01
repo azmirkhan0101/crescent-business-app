@@ -64,8 +64,8 @@ class BusinessProfileScreen extends StatelessWidget {
           child: Column(
             children: [
               BusinessProfileWidget(
-                coverImage: controller.model.coverImage ?? "",
-                logoImage: controller.model.logoImage ?? "",
+                  coverImageUrl: controller.model.coverImage,
+                  logoImageUrl: controller.model.logoImage
               ),
               SizedBox(height: 60.h),
 

@@ -33,7 +33,7 @@ class OtpVerificationController extends GetxController {
       return;
     }
 
-    showLoadingAlert( title: "Verifying..." );
+    //showLoadingAlert( title: "Verifying..." );
 
     // 2. Setup Request
     Uri uri = Uri.parse(ApiEndpoints.baseUrl + ApiEndpoints.otpSignup);
@@ -48,7 +48,7 @@ class OtpVerificationController extends GetxController {
       final responseData = jsonDecode(response.body);
 
       if (response.statusCode == 200 || response.statusCode == 201) {
-        closeDialog();
+        //closeDialog();
         if (responseData["success"] == true) {
           showSnackBar(
               title: "OTP verified!",
@@ -103,14 +103,14 @@ class OtpVerificationController extends GetxController {
           backgroundColor: AppColors.errorRed
       );
     }finally{
-      closeDialog();
+     // closeDialog();
     }
   }
 
   //GET PROFILE DATA USING TOKEN AFTER SIGNUP OTP VERIFIED
   getProfileData() async{
 
-    showLoadingAlert( title: "Syncing..." );
+    //showLoadingAlert( title: "Syncing..." );
 
     try{
       Uri uri = Uri.parse( ApiEndpoints.baseUrl + ApiEndpoints.getProfile );
@@ -126,7 +126,7 @@ class OtpVerificationController extends GetxController {
         //SAVE PROFILE DATA IN STORAGE
         storage.write( businessProfileModelKey, model.toJson() );
         //GO TO SETUP COMPLETE SCREEN AND FETCH PROFILE DATA THERE
-        closeDialog();
+        //closeDialog();
         Get.offAllNamed(AppRoutes.setupComplete);
       }else if( response.statusCode == 401 ){//ACCESS TOKEN INVALID
         showSnackBar(
@@ -142,7 +142,7 @@ class OtpVerificationController extends GetxController {
           backgroundColor: AppColors.errorRed
       );
     }finally{
-      closeDialog();
+      //closeDialog();
     }
   }
 
@@ -159,7 +159,7 @@ class OtpVerificationController extends GetxController {
   //RESEND SIGNUP OTP
   void resendSignupOtp() async{
 
-    showLoadingAlert(  title:  "Resending otp..." );
+    //showLoadingAlert(  title:  "Resending otp..." );
     try{
       Uri uri = Uri.parse( ApiEndpoints.baseUrl + ApiEndpoints.otpResendSignup );
       Map<String, String> payLoad = {
@@ -193,7 +193,7 @@ class OtpVerificationController extends GetxController {
           backgroundColor: AppColors.errorRed
       );
     }finally{
-      closeDialog();
+      //closeDialog();
     }
   }
 
@@ -204,7 +204,7 @@ class OtpVerificationController extends GetxController {
       Get.snackbar("Error", "Please enter the complete PIN");
       return;
     }
-    showLoadingAlert( title: "Verifying..." );
+    //showLoadingAlert( title: "Verifying..." );
 
     // 2. Setup Request
     Uri uri = Uri.parse(ApiEndpoints.baseUrl + ApiEndpoints.otpVerifyForgotPassword );
@@ -228,7 +228,7 @@ class OtpVerificationController extends GetxController {
               backgroundColor: AppColors.successGreen
           );
           String resetPasswordToken = responseData['data']['resetPasswordToken'];
-          closeDialog();
+          //closeDialog();
           Get.toNamed( AppRoutes.resetPassword, arguments: resetPasswordToken );
           return;
         } else {
@@ -262,7 +262,7 @@ class OtpVerificationController extends GetxController {
         "Something went wrong. Check your internet connection or try again.",
       );
     }finally{
-      closeDialog();
+      //closeDialog();
     }
   }
 
@@ -272,7 +272,6 @@ class OtpVerificationController extends GetxController {
     if( token.isEmpty ){
       return;
     }
-    showLoadingAlert( title: "Resending otp..." );
     try{
       Uri uri = Uri.parse( ApiEndpoints.baseUrl + ApiEndpoints.otpResendForgotPassword );
       Map<String, dynamic> payLoad = {
@@ -308,37 +307,37 @@ class OtpVerificationController extends GetxController {
           backgroundColor: AppColors.errorRed
       );
     }finally{
-     closeDialog();
+     //closeDialog();
     }
 
   }
 
   //SHOW LOADING ALERT DIALOG
-  showLoadingAlert({String title = "Loading..."}){
-    if( Get.isDialogOpen ?? false ){
-      Get.back();
-    }
-    Get.dialog(
-      AlertDialog(
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            CircularProgressIndicator(),
-            SizedBox(height: 20),
-            Text( title ),
-          ],
-        ),
-      ),
-      barrierDismissible: false,
-    );
-  }
+  // showLoadingAlert({String title = "Loading..."}){
+  //   if( Get.isDialogOpen ?? false ){
+  //     Get.back();
+  //   }
+  //   Get.dialog(
+  //     AlertDialog(
+  //       content: Column(
+  //         mainAxisSize: MainAxisSize.min,
+  //         children: [
+  //           CircularProgressIndicator(),
+  //           SizedBox(height: 20),
+  //           Text( title ),
+  //         ],
+  //       ),
+  //     ),
+  //     barrierDismissible: false,
+  //   );
+  // }
 
   //CLOSE ALERT DIALOG
-  closeDialog(){
-    if( Get.isDialogOpen ?? false ){
-      Get.back();
-    }
-  }
+  // closeDialog(){
+  //   if( Get.isDialogOpen ?? false ){
+  //     Get.back();
+  //   }
+  // }
 
   //SHOW SNACKBAR
   showSnackBar({required String title, required String message, required Color backgroundColor, Color textColor = AppColors.white}) {
