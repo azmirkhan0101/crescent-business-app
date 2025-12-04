@@ -186,7 +186,7 @@ class AppPages {
     GetPage(
         name: AppRoutes.reward,
         page: (){
-          return RewardScreens();
+          return RewardScreen();
         }
     ),
 

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_instance/src/extension_instance.dart';
 import 'package:get/get_navigation/src/extension_navigation.dart';
@@ -59,70 +60,81 @@ class BusinessProfileScreen extends StatelessWidget {
           ],
         ),
 
-        body: Padding(
-          padding: EdgeInsets.all(16.w),
-          child: Column(
-            children: [
-              BusinessProfileWidget(
-                  coverImageUrl: controller.model.coverImage,
-                  logoImageUrl: controller.model.logoImage
-              ),
-              SizedBox(height: 60.h),
-
-              Text(
-                controller.model.name,
-                style: AppTextStyle.headlineLStyle.copyWith(fontSize: 18.sp),
-              ),
-
-              SizedBox(height: 8.h),
-              Text(
-                controller.model.category,
-                style: AppTextStyle.mediumStyle.copyWith(
-                  fontSize: 13.sp,
-                  color: Color(0xFF848484),
-                ),
-              ),
-
-              SizedBox(height: 8.h),
-              Text(
-                controller.model.tagline,
-                style: AppTextStyle.cardTextStyle.copyWith(fontSize: 12.sp),
-              ),
-
-              const SizedBox(height: 16),
-
-              // ---------------- TAB BAR ----------------
-              TabBar(
-                indicatorColor: AppColors.black,
-                labelColor: Colors.black,
-                unselectedLabelColor: Colors.grey,
-                indicatorSize: TabBarIndicatorSize.tab,
-                labelStyle: GoogleFonts.inter(
-                  fontWeight: FontWeight.w600,
-                  color: AppColors.blackTextColor,
-                  fontSize: 14.sp,
-                ),
-                tabs: const [
-                  Tab(text: 'Overview'),
-                  Tab(text: 'Rewards'),
-                ],
-              ),
-
-              SizedBox(height: 12.h),
-
-              // ---------------- TAB VIEW ----------------
-              Expanded(
-                child: TabBarView(
-                  children: [
-                    OverviewTab(model: controller.model,),
-                    RewardsTab(),
-                  ],
-                ),
-              ),
-            ],
-          ),
-        ),
+        body: Obx((){
+          if( controller.model.value == null ){
+            return Center( child: CircularProgressIndicator(),);
+          }else{
+            return mainBody();
+          }
+        })
       ),
     );
   }
+
+  //MAIN BODY
+mainBody(){
+    return Padding(
+      padding: EdgeInsets.all(16.w),
+      child: Column(
+        children: [
+          BusinessProfileWidget(
+              coverImageUrl: controller.model.value?.coverImage,
+              logoImageUrl: controller.model.value?.logoImage
+          ),
+          SizedBox(height: 60.h),
+
+          Text(
+            controller.model.value!.name,
+            style: AppTextStyle.headlineLStyle.copyWith(fontSize: 18.sp),
+          ),
+
+          SizedBox(height: 8.h),
+          Text(
+            controller.model.value!.category,
+            style: AppTextStyle.mediumStyle.copyWith(
+              fontSize: 13.sp,
+              color: Color(0xFF848484),
+            ),
+          ),
+
+          SizedBox(height: 8.h),
+          Text(
+            controller.model.value!.tagline,
+            style: AppTextStyle.cardTextStyle.copyWith(fontSize: 12.sp),
+          ),
+
+          const SizedBox(height: 16),
+
+          // ---------------- TAB BAR ----------------
+          TabBar(
+            indicatorColor: AppColors.black,
+            labelColor: Colors.black,
+            unselectedLabelColor: Colors.grey,
+            indicatorSize: TabBarIndicatorSize.tab,
+            labelStyle: GoogleFonts.inter(
+              fontWeight: FontWeight.w600,
+              color: AppColors.blackTextColor,
+              fontSize: 14.sp,
+            ),
+            tabs: const [
+              Tab(text: 'Overview'),
+              Tab(text: 'Rewards'),
+            ],
+          ),
+
+          SizedBox(height: 12.h),
+
+          // ---------------- TAB VIEW ----------------
+          Expanded(
+            child: TabBarView(
+              children: [
+                OverviewTab(model: controller.model.value!,),
+                RewardsTab(),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+}
 }

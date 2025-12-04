@@ -11,8 +11,8 @@ import 'package:organization/utils/assets_path.dart';
 
 import '../../routes/app_pages.dart';
 
-class RewardScreens extends StatelessWidget {
-  const RewardScreens({super.key});
+class RewardScreen extends StatelessWidget {
+  const RewardScreen({super.key});
 
   @override
   Widget build(BuildContext context) {

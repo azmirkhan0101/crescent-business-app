@@ -6,7 +6,6 @@ import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:http/http.dart' as http;
 import 'package:organization/data/models/business_profile_model.dart';
-import 'package:organization/data/models/business_signup_model.dart';
 import 'package:organization/routes/app_pages.dart';
 import 'package:organization/utils/api_endpoints.dart';
 import 'package:organization/utils/app_constants.dart';

@@ -17,6 +17,8 @@ class MainNavigationScreen extends StatelessWidget {
 
 
     return Scaffold(
+      backgroundColor: Colors.white,
+      extendBody: true,
       body: Obx((){
         return controller.bottomNavScreens[controller.currentIndex.value];
       }),

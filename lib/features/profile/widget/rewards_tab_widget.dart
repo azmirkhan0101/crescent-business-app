@@ -11,7 +11,6 @@ class RewardsTab extends StatelessWidget {
   Widget build(BuildContext context) {
     return GridView.builder(
       shrinkWrap: true,
-
       padding: EdgeInsets.zero,
       itemCount: rewardOptions.length,
       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(

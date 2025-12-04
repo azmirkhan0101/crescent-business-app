@@ -4,7 +4,6 @@ import 'package:organization/controller/auth/setup_complete_controller.dart';
 import 'package:organization/controller/auth/verify_now_controller.dart';
 import 'package:organization/controller/main_navigation_screen_controller/main_navigation_screen_controller.dart';
 import 'package:organization/controller/profile/business_profile_controller.dart';
-import 'package:organization/controller/profile/edit_profile_controller.dart';
 import '../controller/auth/sign_up_controller.dart';
 import '../controller/auth/forgot_pass_controller.dart';
 import '../controller/auth/otp_verification_controller.dart';
@@ -44,8 +43,5 @@ class InitialBinding extends Bindings {
       return BusinessProfileController();
     }, fenix: true,);
 
-    Get.lazyPut<EditProfileController>((){
-      return EditProfileController();
-    }, fenix: true,);
   }
 }

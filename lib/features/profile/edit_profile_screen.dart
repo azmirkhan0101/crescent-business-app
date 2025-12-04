@@ -1,5 +1,4 @@
 import 'dart:io';
-import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -8,22 +7,20 @@ import 'package:get/get.dart';
 import 'package:google_places_flutter/google_places_flutter.dart';
 import 'package:google_places_flutter/model/prediction.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:organization/controller/profile/edit_profile_controller.dart';
+import 'package:organization/controller/profile/business_profile_controller.dart';
 import 'package:organization/features/profile/widget/business_profile_image_widget.dart';
 import 'package:organization/features/profile/widget/location_widget.dart';
 import 'package:organization/features/profile/widget/profile_heading_text_widget.dart';
-import 'package:organization/features/widgets/custom_asset_image.dart';
 import 'package:organization/features/widgets/custom_text.dart';
 import 'package:organization/utils/app_color.dart';
 import 'package:organization/utils/assets_path.dart';
-import '../../routes/app_pages.dart';
+
 import '../../utils/app_size.dart';
 import '../../utils/app_text.dart';
-import '../../utils/app_text_styles.dart';
 import '../widgets/custom_text_field_widget.dart';
 
 class EditProfileScreen extends StatelessWidget {
-  final EditProfileController controller = Get.find<EditProfileController>();
+  final BusinessProfileController controller = Get.find<BusinessProfileController>();
   final TextEditingController textEditingController = TextEditingController();
   final String googleApiKey = dotenv.env['GOOGLE_API_KEY']!;
 
@@ -65,8 +62,8 @@ class EditProfileScreen extends StatelessWidget {
           children: [
             // Cover image
         BusinessProfileWidget(
-        coverImageUrl: controller.model.coverImage,
-          logoImageUrl: controller.model.logoImage,
+        coverImageUrl: controller.editProfileModel.coverImage,
+          logoImageUrl: controller.editProfileModel.logoImage,
           isEditScreen: true,
           onCoverPicked: (file){
             controller.coverImage.value = file;
@@ -87,7 +84,7 @@ class EditProfileScreen extends StatelessWidget {
                   ProfileHeadingTextWidget(title: AppText.name),
                   SizedBox(height: AppSizes.paddingSmallH),
                   CustomTextField(
-                    hintText: controller.model.name,
+                    hintText: controller.editProfileModel.name,
                     controller: controller.nameController,
                   ),
                   SizedBox(height: 16.h),
@@ -95,7 +92,7 @@ class EditProfileScreen extends StatelessWidget {
                   /// tagline
                   ProfileHeadingTextWidget(title: AppText.tagline),
                   CustomTextField(
-                    hintText: controller.model.tagline,
+                    hintText: controller.editProfileModel.tagline,
                     controller: controller.taglineController,
                   ),
                   SizedBox(height: 16.h),
@@ -105,7 +102,7 @@ class EditProfileScreen extends StatelessWidget {
                   SizedBox(height: AppSizes.paddingSmallH),
                   CustomTextField(
                     maxLines: 5,
-                    hintText: controller.model.description,
+                    hintText: controller.editProfileModel.description,
                     controller: controller.descriptionController,
                   ),
 
@@ -116,7 +113,7 @@ class EditProfileScreen extends StatelessWidget {
                   SizedBox(height: AppSizes.paddingSmallH),
                   CustomTextField(
                     prefixImagePath: AssetsPath.globeIcon,
-                    hintText: controller.model.businessWebsite ?? "",
+                    hintText: controller.editProfileModel.businessWebsite ?? "",
                     controller: controller.websiteController,
                   ),
                   SizedBox(height: 16.h),
@@ -125,7 +122,7 @@ class EditProfileScreen extends StatelessWidget {
                   ProfileHeadingTextWidget(title: AppText.businessPhone),
                   CustomTextField(
                     prefixImagePath: AssetsPath.callIcon,
-                    hintText: controller.model.businessPhoneNumber ?? "",
+                    hintText: controller.editProfileModel.businessPhoneNumber ?? "",
                     controller: controller.phoneController,
                   ),
                   SizedBox(height: 16.h),
@@ -135,7 +132,7 @@ class EditProfileScreen extends StatelessWidget {
                   SizedBox(height: AppSizes.paddingSmallH),
                   CustomTextField(
                     prefixImagePath: AssetsPath.mailIcon,
-                    hintText: controller.model.businessEmail ?? "",
+                    hintText: controller.editProfileModel.businessEmail ?? "",
                     controller: controller.emailController,
                   ),
                 ],

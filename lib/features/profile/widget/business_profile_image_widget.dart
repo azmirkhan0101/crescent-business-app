@@ -66,7 +66,10 @@ class _BusinessProfileWidgetState extends State<BusinessProfileWidget> {
             top: 8,
             right: 8,
             child: GestureDetector(
-              onTap: () => pickImage(true),
+              onTap: (){
+                print("Cover clicked");
+                pickImage(true);
+              },
               child: CircleAvatar(
                 radius: 16.r,
                 backgroundColor: Colors.black,
@@ -83,7 +86,7 @@ class _BusinessProfileWidgetState extends State<BusinessProfileWidget> {
             children: [
               Container(
                 width: 80.w,
-                height: 80.w,
+                height: 80.h,
                 decoration: BoxDecoration(
                   color: Colors.white,
                   shape: BoxShape.circle,
@@ -94,17 +97,24 @@ class _BusinessProfileWidgetState extends State<BusinessProfileWidget> {
                 ),
                 child: ClipOval(child: _buildLogoImage()),
               ),
-
               if (widget.isEditScreen)
                 Positioned(
                   bottom: 0,
                   right: 0,
                   child: GestureDetector(
-                    onTap: () => pickImage(false),
-                    child: CircleAvatar(
-                      radius: 16.r,
-                      backgroundColor: Colors.black,
-                      child: Icon(Icons.edit, size: 16.r, color: Colors.white),
+                    behavior: HitTestBehavior.translucent,
+                    //HEY CHATGPT, THIS CLICK IS NOT WORKING.
+                    onTap: () {
+                      print("Edit logo image");
+                      pickImage(false);
+                    },
+                    child: IconButton(onPressed: (){
+                      print("Hello");
+                    },
+                        style: ButtonStyle(
+                          backgroundColor: WidgetStatePropertyAll(Colors.black)
+                        ),
+                        icon: Icon(Icons.edit, size: 16.r, color: Colors.white)
                     ),
                   ),
                 ),
@@ -116,7 +126,6 @@ class _BusinessProfileWidgetState extends State<BusinessProfileWidget> {
   }
 
   // ---------------- IMAGE BUILDERS ------------------
-
   Widget _buildCoverImage() {
     if (_coverFile != null) {
       return Image.file(_coverFile!, fit: BoxFit.cover);
@@ -136,7 +145,6 @@ class _BusinessProfileWidgetState extends State<BusinessProfileWidget> {
   }
 
   // ---------------- IMAGE PICKER ------------------
-
   Future<void> pickImage(bool isCover) async {
     final picker = ImagePicker();
     final picked = await picker.pickImage(source: ImageSource.gallery);
