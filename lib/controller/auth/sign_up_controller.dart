@@ -10,6 +10,7 @@ import 'package:organization/routes/app_pages.dart';
 import 'package:organization/utils/api_endpoints.dart';
 import 'package:organization/utils/app_constants.dart';
 
+import '../../core/show_snackbar.dart';
 import '../../utils/app_color.dart';
 
 class SignUpController extends GetxController {
@@ -22,7 +23,7 @@ class SignUpController extends GetxController {
   final TextEditingController businessEmailController = TextEditingController();
   final TextEditingController businessWebsiteController = TextEditingController();
 
-  BusinessModel businessModel = BusinessModel();
+  BusinessSignupModel businessModel = BusinessSignupModel();
   final storage = GetStorage();
 
   void hideLoading() {
@@ -152,10 +153,6 @@ class SignUpController extends GetxController {
             logo.path,
           ),
         );
-      } else {
-        //If backend allows sending null (most do), send empty field
-        //TODO: PASS NULL, NOT EMPTY STRING!!!!!!!!!!!!!!!!!!!!!!!!!!
-        request.fields["logoImage"] = "";
       }
 
       // Send request
@@ -216,26 +213,16 @@ class SignUpController extends GetxController {
   //   );
   // }
 
-  //SNACKBAR
-  showSnackBar({required String title, required String message, required Color backgroundColor}){
-    Get.snackbar(
-        title,
-        message,
-        backgroundColor: backgroundColor,
-        colorText: AppColors.white
-    );
-  }
-
   @override
   void onClose() {
-    if( emailController != null ) emailController.dispose();
-    if( passwordController != null ) passwordController.dispose();
-    if( businessEmailController != null ) businessEmailController.dispose();
-    if( businessPhoneController != null ) businessPhoneController.dispose();
-    if( businessWebsiteController != null ) businessWebsiteController.dispose();
-    if( nameController != null ) nameController.dispose();
-    if( taglineController != null ) taglineController.dispose();
-    if( descriptionController != null ) descriptionController.dispose();
+    emailController.dispose();
+    passwordController.dispose();
+    businessEmailController.dispose();
+    businessPhoneController.dispose();
+    businessWebsiteController.dispose();
+    nameController.dispose();
+    taglineController.dispose();
+    descriptionController.dispose();
 
     super.onClose();
   }

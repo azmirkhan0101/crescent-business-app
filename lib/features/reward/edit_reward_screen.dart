@@ -10,7 +10,7 @@ import 'package:organization/utils/assets_path.dart';
 import '../../routes/app_pages.dart';
 import '../../utils/app_color.dart';
 import '../../utils/app_text.dart';
-import '../on_boarding/widgets/under_button_widget.dart';
+import '../on_boarding/widgets/bottom_button_widget.dart';
 import '../widgets/custom_button_widget.dart';
 import '../widgets/custom_text_field_widget.dart';
 import '../widgets/text_field_title_widget.dart';
@@ -22,7 +22,7 @@ class EditRewardScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
 
-      bottomNavigationBar: UnderButtonWidget(
+      bottomNavigationBar: BottomButtonWidget(
         onPressed: () {},
         buttonText: "Create",
       ),
@@ -33,7 +33,7 @@ class EditRewardScreen extends StatelessWidget {
         leading: IconButton(
           icon: const Icon(Icons.arrow_back_ios, color: Colors.black, size: 20),
           onPressed: () {
-            Get.toNamed(AppRoutes.mainNav);
+            Get.back();
           },
         ),
         title: Text(
@@ -120,11 +120,11 @@ class EditRewardScreen extends StatelessWidget {
               ],
             ),
             const SizedBox(height: 25),
-            const ExpiryLimitSection(),
+            //const ExpiryLimitSection(),
             const SizedBox(height: 25),
 
             /// RedemptionMethodsSection
-            const RedemptionMethodsSection(),
+            //const RedemptionMethodsSection(),
           ],
         ),
       ),

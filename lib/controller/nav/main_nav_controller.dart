@@ -5,11 +5,11 @@ import 'package:organization/features/home/home_screen.dart';
 import 'package:organization/features/profile/business_profile_screen.dart';
 import 'package:organization/features/redeem_rewards/redeem_scanner_screen.dart';
 import 'package:organization/features/reward/edit_reward_screen.dart';
-import 'package:organization/features/reward/reward_screens.dart';
+import 'package:organization/features/reward/reward_screen.dart';
 
 import '../../utils/assets_path.dart';
 
-class MainNavigationScreenController extends GetxController{
+class MainNavController extends GetxController{
 
   RxInt currentIndex = 0.obs;
 

@@ -5,7 +5,7 @@ import 'package:get/get.dart';
 import 'package:google_places_flutter/google_places_flutter.dart';
 import 'package:google_places_flutter/model/prediction.dart';
 import 'package:organization/features/on_boarding/widgets/onboarding_appbar.dart';
-import 'package:organization/features/on_boarding/widgets/under_button_widget.dart';
+import 'package:organization/features/on_boarding/widgets/bottom_button_widget.dart';
 import 'package:organization/utils/app_text.dart';
 import 'package:organization/utils/assets_path.dart';
 
@@ -81,7 +81,7 @@ class StoreLocationScreen extends StatelessWidget {
       ),
 
       /// continue Button
-      bottomNavigationBar: UnderButtonWidget(
+      bottomNavigationBar: BottomButtonWidget(
         onPressed: () {
           controller.businessModel.locations = locationNames;
           controller.signup();

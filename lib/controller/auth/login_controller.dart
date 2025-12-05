@@ -12,6 +12,8 @@ import 'dart:async';
 
 import 'package:organization/utils/app_constants.dart';
 
+import '../../core/show_snackbar.dart';
+
 class LoginController extends GetxController{
 
   //TODO: SAVE TOKEN IN STORAGE
@@ -135,21 +137,11 @@ class LoginController extends GetxController{
     storage.write( refreshTokenKey, refreshToken);
   }
 
-  showSnackBar({required String title, required String message, required Color backgroundColor, Color textColor = AppColors.white}){
-    Get.snackbar(
-        title,
-        message,
-        backgroundColor: backgroundColor,
-        colorText: textColor
-    );
-
-
     @override
     void onClose() {
-      if( emailController != null ) emailController.dispose();
-      if( passwordController != null ) passwordController.dispose();
+      emailController.dispose();
+      passwordController.dispose();
       super.onClose();
     }
-  }
 
 }

@@ -22,7 +22,7 @@ class AppRoutes {
   static const String createReward = '/create-reward';
   static const String editReward = '/edit-reward';
  // static const String addReward = '/add-reward';
-  static const String tabScreen = '/tab-screen';
+  //static const String tabScreen = '/tab-screen';
   static const String boardingStore = '/boarding-store';
   static const String subscription = '/subscription';
   static const String myProfile = '/my-profile';

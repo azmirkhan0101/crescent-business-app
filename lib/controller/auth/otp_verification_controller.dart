@@ -10,6 +10,7 @@ import 'package:organization/routes/app_pages.dart';
 import 'package:organization/utils/api_endpoints.dart';
 import 'package:organization/utils/app_constants.dart';
 
+import '../../core/show_snackbar.dart';
 import '../../utils/app_color.dart';
 
 class OtpVerificationController extends GetxController {
@@ -337,16 +338,6 @@ class OtpVerificationController extends GetxController {
   //     Get.back();
   //   }
   // }
-
-  //SHOW SNACKBAR
-  showSnackBar({required String title, required String message, required Color backgroundColor, Color textColor = AppColors.white}) {
-    Get.snackbar(
-        title,
-        message,
-        backgroundColor: backgroundColor,
-        colorText: textColor
-    );
-  }
 
 
   @override

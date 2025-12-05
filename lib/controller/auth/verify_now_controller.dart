@@ -7,6 +7,7 @@ import 'package:organization/routes/app_pages.dart';
 import 'package:organization/utils/app_color.dart';
 import 'package:organization/utils/app_constants.dart';
 
+import '../../core/show_snackbar.dart';
 import '../../utils/api_endpoints.dart';
 
 class VerifyNowController extends GetxController{
@@ -68,15 +69,6 @@ class VerifyNowController extends GetxController{
     }
 
 
-  }
-
-  showSnackBar({required String title, required String message, required Color backgroundColor, Color textColor = AppColors.white}) {
-    Get.snackbar(
-        title,
-        message,
-        backgroundColor: backgroundColor,
-        colorText: textColor
-    );
   }
 
 }

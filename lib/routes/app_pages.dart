@@ -17,7 +17,7 @@ import 'package:organization/features/on_boarding/store_location_screen.dart';
 import 'package:organization/features/on_boarding/upload_logo_screen.dart';
 import 'package:organization/features/on_boarding/verify_now_screen.dart';
 import 'package:organization/features/reward/edit_reward_screen.dart';
-import 'package:organization/features/reward/reward_screens.dart';
+import 'package:organization/features/reward/reward_screen.dart';
 import 'package:organization/features/splash_screen.dart';
 import 'package:organization/features/subscription/subscription_screen.dart';
 import 'package:organization/features/terms_condition/terms_condition_screen.dart';

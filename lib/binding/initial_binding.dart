@@ -2,8 +2,8 @@ import 'package:get/get.dart';
 import 'package:organization/controller/auth/login_controller.dart';
 import 'package:organization/controller/auth/setup_complete_controller.dart';
 import 'package:organization/controller/auth/verify_now_controller.dart';
-import 'package:organization/controller/main_navigation_screen_controller/main_navigation_screen_controller.dart';
-import 'package:organization/controller/profile/business_profile_controller.dart';
+import 'package:organization/controller/nav/main_nav_controller.dart';import 'package:organization/controller/profile/business_profile_controller.dart';
+import 'package:organization/controller/reward/reward_controller.dart';
 import '../controller/auth/sign_up_controller.dart';
 import '../controller/auth/forgot_pass_controller.dart';
 import '../controller/auth/otp_verification_controller.dart';
@@ -12,7 +12,7 @@ class InitialBinding extends Bindings {
   @override
   void dependencies() {
     Get.lazyPut((){
-      return MainNavigationScreenController();
+      return MainNavController();
     }, fenix: true);
 
     Get.lazyPut<SignUpController>((){
@@ -37,6 +37,10 @@ class InitialBinding extends Bindings {
 
     Get.lazyPut<OtpVerificationController>((){
       return OtpVerificationController();
+    }, fenix: true,);
+
+    Get.lazyPut<RewardController>((){
+      return RewardController();
     }, fenix: true,);
 
     Get.lazyPut<BusinessProfileController>((){

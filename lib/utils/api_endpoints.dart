@@ -15,4 +15,7 @@ class ApiEndpoints{
   static const otpVerifyForgotPassword = "/auth/verify-forgot-password-otp";
   static const resetPassword = "/auth/reset-password";
   static const updateProfile = "/business/update-profile";
+  static const rewardAnalyticsStats = "/rewards/analytics/stats";
+  static const createRewardInStore = "/rewards";
+  //static const createRewardOnline = "/api/rewards";
 }

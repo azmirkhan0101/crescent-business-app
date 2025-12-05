@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import 'package:organization/features/widgets/custom_asset_image.dart';
+import 'package:organization/routes/app_pages.dart';
 import 'package:organization/utils/app_color.dart';
+import 'package:organization/utils/app_constants.dart';
 import 'package:organization/utils/app_text_styles.dart';
 import 'package:organization/utils/assets_path.dart';
 import 'custom_switch.dart';
@@ -57,7 +60,7 @@ class _RewardCardState extends State<RewardCard> {
           Row(
             children: [
               Image.asset(
-                widget.assetIcon, // ✅ fixed
+                widget.assetIcon,
                 height: 24.h,
                 width: 24.w,
               ),
@@ -76,7 +79,7 @@ class _RewardCardState extends State<RewardCard> {
                 color: AppColors.white,
                 itemBuilder: (context) => [
                   PopupMenuItem(
-                    value: 'edit',
+                    value: edit,
                     child: Row(
                       children: [
                         CustomAssetsImage(
@@ -96,7 +99,7 @@ class _RewardCardState extends State<RewardCard> {
                     ),
                   ),
                   PopupMenuItem(
-                    value: 'duplicate',
+                    value: duplicate,
                     child: Row(
                       children: [
                         CustomAssetsImage(
@@ -115,7 +118,7 @@ class _RewardCardState extends State<RewardCard> {
                     ),
                   ),
                   PopupMenuItem(
-                    value: 'delete',
+                    value: delete,
                     child: Row(
                       children: [
                         CustomAssetsImage(
@@ -135,7 +138,16 @@ class _RewardCardState extends State<RewardCard> {
                     ),
                   ),
                 ],
-                onSelected: (value) {},
+                onSelected: (value) {
+                  if( value.compareTo( edit ) == 0 ){//EDIT CLICKED
+                    //TODO: EDIT REWARD
+                    Get.toNamed( AppRoutes.editReward );
+                  }else if( value.compareTo(duplicate) == 0 ){//DUPLICATE CLICKED
+                    //DUPLICATE REWARD
+                  }else{//DELETE CLICKED
+                    //DELETE REWARD
+                  }
+                },
               ),
             ],
           ),

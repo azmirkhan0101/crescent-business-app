@@ -6,7 +6,7 @@ import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:organization/controller/auth/sign_up_controller.dart';
 import 'package:organization/features/on_boarding/widgets/onboarding_appbar.dart';
-import 'package:organization/features/on_boarding/widgets/under_button_widget.dart';
+import 'package:organization/features/on_boarding/widgets/bottom_button_widget.dart';
 import 'package:organization/features/widgets/custom_text.dart';
 import 'package:organization/utils/app_color.dart';
 import 'package:organization/utils/app_text.dart';
@@ -90,7 +90,7 @@ class _UploadLogoScreenState extends State<UploadLogoScreen> {
       ),
 
       /// continue Button
-      bottomNavigationBar: UnderButtonWidget(
+      bottomNavigationBar: BottomButtonWidget(
         onPressed: () {
           if( _hasImage ){
             controller.businessModel.logo = _selectedImage;

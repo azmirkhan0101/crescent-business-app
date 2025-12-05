@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import 'package:organization/utils/app_text.dart';
-import 'package:organization/utils/app_text_styles.dart';
-import 'package:organization/utils/assets_path.dart';
-
-import '../../../utils/app_color.dart';
+import '../../../utils/app_text_styles.dart';
+import '../../../utils/assets_path.dart';
 import '../../widgets/custom_text_field_widget.dart';
 import '../../widgets/text_field_title_widget.dart';
 
 class ExpiryLimitSection extends StatelessWidget {
-  const ExpiryLimitSection({super.key});
+
+  final TextEditingController controller;
+
+  const ExpiryLimitSection({super.key, required this.controller});
 
   @override
   Widget build(BuildContext context) {
@@ -33,7 +33,11 @@ class ExpiryLimitSection extends StatelessWidget {
             style:AppTextStyle.mediumStyle.copyWith(fontSize: 12.sp)
         ),
         const SizedBox(height: 10),
-        CustomTextField(hintText:"200" ,),
+        CustomTextField(
+          hintText:"",
+        controller: controller,
+          keyboardType: TextInputType.number,
+        ),
       ],
     );
   }

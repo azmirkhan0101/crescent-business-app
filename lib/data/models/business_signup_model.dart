@@ -1,6 +1,6 @@
 import 'dart:io';
 
-class BusinessModel{
+class BusinessSignupModel{
 
   String? category;
   String? name;
@@ -14,7 +14,7 @@ class BusinessModel{
   File? logo;
   List<String>? locations;
 
-  BusinessModel({
+  BusinessSignupModel({
     this.category,
     this.name,
     this.tagline,
@@ -29,9 +29,9 @@ class BusinessModel{
   });
 
 
-  factory BusinessModel.fromJson( Map<String, dynamic> json ){
+  factory BusinessSignupModel.fromJson( Map<String, dynamic> json ){
     final data = json['data'];
-    return BusinessModel(
+    return BusinessSignupModel(
       category: data['category'] ?? '',
       name: data['name'] ?? '',
       tagline: data['tagLine'] ?? '',

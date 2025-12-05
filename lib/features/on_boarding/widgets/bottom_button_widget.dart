@@ -4,8 +4,8 @@ import 'package:google_fonts/google_fonts.dart';
 import '../../../utils/app_color.dart';
 import '../../widgets/custom_button_widget.dart';
 
-class UnderButtonWidget extends StatelessWidget {
-  const UnderButtonWidget({
+class BottomButtonWidget extends StatelessWidget {
+  const BottomButtonWidget({
     super.key,
     required this.onPressed,
     required this.buttonText,
@@ -15,7 +15,7 @@ class UnderButtonWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.only(bottom: 50.h),
+      padding: EdgeInsets.only(bottom: 20.h),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
