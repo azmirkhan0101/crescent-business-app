@@ -73,7 +73,10 @@ class CreateRewardScreen extends StatelessWidget {
             SizedBox(height: 20.h),
 
             ExpiryLimitSection(
-              controller: controller.redemptionLimitController
+              controller: controller.redemptionLimitController,
+              onDateSelected: (date){
+                controller.expiryDate = date;
+              },
             ),
             SizedBox(height: 20.h),
 

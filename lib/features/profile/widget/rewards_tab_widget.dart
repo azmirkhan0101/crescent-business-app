@@ -9,27 +9,37 @@ class RewardsTab extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GridView.builder(
-      shrinkWrap: true,
-      padding: EdgeInsets.zero,
-      itemCount: rewardOptions.length,
-      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: 2,
-        mainAxisSpacing: 8.h,
-        crossAxisSpacing: 8.w,
-        mainAxisExtent: 140.h,
+    return SingleChildScrollView(
+      child: Column(
+        children: [
+          GridView.builder(
+            physics: NeverScrollableScrollPhysics(),
+            shrinkWrap: true,
+            padding: EdgeInsets.zero,
+            itemCount: rewardOptions.length,
+            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 2,
+              mainAxisSpacing: 8.h,
+              crossAxisSpacing: 8.w,
+              mainAxisExtent: 140.h,
+            ),
+            itemBuilder: (context, index) {
+              final option = rewardOptions[index];
+              return ProfileRewardCardWidget(
+                topIcon: option.topIcon,
+                title: option.title,
+                subtitle: option.subtitle,
+                bottomIcon1: option.bottomIcon1,
+                bottomIcon2: option.bottomIcon2,
+                bottomText: option.bottomText,
+              );
+            },
+          ),
+          SizedBox(
+            height: 80,
+          )
+        ],
       ),
-      itemBuilder: (context, index) {
-        final option = rewardOptions[index];
-        return ProfileRewardCardWidget(
-          topIcon: option.topIcon,
-          title: option.title,
-          subtitle: option.subtitle,
-          bottomIcon1: option.bottomIcon1,
-          bottomIcon2: option.bottomIcon2,
-          bottomText: option.bottomText,
-        );
-      },
     );
   }
 }

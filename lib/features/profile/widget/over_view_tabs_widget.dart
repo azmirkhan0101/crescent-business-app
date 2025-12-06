@@ -96,8 +96,11 @@ class OverviewTab extends StatelessWidget {
               itemCount: storeLocations.length,
                 itemBuilder: (context, index){
               return locationItem(locationName: storeLocations[index]);
-            });
-          })
+                });
+          }),
+          SizedBox(
+            height: 80.h,
+          )
         ],
       ),
     );

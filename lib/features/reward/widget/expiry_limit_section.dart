@@ -1,16 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:organization/features/reward/widget/custom_date_picker_field.dart';
 
 import '../../../utils/app_text_styles.dart';
-import '../../../utils/assets_path.dart';
 import '../../widgets/custom_text_field_widget.dart';
 import '../../widgets/text_field_title_widget.dart';
 
 class ExpiryLimitSection extends StatelessWidget {
 
   final TextEditingController controller;
+  final Function(DateTime) onDateSelected;
 
-  const ExpiryLimitSection({super.key, required this.controller});
+  const ExpiryLimitSection({super.key, required this.controller, required this.onDateSelected,});
 
   @override
   Widget build(BuildContext context) {
@@ -24,8 +25,16 @@ class ExpiryLimitSection extends StatelessWidget {
         ),
         const SizedBox(height: 10),
 
-
-        CustomTextField(hintText:"30/06/2025" ,suffixImagePath: AssetsPath.calenderIcon,),
+        CustomDatePickerField(
+            onDateSelected: (date){
+              if( date!= null ){
+                onDateSelected(date);
+              }
+            }
+        ),
+        // CustomTextField(hintText:"no expiry date selected",
+        //   suffixImagePath: AssetsPath.calenderIcon,
+        // ),
         const SizedBox(height: 5),
 //////////////////////////////////////////////////////
         TextFieldTitleWidget(text: "'Redemption Limit'"),

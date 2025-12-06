@@ -21,7 +21,7 @@ class RewardOption {
 
 final List<RewardOption> rewardOptions = [
   RewardOption(
-    topIcon: AssetsPath.rankBadgeIcon,
+    topIcon: AssetsPath.rewardDiscountIcon,
     title: 'Free Coffee',
     subtitle: 'Expires: June 30, 2025',
     bottomIcon1: AssetsPath.contactLess1Icon,
@@ -29,7 +29,7 @@ final List<RewardOption> rewardOptions = [
     bottomText: 'Redeem via:',
   ),
   RewardOption(
-    topIcon: AssetsPath.rankBadge1Icon,
+    topIcon: AssetsPath.rewardFreeIcon,
     title: 'Free Muffin',
     subtitle: 'Expires: June 30, 2025',
     bottomIcon1: AssetsPath.contactLess1Icon,
@@ -37,7 +37,7 @@ final List<RewardOption> rewardOptions = [
     bottomText: 'Redeem via:',
   ),
   RewardOption(
-    topIcon: AssetsPath.rankBadge2Icon,
+    topIcon: AssetsPath.rewardDiscountIcon,
     title: '20% Off Latte',
     subtitle: 'Expires: June 30, 2025',
     bottomIcon1: AssetsPath.contactLess1Icon,
@@ -45,7 +45,23 @@ final List<RewardOption> rewardOptions = [
     bottomText: 'Redeem via:',
   ),
   RewardOption(
-    topIcon: AssetsPath.rankBadge2Icon,
+    topIcon: AssetsPath.rewardFreeIcon,
+    title: 'Buy 1 Get 1 Free',
+    subtitle: 'Expires: June 30, 2025',
+    bottomIcon1: AssetsPath.contactLess1Icon,
+    bottomIcon2: AssetsPath.qrCodeIcon,
+    bottomText: 'Redeem via:',
+  ),
+  RewardOption(
+    topIcon: AssetsPath.rewardDiscountIcon,
+    title: '20% Off Latte',
+    subtitle: 'Expires: June 30, 2025',
+    bottomIcon1: AssetsPath.contactLess1Icon,
+    bottomIcon2: AssetsPath.qrCodeIcon,
+    bottomText: 'Redeem via:',
+  ),
+  RewardOption(
+    topIcon: AssetsPath.rewardFreeIcon,
     title: 'Buy 1 Get 1 Free',
     subtitle: 'Expires: June 30, 2025',
     bottomIcon1: AssetsPath.contactLess1Icon,

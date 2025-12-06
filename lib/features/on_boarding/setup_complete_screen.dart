@@ -232,9 +232,10 @@ class BusinessSetupCompleteScreen extends StatelessWidget {
               ),
             ),
             SizedBox(height: 15.h,),
-            Center(
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 25),
               child: CustomButton(
-
+                width: double.infinity,
                 backgroundColor: AppColors.black,
                 textColor: AppColors.black,
                 text: AppText.done,

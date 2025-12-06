@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:ffi';
 import 'dart:io';
@@ -24,6 +25,7 @@ class RewardController extends GetxController {
   RxBool staticCode = false.obs;
   RxBool nfcTap = false.obs;
   File? rewardImage;
+  late DateTime expiryDate;//TODO: LEAVE EMPTY FOR NO LIMIT - ASK BACKEND
 
   //CREATE REWARD CONTROLLERS
   final TextEditingController titleController = TextEditingController();
@@ -31,7 +33,6 @@ class RewardController extends GetxController {
   final TextEditingController categoryController = TextEditingController();//TODO: NO USAGE IN UI, ASK BACKEND
   final TextEditingController startDate = TextEditingController();//TODO: NO NEED. GENERATE TIME DURING API CALL
   final TextEditingController redemptionLimitController = TextEditingController();
-  final TextEditingController expiryDate = TextEditingController();
 
   //DUMMY REWARDS
   RxList<RewardCardModel> rewards2 = <RewardCardModel>[
@@ -153,7 +154,8 @@ class RewardController extends GetxController {
     }
 
     redemptionLimit = int.tryParse( redemptionLimitController.text.trim() );
-    redemptionLimit == null || redemptionLimit! <1 ? redemptionLimit = 1 : redemptionLimit = redemptionLimit;//DEFAULT LIMIT 1
+    redemptionLimit == null || redemptionLimit! < 1 ? redemptionLimit = 1 : redemptionLimit = redemptionLimit;//DEFAULT LIMIT 1
+    redemptionLimit! > 10000 ? redemptionLimit = 10000 : redemptionLimit = redemptionLimit;//MAX LIMIT 10,000
 
     Uri url = Uri.parse( ApiEndpoints.baseUrl + ApiEndpoints.createRewardInStore );
 
@@ -163,7 +165,7 @@ class RewardController extends GetxController {
         title: titleController.text.trim(),
         description: descriptionController.text.trim(),
         type: "in-store",//hard coded
-        category: "food",//hard coded TODO: ASK BACKEND, NO OPTION IN UI
+        category: "food",//hard coded TODO: NEED TO ADD DROPDOWN OPTIONS IN UI UPON RECEIVING VALUES FROM BACKEND DEV
         redemptionLimit: redemptionLimit!,
         startDate: DateTime.now(),
         expiryDate: DateTime.now(),
@@ -176,28 +178,42 @@ class RewardController extends GetxController {
         featured: true
     );
 
-    var request = http.MultipartRequest("POST", url);
-    request.headers.addAll({
-      "Authorization": "Bearer ${storage.read( accessTokenKey )}",
-      "Content-Type": "application/json",
-    });
+    try{
+      var request = http.MultipartRequest("POST", url);
+      request.headers.addAll({
+        "Authorization": "Bearer ${storage.read( accessTokenKey )}",
+        "Content-Type": "application/json",
+      });
 
-    request.fields["data"] = jsonEncode( createModel!.toJson() );
+      request.fields["data"] = jsonEncode( createModel!.toJson() );
 
-    if( rewardImage != null ){
-      request.files.add(
-          await http.MultipartFile.fromPath(
-          "rewardImage",
-          rewardImage!.path
-      )
-    );
+      if( rewardImage != null ){
+        request.files.add(
+            await http.MultipartFile.fromPath(
+                "rewardImage",
+                rewardImage!.path
+            )
+        );
+      }
+
+      var response = await request.send().timeout(Duration(seconds: 8));
+      var responseBody = await response.stream.bytesToString();
+
+      print("Status: ${response.statusCode}");
+      print("Body: $responseBody");
+    }on TimeoutException catch(_){
+      showSnackBar(
+          title: "Time out!",
+          message: "Check your internet connection and try again.",
+          backgroundColor: AppColors.errorRed
+      );
+    } catch(e){
+      showSnackBar(
+          title: "No internet!",
+          message: "Check your internet connection and try again.",
+          backgroundColor: AppColors.errorRed
+      );
     }
-
-    var response = await request.send();
-    var responseBody = await response.stream.bytesToString();
-
-    print("Status: ${response.statusCode}");
-    print("Body: $responseBody");
   }
 
 
