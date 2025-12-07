@@ -18,7 +18,7 @@ class ExpiryLimitSection extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        TextFieldTitleWidget(text: "'Set Expiry Date'"),
+        TextFieldTitleWidget(text: "Set Expiry Date"),
 
         Text('Leave empty for ‘No Expiry’',
             style:AppTextStyle.mediumStyle.copyWith(fontSize: 12.sp)
@@ -37,7 +37,7 @@ class ExpiryLimitSection extends StatelessWidget {
         // ),
         const SizedBox(height: 5),
 //////////////////////////////////////////////////////
-        TextFieldTitleWidget(text: "'Redemption Limit'"),
+        TextFieldTitleWidget(text: "Redemption Limit"),
         Text('Leave empty for ‘No Limit’',
             style:AppTextStyle.mediumStyle.copyWith(fontSize: 12.sp)
         ),

@@ -13,10 +13,10 @@ import 'dart:async';
 import 'package:organization/utils/app_constants.dart';
 
 import '../../core/show_snackbar.dart';
+import '../../data/models/business_profile_model.dart';
 
 class LoginController extends GetxController{
 
-  //TODO: SAVE TOKEN IN STORAGE
   final storage = GetStorage();
 
   final TextEditingController emailController = TextEditingController();
@@ -35,7 +35,7 @@ class LoginController extends GetxController{
     return regex.hasMatch(passwordController.text.trim());
   }
 
-  //VALIDATE EMAIL PASSWORD AND THEN LOGIN
+  //VALIDATE EMAIL PASSWORD AND THEN LOGIN -> if verified -> go to home -> else -> go to verified screen
   login() async{
     if( !isEmailValid() || !isPasswordValid() ){
       showSnackBar(
@@ -56,16 +56,19 @@ class LoginController extends GetxController{
       http.Response response = await http.post( url, body: credentials ).timeout(Duration(seconds: 10));
       print("Status codeeee: ${response.statusCode}");
       print("Response: ${response.body}");
+
       if( response.statusCode == 200 ){//LOGIN SUCCESSFUL
-        Map<String, dynamic> responseData = jsonDecode(response.body);
-        saveOtpResponse( responseData );
-        //check if verified or not
         showSnackBar(
             title: "Logged in!",
             message: "You have successfully logged in.",
             backgroundColor: AppColors.successGreen
         );
-        Get.offAllNamed(AppRoutes.mainNav);
+
+        Map<String, dynamic> responseData = jsonDecode(response.body);
+        saveOtpResponse( responseData );
+        storage.write( requireVerificationKey, false );
+        //GET PROFILE AND GO TO MAIN -> HOME
+        getProfileData();
       }else if( response.statusCode == 400 ){//ACCOUNT FOUND, BUT NOT VERIFIED
         showSnackBar(
             title: "Account not verified!",
@@ -73,20 +76,25 @@ class LoginController extends GetxController{
             backgroundColor: AppColors.warningYellow,
           textColor: AppColors.black
         );
-        Uri resendSignupOtpUri = Uri.parse( ApiEndpoints.baseUrl + ApiEndpoints.otpResendSignup );
-        Map<String, String> payLoad = {
-          "email": emailController.text.trim()
-        };
-        try{
-          //ASYNC BUT DO NOT WAIT
-          unawaited(http.post( resendSignupOtpUri, body: payLoad ));
-        }catch(e){
-        }
-        Map<String, dynamic> arguments = {
-          emailKey : emailController.text.trim(),
-          isSignupKey : true //CONTROLS IF OTP is FOR SIGNUP OR LOGIN
-        };
-        Get.toNamed( AppRoutes.otpVerify, arguments: arguments );
+        storage.write( requireVerificationKey, true );
+        storage.write( emailKey, emailController.text.trim());//SAVE EMAIL FOR VERIFY NOW SCREEN
+        //go to verify now screen
+        Get.offNamed( AppRoutes.verifyNow );
+
+        // Uri resendSignupOtpUri = Uri.parse( ApiEndpoints.baseUrl + ApiEndpoints.otpResendSignup );
+        // Map<String, String> payLoad = {
+        //   "email": emailController.text.trim()
+        // };
+        // try{
+        //   //ASYNC BUT DO NOT WAIT
+        //   unawaited(http.post( resendSignupOtpUri, body: payLoad ));
+        // }catch(e){
+        // }
+        // Map<String, dynamic> arguments = {
+        //   emailKey : emailController.text.trim(),
+        //   isSignupKey : true //CONTROLS IF OTP is FOR SIGNUP OR LOGIN
+        // };
+        // Get.offNamed( AppRoutes.otpVerify, arguments: arguments );
       } else if( response.statusCode == 401 ){//WRONG PASSWORD
         showSnackBar(
             title: "Incorrect password!",
@@ -124,6 +132,44 @@ class LoginController extends GetxController{
           message: "Please try again later.",
           backgroundColor: AppColors.errorRed
       );
+    }
+  }
+
+  //GET PROFILE DATA USING TOKEN AFTER LOGIN SUCCESS
+  getProfileData() async{
+
+    //showLoadingAlert( title: "Syncing..." );
+
+    try{
+      Uri uri = Uri.parse( ApiEndpoints.baseUrl + ApiEndpoints.getProfile );
+
+      Map<String, String> headers = {
+        "Content-Type": "application/json",
+        "Authorization": "Bearer ${storage.read( accessTokenKey )}",
+      };
+
+      http.Response response = await http.get( uri, headers: headers );
+      if( response.statusCode == 200 ){//FETCHED PROFILE DATA
+        BusinessProfileModel model = BusinessProfileModel.fromJson( jsonDecode( response.body )['data'] );
+        //SAVE PROFILE DATA IN STORAGE
+        storage.write( businessProfileModelKey, model.toJson() );
+        //GO TO MAIN -> HOME -> GET HOME DATA, ANALYTICS THERE
+        Get.offAllNamed(AppRoutes.mainNav);
+      }else if( response.statusCode == 401 ){//ACCESS TOKEN INVALID
+        showSnackBar(
+            title: "Session Expired!",
+            message: "Please try again.",
+            backgroundColor: AppColors.errorRed
+        );
+      }
+    }catch(e){
+      showSnackBar(
+          title: "Error!",
+          message: "Something went wrong. Please try again",
+          backgroundColor: AppColors.errorRed
+      );
+    }finally{
+      //closeDialog();
     }
   }
 

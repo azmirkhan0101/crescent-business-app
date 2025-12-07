@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:organization/controller/reward/reward_controller.dart';
+import 'package:organization/features/reward/widget/custom_drop_down.dart';
 import 'package:organization/features/reward/widget/expiry_limit_section.dart';
 import 'package:organization/features/reward/widget/redemption_methods_section.dart';
 import 'package:organization/features/reward/widget/upload_image_section.dart';
@@ -18,6 +19,7 @@ import '../widgets/text_field_title_widget.dart';
 class CreateRewardScreen extends StatelessWidget {
 
   final RewardController controller = Get.find<RewardController>();
+  bool isInstoreTabSelected = true;
 
   @override
   Widget build(BuildContext context) {
@@ -51,6 +53,13 @@ class CreateRewardScreen extends StatelessWidget {
               fontSize: 18.sp,
             ),
             SizedBox(height: 12.h),
+            CustomDropdown(
+                items: RewardController.categories,
+                onSelected: (item){
+                  controller.category = item;
+                }
+            ),
+            SizedBox(height: 12.h),
             // reward name
             TextFieldTitleWidget(text: "Reward name"),
             SizedBox(height: 8.h),
@@ -69,7 +78,13 @@ class CreateRewardScreen extends StatelessWidget {
             ),
             ///upload image section
             SizedBox(height: 20.h),
-            UploadImageSection(),
+            UploadImageSection(
+              onImageSelected: (file){
+                if( file != null ){
+                  controller.rewardImage.value = file;
+                }
+              },
+            ),
             SizedBox(height: 20.h),
 
             ExpiryLimitSection(
@@ -94,7 +109,17 @@ class CreateRewardScreen extends StatelessWidget {
                   },
                   onStaticCodeChanged: (isChecked){
                     controller.staticCode.value = isChecked;
-                  }
+                  }, onTabChanged: (bool instoreTabSelected) {
+                    isInstoreTabSelected = instoreTabSelected;
+              },
+                //ONLINE OPTIONS
+                discountCode: controller.discountCode.value,
+                giftCard: controller.giftCard.value,
+                onDiscountCodeChanged: (bool isChecked) {
+                    controller.discountCode.value = isChecked;
+                }, onGiftCardChanged: (bool isChecked) {
+                    controller.giftCard.value = isChecked;
+              },
               );
             }),
             SizedBox(
@@ -102,7 +127,11 @@ class CreateRewardScreen extends StatelessWidget {
             ),
             BottomButtonWidget(
               onPressed: () {
-                controller.createRewardInStore();
+                if( isInstoreTabSelected ){//INSTORE REWARD
+                  controller.createRewardInStore();
+                }else{//ONLINE REWARD
+                  print("Online reward: ${controller.discountCode.value},,,,${controller.giftCard.value}");
+                }
               },
               buttonText: "Create",
             ),

@@ -1,14 +1,22 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:organization/features/widgets/custom_asset_image.dart';
-import 'package:organization/features/widgets/custom_button_widget.dart';
 import 'package:organization/utils/app_color.dart';
 import 'package:organization/utils/app_text_styles.dart';
 import 'package:organization/utils/assets_path.dart';
+
 import '../../widgets/text_field_title_widget.dart';
 
 class UploadImageSection extends StatelessWidget {
-  const UploadImageSection({super.key});
+
+  final Function(File?) onImageSelected;
+  Rx<File?> rewardImage = Rx<File?>(null);
+
+  UploadImageSection({super.key, required this.onImageSelected});
 
   @override
   Widget build(BuildContext context) {
@@ -17,6 +25,41 @@ class UploadImageSection extends StatelessWidget {
       children: [
         TextFieldTitleWidget(text: "Upload Reward Image"),
         const SizedBox(height: 10),
+        //SHOW IMAGE IN PREVIEW AFTER SELECTION
+        Obx((){
+          if( rewardImage.value == null ){
+            return SizedBox.shrink();
+          }else{
+            return Center(
+              child: Container(
+                padding: const EdgeInsets.all(4), // space between green border and white area
+                decoration: BoxDecoration(
+                  color: AppColors.successGreen,
+                  borderRadius: BorderRadius.circular(18),
+                ),
+                child: Container(
+                  padding: const EdgeInsets.all(4), // space between white area and image
+                  decoration: BoxDecoration(
+                    color: AppColors.white,
+                    borderRadius: BorderRadius.circular(14),
+                  ),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(12),
+                    child: Image.file(
+                      rewardImage.value!,
+                      height: 100.h,
+                      width: 100.w,
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                ),
+              ),
+            );
+          }
+        }),
+
+        SizedBox( height: 15,),
+
         Container(
           padding: const EdgeInsets.symmetric(vertical: 30, horizontal: 20),
           decoration: BoxDecoration(
@@ -26,20 +69,26 @@ class UploadImageSection extends StatelessWidget {
           ),
           child: Column(
             children: [
-            GestureDetector(
-                onTap:(){
-                  debugPrint("upload");
+              GestureDetector(
+                onTap: (){
+                  print("Upload image");
+                  //TODO: OPEN IMAGE PICKER
+                  pickGalleryImage();
                 },
-                child: CustomAssetsImage(assetsPath: AssetsPath.cloudIcon,height: 24.h,width: 24.w,)),
-              const SizedBox(height: 5),
-               Text(
-                'Tap to upload',
-                style:AppTextStyle.mediumStyle.copyWith(fontWeight: FontWeight.w600,color: AppColors.blackTextColor),
+                child: Column(
+                  children: [
+                    CustomAssetsImage(assetsPath: AssetsPath.cloudIcon,height: 24.h,width: 24.w,),
+                    const SizedBox(height: 5),
+                    Text(
+                      'Tap to upload',
+                      style:AppTextStyle.mediumStyle.copyWith(fontWeight: FontWeight.w600,color: AppColors.blackTextColor),
+                    ),
+                  ],
+                ),
               ),
                Text(
                 'PNG, JPG (max size 2 MB)',
                 style:AppTextStyle.mediumStyle.copyWith(fontSize: 12.sp,color: Color(0xFF777777)),
-
               ),
                SizedBox(height: 10),
               //divider========================
@@ -54,7 +103,7 @@ class UploadImageSection extends StatelessWidget {
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 8.0),
                     child: Text(
-                      'OR',
+                      'Or',
                       style: AppTextStyle.mediumStyle.copyWith(
                         fontSize: 12.sp,
                         color: const Color(0xFF777777),
@@ -71,14 +120,6 @@ class UploadImageSection extends StatelessWidget {
               ),
 
               const SizedBox(height: 10),
-              // CustomButton(
-              //   buttonTextStyle: AppTextStyle.buttonTextStyle.copyWith(fontSize: 12.sp,fontWeight: FontWeight.w600),
-              //
-              //     backgroundColor: Color(0x26C08FFF),
-              //     text: "Open Camera", onPressed: (){}),
-
-
-
 
               ElevatedButton(
                 style: ElevatedButton.styleFrom(
@@ -93,7 +134,7 @@ class UploadImageSection extends StatelessWidget {
                   elevation: 0,
                 ),
                 onPressed: () {
-                  // এখানে তোমার camera open করার কোড যাবে
+                  pickCameraImage();
                 },
                 child: Text(
                   "Open Camera",
@@ -106,20 +147,33 @@ class UploadImageSection extends StatelessWidget {
                   ),
                 ),
               )
-
-
-
-
-
-
-
-
-
-
             ],
           ),
         ),
       ],
     );
+  }
+
+
+  //PICK REWARD IMAGE FROM GALLERY
+  Future<void> pickGalleryImage() async {
+    final picker = ImagePicker();
+    final XFile? image = await picker.pickImage(source: ImageSource.gallery);
+
+    if (image != null) {
+      rewardImage.value = File(image.path);
+      onImageSelected( File(image.path) );
+    }
+  }
+
+  //PICK REWARD IMAGE FROM CAMERA
+  Future<void> pickCameraImage() async {
+    final picker = ImagePicker();
+    final XFile? image = await picker.pickImage(source: ImageSource.camera);
+
+    if (image != null) {
+      rewardImage.value = File(image.path);
+      onImageSelected( File(image.path) );
+    }
   }
 }

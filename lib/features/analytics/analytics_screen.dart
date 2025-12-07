@@ -56,7 +56,7 @@ class _AnalyticsScreenState extends State<AnalyticsScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              SizedBox(height: 56.h),
+              SizedBox(height: 20.h),
 
              ///header section
               Row(
@@ -66,7 +66,7 @@ class _AnalyticsScreenState extends State<AnalyticsScreen> {
                     'Analytics',
                     style: GoogleFonts.familjenGrotesk(
                       fontWeight: FontWeight.bold,
-                      fontSize: AppSizes.bodyL,
+                      fontSize: 20,
                       color: AppColors.headlineTColor,
                     ),
                   ),
@@ -208,24 +208,24 @@ class _AnalyticsScreenState extends State<AnalyticsScreen> {
                       rewardText: '10% Off Latte',
                       percentage: 40.2,
                       isGrowth: true,
-                      assetsIcon: AssetsPath.rankBadgeIcon,
+                      assetsIcon: AssetsPath.rewardDiscountIcon,
                     ),
                     RewardListItem(
                       rewardText: '10% Off Latte',
                       percentage: 40.2,
                       isGrowth: true,
-                      assetsIcon: AssetsPath.rankBadge1Icon,
+                      assetsIcon: AssetsPath.rewardDiscountIcon,
                     ),
                     RewardListItem(
                       rewardText: '10% Off Latte',
                       percentage: 40.2,
                       isGrowth: true,
-                      assetsIcon: AssetsPath.rankBadge2Icon,
+                      assetsIcon: AssetsPath.rewardDiscountIcon,
                     ),
                   ],
                 ),
               ),
-
+              SizedBox( height: 90.h,)
 
             ],
           ),

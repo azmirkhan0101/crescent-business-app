@@ -72,3 +72,6 @@ class VerifyNowController extends GetxController{
   }
 
 }
+
+//CHECK EMAIL SAVING WHERE
+//CHECK IF CAN COME HERE FROM LOGIN IF NOT VERIFIED

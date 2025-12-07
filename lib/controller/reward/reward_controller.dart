@@ -1,11 +1,11 @@
 import 'dart:async';
 import 'dart:convert';
-import 'dart:ffi';
 import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:http/http.dart' as http;
 import 'package:organization/core/show_snackbar.dart';
 import 'package:organization/data/models/reward_card_model.dart';
 import 'package:organization/data/models/reward_create_model.dart';
@@ -13,19 +13,39 @@ import 'package:organization/utils/api_endpoints.dart';
 import 'package:organization/utils/app_color.dart';
 import 'package:organization/utils/app_constants.dart';
 import 'package:organization/utils/assets_path.dart';
-import 'package:http/http.dart' as http;
 
 class RewardController extends GetxController {
 
   final storage = GetStorage();
-  RxList<RewardCardModel> rewards = <RewardCardModel>[].obs;
+  RxList<RewardCardModel> rewards2 = <RewardCardModel>[].obs;
   RewardCreateModel? createModel;
+  String category = categories[0];
+
+  static const List<String> categories = [
+    "Food",
+    "Clothing",
+    "Groceries",
+    "Health",
+    "Beauty",
+    "Electronics",
+    "Entertainment",
+    "Travel",
+    "Fitness",
+    "Education",
+    "Other",
+  ];
   int? redemptionLimit;
+  //IN STORE OPTIONS
   RxBool qrCode = true.obs;
   RxBool staticCode = false.obs;
   RxBool nfcTap = false.obs;
-  File? rewardImage;
-  late DateTime expiryDate;//TODO: LEAVE EMPTY FOR NO LIMIT - ASK BACKEND
+  //ONLINE OPTIONS
+  RxBool discountCode = true.obs;
+  RxBool giftCard = true.obs;
+  //Rx<File?> rewardImage = Rx<File?>(null);
+  final Rx<File?> rewardImage = Rx<File?>(null);
+
+  DateTime expiryDate = DateTime( 2050, 1, 1);//TODO: DEFAULT EXPIRY ON 2050, ASK BACKEND ABOUT IT
 
   //CREATE REWARD CONTROLLERS
   final TextEditingController titleController = TextEditingController();
@@ -35,7 +55,7 @@ class RewardController extends GetxController {
   final TextEditingController redemptionLimitController = TextEditingController();
 
   //DUMMY REWARDS
-  RxList<RewardCardModel> rewards2 = <RewardCardModel>[
+  RxList<RewardCardModel> rewards = <RewardCardModel>[
     RewardCardModel(
       title: "Reward 1",
       assetIcon: AssetsPath.rewardFreeIcon,
@@ -136,7 +156,6 @@ class RewardController extends GetxController {
 //CREATE REWARD IN STORE
   createRewardInStore() async{
 
-    //TODO: CHECK REDEMPTION LIMIT
     if( titleController.text.trim().isEmpty || descriptionController.text.trim().isEmpty ){
       showSnackBar(
           title: "Enter details",
@@ -144,31 +163,25 @@ class RewardController extends GetxController {
           backgroundColor: AppColors.errorRed
       );
       return;
-    }else if( redemptionLimitController.text.trim().isEmpty ){
-      showSnackBar(
-          title: "Enter redemption limit",
-          message: "Enter redemption limit to continue.",
-          backgroundColor: AppColors.errorRed
-      );
-      return;
+    }else{
+      redemptionLimit = int.tryParse( redemptionLimitController.text.trim() );
+      redemptionLimit == null || redemptionLimit! < 1 ? redemptionLimit = 10000 : redemptionLimit = redemptionLimit;//DEFAULT LIMIT 10,000
+      redemptionLimit! > 10000 ? redemptionLimit = 10000 : redemptionLimit = redemptionLimit;//MAX LIMIT 10,000
     }
-
-    redemptionLimit = int.tryParse( redemptionLimitController.text.trim() );
-    redemptionLimit == null || redemptionLimit! < 1 ? redemptionLimit = 1 : redemptionLimit = redemptionLimit;//DEFAULT LIMIT 1
-    redemptionLimit! > 10000 ? redemptionLimit = 10000 : redemptionLimit = redemptionLimit;//MAX LIMIT 10,000
-
+    
     Uri url = Uri.parse( ApiEndpoints.baseUrl + ApiEndpoints.createRewardInStore );
 
-    String businessID = "69310d25aa6d1208849d5c42";//dummy
+    String businessID = "6933cbce613096a0dc5420a5";//dummy
     createModel = RewardCreateModel(
-        businessId: storage.read( businessIdKey ) ?? businessID,
+        //businessId: storage.read( businessIdKey ) ?? businessID,
+        businessId: businessID,
         title: titleController.text.trim(),
         description: descriptionController.text.trim(),
         type: "in-store",//hard coded
-        category: "food",//hard coded TODO: NEED TO ADD DROPDOWN OPTIONS IN UI UPON RECEIVING VALUES FROM BACKEND DEV
+        category: category.toLowerCase(),
         redemptionLimit: redemptionLimit!,
         startDate: DateTime.now(),
-        expiryDate: DateTime.now(),
+        expiryDate: expiryDate,
         inStoreRedemptionMethods: InStoreRedemptionMethods(
             qrCode: qrCode.value,
             staticCode: staticCode.value,
@@ -187,17 +200,115 @@ class RewardController extends GetxController {
 
       request.fields["data"] = jsonEncode( createModel!.toJson() );
 
-      if( rewardImage != null ){
+      if( rewardImage.value != null ){
         request.files.add(
             await http.MultipartFile.fromPath(
                 "rewardImage",
-                rewardImage!.path
+                rewardImage.value!.path
             )
         );
       }
 
-      var response = await request.send().timeout(Duration(seconds: 8));
+      var response = await request.send().timeout(Duration(seconds: 10));
       var responseBody = await response.stream.bytesToString();
+
+      if( response.statusCode == 201 ){//REWARD CREATED
+        showSnackBar(
+            title: "Done!",
+            message: "Reward created successfully",
+            backgroundColor: AppColors.successGreen
+        );
+        //GET REWARD LIST -> GO BACK TO REWARDS SCREEN
+        Get.back();
+      }
+
+      print("Status: ${response.statusCode}");
+      print("Body: $responseBody");
+    }on TimeoutException catch(_){
+      showSnackBar(
+          title: "Time out!",
+          message: "Check your internet connection and try again.",
+          backgroundColor: AppColors.errorRed
+      );
+    } catch(e){
+      showSnackBar(
+          title: "No internet!",
+          message: "Check your internet connection and try again.",
+          backgroundColor: AppColors.errorRed
+      );
+    }
+  }
+
+
+
+  //CREATE REWARD IN STORE
+  createRewardOnline() async{
+
+    if( titleController.text.trim().isEmpty || descriptionController.text.trim().isEmpty ){
+      showSnackBar(
+          title: "Enter details",
+          message: "Enter title and description to create a new reward.",
+          backgroundColor: AppColors.errorRed
+      );
+      return;
+    }else{
+      redemptionLimit = int.tryParse( redemptionLimitController.text.trim() );
+      redemptionLimit == null || redemptionLimit! < 1 ? redemptionLimit = 10000 : redemptionLimit = redemptionLimit;//DEFAULT LIMIT 10,000
+      redemptionLimit! > 10000 ? redemptionLimit = 10000 : redemptionLimit = redemptionLimit;//MAX LIMIT 10,000
+    }
+
+    Uri url = Uri.parse( ApiEndpoints.baseUrl + ApiEndpoints.createRewardInStore );
+
+    String businessID = "6933cbce613096a0dc5420a5";//dummy
+    createModel = RewardCreateModel(
+      //businessId: storage.read( businessIdKey ) ?? businessID,
+        businessId: businessID,
+        title: titleController.text.trim(),
+        description: descriptionController.text.trim(),
+        type: "online",//hard coded
+        category: category.toLowerCase(),
+        redemptionLimit: redemptionLimit!,
+        startDate: DateTime.now(),
+        expiryDate: expiryDate,
+        inStoreRedemptionMethods: InStoreRedemptionMethods(
+            qrCode: qrCode.value,
+            staticCode: staticCode.value,
+            nfcTap: nfcTap.value
+        ),
+        onlineRedemptionMethods: null,
+        featured: true
+    );
+
+    try{
+      var request = http.MultipartRequest("POST", url);
+      request.headers.addAll({
+        "Authorization": "Bearer ${storage.read( accessTokenKey )}",
+        "Content-Type": "application/json",
+      });
+
+      request.fields["data"] = jsonEncode( createModel!.toJson() );
+
+      if( rewardImage.value != null ){
+        request.files.add(
+            await http.MultipartFile.fromPath(
+                "rewardImage",
+                rewardImage.value!.path
+            )
+        );
+      }
+
+      var response = await request.send().timeout(Duration(seconds: 10));
+      var responseBody = await response.stream.bytesToString();
+
+      if( response.statusCode == 201 ){//REWARD CREATED
+        showSnackBar(
+            title: "Done!",
+            message: "Reward created successfully",
+            backgroundColor: AppColors.successGreen
+        );
+        //GET REWARD LIST -> GO BACK TO REWARDS SCREEN
+        Get.back();
+      }
 
       print("Status: ${response.statusCode}");
       print("Body: $responseBody");

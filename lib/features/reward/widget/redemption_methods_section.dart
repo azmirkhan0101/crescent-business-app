@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:organization/features/reward/widget/custom_checkbox.dart';
 
 import '../../../utils/app_color.dart';
 import '../../widgets/custom_card_widget.dart';
@@ -8,21 +9,32 @@ import 'online_options_widget.dart';
 
 class RedemptionMethodsSection extends StatefulWidget {
 
+
+  final Function(bool) onTabChanged;
   final bool qrCode;
   final bool nfcTap;
   final bool staticCode;
+  final bool discountCode;
+  final bool giftCard;
   final Function(bool) onQRCodeChanged;
   final Function(bool) onNfcTapChanged;
   final Function(bool) onStaticCodeChanged;
+  final Function(bool) onDiscountCodeChanged;
+  final Function(bool) onGiftCardChanged;
 
   const RedemptionMethodsSection({
     super.key,
+    required this.onTabChanged,
     required this.qrCode,
     required this.nfcTap,
     required this.staticCode,
     required this.onQRCodeChanged,
     required this.onNfcTapChanged,
     required this.onStaticCodeChanged,
+    required this.discountCode,
+    required this.giftCard,
+    required this.onDiscountCodeChanged,
+    required this.onGiftCardChanged,
   });
 
   @override
@@ -42,7 +54,7 @@ class _RedemptionMethodsSectionState extends State<RedemptionMethodsSection> {
         TextFieldTitleWidget(text: "Select Redemption Methods"),
         const SizedBox(height: 10),
 
-        // 🔹 In-Store / Online Tabs
+        //In-Store / Online TabsSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS
         Container(
           decoration: BoxDecoration(
             color: Colors.grey[200],
@@ -52,7 +64,7 @@ class _RedemptionMethodsSectionState extends State<RedemptionMethodsSection> {
             padding: EdgeInsets.symmetric(horizontal: 6.w, vertical: 4.h),
             child: Row(
               children: [
-                // In-Store button
+                // In-Store buttonNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN
                 Expanded(
                   child: Container(
                     decoration: BoxDecoration(
@@ -61,8 +73,12 @@ class _RedemptionMethodsSectionState extends State<RedemptionMethodsSection> {
                       borderRadius: BorderRadius.circular(12.r),
                     ),
                     child: TextButton(
-                      onPressed: () =>
-                          setState(() => isInStoreSelected = true),
+                      onPressed: (){
+                        setState((){
+                          isInStoreSelected = true;
+                          widget.onTabChanged( true );
+                        });
+                      },
                       style: TextButton.styleFrom(
                         backgroundColor: Colors.transparent,
                         shape: RoundedRectangleBorder(
@@ -82,7 +98,7 @@ class _RedemptionMethodsSectionState extends State<RedemptionMethodsSection> {
                   ),
                 ),
                 SizedBox(width: 10),
-                // Online button
+                // Online buttonNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN
                 Expanded(
                   child: Container(
                     decoration: BoxDecoration(
@@ -91,8 +107,12 @@ class _RedemptionMethodsSectionState extends State<RedemptionMethodsSection> {
                       borderRadius: BorderRadius.circular(12.r),
                     ),
                     child: TextButton(
-                      onPressed: () =>
-                          setState(() => isInStoreSelected = false),
+                      onPressed: (){
+                        setState((){
+                          isInStoreSelected = false;
+                          widget.onTabChanged( false );
+                        });
+                      },
                       style: TextButton.styleFrom(
                         backgroundColor: Colors.transparent,
                         shape: RoundedRectangleBorder(
@@ -121,18 +141,26 @@ class _RedemptionMethodsSectionState extends State<RedemptionMethodsSection> {
         // 🔹 Show widgets depending on tab
         isInStoreSelected ?
             inStoreOptions()
-            : const OnlineOptions(),
+            : OnlineOptions(
+          discountCode: widget.discountCode,
+          giftCard: widget.giftCard,
+          onDiscountCodeChanged: (bool isChecked) {
+            widget.onDiscountCodeChanged( isChecked );
+          }, onGiftCardChanged: (bool isChecked) {
+          widget.onGiftCardChanged( isChecked );
+        },
+        ),
       ],
     );
   }
 
-  //
+  //INSTORE OPTIONS
   inStoreOptions() {
     return Column(
       children: [
         CustomCard(
             height: 52.h,
-            child: buildCheckboxRow(
+            child: CustomCheckbox(
                 title: "QR Code",
                 isChecked: widget.qrCode,
                 onChanged: (isChecked){
@@ -143,7 +171,7 @@ class _RedemptionMethodsSectionState extends State<RedemptionMethodsSection> {
         SizedBox(height: 8.h),
         CustomCard(
           height: 52.h,
-          child: buildCheckboxRow(
+          child: CustomCheckbox(
               title: "NFC Tap",
               isChecked: widget.nfcTap,
               onChanged: (isChecked){
@@ -154,39 +182,13 @@ class _RedemptionMethodsSectionState extends State<RedemptionMethodsSection> {
         SizedBox(height: 8.h),
         CustomCard(
           height: 52.h,
-          child: buildCheckboxRow(
+          child: CustomCheckbox(
               title: "Static Code",
               isChecked: widget.staticCode,
               onChanged: (isChecked){
                 widget.onStaticCodeChanged( isChecked ?? false );
               }
           )
-        ),
-      ],
-    );
-  }
-
-  //CHECKBOX
-  Widget buildCheckboxRow({required String title,
-    required bool isChecked,
-    required Function(bool?) onChanged
-  }) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.start,
-      children: [
-        Checkbox(
-          value: isChecked,
-          onChanged: onChanged,
-          activeColor: AppColors.primaryColor,
-          checkColor: Colors.white,
-          materialTapTargetSize:
-          MaterialTapTargetSize.shrinkWrap,
-          visualDensity: const VisualDensity(horizontal: -4, vertical: -4),
-        ),
-        SizedBox(width: 8.w),
-        Text(
-          title,
-          style: TextStyle(fontWeight: FontWeight.w500, fontSize: 14.sp),
         ),
       ],
     );
