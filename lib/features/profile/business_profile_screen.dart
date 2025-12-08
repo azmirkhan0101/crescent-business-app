@@ -17,8 +17,8 @@ import '../../utils/assets_path.dart';
 import '../widgets/custom_text.dart';
 
 class BusinessProfileScreen extends StatelessWidget {
-
-  final BusinessProfileController controller = Get.find<BusinessProfileController>();
+  final BusinessProfileController controller =
+      Get.find<BusinessProfileController>();
 
   @override
   Widget build(BuildContext context) {
@@ -33,53 +33,45 @@ class BusinessProfileScreen extends StatelessWidget {
           title: CustomText(
             text: "Business Profile",
             fontWeight: FontWeight.w700,
-            fontSize: 24.sp,
+            fontSize: 20.sp,
             color: AppColors.blackTextColor,
           ),
           actions: [
-            GestureDetector(
-              onTap: () => Get.toNamed(AppRoutes.editProfile),
-              child: Container(
-                width: 40.w,
-                height: 40.w,
-                decoration: BoxDecoration(
-                  color: AppColors.white,
-                  shape: BoxShape.circle,
-                ),
-                child: Center(
-                  child: Image.asset(
-                    AssetsPath.editIcon,
-                    color: AppColors.blackTextColor,
-                    width: 16.w,
-                    height: 16.h,
-                  ),
-                ),
-              ),
+            IconButton(
+              onPressed: () {
+                Get.toNamed(AppRoutes.profileSettings);
+              },
+              icon: Icon(Icons.settings),
             ),
-            SizedBox(width: 8.w),
+            IconButton(
+              onPressed: () {
+                Get.toNamed(AppRoutes.editProfile);
+              },
+              icon: Icon(Icons.edit_outlined),
+            ),
           ],
         ),
 
-        body: Obx((){
-          if( controller.model.value == null ){
-            return Center( child: CircularProgressIndicator(),);
-          }else{
+        body: Obx(() {
+          if (controller.model.value == null) {
+            return Center(child: CircularProgressIndicator());
+          } else {
             return mainBody();
           }
-        })
+        }),
       ),
     );
   }
 
   //MAIN BODY
-mainBody(){
+  mainBody() {
     return Padding(
       padding: EdgeInsets.all(16.w),
       child: Column(
         children: [
           BusinessProfileWidget(
-              coverImageUrl: controller.model.value?.coverImage,
-              logoImageUrl: controller.model.value?.logoImage
+            coverImageUrl: controller.model.value?.coverImage,
+            logoImageUrl: controller.model.value?.logoImage,
           ),
           SizedBox(height: 60.h),
 
@@ -128,7 +120,7 @@ mainBody(){
           Expanded(
             child: TabBarView(
               children: [
-                OverviewTab(model: controller.model.value!,),
+                OverviewTab(model: controller.model.value!),
                 RewardsTab(),
               ],
             ),
@@ -136,5 +128,5 @@ mainBody(){
         ],
       ),
     );
-}
+  }
 }

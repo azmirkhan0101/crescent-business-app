@@ -21,7 +21,7 @@ class HomeHeaderWidget extends StatelessWidget {
           GestureDetector(
             onTap: (){
               //TODO
-              Get.toNamed(AppRoutes.myProfile);
+              Get.toNamed(AppRoutes.profileSettings);
             },
 
             child: Row(

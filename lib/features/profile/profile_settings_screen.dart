@@ -2,19 +2,20 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:organization/features/profile/widget/business_profile_image_widget.dart';
+import 'package:organization/features/widgets/button_widget.dart';
 import 'package:organization/features/widgets/custom_text.dart';
 import 'package:organization/routes/app_pages.dart';
 import 'package:organization/utils/app_color.dart';
 import 'package:organization/utils/assets_path.dart';
 
-class MyProfileScreen extends StatefulWidget {
-  const MyProfileScreen({super.key});
+class ProfileSettingsScreen extends StatefulWidget {
+  const ProfileSettingsScreen({super.key});
 
   @override
-  State<MyProfileScreen> createState() => _MyProfileScreenState();
+  State<ProfileSettingsScreen> createState() => _MyProfileScreenState();
 }
 
-class _MyProfileScreenState extends State<MyProfileScreen> {
+class _MyProfileScreenState extends State<ProfileSettingsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -120,7 +121,7 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
                   title: "Terms & Conditions",
                   icon: Icons.info_outline,
                   onTap: () {
-                   // context.push(RoutesPath.termsCondition);
+                    Get.toNamed(AppRoutes.termsCondition);
                   },
                 ),
               ],
@@ -129,34 +130,21 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
 
           ///button
           SizedBox(height: 24.h),
-          SizedBox(
-            width: 200.w,
-            height: 56,
-            child: OutlinedButton(
-              onPressed: () {
-                Get.toNamed(AppRoutes.logIn);
-              },
-              style: OutlinedButton.styleFrom(
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                side: const BorderSide(
-                  color: Color(0xFFE6283C), // red border
-                  width: 1.5,
-                ),
-                backgroundColor: Color(0xFFFFE6E6), // light pink fill
-                padding: const EdgeInsets.symmetric(horizontal: 16),
-                foregroundColor: Colors.red,
-              ),
-              child: const Text(
-                "Logout",
-                style: TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
-                  color: Color(0xFFE6283C),
-                ),
-              ),
-            ),
+          ButtonWidget(
+            label: "Logout",
+          buttonHeight: 45,
+          textColor: Color(0xFFE6283C),
+            buttonRadius: 12,
+            backgroundColor: Color(0xFFFFE6E6),
+            borderColor: Color(0xFFE6283C),
+            borderWidth: 2,
+          ),
+          SizedBox( height: 20.h,),
+          ButtonWidget(
+              label: "Delete Account",
+            buttonHeight: 45,
+            backgroundColor: Color(0xFFE6283C),
+            buttonRadius: 12,
           ),
         ],
       ),

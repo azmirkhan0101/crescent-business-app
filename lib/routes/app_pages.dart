@@ -4,8 +4,6 @@ import 'package:organization/features/auth/login_screen.dart';
 import 'package:organization/features/auth/otp_verification_screen.dart';
 import 'package:organization/features/auth/reset_password_screen.dart';
 import 'package:organization/features/get_started_screen.dart';
-import 'package:organization/features/my_profile/change_password_screen.dart';
-import 'package:organization/features/my_profile/my_profile_screen.dart';
 import 'package:organization/features/nav_bar/main_navigation_screen.dart';
 import 'package:organization/features/notification/notification_screen.dart';
 import 'package:organization/features/on_boarding/account_creation_screen.dart';
@@ -16,6 +14,8 @@ import 'package:organization/features/on_boarding/setup_complete_screen.dart';
 import 'package:organization/features/on_boarding/store_location_screen.dart';
 import 'package:organization/features/on_boarding/upload_logo_screen.dart';
 import 'package:organization/features/on_boarding/verify_now_screen.dart';
+import 'package:organization/features/profile/change_password_screen.dart';
+import 'package:organization/features/profile/profile_settings_screen.dart';
 import 'package:organization/features/reward/edit_reward_screen.dart';
 import 'package:organization/features/reward/reward_screen.dart';
 import 'package:organization/features/splash_screen.dart';
@@ -46,9 +46,9 @@ class AppPages {
         }
     ),
     GetPage(
-        name: AppRoutes.myProfile,
+        name: AppRoutes.profileSettings,
         page: (){
-          return MyProfileScreen();
+          return ProfileSettingsScreen();
         }
     ),
     GetPage(

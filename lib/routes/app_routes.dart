@@ -25,7 +25,7 @@ class AppRoutes {
   //static const String tabScreen = '/tab-screen';
   static const String boardingStore = '/boarding-store';
   static const String subscription = '/subscription';
-  static const String myProfile = '/my-profile';
+  static const String profileSettings = '/profile-settings';
   static const String changePassword = '/change-password';
   static const String notification = '/notification';
   static const String termsCondition = '/terms';
