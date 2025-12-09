@@ -133,7 +133,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
                 child: Padding(
                   padding: EdgeInsets.all(12.w),
                   child: Image.asset(
-                    obscureText ? AssetsPath.eyeIcon : AssetsPath.eyeIcon,
+                    obscureText ? AssetsPath.eyeIcon : AssetsPath.eyeHideIcon,
                     width: 20.w,
                     height: 20.h,
                     fit: BoxFit.contain,

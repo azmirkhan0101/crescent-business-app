@@ -5,6 +5,7 @@ class AssetsPath {
   static const String lockIcon = "assets/icons/Lock.png";
   static const String infoIcon = "assets/icons/info_icon.png";
   static const String eyeIcon = "assets/icons/Eye.png";
+  static const String eyeHideIcon = "assets/icons/eye_hide.png";
   static const String backIcon = "assets/icons/back.png";
   static const String addProfileIcon = "assets/icons/add_profile_icon.png";
   static const String businessCoverImage =

@@ -3,6 +3,7 @@ import 'package:organization/controller/auth/login_controller.dart';
 import 'package:organization/controller/auth/setup_complete_controller.dart';
 import 'package:organization/controller/auth/verify_now_controller.dart';
 import 'package:organization/controller/nav/main_nav_controller.dart';import 'package:organization/controller/profile/business_profile_controller.dart';
+import 'package:organization/controller/profile/profile_settings_controller.dart';
 import 'package:organization/controller/reward/reward_controller.dart';
 import '../controller/auth/sign_up_controller.dart';
 import '../controller/auth/forgot_pass_controller.dart';
@@ -29,6 +30,10 @@ class InitialBinding extends Bindings {
 
     Get.lazyPut<ForgotPasswordController>((){
       return ForgotPasswordController();
+    },fenix: true,);
+
+    Get.lazyPut<ProfileSettingsController>((){
+      return ProfileSettingsController();
     },fenix: true,);
 
     Get.lazyPut<VerifyNowController>((){

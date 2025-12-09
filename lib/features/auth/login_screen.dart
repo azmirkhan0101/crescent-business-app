@@ -72,6 +72,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     prefixImagePath: AssetsPath.lockIcon,
                     suffixImagePath: AssetsPath.eyeIcon,
                     controller: controller.passwordController,
+                    isPassword: true,
                   ),
                 ],
               ),

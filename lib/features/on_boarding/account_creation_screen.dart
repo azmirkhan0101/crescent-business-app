@@ -68,6 +68,7 @@ class AccountCreationScreen extends StatelessWidget {
                     suffixImagePath: AssetsPath.eyeIcon,
                     prefixImagePath: AssetsPath.lockIcon,
                     controller: controller.passwordController,
+                    isPassword: true,
                   ),
                 ],
               ),

@@ -86,7 +86,7 @@ class _CategorySelectionScreenState extends State<CategorySelectionScreen> {
       bottomNavigationBar: BottomButtonWidget(
         onPressed: () {
           if (selectedIndex != null) {
-            controller.businessModel.category = categories[selectedIndex!].title;
+            controller.businessSignupModel.category = categories[selectedIndex!].title;
             Get.toNamed(AppRoutes.businessInfo);
           } else {
             ScaffoldMessenger.of(context).showSnackBar(

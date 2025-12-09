@@ -23,7 +23,7 @@ class SignUpController extends GetxController {
   final TextEditingController businessEmailController = TextEditingController();
   final TextEditingController businessWebsiteController = TextEditingController();
 
-  BusinessSignupModel businessModel = BusinessSignupModel();
+  BusinessSignupModel businessSignupModel = BusinessSignupModel();
   final storage = GetStorage();
 
   void hideLoading() {
@@ -56,9 +56,9 @@ class SignUpController extends GetxController {
       );
       return;
     }
-    businessModel.name = nameController.text.trim();
-    businessModel.tagline = taglineController.text.trim();
-    businessModel.description = descriptionController.text.trim();
+    businessSignupModel.name = nameController.text.trim();
+    businessSignupModel.tagline = taglineController.text.trim();
+    businessSignupModel.description = descriptionController.text.trim();
     Get.toNamed(AppRoutes.accountCreation);
   }
 
@@ -107,9 +107,9 @@ class SignUpController extends GetxController {
       );
       return;
     }
-    businessModel.businessPhoneNumber = businessPhoneController.text.trim();
-    businessModel.businessEmail = businessEmailController.text.trim();
-    businessModel.businessWebsite = businessWebsiteController.text.trim();
+    businessSignupModel.businessPhoneNumber = businessPhoneController.text.trim();
+    businessSignupModel.businessEmail = businessEmailController.text.trim();
+    businessSignupModel.businessWebsite = businessWebsiteController.text.trim();
     Get.toNamed(AppRoutes.storeLocation);
   }
 
@@ -124,8 +124,8 @@ class SignUpController extends GetxController {
       );
       return;
     }
-    businessModel.email = emailController.text.trim();
-    businessModel.password = passwordController.text.trim();
+    businessSignupModel.email = emailController.text.trim();
+    businessSignupModel.password = passwordController.text.trim();
     Get.toNamed(AppRoutes.uploadLogo);
   }
 
@@ -134,10 +134,10 @@ class SignUpController extends GetxController {
 
     try{
       final url = Uri.parse( ApiEndpoints.baseUrl + ApiEndpoints.signup );
-      File? logo = businessModel.logo;
+      File? logo = businessSignupModel.logo;
 
       // Convert model to JSON string (because backend expects "data" as string)
-      final jsonString = jsonEncode(businessModel.toJson());
+      final jsonString = jsonEncode(businessSignupModel.toJson());
 
       // Create multipart request
       var request = http.MultipartRequest("POST", url);
@@ -159,16 +159,29 @@ class SignUpController extends GetxController {
       var response = await request.send();
       var responseBody = await response.stream.bytesToString();
       var responseData = jsonDecode(responseBody);
+      print("Status: ${response.statusCode}");
+      print("Body: ${responseBody}");
+
+      //TODO: ERROR DEBUG
+      if( logo != null ){
+        logImageDetails(logo);
+      }
 
       if (response.statusCode == 200 || response.statusCode == 201) {//ACCOUNT CREATED -> SAVE EMAIL -> GO TO OTP VERIFY
+        print("1");
         bool isVerificationRequired = responseData['data']['requiresVerification'] ?? false;
+        print("2");
         storage.write( requireVerificationKey, isVerificationRequired );
-        storage.write( emailKey, businessModel.email );//saving for verify now(if user skips verification this time)
+        print("3");
+        storage.write( emailKey, businessSignupModel.email );//saving for verify now(if user skips verification this time)
+        print("4");
         Map<String, dynamic> arguments = {
-          emailKey : businessModel.email,
+          emailKey : businessSignupModel.email,
           isSignupKey : true
         };
+        print("5");
         Get.offAllNamed(AppRoutes.otpVerify, arguments: arguments );
+        print("6");
       }else if( response.statusCode == 400 ){//USER ALREADY EXISTS
         showSnackBar(
             title: "User Exists!",
@@ -192,6 +205,22 @@ class SignUpController extends GetxController {
     }
 
   }
+
+  void logImageDetails(File file) async {
+    final name = file.path.split('/').last;
+    final size = await file.length();
+    final ext = file.path.split('.').last;
+
+    print("----- IMAGE INFO -----");
+    print("Name: $name");
+    print("Extension: $ext");
+    print("Size: $size bytes");
+    print("Size KB: ${size / 1024}");
+    print("Size MB: ${size / (1024 * 1024)}");
+    print("Path: ${file.path}");
+    print("----------------------");
+  }
+
 
   //SHOW LOADING ALERT DIALOG
   // showLoadingAlert({String title = "Loading..."}){

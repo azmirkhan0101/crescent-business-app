@@ -2,22 +2,24 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:organization/controller/profile/profile_settings_controller.dart';
 import 'package:organization/features/auth/widgets/custom_auth_appbar.dart';
-import 'package:organization/features/auth/widgets/password_requirement_widget.dart';
-import 'package:organization/features/auth/widgets/rich_text_widget.dart';
 import 'package:organization/features/widgets/text_field_title_widget.dart';
 import 'package:organization/routes/app_pages.dart';
-import 'package:organization/utils/app_text.dart';
 import 'package:organization/utils/assets_path.dart';
+
 import '../../../utils/app_color.dart';
 import '../../../utils/app_size.dart';
+import '../../utils/app_text.dart';
+import '../widgets/custom_asset_image.dart';
 import '../widgets/custom_button_widget.dart';
+import '../widgets/custom_text.dart';
 import '../widgets/custom_text_field_widget.dart';
 import '../widgets/heading_text_widget.dart';
 
-
 class ChangePasswordScreen extends StatelessWidget {
-  const ChangePasswordScreen({super.key});
+
+  final ProfileSettingsController controller = Get.find<ProfileSettingsController>();
 
   @override
   Widget build(BuildContext context) {
@@ -56,8 +58,10 @@ class ChangePasswordScreen extends StatelessWidget {
                   SizedBox(height: AppSizes.paddingSmallH),
                   CustomTextField(
                     hintText: "**********",
+                    controller: controller.currentPassword,
                     prefixImagePath: AssetsPath.lockIcon,
                     suffixImagePath: AssetsPath.eyeIcon,
+                    isPassword: true,
                     // onChanged: (val) => controller.password.value = val,
                   ),
 
@@ -69,8 +73,10 @@ class ChangePasswordScreen extends StatelessWidget {
                   SizedBox(height: AppSizes.paddingSmallH),
                   CustomTextField(
                     hintText: "**********",
+                    controller: controller.newPassword,
                     prefixImagePath: AssetsPath.lockIcon,
                     suffixImagePath: AssetsPath.eyeIcon,
+                    isPassword: true,
                     // onChanged: (val) => controller.password.value = val,
                   ),
                   SizedBox(height: 16.h),
@@ -130,12 +136,32 @@ class ChangePasswordScreen extends StatelessWidget {
 
               CustomTextField(
                     hintText: "**********",
+                    controller: controller.confirmPassword,
                     prefixImagePath: AssetsPath.lockIcon,
                     suffixImagePath: AssetsPath.eyeIcon,
+                    isPassword: true,
                     // onChanged: (val) => controller.password.value = val,
                   ),
                 ],
               ),
+            ),
+            SizedBox( height: 10.h,),
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                CustomAssetsImage(assetsPath: AssetsPath.infoIcon),
+                Expanded(
+                  child: CustomText(
+                    textAlign: TextAlign.justify,
+                    text: AppText.passwordRequirements,
+                    language: false,
+                    fontSize: 12.sp,
+                    fontWeight: FontWeight.w400,
+                    color: AppColors.secondaryTextColor,
+                    overflow: TextOverflow.visible,
+                  ),
+                ),
+              ],
             ),
             SizedBox(height: 42.h),
             Center(
@@ -144,7 +170,7 @@ class ChangePasswordScreen extends StatelessWidget {
                     color: AppColors.buttonTextColor,fontSize: 18.sp,fontWeight: FontWeight.w700),
                 text: "Save",
                 onPressed: () {
-                  Get.toNamed(AppRoutes.categorySelection);
+                  controller.changePassword();
                 },
               ),
             ),
@@ -153,8 +179,7 @@ class ChangePasswordScreen extends StatelessWidget {
           ],
         ),
       ),
-
-
     );
   }
 }
+

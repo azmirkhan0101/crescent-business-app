@@ -7,8 +7,9 @@ import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:http/http.dart' as http;
 import 'package:organization/core/show_snackbar.dart';
+import 'package:organization/data/models/online_reward_create_model.dart';
 import 'package:organization/data/models/reward_card_model.dart';
-import 'package:organization/data/models/reward_create_model.dart';
+import 'package:organization/data/models/instore_reward_create_model.dart';
 import 'package:organization/utils/api_endpoints.dart';
 import 'package:organization/utils/app_color.dart';
 import 'package:organization/utils/app_constants.dart';
@@ -18,7 +19,8 @@ class RewardController extends GetxController {
 
   final storage = GetStorage();
   RxList<RewardCardModel> rewards2 = <RewardCardModel>[].obs;
-  RewardCreateModel? createModel;
+  InStoreRewardCreateModel? inStoreCreateModel;
+  OnlineRewardCreateModel? onlineCreateModel;
   String category = categories[0];
 
   static const List<String> categories = [
@@ -172,7 +174,7 @@ class RewardController extends GetxController {
     Uri url = Uri.parse( ApiEndpoints.baseUrl + ApiEndpoints.createRewardInStore );
 
     String businessID = "6933cbce613096a0dc5420a5";//dummy
-    createModel = RewardCreateModel(
+    inStoreCreateModel = InStoreRewardCreateModel(
         //businessId: storage.read( businessIdKey ) ?? businessID,
         businessId: businessID,
         title: titleController.text.trim(),
@@ -198,7 +200,7 @@ class RewardController extends GetxController {
         "Content-Type": "application/json",
       });
 
-      request.fields["data"] = jsonEncode( createModel!.toJson() );
+      request.fields["data"] = jsonEncode( inStoreCreateModel!.toJson() );
 
       if( rewardImage.value != null ){
         request.files.add(
@@ -241,7 +243,7 @@ class RewardController extends GetxController {
 
 
 
-  //CREATE REWARD IN STORE
+  //CREATE REWARD ONLINE
   createRewardOnline() async{
 
     if( titleController.text.trim().isEmpty || descriptionController.text.trim().isEmpty ){
@@ -257,12 +259,10 @@ class RewardController extends GetxController {
       redemptionLimit! > 10000 ? redemptionLimit = 10000 : redemptionLimit = redemptionLimit;//MAX LIMIT 10,000
     }
 
-    Uri url = Uri.parse( ApiEndpoints.baseUrl + ApiEndpoints.createRewardInStore );
+    Uri url = Uri.parse( ApiEndpoints.baseUrl + ApiEndpoints.createRewardInStore );//SAME ENDPOINT FOR BOTH
 
-    String businessID = "6933cbce613096a0dc5420a5";//dummy
-    createModel = RewardCreateModel(
-      //businessId: storage.read( businessIdKey ) ?? businessID,
-        businessId: businessID,
+    inStoreCreateModel = InStoreRewardCreateModel(
+        businessId: storage.read( businessIdKey ),
         title: titleController.text.trim(),
         description: descriptionController.text.trim(),
         type: "online",//hard coded
@@ -286,7 +286,7 @@ class RewardController extends GetxController {
         "Content-Type": "application/json",
       });
 
-      request.fields["data"] = jsonEncode( createModel!.toJson() );
+      request.fields["data"] = jsonEncode( inStoreCreateModel!.toJson() );
 
       if( rewardImage.value != null ){
         request.files.add(

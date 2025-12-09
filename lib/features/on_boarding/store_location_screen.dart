@@ -44,7 +44,7 @@ class StoreLocationScreen extends StatelessWidget {
               title: AppText.location,
               suffix: GestureDetector(
                 onTap: () {
-                  controller.businessModel.locations = [];
+                  controller.businessSignupModel.locations = [];
                   controller.signup();
                 },
                 child:CustomText(text: AppText.skip,fontSize: 14.sp,color: AppColors.secondaryTextColor,fontWeight: FontWeight.w400,),
@@ -83,7 +83,7 @@ class StoreLocationScreen extends StatelessWidget {
       /// continue Button
       bottomNavigationBar: BottomButtonWidget(
         onPressed: () {
-          controller.businessModel.locations = locationNames;
+          controller.businessSignupModel.locations = locationNames;
           controller.signup();
         },
         buttonText: AppText.continueText,

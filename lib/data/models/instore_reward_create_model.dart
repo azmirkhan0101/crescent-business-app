@@ -1,4 +1,4 @@
-class RewardCreateModel {
+class InStoreRewardCreateModel {
   final String businessId;
   final String? title;
   final String? description;
@@ -11,7 +11,7 @@ class RewardCreateModel {
   final dynamic onlineRedemptionMethods;
   final bool featured;
 
-  RewardCreateModel({
+  InStoreRewardCreateModel({
     required this.businessId,
     required this.title,
     required this.description,
@@ -25,8 +25,8 @@ class RewardCreateModel {
     required this.featured,
   });
 
-  factory RewardCreateModel.fromJson(Map<String, dynamic> json) {
-    return RewardCreateModel(
+  factory InStoreRewardCreateModel.fromJson(Map<String, dynamic> json) {
+    return InStoreRewardCreateModel(
       businessId: json['businessId'],
       title: json['title'],
       description: json['description'],

@@ -27,8 +27,8 @@ class UploadLogoScreen extends StatefulWidget {
 class _UploadLogoScreenState extends State<UploadLogoScreen> {
 
   final SignUpController controller = Get.find<SignUpController>();
-  bool _hasImage = false; // initially no image
-  File? _selectedImage;
+  bool hasImage = false; // initially no image
+  File? selectedImage;
 
   @override
   Widget build(BuildContext context) {
@@ -73,10 +73,9 @@ class _UploadLogoScreenState extends State<UploadLogoScreen> {
                   children: [
                     ProfileAvatar(
                       assetImage: AssetsPath.addProfileIcon,
-                      onTap: () {
-                        // setState(() {
-                        //   _hasImage = true; // image selected
-                        // });
+                      selectedImage: selectedImage,
+                      pickImage: () {
+                        _pickImage();
                       },
                     ),
                     SizedBox(height: 10.h),
@@ -92,14 +91,14 @@ class _UploadLogoScreenState extends State<UploadLogoScreen> {
       /// continue Button
       bottomNavigationBar: BottomButtonWidget(
         onPressed: () {
-          if( _hasImage ){
-            controller.businessModel.logo = _selectedImage;
+          if( hasImage ){
+            controller.businessSignupModel.logo = selectedImage;
             Get.toNamed(AppRoutes.businessContactInfo);
           }else{
             _pickImage();
           }
         },
-        buttonText: _hasImage ? AppText.continueText : "Add Logo",
+        buttonText: hasImage ? AppText.continueText : "Add Logo",
       ),
     );
   }
@@ -110,8 +109,8 @@ class _UploadLogoScreenState extends State<UploadLogoScreen> {
 
     if (image != null) {
       setState(() {
-        _selectedImage = File(image.path);
-        _hasImage = true;
+        selectedImage = File(image.path);
+        hasImage = true;
       });
     }
   }

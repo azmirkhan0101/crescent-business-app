@@ -5,7 +5,7 @@ class ApiEndpoints{
   //MY DESKTOP LOCAL SERVER
   //static const baseUrl = "http://192.168.56.1:5000/api/v1";
   //static const baseUrl = "https://dauntless-cathey-telial.ngrok-free.dev/api/v1";
-  static const baseUrl = "https://samples-warned-calls-forwarding.trycloudflare.com/api/v1";
+  static const baseUrl = "https://amendments-causes-notification-front.trycloudflare.com/api/v1";
   static const getProfile = "/auth/profile";
   static const login = "/auth/signin";
   static const signup = "/auth/business-signup";
@@ -15,8 +15,10 @@ class ApiEndpoints{
   static const otpResendForgotPassword = "/auth/send-forgot-password-otp-again";
   static const otpVerifyForgotPassword = "/auth/verify-forgot-password-otp";
   static const resetPassword = "/auth/reset-password";
+  static const changePassword = "/auth/change-password";
+  static const deleteAccount = "/auth/delete-account";
   static const updateProfile = "/business/update-profile";
   static const rewardAnalyticsStats = "/rewards/analytics/stats";
   static const createRewardInStore = "/rewards";
-  //static const createRewardOnline = "/api/rewards";cloudflared tunnel --url http://localhost:5000
+  //static const createRewardOnline = "/api/rewards";
 }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:organization/controller/profile/profile_settings_controller.dart';
 import 'package:organization/features/profile/widget/business_profile_image_widget.dart';
 import 'package:organization/features/widgets/button_widget.dart';
 import 'package:organization/features/widgets/custom_text.dart';
@@ -16,6 +17,9 @@ class ProfileSettingsScreen extends StatefulWidget {
 }
 
 class _MyProfileScreenState extends State<ProfileSettingsScreen> {
+
+  final ProfileSettingsController controller = Get.find<ProfileSettingsController>();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -138,6 +142,9 @@ class _MyProfileScreenState extends State<ProfileSettingsScreen> {
             backgroundColor: Color(0xFFFFE6E6),
             borderColor: Color(0xFFE6283C),
             borderWidth: 2,
+            onPressed: (){
+              controller.logOut();
+            },
           ),
           SizedBox( height: 20.h,),
           ButtonWidget(
@@ -145,8 +152,72 @@ class _MyProfileScreenState extends State<ProfileSettingsScreen> {
             buttonHeight: 45,
             backgroundColor: Color(0xFFE6283C),
             buttonRadius: 12,
+            onPressed: (){
+                showDeleteDialog();
+            },
           ),
         ],
+      ),
+    );
+  }
+
+  //DELETE ALERT
+  void showDeleteDialog() {
+    Get.defaultDialog(
+      title: "Delete Item",
+      titleStyle: const TextStyle(
+        fontSize: 18,
+        fontWeight: FontWeight.w600,
+        color: Colors.black87,
+      ),
+      contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+      middleText: "Are you sure you want to delete this?",
+      middleTextStyle: const TextStyle(
+        fontSize: 15,
+        color: Colors.black54,
+      ),
+      barrierDismissible: true,
+      confirm: Container(
+        height: 42,
+        width: 120,
+        decoration: BoxDecoration(
+          color: const Color(0xFFE53935), // Soft red for delete
+          borderRadius: BorderRadius.circular(8),
+        ),
+        child: TextButton(
+          onPressed: () {
+            Get.back(closeOverlays: true);
+            controller.deleteAccount();
+          },
+          child: const Text(
+            "Delete",
+            style: TextStyle(
+              color: Colors.white,
+              fontWeight: FontWeight.w600,
+            ),
+          ),
+        ),
+      ),
+
+      cancel: Container(
+        height: 42,
+        width: 120,
+        decoration: BoxDecoration(
+          color: const Color(0xFFEEEEEE), // Light grey background
+          borderRadius: BorderRadius.circular(8),
+        ),
+        child: TextButton(
+          onPressed: () {
+            Get.back(closeOverlays: true);
+          },
+          child: const Text(
+            "Cancel",
+            style: TextStyle(
+              color: Colors.black87,
+              fontWeight: FontWeight.w600,
+            ),
+          ),
+        ),
       ),
     );
   }

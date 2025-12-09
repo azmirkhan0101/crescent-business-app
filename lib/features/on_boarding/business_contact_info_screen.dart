@@ -32,9 +32,9 @@ class BusinessContactInfoScreen extends StatelessWidget {
             OnBoardingAppbarWidget(
               suffix:GestureDetector(
                 onTap: (){
-                  controller.businessModel.businessPhoneNumber = "";
-                  controller.businessModel.businessEmail = "";
-                  controller.businessModel.businessWebsite = "";
+                  controller.businessSignupModel.businessPhoneNumber = "";
+                  controller.businessSignupModel.businessEmail = "";
+                  controller.businessSignupModel.businessWebsite = "";
                   Get.toNamed(AppRoutes.storeLocation);
                 },
                   child: CustomText(text: AppText.skip,fontSize: 14.sp,color: AppColors.secondaryTextColor,fontWeight: FontWeight.w400,)),
