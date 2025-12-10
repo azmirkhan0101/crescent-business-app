@@ -1,3 +1,6 @@
+import 'dart:io';
+
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:organization/features/widgets/custom_card_widget.dart';
@@ -8,12 +11,24 @@ import 'custom_checkbox.dart';
 
 class OnlineOptions extends StatefulWidget {
 
+  final VoidCallback onPickFile;      // When user taps upload
+  final VoidCallback onDelete;        // When user taps delete
+  final String? fileName;
   final bool discountCode;
   final bool giftCard;
   final Function(bool) onDiscountCodeChanged;
   final Function(bool) onGiftCardChanged;
 
-  const OnlineOptions({super.key, required this.discountCode, required this.giftCard, required this.onDiscountCodeChanged, required this.onGiftCardChanged});
+  const OnlineOptions({
+    super.key,
+    required this.discountCode,
+    required this.giftCard,
+    required this.onDiscountCodeChanged,
+    required this.onGiftCardChanged,
+    required this.onPickFile,
+    required this.onDelete,
+    this.fileName,
+  });
 
   @override
   State<OnlineOptions> createState() => _OnlineOptionsState();
@@ -68,9 +83,14 @@ class _OnlineOptionsState extends State<OnlineOptions> {
               }
           )
         ),
-        const SizedBox(height: 25),
-        const AddDiscountCodesSection(),
+        SizedBox(height: 25),
+        AddDiscountCodesSection(
+          fileName: widget.fileName,
+          onPickFile: widget.onPickFile,
+          onDelete: widget.onDelete,
+        ),
       ],
     );
   }
+
 }

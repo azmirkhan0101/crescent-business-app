@@ -125,6 +125,7 @@ class OtpVerificationController extends GetxController {
         BusinessProfileModel model = BusinessProfileModel.fromJson( jsonDecode( response.body )['data'] );
         //SAVE PROFILE DATA IN STORAGE
         storage.write( businessProfileModelKey, model.toJson() );
+        storage.write( businessIdKey, model.businessId );//SAVING ID SEPARATELY FOR RETRIEVING EASILY, ALSO AVAILABLE IN MODEL
         //GO TO SETUP COMPLETE SCREEN AND FETCH PROFILE DATA THERE
         //closeDialog();
         Get.offAllNamed(AppRoutes.setupComplete);

@@ -16,6 +16,10 @@ class RedemptionMethodsSection extends StatefulWidget {
   final bool staticCode;
   final bool discountCode;
   final bool giftCard;
+  //ONLINE
+  final String? fileName;
+  final VoidCallback onPickFile;
+  final VoidCallback onDelete;
   final Function(bool) onQRCodeChanged;
   final Function(bool) onNfcTapChanged;
   final Function(bool) onStaticCodeChanged;
@@ -35,6 +39,9 @@ class RedemptionMethodsSection extends StatefulWidget {
     required this.giftCard,
     required this.onDiscountCodeChanged,
     required this.onGiftCardChanged,
+    this.fileName,
+    required this.onPickFile,
+    required this.onDelete,
   });
 
   @override
@@ -142,6 +149,9 @@ class _RedemptionMethodsSectionState extends State<RedemptionMethodsSection> {
         isInStoreSelected ?
             inStoreOptions()
             : OnlineOptions(
+          fileName: widget.fileName,
+          onPickFile: widget.onPickFile,
+          onDelete: widget.onDelete,
           discountCode: widget.discountCode,
           giftCard: widget.giftCard,
           onDiscountCodeChanged: (bool isChecked) {

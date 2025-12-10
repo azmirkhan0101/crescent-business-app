@@ -43,11 +43,11 @@ class RewardController extends GetxController {
   RxBool nfcTap = false.obs;
   //ONLINE OPTIONS
   RxBool discountCode = true.obs;
-  RxBool giftCard = true.obs;
-  //Rx<File?> rewardImage = Rx<File?>(null);
+  RxBool giftCard = false.obs;
   final Rx<File?> rewardImage = Rx<File?>(null);
+  final Rx<File?> csvFile = Rx<File?>(null);
 
-  DateTime expiryDate = DateTime( 2050, 1, 1);//TODO: DEFAULT EXPIRY ON 2050, ASK BACKEND ABOUT IT
+  DateTime? expiryDate;
 
   //CREATE REWARD CONTROLLERS
   final TextEditingController titleController = TextEditingController();
@@ -183,7 +183,7 @@ class RewardController extends GetxController {
         category: category.toLowerCase(),
         redemptionLimit: redemptionLimit!,
         startDate: DateTime.now(),
-        expiryDate: expiryDate,
+        expiryDate: expiryDate ?? DateTime( 2050, 1, 1),
         inStoreRedemptionMethods: InStoreRedemptionMethods(
             qrCode: qrCode.value,
             staticCode: staticCode.value,
@@ -241,8 +241,6 @@ class RewardController extends GetxController {
     }
   }
 
-
-
   //CREATE REWARD ONLINE
   createRewardOnline() async{
 
@@ -253,41 +251,35 @@ class RewardController extends GetxController {
           backgroundColor: AppColors.errorRed
       );
       return;
-    }else{
-      redemptionLimit = int.tryParse( redemptionLimitController.text.trim() );
-      redemptionLimit == null || redemptionLimit! < 1 ? redemptionLimit = 10000 : redemptionLimit = redemptionLimit;//DEFAULT LIMIT 10,000
-      redemptionLimit! > 10000 ? redemptionLimit = 10000 : redemptionLimit = redemptionLimit;//MAX LIMIT 10,000
     }
 
     Uri url = Uri.parse( ApiEndpoints.baseUrl + ApiEndpoints.createRewardInStore );//SAME ENDPOINT FOR BOTH
 
-    inStoreCreateModel = InStoreRewardCreateModel(
+    onlineCreateModel = OnlineRewardCreateModel(
         businessId: storage.read( businessIdKey ),
         title: titleController.text.trim(),
         description: descriptionController.text.trim(),
         type: "online",//hard coded
         category: category.toLowerCase(),
-        redemptionLimit: redemptionLimit!,
         startDate: DateTime.now(),
-        expiryDate: expiryDate,
-        inStoreRedemptionMethods: InStoreRedemptionMethods(
-            qrCode: qrCode.value,
-            staticCode: staticCode.value,
-            nfcTap: nfcTap.value
+        expiryDate: expiryDate ?? DateTime( 2050, 1, 1),
+        onlineRedemptionMethods: OnlineRedemptionMethods(
+            giftCard: giftCard.value,
+            discountCode: discountCode.value
         ),
-        onlineRedemptionMethods: null,
-        featured: true
+        featured: false
     );
 
     try{
       var request = http.MultipartRequest("POST", url);
       request.headers.addAll({
         "Authorization": "Bearer ${storage.read( accessTokenKey )}",
-        "Content-Type": "application/json",
+        //"Content-Type": "application/json",
       });
 
-      request.fields["data"] = jsonEncode( inStoreCreateModel!.toJson() );
+      request.fields["data"] = jsonEncode( onlineCreateModel!.toJson() );
 
+      //REWARD IMAGE
       if( rewardImage.value != null ){
         request.files.add(
             await http.MultipartFile.fromPath(
@@ -297,21 +289,34 @@ class RewardController extends GetxController {
         );
       }
 
+      //CSV FILE FOR DISCOUNT CODES
+      if( csvFile.value != null ){
+        request.files.add(
+          await http.MultipartFile.fromPath(
+            "codesFiles",
+            csvFile.value!.path,
+            contentType: http.MediaType("text", "csv"),
+          ),
+        );
+        print("CSV file: ${csvFile.value!.path}");
+        //print("CSV file: ${csvFile.value!.}");
+      }
+
       var response = await request.send().timeout(Duration(seconds: 10));
       var responseBody = await response.stream.bytesToString();
 
+      print("Status: ${response.statusCode}");
+      print("Body: $responseBody");
+
       if( response.statusCode == 201 ){//REWARD CREATED
+        //GET REWARD LIST -> GO BACK TO REWARDS SCREEN
+        Get.back();
         showSnackBar(
             title: "Done!",
             message: "Reward created successfully",
             backgroundColor: AppColors.successGreen
         );
-        //GET REWARD LIST -> GO BACK TO REWARDS SCREEN
-        Get.back();
       }
-
-      print("Status: ${response.statusCode}");
-      print("Body: $responseBody");
     }on TimeoutException catch(_){
       showSnackBar(
           title: "Time out!",

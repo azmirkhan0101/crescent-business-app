@@ -1,169 +1,80 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:organization/utils/app_color.dart';
-import 'package:organization/utils/assets_path.dart';
+
+import '../../../utils/app_color.dart';
 import '../../../utils/app_text_styles.dart';
+import '../../widgets/custom_card_widget.dart';
 import '../../widgets/text_field_title_widget.dart';
-import 'dash_divider_widget.dart';
-import 'discount_card_widget.dart';
 
+class AddDiscountCodesSection extends StatelessWidget {
+  final VoidCallback onPickFile;      // When user taps upload
+  final VoidCallback onDelete;        // When user taps delete
+  final String? fileName;             // The picked file name
 
-class AddDiscountCodesSection extends StatefulWidget {
-  const AddDiscountCodesSection({super.key});
-
-  @override
-  State<AddDiscountCodesSection> createState() => _AddDiscountCodesSectionState();
-}
-
-class _AddDiscountCodesSectionState extends State<AddDiscountCodesSection> {
-  bool isOneTimeUseChecked1 = true;
-  bool isOneTimeUseChecked2 = true;
+  const AddDiscountCodesSection({
+    super.key,
+    required this.onPickFile,
+    required this.onDelete,
+    this.fileName,
+  });
 
   @override
   Widget build(BuildContext context) {
-
+    final titleToShow = fileName ?? "Discount Cod";
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         TextFieldTitleWidget(text: "Add discount code(s)"),
 
-       const SizedBox(height: 5),
+        const SizedBox(height: 5),
 
-        Text('Upload via .csv or add a URL to the gift card system',
-            style:AppTextStyle.mediumStyle.copyWith(fontSize: 12.sp)
+        Text(
+          'Upload via .csv or add a URL to the gift card system',
+          style: AppTextStyle.mediumStyle.copyWith(fontSize: 12.sp),
         ),
+        SizedBox(height: 10.h),
 
+        CustomCard(
+          height: 52.h,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Row(
+                children: [
+                  const Icon(Icons.upload),
+                  SizedBox(width: 4.w),
 
-         SizedBox(height: 10.h),
-
-
-
-
-      ///discount field
-        DiscountCardWidget(text:  "Discount Code",
-          icon1: AssetsPath.documentIcon,
-          icon2: AssetsPath.deleteIcon,
-
-        ),
-
-
-
-
-
-
-
-
-        const SizedBox(height: 10),
-
-
-
-       /// link upload card
-        DiscountCardWidget(text:  "https://google.com/",
-          icon1: AssetsPath.linkIcon,
-          icon2: AssetsPath.cloudIcon,
-          textStyle: TextStyle(
-              fontWeight: FontWeight.w400,
-              fontSize: 12.sp,
-              color: AppColors.blackTextColor
-          ),
-        ),
-
-
-
-       // LinkPreviewBox(),
-        const SizedBox(height: 10),
-        //check box
-        Row(
-          children: [
-            Checkbox(
-              value: isOneTimeUseChecked1,
-              onChanged: (bool? value) {
-                setState(() => isOneTimeUseChecked1 = value!);
-              },
-             activeColor: Color(0xFF1AC461),
-              checkColor: AppColors.white,
-              materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-              visualDensity: VisualDensity.compact,
-            ),
-            Text(
-              'One Time Use',
-              style: AppTextStyle.mediumStyle.copyWith(
-                color: AppColors.blackTextColor,
+                  GestureDetector(
+                    onTap: onPickFile,
+                    child: Text(
+                      titleToShow,
+                      style: TextStyle(
+                        fontWeight: FontWeight.w500,
+                        fontSize: 14.sp,
+                      ),
+                    ),
+                  ),
+                ],
               ),
-            ),
-          ],
-        ),
 
+              Row(
+                children: [
+                  Container(width: 2, height: 20, color: Colors.grey.shade400),
+                  SizedBox(width: 4.w),
 
-        SizedBox(height: 8.h),
-
-
-
-        /// link upload card
-        DiscountCardWidget(text:  "https://google.com/",
-        icon1: AssetsPath.linkIcon,
-          icon2: AssetsPath.cloudIcon,
-          textStyle: TextStyle(
-              fontWeight: FontWeight.w400,
-              fontSize: 12.sp,
-              color: AppColors.secondaryTextColor
-          ),
-        ),
-
-
-
-
-
-        //LinkPreviewBox(textColor: AppColors.secondaryTextColor,),
-        SizedBox(height: 8.h),
-        //check box
-        Row(
-          children: [
-            Checkbox(
-              value: isOneTimeUseChecked2,
-              onChanged: (bool? value) {
-                setState(() => isOneTimeUseChecked2 = value!);
-              },
-
-              activeColor: Color(0xFF1AC461),
-              checkColor: AppColors.white,
-
-              materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-              visualDensity: VisualDensity.compact,
-            ),
-
-            Text(
-              'One Time Use',
-              style: AppTextStyle.mediumStyle.copyWith(
-                color: AppColors.blackTextColor,
+                  IconButton(
+                    padding: EdgeInsets.zero,
+                    onPressed: onDelete,
+                    icon: const Icon(Icons.delete),
+                    color: AppColors.errorRed,
+                  ),
+                ],
               ),
-            ),
-          ],
-        ),
-
-         ///dash divider
-        SizedBox(height: 8.h),
-        SizedBox(
-          width: double.infinity, // parent width পুরো নিবে
-          child: DashedDivider(
-            color: Colors.grey.shade400,
-            height: 1,
-          ),
-        ),
-
-        SizedBox(height: 8.h),
-        /// add button
-        Center(
-          child: TextButton.icon(
-            onPressed: () {},
-            icon: Icon(Icons.add, color: AppColors.blackTextColor,size: 16.w,),
-            label: Text('Add more', style:AppTextStyle.mediumStyle.copyWith(fontSize: 12.sp,color: AppColors.blackTextColor)),
+            ],
           ),
         ),
       ],
     );
   }
-
 }
-

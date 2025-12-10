@@ -1,15 +1,18 @@
+import 'dart:io';
+
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 import 'package:organization/controller/reward/reward_controller.dart';
 import 'package:organization/features/reward/widget/custom_drop_down.dart';
 import 'package:organization/features/reward/widget/expiry_limit_section.dart';
 import 'package:organization/features/reward/widget/redemption_methods_section.dart';
 import 'package:organization/features/reward/widget/upload_image_section.dart';
 import 'package:organization/features/widgets/custom_text.dart';
+import 'package:organization/utils/app_constants.dart';
 import 'package:organization/utils/app_text_styles.dart';
-import '../../routes/app_pages.dart';
+
 import '../../utils/app_color.dart';
 import '../../utils/app_text.dart';
 import '../on_boarding/widgets/bottom_button_widget.dart';
@@ -20,6 +23,25 @@ class CreateRewardScreen extends StatelessWidget {
 
   final RewardController controller = Get.find<RewardController>();
   bool isInstoreTabSelected = true;
+  Rx<String>? fileName = "Discount Codes".obs;
+
+  //PICK CSV FILE FOR DISCOUNT CODES - ONLINE REWARD
+  Future<void> pickCSV() async {
+    final result = await FilePicker.platform.pickFiles(
+      type: FileType.custom,
+      allowedExtensions: ['csv'],
+    );
+
+    if (result != null && result.files.single.path != null) {
+      fileName?.value = result.files.single.name;
+      controller.csvFile.value = File(result.files.single.path!);
+    }
+  }
+
+  void deleteCSV() {
+    fileName?.value = "Discount codes";
+    controller.csvFile.value = null;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -120,6 +142,10 @@ class CreateRewardScreen extends StatelessWidget {
                 }, onGiftCardChanged: (bool isChecked) {
                     controller.giftCard.value = isChecked;
               },
+                //ONLINE
+                onPickFile: pickCSV,
+                onDelete: deleteCSV,
+                fileName: fileName?.value,
               );
             }),
             SizedBox(
@@ -131,6 +157,8 @@ class CreateRewardScreen extends StatelessWidget {
                   controller.createRewardInStore();
                 }else{//ONLINE REWARD
                   print("Online reward: ${controller.discountCode.value},,,,${controller.giftCard.value}");
+                  controller.createRewardOnline();
+                  print("Id: ${controller.storage.read( businessIdKey ) ?? "empty"}");
                 }
               },
               buttonText: "Create",

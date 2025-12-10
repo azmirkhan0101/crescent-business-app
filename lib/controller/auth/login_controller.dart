@@ -153,6 +153,7 @@ class LoginController extends GetxController{
         BusinessProfileModel model = BusinessProfileModel.fromJson( jsonDecode( response.body )['data'] );
         //SAVE PROFILE DATA IN STORAGE
         storage.write( businessProfileModelKey, model.toJson() );
+        storage.write( businessIdKey, model.businessId );//SAVING ID SEPARATELY FOR RETRIEVING EASILY, ALSO AVAILABLE IN MODEL
         //GO TO MAIN -> HOME -> GET HOME DATA, ANALYTICS THERE
         Get.offAllNamed(AppRoutes.mainNav);
       }else if( response.statusCode == 401 ){//ACCESS TOKEN INVALID

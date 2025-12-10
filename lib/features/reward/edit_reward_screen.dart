@@ -168,6 +168,8 @@ class EditRewardScreen extends StatelessWidget {
                 }, onGiftCardChanged: (bool isChecked) {
                 controller.giftCard.value = isChecked;
               },
+                onPickFile: () {  }, //TODO: ADD FUNCTIONS
+                onDelete: () {  },//TODO: SAME
               );
             }),
             SizedBox( height: 20.h,),
