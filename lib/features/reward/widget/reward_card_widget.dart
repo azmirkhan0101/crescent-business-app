@@ -9,21 +9,34 @@ import 'package:organization/utils/app_text_styles.dart';
 import 'package:organization/utils/assets_path.dart';
 import 'custom_switch.dart';
 
-// ---------------------- Reward Card ----------------------
-enum RewardStatus { active, disabled }
-
 class RewardCard extends StatefulWidget {
   final String title;
-  final String assetIcon;
-  final String expiryDate;
+  final String? expiryDate;
   final int redemptions;
+  final bool isActive;
+  final String type;
+  //INSTORE REDEMPTIONS
+  final bool isQr;
+  final bool isNfc;
+  final bool isStaticCode;
+  //ONLINE REDEMPTIONS
+  final bool isGiftCard;
+  final bool isDiscountCode;
+  final VoidCallback onDeleteClick;
 
   const RewardCard({
     super.key,
     required this.title,
     required this.expiryDate,
     required this.redemptions,
-    required this.assetIcon,
+    required this.isActive,
+    required this.type,
+    this.isQr = false,
+    this.isNfc = false,
+    this.isStaticCode = false,
+    this.isGiftCard = false,
+    this.isDiscountCode = false,
+    required this.onDeleteClick,
   });
 
   @override
@@ -31,11 +44,22 @@ class RewardCard extends StatefulWidget {
 }
 
 class _RewardCardState extends State<RewardCard> {
-  RewardStatus status = RewardStatus.active; // initial status
+  late String? date;
+
+  @override
+  void initState() {
+
+    if( widget.expiryDate != null ){
+      DateTime dateTime = DateTime.parse( widget.expiryDate! );
+      date = "Expires: ${dateTime.toIso8601String().split('T')[0]}";
+    }
+
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
-    bool isActive = status == RewardStatus.active;
+    bool isActive = widget.isActive;
 
     return Container(
       height: 161.h,
@@ -60,11 +84,10 @@ class _RewardCardState extends State<RewardCard> {
           Row(
             children: [
               Image.asset(
-                widget.assetIcon,
+                widget.type == typeOnline ? AssetsPath.onlineRewardIcon : AssetsPath.instoreRewardIcon,
                 height: 24.h,
                 width: 24.w,
               ),
-
               SizedBox(width: 8.w),
               Text(
                 widget.title,
@@ -146,6 +169,7 @@ class _RewardCardState extends State<RewardCard> {
                     //DUPLICATE REWARD
                   }else{//DELETE CLICKED
                     //DELETE REWARD
+                    widget.onDeleteClick();
                   }
                 },
               ),
@@ -159,7 +183,7 @@ class _RewardCardState extends State<RewardCard> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                'Expires: ${widget.expiryDate}',
+                date ?? "",
                 style: AppTextStyle.mediumStyle.copyWith(fontSize: 12.sp),
               ),
               Row(
@@ -179,9 +203,7 @@ class _RewardCardState extends State<RewardCard> {
                     value: isActive,
                     onChanged: (bool newValue) {
                       setState(() {
-                        status = newValue
-                            ? RewardStatus.active
-                            : RewardStatus.disabled;
+                        isActive = newValue;
                       });
                     },
                   ),
@@ -227,11 +249,44 @@ class _RewardCardState extends State<RewardCard> {
                       color: AppColors.blackTextColor,
                     ),
                   ),
-                  CustomAssetsImage(
-                    assetsPath: AssetsPath.qrCodeIcon,
-                    height: 24.h,
-                    width: 24.w,
-                  ),
+                  Row(
+                    spacing: 10.w,
+                    children: [
+                      //ONLINE REDEMPTION ICONS
+                      if( widget.isQr )//QR ICON
+                        CustomAssetsImage(
+                          assetsPath: AssetsPath.qrCodeIcon,
+                          height: 28.h,
+                          width: 28.w,
+                        ),
+                      if( widget.isStaticCode )//STATIC CODE
+                      CustomAssetsImage(
+                        assetsPath: AssetsPath.staticCodeIcon,
+                        height: 24.h,
+                        width: 24.w,
+                      ),
+                      if( widget.isNfc )//NFC
+                        CustomAssetsImage(
+                          assetsPath: AssetsPath.nfcIcon,
+                          height: 24.h,
+                          width: 24.w,
+                        ),
+                      //INSTORE REDEMPTION ICONS
+                      if( widget.isDiscountCode )//DISCOUNT CODE
+                        CustomAssetsImage(
+                          assetsPath: AssetsPath.discountCodeIcon,
+                          height: 24.h,
+                          width: 24.w,
+                        ),
+                      if( widget.isGiftCard )//GIFT CARD
+                        CustomAssetsImage(
+                          assetsPath: AssetsPath.giftCardIcon,
+                          height: 24.h,
+                          width: 24.w,
+                        ),
+                    ],
+                  )
+
                 ],
               ),
             ],

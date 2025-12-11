@@ -164,14 +164,14 @@ class _MyProfileScreenState extends State<ProfileSettingsScreen> {
   //DELETE ALERT
   void showDeleteDialog() {
     Get.defaultDialog(
-      title: "Delete Item",
+      title: "Delete Account",
       titleStyle: const TextStyle(
         fontSize: 18,
         fontWeight: FontWeight.w600,
         color: Colors.black87,
       ),
       contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-      middleText: "Are you sure you want to delete this?",
+      middleText: "Are you sure you want to delete your account?",
       middleTextStyle: const TextStyle(
         fontSize: 15,
         color: Colors.black54,

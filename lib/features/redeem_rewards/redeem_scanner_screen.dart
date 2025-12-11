@@ -66,34 +66,25 @@ class _RedeemScannerScreenState extends State<RedeemScannerScreen> {
         ),
         child: SafeArea(
           child: Column(
+            mainAxisSize: MainAxisSize.max,
             children: [
-
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
                 child: Align(
-                  alignment: Alignment.centerLeft,
+                  alignment: Alignment.topLeft,
                   child: CustomText(text: "Redeem",
                   color: AppColors.blackTextColor,
                     fontWeight: FontWeight.w700,
                     fontSize: 24.sp,
                     language: true,
                   ),
-
-
-                  // Text(
-                  //   "Redeem",
-                  //   style: AppTextStyle.headlineLStyle.copyWith(color: AppColors.blackTextColor),
-                  // ),
                 ),
               ),
 
-              const Spacer(),
-
-
+              SizedBox( height: 25.h,),
               Center(child: _tabs[_selectedIndex]),
 
-              const Spacer(),
-
+              SizedBox( height: 25.h,),
               ///  Custom TabBar
               Container(
                 margin: EdgeInsets.symmetric(horizontal: 20.w, vertical: 12.h),

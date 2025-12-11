@@ -35,7 +35,12 @@ class AssetsPath {
   static const String eyeTrackingIcon = "assets/icons/eye_tracking.png";
   static const String profileIcon = "assets/icons/profile.png";
   static const String contactLess1Icon = "assets/icons/contactless1.png";
+  static const String onlineRewardIcon = "assets/images/online_reward_icon.png";
+  static const String instoreRewardIcon = "assets/images/instore_reward_icon.png";
   static const String qrCodeIcon = "assets/icons/qr_code.png";
+  static const String staticCodeIcon = "assets/images/static_code.png";
+  static const String giftCardIcon = "assets/images/gift_card.png";
+  static const String discountCodeIcon = "assets/images/discount_code.png";
   static const String rankBadgeIcon = "assets/icons/rank_badge.png";
   static const String rankBadge1Icon = "assets/icons/rank_badge1.png";
   static const String rankBadge2Icon = "assets/icons/rank_badge2.png";

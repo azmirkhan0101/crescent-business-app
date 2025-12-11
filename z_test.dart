@@ -1,0 +1,159 @@
+
+class ZTest {
+
+  var allRewardResponse = {
+    "success":true,
+    "message":"Business rewards retrieved successfully",
+    "meta":{
+      "page":1,
+      "limit":10,
+      "total":0,
+      "totalPage":0
+    },
+    "data":[
+
+    ]
+  };
+}
+
+
+var sample = {
+  "success": true,
+  "message": "Business rewards retrieved successfully",
+  "meta": {
+    "page": 1,
+    "limit": 10,
+    "total": 2,
+    "totalPage": 1
+  },
+  "data": [
+    {
+      "_id": "6937c2c9e48d37fefde7eb51",
+      "business": "6936d5e943232039a271a5ea",
+      "title": "\$25 Gift Card",
+      "description": "Redeem this \$25 gift card online or in-store.",
+      "image": "/images/1-1765262025698.jpg",
+      "type": "online",
+      "category": "other",
+      "pointsCost": 500,
+      "redemptionLimit": 9,
+      "redeemedCount": 0,
+      "remainingCount": 9,
+      "startDate": "2025-12-09T06:33:45.838Z",
+      "status": "active",
+      "isActive": true,
+      "onlineRedemptionMethods": {
+        "discountCode": true,
+        "giftCard": true
+      },
+      "codes": [
+        {
+          "code": "SUMMER2024",
+          "isGiftCard": false,
+          "isDiscountCode": true,
+          "isUsed": false
+        },
+        {
+          "code": "https://merchant.com/redeem/abc-123-def",
+          "isGiftCard": true,
+          "isDiscountCode": false,
+          "isUsed": false
+        },
+        {
+          "code": "WELCOME50",
+          "isGiftCard": false,
+          "isDiscountCode": true,
+          "isUsed": false
+        },
+        {
+          "code": "https://merchant.com/redeem/xyz-789-ghi",
+          "isGiftCard": true,
+          "isDiscountCode": false,
+          "isUsed": false
+        },
+        {
+          "code": "SAVE25NOW",
+          "isGiftCard": false,
+          "isDiscountCode": true,
+          "isUsed": false
+        },
+        {
+          "code": "https://giftcards.com/claim?id=987654321",
+          "isGiftCard": true,
+          "isDiscountCode": false,
+          "isUsed": false
+        },
+        {
+          "code": "FLASH10",
+          "isGiftCard": false,
+          "isDiscountCode": true,
+          "isUsed": false
+        },
+        {
+          "code": "VIPMEMBER25",
+          "isGiftCard": false,
+          "isDiscountCode": true,
+          "isUsed": false
+        },
+        {
+          "code": "https://rewards.business.com/v/lkj-456-mnb",
+          "isGiftCard": true,
+          "isDiscountCode": false,
+          "isUsed": false
+        }
+      ],
+      "featured": false,
+      "priority": 1,
+      "views": 0,
+      "redemptions": 0,
+      "limitUpdateHistory": [],
+      "createdAt": "2025-12-09T06:33:45.848Z",
+      "updatedAt": "2025-12-09T06:33:45.848Z"
+    },
+    {
+      "_id": "6936d61243232039a271a5f3",
+      "business": "6936d5e943232039a271a5ea",
+      "title": "Free Tea",
+      "description": "Get a free coffee with any purchase above \$10",
+      "type": "in-store",
+      "category": "food",
+      "pointsCost": 500,
+      "redemptionLimit": 2,
+      "redeemedCount": 1,
+      "remainingCount": 1,
+      "startDate": "2025-11-29T00:00:00.000Z",
+      "expiryDate": "2025-12-31T23:59:59.000Z",
+      "status": "active",
+      "isActive": true,
+      "inStoreRedemptionMethods": {
+        "qrCode": true,
+        "staticCode": true,
+        "nfcTap": true
+      },
+      "codes": [
+        {
+          "code": "698929DDD596",
+          "isGiftCard": false,
+          "isDiscountCode": false,
+          "isUsed": true,
+          "redemptionId": "6936fb00af5237d44d7883ce",
+          "usedAt": "2025-12-08T16:21:20.998Z",
+          "usedBy": "69301feaddbf3fdf987e86e8"
+        },
+        {
+          "code": "5CA51FC90306",
+          "isGiftCard": false,
+          "isDiscountCode": false,
+          "isUsed": false
+        }
+      ],
+      "featured": true,
+      "priority": 10,
+      "views": 7,
+      "redemptions": 1,
+      "limitUpdateHistory": [],
+      "createdAt": "2025-12-08T13:43:46.660Z",
+      "updatedAt": "2025-12-08T16:21:20.999Z"
+    }
+  ]
+};

@@ -20,7 +20,7 @@ class OnlineRewardCreateModel {
   final String? category;
   final DateTime startDate;
   final DateTime expiryDate;
-  final OnlineRedemptionMethods onlineRedemptionMethods;
+  final CreateOnlineRedemptionMethods onlineRedemptionMethods;
   final bool featured;
 
   OnlineRewardCreateModel({
@@ -44,7 +44,7 @@ class OnlineRewardCreateModel {
       category: json['category'],
       startDate: DateTime.parse(json['startDate']),
       expiryDate: DateTime.parse(json['expiryDate']),
-      onlineRedemptionMethods: OnlineRedemptionMethods.fromJson(
+      onlineRedemptionMethods: CreateOnlineRedemptionMethods.fromJson(
         json['onlineRedemptionMethods'],
       ),
       featured: json['featured'],
@@ -58,21 +58,21 @@ class OnlineRewardCreateModel {
       "description": description,
       "type": type,
       "category": category,
-      "startDate": startDate.toUtc().toIso8601String(),
-      "expiryDate": expiryDate.toUtc().toIso8601String(),
+      "startDate": startDate.toIso8601String(),
+      "expiryDate": expiryDate.toIso8601String(),
       "onlineRedemptionMethods": onlineRedemptionMethods.toJson(),
       "featured": featured,
     };
   }
 }
 
-class OnlineRedemptionMethods {
+class CreateOnlineRedemptionMethods {
   final bool giftCard;
   final bool discountCode;
 
-  OnlineRedemptionMethods({required this.giftCard, required this.discountCode});
-  factory OnlineRedemptionMethods.fromJson(Map<String, dynamic> json) {
-    return OnlineRedemptionMethods(
+  CreateOnlineRedemptionMethods({required this.giftCard, required this.discountCode});
+  factory CreateOnlineRedemptionMethods.fromJson(Map<String, dynamic> json) {
+    return CreateOnlineRedemptionMethods(
       giftCard: json['giftCard'],
       discountCode: json['discountCode'],
     );

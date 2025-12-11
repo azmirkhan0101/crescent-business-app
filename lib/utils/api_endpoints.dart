@@ -1,11 +1,11 @@
-class ApiEndpoints{
-
+class ApiEndpoints {
   //BACKEND DEVELOPER BASEURL
   //static const baseUrl = "http://10.10.20.42:5000/api/v1";
   //MY DESKTOP LOCAL SERVER
   //static const baseUrl = "http://192.168.56.1:5000/api/v1";
   //static const baseUrl = "https://dauntless-cathey-telial.ngrok-free.dev/api/v1";
-  static const baseUrl = "https://rolls-preliminary-writers-statistical.trycloudflare.com/api/v1";
+  static const baseUrl =
+      "https://venue-und-moderator-decision.trycloudflare.com/api/v1";
   static const getProfile = "/auth/profile";
   static const login = "/auth/signin";
   static const signup = "/auth/business-signup";
@@ -19,6 +19,8 @@ class ApiEndpoints{
   static const deleteAccount = "/auth/delete-account";
   static const updateProfile = "/business/update-profile";
   static const rewardAnalyticsStats = "/rewards/analytics/stats";
-  static const createRewardInStore = "/rewards";
-  //static const createRewardOnline = "/api/rewards";
+  static const createRewardInStore = "/rewards"; //SAME FOR ONLINE
+  static const getAllRewards =
+      "/rewards/business/my-rewards?status=active&search&page=1&limit=10"; //TODO: CONTROL STATUS, PAGE, LIMIT FROM CONTROLLER
+  static const deleteReward = "/rewards/";
 }

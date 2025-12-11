@@ -7,21 +7,30 @@ import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:http/http.dart' as http;
 import 'package:organization/core/show_snackbar.dart';
-import 'package:organization/data/models/online_reward_create_model.dart';
-import 'package:organization/data/models/reward_card_model.dart';
 import 'package:organization/data/models/instore_reward_create_model.dart';
+import 'package:organization/data/models/online_reward_create_model.dart';
+import 'package:organization/data/models/reward_model.dart';
 import 'package:organization/utils/api_endpoints.dart';
 import 'package:organization/utils/app_color.dart';
 import 'package:organization/utils/app_constants.dart';
-import 'package:organization/utils/assets_path.dart';
 
 class RewardController extends GetxController {
 
+  @override
+  void onInit() {
+
+    getAllRewards();
+    super.onInit();
+  }
+
   final storage = GetStorage();
-  RxList<RewardCardModel> rewards2 = <RewardCardModel>[].obs;
   InStoreRewardCreateModel? inStoreCreateModel;
   OnlineRewardCreateModel? onlineCreateModel;
   String category = categories[0];
+  //REWARDS
+  RxList<RewardModel> rewards = <RewardModel>[].obs;
+  //LOADING CONTROLL
+  RxBool isLoading = true.obs;
 
   static const List<String> categories = [
     "Food",
@@ -56,41 +65,36 @@ class RewardController extends GetxController {
   final TextEditingController startDate = TextEditingController();//TODO: NO NEED. GENERATE TIME DURING API CALL
   final TextEditingController redemptionLimitController = TextEditingController();
 
-  //DUMMY REWARDS
-  RxList<RewardCardModel> rewards = <RewardCardModel>[
-    RewardCardModel(
-      title: "Reward 1",
-      assetIcon: AssetsPath.rewardFreeIcon,
-      expiryDate: "30 Jan 2026",
-      redemptions: 80,
-    ),
-    RewardCardModel(
-      title: "Reward 2",
-      assetIcon: AssetsPath.rewardDiscountIcon,
-      expiryDate: "2 Feb 2026",
-      redemptions: 300,
-    ),
-    RewardCardModel(
-      title: "Reward 3",
-      assetIcon: AssetsPath.rewardDiscountIcon,
-      expiryDate: "12 Jun 2026",
-      redemptions: 250,
-    ),
-    RewardCardModel(
-      title: "Reward 4",
-      assetIcon: AssetsPath.rewardFreeIcon,
-      expiryDate: "5 April 2026",
-      redemptions: 130,
-    ),
-    RewardCardModel(
-      title: "Reward 5",
-      assetIcon: AssetsPath.rewardDiscountIcon,
-      expiryDate: "7 March 2026",
-      redemptions: 60,
-    ),
-  ].obs;
 
-  //GET REWARDS FROM API
+  //GET ALL REWARDS
+  getAllRewards() async{
+    isLoading.value = true;
+    try{
+      Uri uri = Uri.parse( ApiEndpoints.baseUrl + ApiEndpoints.getAllRewards );
+
+      Map<String, String> headers = {
+        "Authorization" : "Bearer ${storage.read( accessTokenKey )}"
+      };
+
+      http.Response response = await http.get( uri, headers: headers );
+
+      if( response.statusCode == 200 ){
+        var tempRewards = jsonDecode(response.body)['data'] as List;
+        rewards.value = tempRewards.map((e){
+          return RewardModel.fromJson(e);
+        }).toList();
+      }
+
+      print("Status: ${response.statusCode}");
+      print("Body: ${response.body}");
+    }catch(e){
+    }finally{
+      isLoading.value = false;
+    }
+  }
+
+
+  //GET REWARD ANALYTICS FROM API
   getRewardAnalyticsStats() async {
     //TODO: USE THE SAVED ONE
     //String businessID = storage.read( businessIdKey );
@@ -153,8 +157,6 @@ class RewardController extends GetxController {
     },
   };
 
-  //VALIDATE TITLE, DESCRIPTION
-
 //CREATE REWARD IN STORE
   createRewardInStore() async{
 
@@ -173,18 +175,16 @@ class RewardController extends GetxController {
     
     Uri url = Uri.parse( ApiEndpoints.baseUrl + ApiEndpoints.createRewardInStore );
 
-    String businessID = "6933cbce613096a0dc5420a5";//dummy
     inStoreCreateModel = InStoreRewardCreateModel(
-        //businessId: storage.read( businessIdKey ) ?? businessID,
-        businessId: businessID,
-        title: titleController.text.trim(),
+        businessId: storage.read( businessIdKey ),
+        title: capitalizeFirstLetter(titleController.text.trim()),
         description: descriptionController.text.trim(),
         type: "in-store",//hard coded
         category: category.toLowerCase(),
         redemptionLimit: redemptionLimit!,
         startDate: DateTime.now(),
         expiryDate: expiryDate ?? DateTime( 2050, 1, 1),
-        inStoreRedemptionMethods: InStoreRedemptionMethods(
+        inStoreRedemptionMethods: CreateInStoreRedemptionMethods(
             qrCode: qrCode.value,
             staticCode: staticCode.value,
             nfcTap: nfcTap.value
@@ -215,13 +215,14 @@ class RewardController extends GetxController {
       var responseBody = await response.stream.bytesToString();
 
       if( response.statusCode == 201 ){//REWARD CREATED
+        //GO BACK TO REWARDS SCREEN
+        getAllRewards();
+        Get.back();
         showSnackBar(
             title: "Done!",
             message: "Reward created successfully",
             backgroundColor: AppColors.successGreen
         );
-        //GET REWARD LIST -> GO BACK TO REWARDS SCREEN
-        Get.back();
       }
 
       print("Status: ${response.statusCode}");
@@ -257,13 +258,13 @@ class RewardController extends GetxController {
 
     onlineCreateModel = OnlineRewardCreateModel(
         businessId: storage.read( businessIdKey ),
-        title: titleController.text.trim(),
+        title: capitalizeFirstLetter(titleController.text.trim()),
         description: descriptionController.text.trim(),
         type: "online",//hard coded
         category: category.toLowerCase(),
         startDate: DateTime.now(),
         expiryDate: expiryDate ?? DateTime( 2050, 1, 1),
-        onlineRedemptionMethods: OnlineRedemptionMethods(
+        onlineRedemptionMethods: CreateOnlineRedemptionMethods(
             giftCard: giftCard.value,
             discountCode: discountCode.value
         ),
@@ -310,6 +311,7 @@ class RewardController extends GetxController {
 
       if( response.statusCode == 201 ){//REWARD CREATED
         //GET REWARD LIST -> GO BACK TO REWARDS SCREEN
+        getAllRewards();
         Get.back();
         showSnackBar(
             title: "Done!",
@@ -332,6 +334,41 @@ class RewardController extends GetxController {
     }
   }
 
+
+  //DELETE REWARD
+  deleteReward( String rewardId ) async{
+
+    try{
+      Uri uri = Uri.parse( ApiEndpoints.baseUrl + ApiEndpoints.deleteReward + rewardId );
+      Map<String, String> headers = {
+        "Authorization": storage.read( accessTokenKey )
+      };
+      http.Response response = await http.delete( uri, headers: headers );
+
+      print("Status: ${response.statusCode}");
+      print("Body: ${response.body}");
+      if( response.statusCode == 200 ){
+        getAllRewards();
+        showSnackBar(
+            title: "Reward deleted",
+            message: "The reward has been deleted.",
+            backgroundColor: AppColors.successGreen
+        );
+      }
+    }catch(e){
+      showSnackBar(
+          title: "Error occurred",
+          message: "Couldn't delete the reward.",
+          backgroundColor: AppColors.errorRed
+      );
+    }
+  }
+
+  //REWARD TITLE FIRST LETTER UPPERCASE
+  String capitalizeFirstLetter(String s) {
+    if (s.isEmpty) return s;
+    return s[0].toUpperCase() + s.substring(1);
+  }
 
 }
 //END OF CLASSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS

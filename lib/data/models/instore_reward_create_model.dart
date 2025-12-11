@@ -7,7 +7,7 @@ class InStoreRewardCreateModel {
   int redemptionLimit;
   final DateTime startDate;
   final DateTime expiryDate;
-  final InStoreRedemptionMethods inStoreRedemptionMethods;
+  final CreateInStoreRedemptionMethods inStoreRedemptionMethods;
   final dynamic onlineRedemptionMethods;
   final bool featured;
 
@@ -35,7 +35,7 @@ class InStoreRewardCreateModel {
       redemptionLimit: json['redemptionLimit'],
       startDate: DateTime.parse(json['startDate']),
       expiryDate: DateTime.parse(json['expiryDate']),
-      inStoreRedemptionMethods: InStoreRedemptionMethods.fromJson(
+      inStoreRedemptionMethods: CreateInStoreRedemptionMethods.fromJson(
         json['inStoreRedemptionMethods'],
       ),
       onlineRedemptionMethods: json['onlineRedemptionMethods'],
@@ -51,8 +51,8 @@ class InStoreRewardCreateModel {
       "type": type,
       "category": category,
       "redemptionLimit": redemptionLimit,
-      "startDate": startDate.toUtc().toIso8601String(),
-      "expiryDate": expiryDate.toUtc().toIso8601String(),
+      "startDate": startDate.toIso8601String(),
+      "expiryDate": expiryDate.toIso8601String(),
       "inStoreRedemptionMethods": inStoreRedemptionMethods.toJson(),
       "onlineRedemptionMethods": onlineRedemptionMethods,
       "featured": featured,
@@ -60,19 +60,19 @@ class InStoreRewardCreateModel {
   }
 }
 
-class InStoreRedemptionMethods {
+class CreateInStoreRedemptionMethods {
   final bool qrCode;
   final bool staticCode;
   final bool nfcTap;
 
-  InStoreRedemptionMethods({
+  CreateInStoreRedemptionMethods({
     required this.qrCode,
     required this.staticCode,
     required this.nfcTap,
   });
 
-  factory InStoreRedemptionMethods.fromJson(Map<String, dynamic> json) {
-    return InStoreRedemptionMethods(
+  factory CreateInStoreRedemptionMethods.fromJson(Map<String, dynamic> json) {
+    return CreateInStoreRedemptionMethods(
       qrCode: json['qrCode'],
       staticCode: json['staticCode'],
       nfcTap: json['nfcTap'],

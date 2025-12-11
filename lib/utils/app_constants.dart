@@ -12,3 +12,7 @@ const String businessProfileModelKey = "businessProfileModelKey";
 const String edit = "edit";
 const String duplicate = "duplicate";
 const String delete = "delete";
+
+//REWARD TYPE
+const String typeInStore = "in-store";
+const String typeOnline = "online";

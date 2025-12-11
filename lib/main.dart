@@ -8,7 +8,7 @@ void main() async{
   WidgetsFlutterBinding.ensureInitialized();
   await dotenv.load(fileName: ".env");
   await GetStorage.init();
-  runApp(MaterialApp(
+  runApp( MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: MyApp() ) );
+      home: MyApp()) );
 }

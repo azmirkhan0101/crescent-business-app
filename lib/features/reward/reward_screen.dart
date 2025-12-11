@@ -3,19 +3,19 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:organization/controller/reward/reward_controller.dart';
-import 'package:organization/data/models/reward_card_model.dart';
 import 'package:organization/features/reward/widget/reward_card_widget.dart';
 import 'package:organization/features/widgets/custom_asset_image.dart';
 import 'package:organization/features/widgets/custom_button_widget.dart';
 import 'package:organization/utils/app_color.dart';
+import 'package:organization/utils/app_constants.dart';
 import 'package:organization/utils/app_text.dart';
 import 'package:organization/utils/app_text_styles.dart';
 import 'package:organization/utils/assets_path.dart';
 
+import '../../data/models/reward_model.dart';
 import '../../routes/app_pages.dart';
 
 class RewardScreen extends StatelessWidget {
-
   final RewardController controller = Get.find<RewardController>();
 
   @override
@@ -60,18 +60,19 @@ class RewardScreen extends StatelessWidget {
       ),
 
       body: Obx(() {
-        if (controller.rewards.isEmpty) {
+        if (controller.isLoading.value == true && controller.rewards.isEmpty) {
+          return Center(child: CircularProgressIndicator());
+        } else if (controller.isLoading.value == false &&
+            controller.rewards.isEmpty) {
           return noReward();
         } else {
           return SingleChildScrollView(
             child: Column(
               children: [
                 rewardList(context: context),
-                SizedBox(
-                  height: 90.h,
-                )
+                SizedBox(height: 90.h),
               ],
-            )
+            ),
           );
         }
       }),
@@ -119,7 +120,9 @@ class RewardScreen extends StatelessWidget {
               ],
             ),
             onPressed: () {
+              print("Id: ${controller.storage.read(businessIdKey)}");
               Get.toNamed(AppRoutes.createReward);
+              //controller.getAllRewards();
               //controller.getRewardAnalyticsStats();
             },
             text: AppText.continueText,
@@ -135,24 +138,103 @@ class RewardScreen extends StatelessWidget {
   }
 
   //REWARD LIST
-rewardList({required BuildContext context}){
+  rewardList({required BuildContext context}) {
     return ListView.builder(
-        physics: NeverScrollableScrollPhysics(),
+      physics: NeverScrollableScrollPhysics(),
       shrinkWrap: true,
       itemCount: controller.rewards.length,
-        itemBuilder: (context, index){
-      RewardCardModel model = controller.rewards[index];
-      return Padding(
+      itemBuilder: (context, index) {
+        RewardModel model = controller.rewards[index];
+
+        //INSTORE REDEMPTIONS
+        final bool isQr = model.inStoreMethods?.qrCode ?? false;
+        final bool isNfc = model.inStoreMethods?.nfcTap ?? false;
+        final bool isStaticCode = model.inStoreMethods?.staticCode ?? false;
+        //ONLINE REDEMPTIONS
+        final bool isGiftCard = model.onlineMethods?.giftCard ?? false;
+        final bool isDiscountCode = model.onlineMethods?.discountCode ?? false;
+
+        return Padding(
           padding: EdgeInsets.symmetric(horizontal: 15.w, vertical: 8.h),
-        child: RewardCard(
+          child: RewardCard(
             title: model.title,
-            expiryDate: model.expiryDate,
+            expiryDate: model.expiryDate.toString(),
             redemptions: model.redemptions,
-            assetIcon: model.assetIcon
-        )
-      );
-    });
-}
+            isActive: model.isActive,
+            type: model.type,
+            isQr: isQr,
+            isNfc: isNfc,
+            isStaticCode: isStaticCode,
+            isGiftCard: isGiftCard,
+            isDiscountCode: isDiscountCode,
+            onDeleteClick: (){
+              showRewardDeleteDialog( model.id );
+            }
+          ),
+        );
+      },
+    );
+  }
 
+  //DELETE ALERT
+  void showRewardDeleteDialog( String rewardId ) {
+    Get.defaultDialog(
+      title: "Delete Reward",
+      titleStyle: const TextStyle(
+        fontSize: 18,
+        fontWeight: FontWeight.w600,
+        color: Colors.black87,
+      ),
+      contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+      middleText: "Are you sure you want to delete this reward?",
+      middleTextStyle: const TextStyle(
+        fontSize: 15,
+        color: Colors.black54,
+      ),
+      barrierDismissible: true,
+      confirm: Container(
+        height: 42,
+        width: 120,
+        decoration: BoxDecoration(
+          color: const Color(0xFFE53935), // Soft red for delete
+          borderRadius: BorderRadius.circular(8),
+        ),
+        child: TextButton(
+          onPressed: () {
+            Get.back(closeOverlays: true);
+            controller.deleteReward( rewardId );
+          },
+          child: const Text(
+            "Delete",
+            style: TextStyle(
+              color: Colors.white,
+              fontWeight: FontWeight.w600,
+            ),
+          ),
+        ),
+      ),
 
+      cancel: Container(
+        height: 42,
+        width: 120,
+        decoration: BoxDecoration(
+          color: const Color(0xFFEEEEEE), // Light grey background
+          borderRadius: BorderRadius.circular(8),
+        ),
+        child: TextButton(
+          onPressed: () {
+            //Get.back();
+            Navigator.of(Get.context!).pop();//TODO: DIALOG NOT CLOSING
+          },
+          child: const Text(
+            "Cancel",
+            style: TextStyle(
+              color: Colors.black87,
+              fontWeight: FontWeight.w600,
+            ),
+          ),
+        ),
+      ),
+    );
+  }
 }
