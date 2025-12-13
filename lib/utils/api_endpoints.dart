@@ -5,7 +5,7 @@ class ApiEndpoints {
   //static const baseUrl = "http://192.168.56.1:5000/api/v1";
   //static const baseUrl = "https://dauntless-cathey-telial.ngrok-free.dev/api/v1";
   static const baseUrl =
-      "https://venue-und-moderator-decision.trycloudflare.com/api/v1";
+      "https://kentucky-mountain-childhood-mtv.trycloudflare.com/api/v1";
   static const getProfile = "/auth/profile";
   static const login = "/auth/signin";
   static const signup = "/auth/business-signup";
@@ -22,5 +22,6 @@ class ApiEndpoints {
   static const createRewardInStore = "/rewards"; //SAME FOR ONLINE
   static const getAllRewards =
       "/rewards/business/my-rewards?status=active&search&page=1&limit=10"; //TODO: CONTROL STATUS, PAGE, LIMIT FROM CONTROLLER
-  static const deleteReward = "/rewards/";
+  static const deleteReward = "/rewards/";//BUSINESS ID WILL BE PASSED FROM CONTROLLER IN PARAMETER
+static const businessOverview = "/business/overview";//HOME SCREEN STATS
 }

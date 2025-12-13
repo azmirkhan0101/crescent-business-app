@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:organization/data/models/monthly_stats.dart';
 import 'package:organization/features/widgets/custom_text.dart';
 import 'package:organization/utils/app_size.dart';
 import 'package:organization/utils/app_text_styles.dart';
@@ -8,7 +9,13 @@ import 'package:organization/utils/assets_path.dart';
 import '../../../utils/app_color.dart';
 
 class HomeBarChartWidget extends StatelessWidget {
-  const HomeBarChartWidget({super.key});
+
+  final List<MonthlyStats> stats;
+
+  const HomeBarChartWidget({
+    super.key,
+    required this.stats
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -36,7 +43,7 @@ class HomeBarChartWidget extends StatelessWidget {
                   ),
                   SizedBox(width: 8.w),
                   Text(
-                    'Bar Chart',
+                    'Stats',
                     style: AppTextStyle.cardTextStyle,
                   ),
                 ],
@@ -53,14 +60,16 @@ class HomeBarChartWidget extends StatelessWidget {
                         .copyWith(fontSize: AppSizes.headlineXL),
                   ),
                   SizedBox(width: 12.w),
-                  CustomText(
-                    text: "Total activity of dummy data",
-                    fontSize: 12.sp,
-                    fontWeight: FontWeight.w400,
-                    language: false,
-                    color: AppColors.secondaryTextColor,
-                    textAlign: TextAlign.justify,
-                    overflow: TextOverflow.visible,
+                  Expanded(
+                    child: CustomText(
+                      text: "Total activity of monthly redemptions",
+                      fontSize: 12.sp,
+                      fontWeight: FontWeight.w400,
+                      language: false,
+                      color: AppColors.secondaryTextColor,
+                      textAlign: TextAlign.justify,
+                      overflow: TextOverflow.ellipsis,
+                    ),
                   ),
                 ],
               ),
@@ -133,17 +142,6 @@ class HomeBarChartWidget extends StatelessWidget {
                         barRods: [
                           BarChartRodData(
                             toY: 39000,
-                            color: const Color(0xFFFF6F61),
-                            width: 11.43.w,
-                            borderRadius: BorderRadius.circular(5.r),
-                          ),
-                        ],
-                      ),
-                      BarChartGroupData(
-                        x: 6,
-                        barRods: [
-                          BarChartRodData(
-                            toY: 25000,
                             color: const Color(0xFFFF6F61),
                             width: 11.43.w,
                             borderRadius: BorderRadius.circular(5.r),
@@ -228,16 +226,28 @@ class HomeBarChartWidget extends StatelessWidget {
         text = const Text('Apr', style: style);
         break;
       case 4:
-        text = const Text('Text', style: style);
+        text = const Text('May', style: style);
         break;
       case 5:
-        text = const Text('Text', style: style);
+        text = const Text('Jun', style: style);
         break;
       case 6:
-        text = const Text('Text', style: style);
+        text = const Text('Jul', style: style);
+        break;
+      case 7:
+        text = const Text('Aug', style: style);
+        break;
+      case 8:
+        text = const Text('Sep', style: style);
+        break;
+      case 9:
+        text = const Text('Oct', style: style);
+        break;
+      case 10:
+        text = const Text('Nov', style: style);
         break;
       default:
-        text = const Text('', style: style);
+        text = const Text('Dec', style: style);
         break;
     }
     return SideTitleWidget(

@@ -318,6 +318,12 @@ class RewardController extends GetxController {
             message: "Reward created successfully",
             backgroundColor: AppColors.successGreen
         );
+      }else if( response.statusCode == 409 ){
+        showSnackBar(
+            title: "Repeated code!",
+            message: "Some codes were found repeated. Try again with new codes.",
+            backgroundColor: AppColors.warningYellow
+        );
       }
     }on TimeoutException catch(_){
       showSnackBar(

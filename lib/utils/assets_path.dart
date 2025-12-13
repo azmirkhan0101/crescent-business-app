@@ -47,7 +47,8 @@ class AssetsPath {
   static const String rewardFreeIcon = "assets/icons/reward_free_icon.png";
   static const String rewardDiscountIcon = "assets/icons/reward_discount_icon.png";
   static const String rocketIcon = "assets/icons/rocket.png";
-  static const String playIcon = "assets/icons/play_icon.png";
+  static const String increaseIcon = "assets/icons/play_icon.png";
+  static const String decreaseIcon = "assets/icons/decrease_icon.png";
   static const String alertIcon = "assets/icons/alert_icon.png";
   static const String completeIcon = "assets/icons/complete.png";
   static const String complete1Icon = "assets/icons/complete1.png";

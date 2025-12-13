@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:organization/controller/home/home_controller.dart';
 import 'package:organization/features/home/widget/activity_list_tile_widget.dart';
 import 'package:organization/features/home/data/models/activity_data_class.dart';
 import 'package:organization/features/home/widget/bar_chart_widget.dart';
@@ -14,7 +15,8 @@ import '../../utils/app_text_styles.dart';
 import '../analytics/widget/analytics_card_widget.dart';
 
 class HomeScreen extends StatelessWidget {
-  const HomeScreen({super.key});
+
+  final HomeController controller = Get.find<HomeController>();
 
   @override
   Widget build(BuildContext context) {
@@ -27,8 +29,13 @@ class HomeScreen extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                //TODO: GET NAME AND LOGO URL FROM STORAGE, WE GET THEM FROM GETPROFILE API AFTER LOGIN-SIGNUP
                 /// header profile
                 HomeHeaderWidget(userName: 'Talha S.'),
+                //TODO: DEBUG BUTTON, REMOVE LATER
+                ElevatedButton(onPressed: (){
+                  controller.getBusinessOverview();
+                }, child: Text("debug")),
                 Text(
                   "Overview",
                   style: GoogleFonts.familjenGrotesk(
@@ -38,35 +45,37 @@ class HomeScreen extends StatelessWidget {
                   ),
                 ),
 
-                /// home card
+                //OVERVIEW
                 Row(
                   spacing: 5.w,
                   children: [
                     Expanded(
-                      child: AnalyticsCardWidget(
-                        topIconColor: Color(0xFFC08FFF),
-                        topIcon: AssetsPath.scanQrIcon,
-                        bottomIcon: AssetsPath.playIcon,
-                        title: 'Redemptions',
-                        subtitle: 'Last 7 days',
-                        bottomText: '120',
-                        bottomEndText: '40.2%',
-                      ),
+                      child: Obx((){
+                        return AnalyticsCardWidget(
+                          topIconColor: Color(0xFFC08FFF),
+                          topIcon: AssetsPath.scanQrIcon,
+                          title: 'Redemptions',
+                          subtitle: 'Last 7 days',
+                          bottomText: controller.homeStatModel.value?.overview.lastSevenDaysRedeemed.toString() ?? "0",
+                          bottomEndText: "${controller.homeStatModel.value?.overview.sevenDaysGrowthPercentage ?? 0} %",
+                          isIncrease: controller.homeStatModel.value?.overview.isIncrease ?? true,
+                        );
+                      })
                     ),
                     Expanded(
                       child: HomeCardWidget(
                         topIcon: AssetsPath.starEmphasisIcon,
                         title: 'Active Rewards',
-                        bottomText: '4',
+                        bottomText: controller.homeStatModel.value?.overview.totalActiveRewards.toString() ?? "0",
                       ),
                     ),
                   ],
                 ),
 
-                ///bar chart
+                //bar chart
                 HomeBarChartWidget(),
 
-                ///activity text
+                ///recent activity - view all
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -89,7 +98,7 @@ class HomeScreen extends StatelessWidget {
                   ],
                 ),
 
-                ///activity section
+                ///recent activity list
                 Card(
                   elevation: 4,
                   shape: RoundedRectangleBorder(

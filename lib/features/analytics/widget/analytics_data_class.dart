@@ -3,7 +3,7 @@ import '../../../utils/assets_path.dart';
 final List<Map<String, String>> analyticsData = [
   {
     "topIcon": AssetsPath.clickIcon,
-    "bottomIcon": AssetsPath.playIcon,
+    "bottomIcon": AssetsPath.increaseIcon,
     "title": "Website Visits",
     "subtitle": "Last 7 days",
     "bottomText": "120",
@@ -11,7 +11,7 @@ final List<Map<String, String>> analyticsData = [
   },
   {
     "topIcon": AssetsPath.profileIcon,
-    "bottomIcon": AssetsPath.playIcon,
+    "bottomIcon": AssetsPath.increaseIcon,
     "title": "Profile Views",
     "subtitle": "Last 7 days",
     "bottomText": "280",
@@ -19,7 +19,7 @@ final List<Map<String, String>> analyticsData = [
   },
   {
     "topIcon": AssetsPath.eyeTrackingIcon,
-    "bottomIcon": AssetsPath.playIcon,
+    "bottomIcon": AssetsPath.increaseIcon,
     "title": "Impressions",
     "subtitle": "Last 7 days",
     "bottomText": "120",
@@ -27,7 +27,7 @@ final List<Map<String, String>> analyticsData = [
   },
   {
     "topIcon": AssetsPath.bookMarkIcon,
-    "bottomIcon": AssetsPath.playIcon,
+    "bottomIcon": AssetsPath.increaseIcon,
     "title": "Saves",
     "subtitle": "Last 7 days",
     "bottomText": "12",

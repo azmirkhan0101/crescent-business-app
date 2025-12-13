@@ -171,11 +171,11 @@ class _AnalyticsScreenState extends State<AnalyticsScreen> {
                     final item = analyticsData[index];
                     return AnalyticsCardWidget(
                       topIcon: item["topIcon"]!,
-                      bottomIcon: item["bottomIcon"]!,
                       title: item["title"]!,
                       subtitle: item["subtitle"]!,
                       bottomText: item["bottomText"]!,
                       bottomEndText: item["bottomEndText"]!,
+                      isIncrease: false,
                     );
                   },
                 ),

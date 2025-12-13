@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:organization/features/widgets/custom_text.dart';
+import 'package:organization/utils/assets_path.dart';
 
 import '../../../utils/app_color.dart';
 import '../../../utils/app_text_styles.dart';
@@ -11,20 +12,20 @@ class AnalyticsCardWidget extends StatelessWidget {
   const AnalyticsCardWidget({
     super.key,
     required this.topIcon,
-    required this.bottomIcon,
     required this.title,
     required this.subtitle,
     required this.bottomText,
     required this.bottomEndText,
     this.topIconColor,
+    required this.isIncrease,
   });
   final String topIcon;
-  final String bottomIcon;
   final String bottomEndText;
   final String title;
   final String subtitle;
   final String bottomText;
   final Color? topIconColor;
+  final bool isIncrease;
 
   @override
   Widget build(BuildContext context) {
@@ -63,31 +64,21 @@ class AnalyticsCardWidget extends StatelessWidget {
                 fontSize: 24.sp,
                 color: AppColors.headlineTColor,
               ),
-
-              // Text(
-              //   bottomText,
-              //   style: AppTextStyle.headlineLStyle.copyWith(fontSize: 24.sp),
-              // ),
               SizedBox(width: 8.w),
               Row(
                 children: [
-
                   CustomText(text: bottomEndText,
                     fontWeight: FontWeight.w400,
                     fontSize: 14.sp,
                     color: AppColors.blackTextColor,
                     language: false,
                   ),
-
-
-                  // Text(
-                  //   bottomEndText,
-                  //   style: AppTextStyle.mediumStyle.copyWith(
-                  //     color: AppColors.blackTextColor,
-                  //   ),
-                  // ),
                   SizedBox(width: 4.w),
-                  Image.asset(bottomIcon, height: 14.w, width: 14.w),
+                  Image.asset(
+                      isIncrease ? AssetsPath.increaseIcon : AssetsPath.decreaseIcon,
+                      height: 14.w,
+                      width: 14.w
+                  ),
                 ],
               ),
             ],

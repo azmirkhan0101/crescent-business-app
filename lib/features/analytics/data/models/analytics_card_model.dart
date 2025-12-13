@@ -25,7 +25,7 @@ class StatsModel {
       bottomText: "120",
       bottomEndText: "10.5%",
       topIcon: AssetsPath.clickIcon,
-      bottomIcon: AssetsPath.playIcon,
+      bottomIcon: AssetsPath.increaseIcon,
     ),
     StatsModel(
       title: "Profile Views",
@@ -33,7 +33,7 @@ class StatsModel {
       bottomText: "280",
       bottomEndText: "8.2%",
       topIcon: AssetsPath.profileIcon,
-      bottomIcon: AssetsPath.playIcon,
+      bottomIcon: AssetsPath.increaseIcon,
     ),
     StatsModel(
       title: "Impressions",
@@ -41,7 +41,7 @@ class StatsModel {
       bottomText: "120",
       bottomEndText: "12.3%",
       topIcon: AssetsPath.eyeTrackingIcon,
-      bottomIcon: AssetsPath.playIcon,
+      bottomIcon: AssetsPath.increaseIcon,
     ),
     StatsModel(
       title: "Saves",

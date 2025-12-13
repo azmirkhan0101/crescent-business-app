@@ -1,4 +1,91 @@
 
+
+
+var getMyBusinessOverview = {
+  "success": true,
+  "message": "Business overview retrived successfully!",
+  "data": {
+    "overview": {
+      "totalActiveRewards": 0,
+      "lastSevenDaysRedeemed": 0,
+      "previousSevenDaysRedeemed": 0,
+      "sevenDaysGrowthPercentage": 0,
+      "isIncrease": false
+    },
+    "monthlyStats": [
+      {
+        "month": "JAN 2025",
+        "redeemed": 0,
+        "reward": 0
+      },
+      {
+        "month": "FEB 2025",
+        "redeemed": 0,
+        "reward": 0
+      },
+      {
+        "month": "MAR 2025",
+        "redeemed": 0,
+        "reward": 0
+      },
+      {
+        "month": "APR 2025",
+        "redeemed": 0,
+        "reward": 0
+      },
+      {
+        "month": "MAY 2025",
+        "redeemed": 0,
+        "reward": 0
+      },
+      {
+        "month": "JUN 2025",
+        "redeemed": 0,
+        "reward": 0
+      },
+      {
+        "month": "JUL 2025",
+        "redeemed": 0,
+        "reward": 0
+      },
+      {
+        "month": "AUG 2025",
+        "redeemed": 0,
+        "reward": 0
+      },
+      {
+        "month": "SEP 2025",
+        "redeemed": 0,
+        "reward": 0
+      },
+      {
+        "month": "OCT 2025",
+        "redeemed": 0,
+        "reward": 0
+      },
+      {
+        "month": "NOV 2025",
+        "redeemed": 0,
+        "reward": 0
+      },
+      {
+        "month": "DEC 2025",
+        "redeemed": 0,
+        "reward": 0
+      }
+    ],
+    "overallProgress": {
+      "totalRedemptionLimit": 0,
+      "totalRedeemedCount": 0,
+      "percentage": 0
+    }
+  }
+};
+
+
+
+
+
 class ZTest {
 
   var allRewardResponse = {

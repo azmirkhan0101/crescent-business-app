@@ -61,7 +61,7 @@ class RewardListItem extends StatelessWidget {
               ),
               const SizedBox(width: 4.0),
               CustomAssetsImage(
-                assetsPath: AssetsPath.playIcon,
+                assetsPath: AssetsPath.increaseIcon,
                 height: 14.h,
                 width: 14.w,
               ),

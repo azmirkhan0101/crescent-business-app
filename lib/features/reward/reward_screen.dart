@@ -14,6 +14,7 @@ import 'package:organization/utils/assets_path.dart';
 
 import '../../data/models/reward_model.dart';
 import '../../routes/app_pages.dart';
+import '../widgets/bottom_sheet_widget.dart';
 
 class RewardScreen extends StatelessWidget {
   final RewardController controller = Get.find<RewardController>();
@@ -168,7 +169,8 @@ class RewardScreen extends StatelessWidget {
             isGiftCard: isGiftCard,
             isDiscountCode: isDiscountCode,
             onDeleteClick: (){
-              showRewardDeleteDialog( model.id );
+              showDeleteBottomSheet( model.id );
+              //showRewardDeleteDialog( model.id );
             }
           ),
         );
@@ -176,6 +178,27 @@ class RewardScreen extends StatelessWidget {
     );
   }
 
+  //REWARD DELETE BOTTOM SHEET
+  void showDeleteBottomSheet( String rewardId ) {
+    Get.bottomSheet(
+      BottomSheetWidget(
+        title: "Delete Reward",
+        description: "Are you sure you want to delete this reward? This action cannot be undone.",
+        primaryButtonText: "Delete",
+        secondaryButtonText: "Cancel",
+        onPrimaryPressed: () {
+          Get.back(closeOverlays: true);
+          controller.deleteReward( rewardId );
+        },
+        onSecondaryPressed: () {
+          Get.back(closeOverlays: true);
+        },
+      ),
+      isScrollControlled: true,
+      backgroundColor: Colors.transparent,
+    );
+  }
+  //TODO: DELETE THIS IF DIALOG CLOSE DOES NOT WORK. THE ABOVE BOTTOM SHEET WILL DO THE WORK
   //DELETE ALERT
   void showRewardDeleteDialog( String rewardId ) {
     Get.defaultDialog(
