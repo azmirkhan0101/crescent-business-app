@@ -13,7 +13,7 @@ import 'dart:async';
 import 'package:organization/utils/app_constants.dart';
 
 import '../../core/show_snackbar.dart';
-import '../../data/models/business_profile_model.dart';
+import '../../data/models/profile/business_profile_model.dart';
 
 class LoginController extends GetxController{
 

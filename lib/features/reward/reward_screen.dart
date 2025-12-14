@@ -12,7 +12,7 @@ import 'package:organization/utils/app_text.dart';
 import 'package:organization/utils/app_text_styles.dart';
 import 'package:organization/utils/assets_path.dart';
 
-import '../../data/models/reward_model.dart';
+import '../../data/models/reward/reward_model.dart';
 import '../../routes/app_pages.dart';
 import '../widgets/bottom_sheet_widget.dart';
 
@@ -33,59 +33,51 @@ class RewardScreen extends StatelessWidget {
           style: AppTextStyle.headlineLStyle.copyWith(fontSize: 20.sp),
         ),
         actions: [
-          Padding(
-            padding: EdgeInsets.only(right: 16.w), // right spacing
-            child: GestureDetector(
-              onTap: () {
+          IconButton(
+              onPressed: (){
                 Get.toNamed(AppRoutes.createReward);
               },
-
-              child: Container(
-                height: 40.w,
-                width: 40.w,
-                decoration: const BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: Color(0xFFF5F4F6),
-                ),
-                child: Center(
-                  child: Icon(
-                    Icons.add,
-                    size: 15.w,
-                    color: Colors.black, // icon color
-                  ),
-                ),
-              ),
-            ),
+              style: ButtonStyle(backgroundColor: WidgetStatePropertyAll(AppColors.grey06)),
+              icon: Icon(Icons.add, color: AppColors.black,)
           ),
         ],
       ),
 
-      body: Obx(() {
-        if (controller.isLoading.value == true && controller.rewards.isEmpty) {
-          return Center(child: CircularProgressIndicator());
-        } else if (controller.isLoading.value == false &&
-            controller.rewards.isEmpty) {
-          return noReward();
-        } else {
-          return SingleChildScrollView(
-            child: Column(
+      body: RefreshIndicator(
+        onRefresh: () async{
+          await controller.getAllRewards();
+        },
+        child: SingleChildScrollView(
+          physics: AlwaysScrollableScrollPhysics(),
+
+          child: Obx(() {
+          if (controller.isLoading.value == true && controller.rewards.isEmpty) {
+            return Center(child: CircularProgressIndicator());
+          } else if (controller.isLoading.value == false &&
+              controller.rewards.isEmpty) {
+            return noReward( context );
+          } else {
+            return Column(
               children: [
                 rewardList(context: context),
                 SizedBox(height: 90.h),
               ],
-            ),
-          );
-        }
-      }),
+            );
+          }
+                    }),
+      ),
+      )
     );
   }
 
   //NO REWARD
-  noReward() {
-    return Center(
+  noReward( BuildContext context ) {
+    return SizedBox(
+      height: MediaQuery.of(context).size.height,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.center,
+        mainAxisSize: MainAxisSize.max,
         children: [
           CustomAssetsImage(
             assetsPath: AssetsPath.stackCardImage,
@@ -122,8 +114,8 @@ class RewardScreen extends StatelessWidget {
             ),
             onPressed: () {
               print("Id: ${controller.storage.read(businessIdKey)}");
-              //Get.toNamed(AppRoutes.createReward);
-              controller.getAllRewards();
+              Get.toNamed(AppRoutes.createReward);
+              //controller.getAllRewards();
               //controller.getRewardAnalyticsStats();
             },
             text: AppText.continueText,
@@ -133,6 +125,7 @@ class RewardScreen extends StatelessWidget {
               fontWeight: FontWeight.w700,
             ),
           ),
+          SizedBox(height: 50.h,)
         ],
       ),
     );

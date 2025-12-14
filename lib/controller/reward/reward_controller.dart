@@ -7,9 +7,9 @@ import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:http/http.dart' as http;
 import 'package:organization/core/show_snackbar.dart';
-import 'package:organization/data/models/instore_reward_create_model.dart';
-import 'package:organization/data/models/online_reward_create_model.dart';
-import 'package:organization/data/models/reward_model.dart';
+import 'package:organization/data/models/reward/instore_reward_create_model.dart';
+import 'package:organization/data/models/reward/online_reward_create_model.dart';
+import 'package:organization/data/models/reward/reward_model.dart';
 import 'package:organization/utils/api_endpoints.dart';
 import 'package:organization/utils/app_color.dart';
 import 'package:organization/utils/app_constants.dart';
@@ -29,7 +29,7 @@ class RewardController extends GetxController {
   String category = categories[0];
   //REWARDS
   RxList<RewardModel> rewards = <RewardModel>[].obs;
-  //LOADING CONTROLL
+  //LOADING CONTROL
   RxBool isLoading = true.obs;
 
   static const List<String> categories = [
@@ -69,6 +69,7 @@ class RewardController extends GetxController {
   //GET ALL REWARDS
   getAllRewards() async{
     isLoading.value = true;
+    rewards.value = [];
     try{
       Uri uri = Uri.parse( ApiEndpoints.baseUrl + ApiEndpoints.getAllRewards );
 
@@ -83,9 +84,13 @@ class RewardController extends GetxController {
 
       if( response.statusCode == 200 ){
         var tempRewards = jsonDecode(response.body)['data'] as List;
-        rewards.value = tempRewards.map((e){
-          return RewardModel.fromJson(e);
-        }).toList();
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          rewards.value = tempRewards.map((e){
+            return RewardModel.fromJson(e);
+          }).toList();
+        });
+
+
       }
 
       print("Status: ${response.statusCode}");
@@ -93,54 +98,10 @@ class RewardController extends GetxController {
     }catch(e){
       print("All reward catch: ${e}");
     }finally{
-      isLoading.value = false;
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        isLoading.value = false;
+      });
     }
-  }
-
-
-  //GET REWARD ANALYTICS FROM API
-  getRewardAnalyticsStats() async {
-    //TODO: USE THE SAVED ONE
-    //String businessID = storage.read( businessIdKey );
-    String businessID = "69310d25aa6d1208849d5c42";//dummy
-
-    final Uri uri = Uri.parse(
-      ApiEndpoints.baseUrl +
-          ApiEndpoints.rewardAnalyticsStats +
-          "?businessId" +
-          "=" +
-          businessID,
-    );
-    print("Uri: ${uri}");
-
-    Map<String, String> header = {
-      'Authorization': 'Bearer ${storage.read(accessTokenKey)}',
-      'Accept': 'application/json',
-    };
-
-    try{
-      http.Response response = await http.get(uri, headers: header);
-
-      print(response.statusCode);
-      print(response.body);
-
-      if (response.statusCode == 200) {
-        //REWARDS FETCHED
-      } else {
-        showSnackBar(
-            title: "Error occurred!",
-            message: "Something went wrong. Please try again.",
-            backgroundColor: AppColors.errorRed
-        );
-      }
-    }catch(e){
-      showSnackBar(
-          title: "No internet!",
-          message: "Please connect internet and try again.",
-          backgroundColor: AppColors.errorRed
-      );
-    }
-
   }
 
   //SAMPLE RESPONSE OF GET REWARDS

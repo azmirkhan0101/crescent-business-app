@@ -1,4 +1,4 @@
-import 'package:organization/data/models/recent_activity_item_model.dart';
+import 'package:organization/data/models/home/recent_activity_item_model.dart';
 
 class RecentActivityModel {
   final String title;

@@ -4,6 +4,7 @@ import 'package:organization/features/auth/login_screen.dart';
 import 'package:organization/features/auth/otp_verification_screen.dart';
 import 'package:organization/features/auth/reset_password_screen.dart';
 import 'package:organization/features/get_started_screen.dart';
+import 'package:organization/features/home/recent_activities.dart';
 import 'package:organization/features/nav_bar/main_navigation_screen.dart';
 import 'package:organization/features/notification/notification_screen.dart';
 import 'package:organization/features/on_boarding/account_creation_screen.dart';
@@ -187,6 +188,12 @@ class AppPages {
         name: AppRoutes.reward,
         page: (){
           return RewardScreen();
+        }
+    ),
+    GetPage(
+        name: AppRoutes.recentActivities,
+        page: (){
+          return RecentActivities();
         }
     ),
 

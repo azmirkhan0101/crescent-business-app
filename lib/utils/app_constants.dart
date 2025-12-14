@@ -10,7 +10,7 @@ const String businessProfileModelKey = "businessProfileModelKey";
 
 //REWARD POPUP MENU VALUES
 const String edit = "edit";
-const String duplicate = "duplicate";
+//const String duplicate = "duplicate";
 const String delete = "delete";
 
 //REWARD TYPE

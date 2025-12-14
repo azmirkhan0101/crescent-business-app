@@ -121,25 +121,26 @@ class _RewardCardState extends State<RewardCard> {
                       ],
                     ),
                   ),
-                  PopupMenuItem(
-                    value: duplicate,
-                    child: Row(
-                      children: [
-                        CustomAssetsImage(
-                          assetsPath: AssetsPath.duplicateIcon,
-                          height: 14.h,
-                          width: 14.w,
-                        ),
-                        SizedBox(width: 8.w),
-                        Text(
-                          'Duplicate',
-                          style: AppTextStyle.cardTextStyle.copyWith(
-                            fontSize: 12.sp,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
+                  //DUPLICATE OPTION IS DISABLED
+                  // PopupMenuItem(
+                  //   value: duplicate,
+                  //   child: Row(
+                  //     children: [
+                  //       CustomAssetsImage(
+                  //         assetsPath: AssetsPath.duplicateIcon,
+                  //         height: 14.h,
+                  //         width: 14.w,
+                  //       ),
+                  //       SizedBox(width: 8.w),
+                  //       Text(
+                  //         'Duplicate',
+                  //         style: AppTextStyle.cardTextStyle.copyWith(
+                  //           fontSize: 12.sp,
+                  //         ),
+                  //       ),
+                  //     ],
+                  //   ),
+                  // ),
                   PopupMenuItem(
                     value: delete,
                     child: Row(
@@ -165,8 +166,6 @@ class _RewardCardState extends State<RewardCard> {
                   if( value.compareTo( edit ) == 0 ){//EDIT CLICKED
                     //TODO: EDIT REWARD
                     Get.toNamed( AppRoutes.editReward );
-                  }else if( value.compareTo(duplicate) == 0 ){//DUPLICATE CLICKED
-                    //DUPLICATE REWARD
                   }else{//DELETE CLICKED
                     //DELETE REWARD
                     widget.onDeleteClick();

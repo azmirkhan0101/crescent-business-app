@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:organization/controller/analytics/analytics_controller.dart';
 import 'package:organization/features/analytics/widget/analytics_card_widget.dart';
 import 'package:organization/features/analytics/widget/analytics_chart_widget.dart';
 import 'package:organization/features/analytics/widget/analytics_data_class.dart';
@@ -20,37 +22,16 @@ import '../../utils/assets_path.dart';
 
 import 'data/models/analytics_card_model.dart';
 
-class AnalyticsScreen extends StatefulWidget {
-  const AnalyticsScreen({super.key});
+class AnalyticsScreen extends StatelessWidget {
 
-  @override
-  State<AnalyticsScreen> createState() => _AnalyticsScreenState();
-}
-
-class _AnalyticsScreenState extends State<AnalyticsScreen> {
-
-
-  void _openBottomSheet() {
-
-
-    showModalBottomSheet(
-      context: context,
-      isScrollControlled: true,
-      backgroundColor: Colors.white,
-      builder: (context) => BottomSheetWidget(),
-    );
-  }
-
-
-
+  final AnalyticsController controller = Get.find<AnalyticsController>();
 
   @override
   Widget build(BuildContext context) {
-
     return SafeArea(
       child: Scaffold(
         extendBody: true,
-        backgroundColor: const Color(0xFFF7F7F7),
+        backgroundColor: Color(0xFFF7F7F7),
         body: SingleChildScrollView(
           padding: EdgeInsets.symmetric(horizontal: 16.w),
           child: Column(
@@ -58,7 +39,7 @@ class _AnalyticsScreenState extends State<AnalyticsScreen> {
             children: [
               SizedBox(height: 20.h),
 
-             ///header section
+              //HEADER - APPBAR
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -88,34 +69,44 @@ class _AnalyticsScreenState extends State<AnalyticsScreen> {
                         child: DropdownButtonHideUnderline(
                           child: DropdownButton<String>(
                             value: 'Last 7 Days',
-                            icon: const Icon(Icons.keyboard_arrow_down, color: Colors.black),
+                            icon: const Icon(
+                              Icons.keyboard_arrow_down,
+                              color: Colors.black,
+                            ),
                             style: GoogleFonts.inter(
-                                fontWeight: FontWeight.w400,
-                                color: AppColors.blackTextColor,
-                                fontSize: 14.sp
+                              fontWeight: FontWeight.w400,
+                              color: AppColors.blackTextColor,
+                              fontSize: 14.sp,
                             ),
 
                             onChanged: (String? newValue) {
                               // Handle dropdown change
                             },
-                            items: <String>['Last 7 Days', 'Last 30 Days', 'This Month', 'Last Month']
-                                .map<DropdownMenuItem<String>>((String value) {
-                              return DropdownMenuItem<String>(
-                                value: value,
-                                child: Padding(
-                                  padding: const EdgeInsets.symmetric(horizontal: 12.0),
-                                  child: Text(value),
-                                ),
-                              );
-                            }).toList(),
+                            items:
+                                <String>[
+                                  'Last 7 Days',
+                                  'Last 30 Days',
+                                  'This Month',
+                                  'Last Month',
+                                ].map<DropdownMenuItem<String>>((String value) {
+                                  return DropdownMenuItem<String>(
+                                    value: value,
+                                    child: Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                        horizontal: 12.0,
+                                      ),
+                                      child: Text(value),
+                                    ),
+                                  );
+                                }).toList(),
                           ),
                         ),
                       ),
                       const SizedBox(width: 8),
                       GestureDetector(
-                        onTap: (){
-                     _openBottomSheet();
-                            },
+                        onTap: () {
+                          openBottomSheet(context);
+                        },
                         child: Container(
                           height: 40.h,
                           width: 40.w,
@@ -125,7 +116,7 @@ class _AnalyticsScreenState extends State<AnalyticsScreen> {
                             shape: BoxShape.circle,
                             boxShadow: [
                               BoxShadow(
-                                color:const Color(0x199E9E9E),
+                                color: const Color(0x199E9E9E),
                                 spreadRadius: 1,
                                 blurRadius: 5,
                                 offset: const Offset(0, 3),
@@ -144,17 +135,17 @@ class _AnalyticsScreenState extends State<AnalyticsScreen> {
                   ),
                 ],
               ),
-
-
-
-
               SizedBox(height: 16.h),
 
-
-
-              /// baki content...
-              const RedemptionChartWidget(),
+              //REDEMPTION PIE CHART SECTION
+              Obx((){
+                return RedemptionChartWidget(
+                  totalRedemptions: controller.businessAnalyticsModel.value?.totalRedemptions ?? 0,
+                  methods: controller.businessAnalyticsModel.value?.methods ?? [],
+                );
+              }),
               SizedBox(height: 16.h),
+
               ///card
               SizedBox(
                 height: 380.h,
@@ -195,13 +186,12 @@ class _AnalyticsScreenState extends State<AnalyticsScreen> {
                           width: 24.w,
                         ),
                         SizedBox(width: 8.w),
-                        CustomText(text:  "Top Rewards",
+                        CustomText(
+                          text: "Top Rewards",
                           fontWeight: FontWeight.w500,
                           fontSize: 14.sp,
                           color: AppColors.blackTextColor,
                         ),
-
-
                       ],
                     ),
                     RewardListItem(
@@ -225,17 +215,21 @@ class _AnalyticsScreenState extends State<AnalyticsScreen> {
                   ],
                 ),
               ),
-              SizedBox( height: 90.h,)
-
+              SizedBox(height: 90.h),
             ],
           ),
         ),
-
-
       ),
     );
+  }
 
+  //BOTTOM SHEET - EXPORT CSV - PDF
+  void openBottomSheet(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: Colors.white,
+      builder: (context) => BottomSheetWidget(),
+    );
   }
 }
-
-

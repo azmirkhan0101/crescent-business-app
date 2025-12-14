@@ -1,4 +1,42 @@
 
+var businessAnalytics = {
+  "totalRedemptions": 1,
+  "profileCurrent": 0,
+  "profileChange": 0,
+  "profileIncrease": false,
+  "websiteCurrent": 0,
+  "websiteChange": 0,
+  "websiteIncrease": false,
+  "methods": [
+    {
+      "method": "qr",
+      "count": 0,
+      "percentage": 0
+    },
+    {
+      "method": "nfc",
+      "count": 0,
+      "percentage": 0
+    },
+    {
+      "method": "static-code",
+      "count": 1,
+      "percentage": 100
+    }
+  ],
+  "topRewards": [
+    {
+      "_id": "693cf11050d8bc24512b044a",
+      "totalRedemptions": 1,
+      "rewardId": "693cf11050d8bc24512b044a",
+      "title": "Food reward1",
+      "redemptionLimit": 67,
+      "percentage": 1.49
+    }
+  ]
+};
+
+
 var getRecentActivity = {
   "success": true,
   "message": "Recent activity retrieved successfully",

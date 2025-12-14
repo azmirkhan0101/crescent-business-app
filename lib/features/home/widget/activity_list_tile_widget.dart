@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:organization/data/models/recent_activity_item_model.dart';
+import 'package:organization/data/models/home/recent_activity_item_model.dart';
 import 'package:organization/features/widgets/custom_text.dart';
 import 'package:organization/utils/app_color.dart';
 
@@ -9,8 +9,13 @@ import '../../../utils/assets_path.dart';
 
 class ActivityListTileWidget extends StatelessWidget {
   final RecentActivityItemModel item;
+  final int maxLines;
 
-  const ActivityListTileWidget({super.key, required this.item});
+  const ActivityListTileWidget({
+    super.key,
+    required this.item,
+    required this.maxLines
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -67,6 +72,8 @@ class ActivityListTileWidget extends StatelessWidget {
                 fontWeight: FontWeight.w500,
                 language: false,
                 fontSize: 14.sp,
+                maxLines: maxLines,
+                textAlign: TextAlign.left,
               ),
 
 

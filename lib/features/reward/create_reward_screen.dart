@@ -153,12 +153,12 @@ class CreateRewardScreen extends StatelessWidget {
             ),
             BottomButtonWidget(
               onPressed: () {
+                print("Id: ${controller.storage.read( businessIdKey ) ?? "empty"}");
                 if( isInstoreTabSelected ){//INSTORE REWARD
                   controller.createRewardInStore();
                 }else{//ONLINE REWARD
                   print("Online reward: ${controller.discountCode.value},,,,${controller.giftCard.value}");
                   controller.createRewardOnline();
-                  print("Id: ${controller.storage.read( businessIdKey ) ?? "empty"}");
                 }
               },
               buttonText: "Create",

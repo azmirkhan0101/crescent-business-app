@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:organization/data/models/business_profile_model.dart';
+import 'package:organization/data/models/profile/business_profile_model.dart';
 import 'package:organization/features/profile/widget/profile_heading_text_widget.dart';
 import 'package:organization/features/widgets/custom_asset_image.dart';
 import 'package:organization/features/widgets/custom_card_widget.dart';

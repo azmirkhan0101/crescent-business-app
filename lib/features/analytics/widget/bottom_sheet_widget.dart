@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:organization/features/widgets/custom_asset_image.dart';
 import 'package:organization/features/widgets/custom_button_widget.dart';
@@ -20,8 +21,8 @@ class _BottomSheetWidgetState extends State<BottomSheetWidget> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: 24.w, vertical: 28.h),
-      height: 329.h,
+      padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 15.h),
+      height: 340.h,
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: const BorderRadius.vertical(top: Radius.circular(20)),
@@ -34,7 +35,9 @@ class _BottomSheetWidgetState extends State<BottomSheetWidget> {
             children: [
               Text("Export data", style: AppTextStyle.cardTextStyle),
               GestureDetector(
-                onTap: () => Navigator.pop(context),
+                onTap: (){
+                  Get.back(closeOverlays: true);
+                },
                 child: Icon(Icons.close, size: 20.w),
               ),
             ],
@@ -84,7 +87,7 @@ class _BottomSheetWidgetState extends State<BottomSheetWidget> {
           });
         },
         child: Container(
-          padding: EdgeInsets.all(16.w),
+          padding: EdgeInsets.all(8.w),
           decoration: BoxDecoration(
             color: isSelected ? Color(0x26C08FFF) : AppColors.white,
             borderRadius: BorderRadius.circular(12.r),

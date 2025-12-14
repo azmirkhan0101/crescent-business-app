@@ -36,6 +36,7 @@ class AppRoutes {
  static const String reward = '/reward';
 
  static const String editProfile = '/edit-profile';
+ static const String recentActivities = '/recent-activities';
 
   // Bottom Nav items
   // static const String home = '/home';

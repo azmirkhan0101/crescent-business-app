@@ -75,7 +75,7 @@ class Overview {
 class OverallProgress {
   final int totalRedemptionLimit;
   final int totalRedeemedCount;
-  final int percentage;
+  final double percentage;
 
   OverallProgress({
     required this.totalRedemptionLimit,

@@ -2,9 +2,9 @@ import 'dart:convert';
 
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
-import 'package:organization/data/models/home_stats_model.dart';
-import 'package:organization/data/models/monthly_stats.dart';
-import 'package:organization/data/models/recent_activity_model.dart';
+import 'package:organization/data/models/home/home_stats_model.dart';
+import 'package:organization/data/models/home/monthly_stats.dart';
+import 'package:organization/data/models/home/recent_activity_model.dart';
 import 'package:organization/utils/api_endpoints.dart';
 import 'package:http/http.dart' as http;
 import 'package:organization/utils/app_constants.dart';

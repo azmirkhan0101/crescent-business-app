@@ -1,7 +1,9 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:organization/data/models/monthly_stats.dart';
+import 'package:organization/data/models/home/monthly_stats.dart';
 import 'package:organization/features/widgets/custom_text.dart';
 import 'package:organization/utils/app_size.dart';
 import 'package:organization/utils/app_text_styles.dart';
@@ -21,6 +23,13 @@ class HomeBarChartWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
+    final filteredStats = filterMonthlyStats(stats);
+    final rawMax = getMaxValue(filteredStats);
+    final maxY = roundToNiceNumber(rawMax);
+    final interval = calculateInterval(maxY);
+
+
     return SizedBox(
       height: 343.h,
       child: Card(
@@ -82,17 +91,17 @@ class HomeBarChartWidget extends StatelessWidget {
                 height: 210.h,
                 child: BarChart(
                   BarChartData(
-                    maxY: 60000,
-                    barGroups: buildBarGroups(filterMonthlyStats(stats)),
+                    maxY: maxY.toDouble(),
+                    barGroups: buildBarGroups( filteredStats ),
                     barTouchData: BarTouchData(
-                      enabled: filterMonthlyStats(stats).isNotEmpty,
+                      enabled: filteredStats.isNotEmpty,
                     ),
                     //DYNAMIC BARS
                     gridData: FlGridData(
                       show: true,
                       drawVerticalLine: false,
                       drawHorizontalLine: true,
-                      horizontalInterval: 10000,
+                      horizontalInterval: interval,
                       getDrawingHorizontalLine: (value) {
                         return FlLine(
                           color: Colors.grey.shade200,
@@ -108,7 +117,7 @@ class HomeBarChartWidget extends StatelessWidget {
                           showTitles: true,
                           reservedSize: 38,
                           getTitlesWidget: (value, meta){
-                            return getTitles(value, meta, filterMonthlyStats(stats));
+                            return getTitles(value, meta, filteredStats);
                           },
                         ),
                       ),
@@ -116,8 +125,15 @@ class HomeBarChartWidget extends StatelessWidget {
                         sideTitles: SideTitles(
                           showTitles: true,
                           reservedSize: 40,
-                          interval: 10000,
-                          getTitlesWidget: leftTitles,
+                          interval: interval,
+                          getTitlesWidget: (value, meta) {
+                            return Text(
+                              value >= 1000
+                                  ? '${(value / 1000).toStringAsFixed(0)}k'
+                                  : value.toInt().toString(),
+                              style: TextStyle(fontSize: 12.sp),
+                            );
+                          },
                         ),
                       ),
                       topTitles:
@@ -177,6 +193,39 @@ class HomeBarChartWidget extends StatelessWidget {
       ),
     );
   }
+
+
+  //Y AXIS MAX VALUE FROM API
+  double getMaxValue(List<MonthlyStats> stats) {
+    if (stats.isEmpty) return 0;
+
+    return stats
+        .map((e) => e.reward)
+        .reduce((a, b) => a > b ? a : b)
+        .toDouble();
+  }
+
+  //ROUND MAX VALUE TO NEAREST 10 POWER
+  num roundToNiceNumber(double value) {
+    if (value < 5) return 5;//MAX VALUE IS AT LEAST 5
+
+    final magnitude = pow(10, (log(value) / ln10).floor());
+    final normalized = value / magnitude;
+
+    if (normalized <= 1) return 1 * magnitude;
+    if (normalized <= 2) return 2 * magnitude;
+    if (normalized <= 5) return 5 * magnitude;
+    return 10 * magnitude;
+  }
+
+  //DYNAMIC INTERVAL OF Y AXIS VALUES
+  double calculateInterval(num maxY, {int steps = 5}) {
+    if (maxY <= 0) return 1; //fallback interval is 1
+    return (maxY / steps).ceilToDouble();
+  }
+
+
+
 
 
   // Left Titles (Y-axis)
