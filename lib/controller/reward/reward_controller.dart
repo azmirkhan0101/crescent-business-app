@@ -78,6 +78,9 @@ class RewardController extends GetxController {
 
       http.Response response = await http.get( uri, headers: headers );
 
+      print("Status: ${response.statusCode}");
+      print("Body: ${response.body}");
+
       if( response.statusCode == 200 ){
         var tempRewards = jsonDecode(response.body)['data'] as List;
         rewards.value = tempRewards.map((e){
@@ -88,6 +91,7 @@ class RewardController extends GetxController {
       print("Status: ${response.statusCode}");
       print("Body: ${response.body}");
     }catch(e){
+      print("All reward catch: ${e}");
     }finally{
       isLoading.value = false;
     }

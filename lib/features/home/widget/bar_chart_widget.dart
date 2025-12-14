@@ -11,10 +11,12 @@ import '../../../utils/app_color.dart';
 class HomeBarChartWidget extends StatelessWidget {
 
   final List<MonthlyStats> stats;
+  final num activityPercentage;
 
   const HomeBarChartWidget({
     super.key,
-    required this.stats
+    required this.stats,
+    required this.activityPercentage
   });
 
   @override
@@ -55,7 +57,7 @@ class HomeBarChartWidget extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
                   Text(
-                    '57%',
+                    "${activityPercentage} %",
                     style: AppTextStyle.headlineLStyle
                         .copyWith(fontSize: AppSizes.headlineXL),
                   ),
@@ -81,74 +83,11 @@ class HomeBarChartWidget extends StatelessWidget {
                 child: BarChart(
                   BarChartData(
                     maxY: 60000,
-                    barGroups: [
-                      BarChartGroupData(
-                        x: 0,
-                        barRods: [
-                          BarChartRodData(
-                            toY: 25000,
-                            color: const Color(0xFFFF6F61),
-                            width: 11.43.w,
-                            borderRadius: BorderRadius.circular(5.r),
-                          ),
-                        ],
-                      ),
-                      BarChartGroupData(
-                        x: 1,
-                        barRods: [
-                          BarChartRodData(
-                            toY: 45000,
-                            color: const Color(0xFFFF6F61),
-                            width: 11.43.w,
-                            borderRadius: BorderRadius.circular(5.r),
-                          ),
-                        ],
-                      ),
-                      BarChartGroupData(
-                        x: 2,
-                        barRods: [
-                          BarChartRodData(
-                            toY: 32000,
-                            color: const Color(0xFFFF6F61),
-                            width: 11.43.w,
-                            borderRadius: BorderRadius.circular(5.r),
-                          ),
-                        ],
-                      ),
-                      BarChartGroupData(
-                        x: 3,
-                        barRods: [
-                          BarChartRodData(
-                            toY: 52000,
-                            color: const Color(0xFFFF6F61),
-                            width: 11.43.w,
-                            borderRadius: BorderRadius.circular(5.r),
-                          ),
-                        ],
-                      ),
-                      BarChartGroupData(
-                        x: 4,
-                        barRods: [
-                          BarChartRodData(
-                            toY: 18000,
-                            color: const Color(0xFFFF6F61),
-                            width: 11.43.w,
-                            borderRadius: BorderRadius.circular(5.r),
-                          ),
-                        ],
-                      ),
-                      BarChartGroupData(
-                        x: 5,
-                        barRods: [
-                          BarChartRodData(
-                            toY: 39000,
-                            color: const Color(0xFFFF6F61),
-                            width: 11.43.w,
-                            borderRadius: BorderRadius.circular(5.r),
-                          ),
-                        ],
-                      ),
-                    ],
+                    barGroups: buildBarGroups(filterMonthlyStats(stats)),
+                    barTouchData: BarTouchData(
+                      enabled: filterMonthlyStats(stats).isNotEmpty,
+                    ),
+                    //DYNAMIC BARS
                     gridData: FlGridData(
                       show: true,
                       drawVerticalLine: false,
@@ -168,7 +107,9 @@ class HomeBarChartWidget extends StatelessWidget {
                         sideTitles: SideTitles(
                           showTitles: true,
                           reservedSize: 38,
-                          getTitlesWidget: getTitles,
+                          getTitlesWidget: (value, meta){
+                            return getTitles(value, meta, filterMonthlyStats(stats));
+                          },
                         ),
                       ),
                       leftTitles: AxisTitles(
@@ -180,9 +121,11 @@ class HomeBarChartWidget extends StatelessWidget {
                         ),
                       ),
                       topTitles:
-                      const AxisTitles(sideTitles: SideTitles(showTitles: false)),
+                      const AxisTitles(
+                          sideTitles: SideTitles(showTitles: false)),
                       rightTitles:
-                      const AxisTitles(sideTitles: SideTitles(showTitles: false)),
+                      const AxisTitles(
+                          sideTitles: SideTitles(showTitles: false)),
                     ),
                     extraLinesData: ExtraLinesData(
                       horizontalLines: [
@@ -204,58 +147,37 @@ class HomeBarChartWidget extends StatelessWidget {
   }
 
   // Bottom Titles (X-axis)
-  static Widget getTitles(double value, TitleMeta meta) {
+  static Widget getTitles(
+      double value,
+      TitleMeta meta,
+      List<MonthlyStats> stats,
+      ) {
     const style = TextStyle(
       color: AppColors.blackTextColor,
       fontFamily: 'inter',
       fontWeight: FontWeight.w400,
       fontSize: 10,
     );
-    Widget text;
-    switch (value.toInt()) {
-      case 0:
-        text = const Text('Jan', style: style);
-        break;
-      case 1:
-        text = const Text('Feb', style: style);
-        break;
-      case 2:
-        text = const Text('Mar', style: style);
-        break;
-      case 3:
-        text = const Text('Apr', style: style);
-        break;
-      case 4:
-        text = const Text('May', style: style);
-        break;
-      case 5:
-        text = const Text('Jun', style: style);
-        break;
-      case 6:
-        text = const Text('Jul', style: style);
-        break;
-      case 7:
-        text = const Text('Aug', style: style);
-        break;
-      case 8:
-        text = const Text('Sep', style: style);
-        break;
-      case 9:
-        text = const Text('Oct', style: style);
-        break;
-      case 10:
-        text = const Text('Nov', style: style);
-        break;
-      default:
-        text = const Text('Dec', style: style);
-        break;
+
+    int index = value.toInt();
+
+    if (index < 0 || index >= stats.length) {
+      return const SizedBox.shrink();
     }
+
+    // Example API month: "JAN", "FEB"
+    final String month = stats[index].month;
+
     return SideTitleWidget(
       space: 8,
       meta: meta,
-      child: text,
+      child: Text(
+        month.substring(0, 3), // JAN → Jan
+        style: style,
+      ),
     );
   }
+
 
   // Left Titles (Y-axis)
   static Widget leftTitles(double value, TitleMeta meta) {
@@ -294,4 +216,38 @@ class HomeBarChartWidget extends StatelessWidget {
     }
     return Text(text, style: style, textAlign: TextAlign.left);
   }
+
+  //DYNAMIC BARCHART GROUP
+  List<BarChartGroupData> buildBarGroups(List<MonthlyStats> stats) {
+    return List.generate(stats.length, (index) {
+      return BarChartGroupData(
+        x: index,
+        barRods: [
+          BarChartRodData(
+            toY: stats[index].reward.toDouble(),
+            color: const Color(0xFFFF6F61),
+            width: 11.43.w,
+            borderRadius: BorderRadius.circular(5.r),
+          ),
+        ],
+      );
+    });
+  }
+
+  //FILTER LATEST SIX MONTH DATA
+  List<MonthlyStats> filterMonthlyStats(List<MonthlyStats> data) {
+
+    if( data.isEmpty ) return data;//SKIP IF DATA IS EMPTY
+
+    final int currentMonthIndex = DateTime.now().month - 1; //0-11
+
+    int startIndex = currentMonthIndex > 5 ? currentMonthIndex - 5 : 0;
+
+    int endIndex = currentMonthIndex + 1;
+
+    return data.sublist( startIndex, endIndex );
+
+  }
+
+
 }

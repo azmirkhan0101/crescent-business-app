@@ -122,8 +122,8 @@ class RewardScreen extends StatelessWidget {
             ),
             onPressed: () {
               print("Id: ${controller.storage.read(businessIdKey)}");
-              Get.toNamed(AppRoutes.createReward);
-              //controller.getAllRewards();
+              //Get.toNamed(AppRoutes.createReward);
+              controller.getAllRewards();
               //controller.getRewardAnalyticsStats();
             },
             text: AppText.continueText,

@@ -1,4 +1,55 @@
 
+var getRecentActivity = {
+  "success": true,
+  "message": "Recent activity retrieved successfully",
+  "meta": {
+    "page": 1,
+    "limit": 20,
+    "total": 3,
+    "totalPage": 1
+  },
+  "data": [
+    {
+      "title": "Dec 9, 2025",
+      "data": [
+        {
+          "_id": "6937c2c9e48d37fefde7eb51",
+          "type": "creation",
+          "timestamp": "2025-12-09T06:33:45.848Z",
+          "rewardTitle": "\$25 Gift Card",
+          "userName": null,
+          "qrCode": null,
+          "timeAgo": "2 days ago"
+        }
+      ]
+    },
+    {
+      "title": "Dec 8, 2025",
+      "data": [
+        {
+          "_id": "6936fb00af5237d44d7883ce",
+          "assignedCode": "698929DDD596",
+          "type": "redemption",
+          "timestamp": "2025-12-08T16:21:20.919Z",
+          "userName": "Mostafizur Rahaman",
+          "userImage": "/images/image-1765432767234.jpg",
+          "rewardTitle": "Free Tea",
+          "redemptionMethod": "static-code",
+          "timeAgo": "2 days ago"
+        },
+        {
+          "_id": "6936d61243232039a271a5f3",
+          "type": "creation",
+          "timestamp": "2025-12-08T13:43:46.660Z",
+          "rewardTitle": "Free Tea",
+          "userName": null,
+          "qrCode": null,
+          "timeAgo": "2 days ago"
+        }
+      ]
+    }
+  ]
+};
 
 
 var getMyBusinessOverview = {

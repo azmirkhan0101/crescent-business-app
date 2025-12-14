@@ -22,7 +22,6 @@ class RewardModel {
 
   final bool featured;
   final int priority;
-  final int views;
   final int redemptions;
   final List<dynamic> limitUpdateHistory;
 
@@ -50,7 +49,6 @@ class RewardModel {
     required this.codes,
     required this.featured,
     required this.priority,
-    required this.views,
     required this.redemptions,
     required this.limitUpdateHistory,
     required this.createdAt,
@@ -87,7 +85,6 @@ class RewardModel {
       (json["codes"] as List).map((e) => RewardCode.fromJson(e)).toList(),
       featured: json["featured"],
       priority: json["priority"],
-      views: json["views"],
       redemptions: json["redemptions"],
       limitUpdateHistory: json["limitUpdateHistory"] ?? [],
       createdAt: DateTime.parse(json["createdAt"]),
@@ -117,7 +114,6 @@ class RewardModel {
       "codes": codes.map((e) => e.toJson()).toList(),
       "featured": featured,
       "priority": priority,
-      "views": views,
       "redemptions": redemptions,
       "limitUpdateHistory": limitUpdateHistory,
       "createdAt": createdAt.toIso8601String(),
