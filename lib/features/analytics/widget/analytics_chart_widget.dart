@@ -117,9 +117,6 @@ class AnalyticsCardChart extends StatelessWidget {
                       return ChartAxisLabel('', null);
                     },
                   ),
-
-
-
                   primaryYAxis: NumericAxis(
                     minimum: 0,
                     maximum: 250,

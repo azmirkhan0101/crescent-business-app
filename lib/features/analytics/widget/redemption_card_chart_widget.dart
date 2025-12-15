@@ -26,9 +26,15 @@ class RedemptionChartWidget extends StatelessWidget {
     Color nfcChartColor = Color(0xFFC0A4E8);
     Color codeChartColor = Color(0xFFFF7BD7);
 
-    final int qrCount = methods?[0].count ?? 0;
-    final int nfcCount = methods?[1].count ?? 0;
-    final int codeCount = methods?[2].count ?? 0;
+    int qrCount = 0;
+    int nfcCount = 0;
+    int codeCount = 0;
+
+    if( methods != null && methods!.length == 3 ){
+      qrCount = methods![0].count;
+      nfcCount = methods![1].count;
+      codeCount = methods![2].count;
+    }
 
     final List<ChartData> redemptionData = [
       ChartData('QR', qrCount, qrChartColor ),

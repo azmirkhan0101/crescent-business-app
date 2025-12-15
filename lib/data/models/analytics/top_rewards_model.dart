@@ -11,7 +11,7 @@ class TopRewardModel{
   factory TopRewardModel.fromJson(Map<String, dynamic> json){
     return TopRewardModel(
         title: json['title'] ?? "",
-        percentage: json['percentage'] ?? 0
+        percentage: (json['percentage'] as num?)?.toDouble() ?? 0.0
     );
   }
 

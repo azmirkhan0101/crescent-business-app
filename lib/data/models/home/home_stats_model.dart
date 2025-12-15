@@ -87,7 +87,7 @@ class OverallProgress {
     return OverallProgress(
       totalRedemptionLimit: json['totalRedemptionLimit'] ?? 0,
       totalRedeemedCount: json['totalRedeemedCount'] ?? 0,
-      percentage: json['percentage'] ?? 0,
+      percentage: (json['percentage'] as num?)?.toDouble() ?? 0.0,
     );
   }
 

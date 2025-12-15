@@ -124,23 +124,24 @@ class CreateRewardScreen extends StatelessWidget {
                   nfcTap: controller.nfcTap.value,
                   staticCode: controller.staticCode.value,
                   onQRCodeChanged: (isChecked){
-                    controller.qrCode.value = isChecked;
+                    controller.toggleQrCode( isChecked );
                   },
                   onNfcTapChanged: (isChecked){
-                    controller.nfcTap.value = isChecked;
+                    controller.toggleNfcTap( isChecked );
                   },
                   onStaticCodeChanged: (isChecked){
-                    controller.staticCode.value = isChecked;
-                  }, onTabChanged: (bool instoreTabSelected) {
+                    controller.toggleStaticCode( isChecked );
+                  },
+                onTabChanged: (bool instoreTabSelected) {
                     isInstoreTabSelected = instoreTabSelected;
               },
                 //ONLINE OPTIONS
                 discountCode: controller.discountCode.value,
                 giftCard: controller.giftCard.value,
                 onDiscountCodeChanged: (bool isChecked) {
-                    controller.discountCode.value = isChecked;
+                    controller.toggleDiscountCode( isChecked );
                 }, onGiftCardChanged: (bool isChecked) {
-                    controller.giftCard.value = isChecked;
+                    controller.toggleGiftCard( isChecked );
               },
                 //ONLINE
                 onPickFile: pickCSV,

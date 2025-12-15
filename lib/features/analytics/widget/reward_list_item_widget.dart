@@ -42,10 +42,7 @@ class RewardListItem extends StatelessWidget {
                 fontWeight: FontWeight.w500,
                  color: AppColors.blackTextColor
               ),
-
-
-
-
+              overflow: TextOverflow.ellipsis,
             ),
           ),
           // Right side: Percentage and arrow

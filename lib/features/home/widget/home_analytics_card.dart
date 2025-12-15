@@ -8,17 +8,15 @@ import '../../../utils/app_text_styles.dart';
 
 import '../../widgets/custom_card_widget.dart';
 
-class AnalyticsCardWidget extends StatelessWidget {
+class HomeAnalyticsCard extends StatelessWidget {
 
-  final bool isProfileViewsCard;
   final String timeLine;
   final int count;
   final double percentage;
   final bool isIncrease;
 
-  const AnalyticsCardWidget({
+  const HomeAnalyticsCard({
     super.key,
-    required this.isProfileViewsCard,
     required this.timeLine,
     required this.count,
     required this.percentage,
@@ -36,8 +34,8 @@ class AnalyticsCardWidget extends StatelessWidget {
         children: [
           /// Top Icon
           Image.asset(
-              isProfileViewsCard ? AssetsPath.profileIcon : AssetsPath.clickIcon,
-              //color: topIconColor,
+              AssetsPath.scanQrIcon,
+              color: Color(0xFFC08FFF),
               height: 24.h,
               width: 24.w
           ),
@@ -46,7 +44,7 @@ class AnalyticsCardWidget extends StatelessWidget {
 
           /// Title
           Text(
-              isProfileViewsCard ? "Profile Views" : "Website Visits",
+              'Redemptions',
               style: AppTextStyle.cardTextStyle
           ),
           SizedBox(height: 4.h),
@@ -69,7 +67,7 @@ class AnalyticsCardWidget extends StatelessWidget {
               //VIEWS COUNT
               CustomText(
                 text: "$count",
-              fontWeight: FontWeight.w700,
+                fontWeight: FontWeight.w700,
                 fontSize: 24.sp,
                 color: AppColors.headlineTColor,
               ),

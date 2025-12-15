@@ -23,6 +23,7 @@ class RewardCard extends StatefulWidget {
   final bool isGiftCard;
   final bool isDiscountCode;
   final VoidCallback onDeleteClick;
+  final Function(bool) onStatusChanged;
 
   const RewardCard({
     super.key,
@@ -37,6 +38,7 @@ class RewardCard extends StatefulWidget {
     this.isGiftCard = false,
     this.isDiscountCode = false,
     required this.onDeleteClick,
+    required this.onStatusChanged,
   });
 
   @override
@@ -59,7 +61,6 @@ class _RewardCardState extends State<RewardCard> {
 
   @override
   Widget build(BuildContext context) {
-    bool isActive = widget.isActive;
 
     return Container(
       height: 161.h,
@@ -188,7 +189,7 @@ class _RewardCardState extends State<RewardCard> {
               Row(
                 children: [
                   Text(
-                    isActive ? 'Active' : 'Disabled',
+                    widget.isActive ? 'Active' : 'Disabled',
                     style: AppTextStyle.mediumStyle.copyWith(
                       fontSize: 12.sp,
                       color: AppColors.blackTextColor,
@@ -199,11 +200,9 @@ class _RewardCardState extends State<RewardCard> {
 
                   // Custom switch
                   CustomSwitch(
-                    value: isActive,
+                    value: widget.isActive,
                     onChanged: (bool newValue) {
-                      setState(() {
-                        isActive = newValue;
-                      });
+                      widget.onStatusChanged( newValue );
                     },
                   ),
                 ],

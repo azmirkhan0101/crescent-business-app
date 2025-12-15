@@ -8,6 +8,7 @@ import 'package:organization/data/models/home/recent_activity_model.dart';
 import 'package:organization/features/home/widget/activity_list_tile_widget.dart';
 import 'package:organization/features/home/data/models/activity_data_class.dart';
 import 'package:organization/features/home/widget/bar_chart_widget.dart';
+import 'package:organization/features/home/widget/home_analytics_card.dart';
 import 'package:organization/features/home/widget/home_card_widget.dart';
 import 'package:organization/features/home/widget/home_header_widget.dart';
 import 'package:organization/features/widgets/custom_text.dart';
@@ -34,6 +35,7 @@ class HomeScreen extends StatelessWidget {
           onRefresh: () async{
             controller.getBusinessOverview();
             controller.getRecentActivity();
+            controller.getProfileData();
           },
           child: SingleChildScrollView(
             physics: AlwaysScrollableScrollPhysics(),
@@ -42,15 +44,20 @@ class HomeScreen extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  //TODO: GET NAME AND LOGO URL FROM STORAGE, WE GET THEM FROM GETPROFILE API AFTER LOGIN-SIGNUP
-                  /// header profile
-                  HomeHeaderWidget(userName: 'Talha S.'),
+                  //header profile
+                  Obx((){
+                    return HomeHeaderWidget(
+                      userName: controller.userName.value,
+                      profileImageUrl: controller.profileImageUrl.value,
+                    );
+                  }),
                   //TODO: DEBUG BUTTON, REMOVE LATER
                   ElevatedButton(
                     onPressed: () {
+                      controller.profileImageUrl.value = "https://images.unsplash.com/photo-1701615004837-40d8573b6652?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTF8fHVzZXJ8ZW58MHx8MHx8fDA%3D";
                       print("Active reward: ${controller.homeStatModel.value?.overview.totalActiveRewards}");
-                      controller.getBusinessOverview();
-                      controller.getRecentActivity();
+                      //controller.getBusinessOverview();
+                      //controller.getRecentActivity();
                     },
                     child: Text("debug"),
                   ),
@@ -62,28 +69,13 @@ class HomeScreen extends StatelessWidget {
                       fontWeight: FontWeight.w600,
                     ),
                   ),
-
                   //OVERVIEW
                   Row(
                     spacing: 5.w,
                     children: [
                       Expanded(
                         child: Obx(() {
-                          return AnalyticsCardWidget(
-                            topIconColor: Color(0xFFC08FFF),
-                            topIcon: AssetsPath.scanQrIcon,
-                            title: 'Redemptions',
-                            subtitle: 'Last 7 days',
-                            bottomText:
-                                controller
-                                    .homeStatModel
-                                    .value
-                                    ?.overview
-                                    .lastSevenDaysRedeemed
-                                    .toString() ??
-                                "0",
-                            bottomEndText:
-                                "${controller.homeStatModel.value?.overview.sevenDaysGrowthPercentage ?? 0} %",
+                          return HomeAnalyticsCard(
                             isIncrease:
                                 controller
                                     .homeStatModel
@@ -91,6 +83,14 @@ class HomeScreen extends StatelessWidget {
                                     ?.overview
                                     .isIncrease ??
                                 false,
+                            timeLine: "Last 7 days",
+                            count: controller
+                                .homeStatModel
+                                .value
+                                ?.overview
+                                .lastSevenDaysRedeemed ??
+                                0,
+                            percentage: controller.homeStatModel.value?.overview.sevenDaysGrowthPercentage.toDouble() ?? 0.0,
                           );
                         }),
                       ),

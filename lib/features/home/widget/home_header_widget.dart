@@ -7,9 +7,15 @@ import '../../../utils/app_text_styles.dart';
 import '../../../utils/assets_path.dart';
 
 class HomeHeaderWidget extends StatelessWidget {
-  final String userName;
 
-  const HomeHeaderWidget({super.key, required this.userName});
+  final String? profileImageUrl;
+  final String? userName;
+
+  const HomeHeaderWidget({
+    super.key,
+    required this.profileImageUrl,
+    required this.userName
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -23,21 +29,29 @@ class HomeHeaderWidget extends StatelessWidget {
               //TODO
               Get.toNamed(AppRoutes.profileSettings);
             },
-
             child: Row(
               children: [
-                // User/Business Logo
                 Container(
-                  height: 44.h,
-                  width: 44.w,
+                  width: 45.w,
+                  height: 45.h,
                   decoration: BoxDecoration(
+                    color: Colors.white,
                     shape: BoxShape.circle,
-                    image: DecorationImage(
-                      image: AssetImage(AssetsPath.businessProfileImage),
-                      fit: BoxFit.cover,
-                    ),
                   ),
+                  child: ClipOval( child: buildProfileImage() ),
                 ),
+                // User/Business Logo
+                // Container(
+                //   height: 44.h,
+                //   width: 44.w,
+                //   decoration: BoxDecoration(
+                //     shape: BoxShape.circle,
+                //     image: DecorationImage(
+                //       image: AssetImage(AssetsPath.businessProfileImage),
+                //       fit: BoxFit.cover,
+                //     ),
+                //   ),
+                // ),
 
                 const SizedBox(width: 12),
                 // Welcome text and user name
@@ -48,7 +62,7 @@ class HomeHeaderWidget extends StatelessWidget {
                     Text('Welcome Back!', style: AppTextStyle.mediumStyle),
                     SizedBox(height: 2.h),
                     Text(
-                      userName,
+                      userName == null || userName!.isEmpty ? "User"  : userName!,
                       style: AppTextStyle.headlineLStyle.copyWith(
                         fontSize: 20.sp,
                       ),
@@ -77,7 +91,9 @@ class HomeHeaderWidget extends StatelessWidget {
             child: Stack(
               alignment: Alignment.center,
               children: [
-                CustomAssetsImage(assetsPath: AssetsPath.alertIcon),
+                CustomAssetsImage(
+                    assetsPath: AssetsPath.alertIcon
+                ),
                 Positioned(
                   top: 10,
                   right: 10,
@@ -89,5 +105,16 @@ class HomeHeaderWidget extends StatelessWidget {
         ],
       ),
     );
+  }
+
+
+  //BUILD PROFILE IMAGE
+  Widget buildProfileImage() {
+    if ( profileImageUrl != null && profileImageUrl!.isNotEmpty) {
+      return Image.network( profileImageUrl!, fit: BoxFit.cover );
+    }
+
+    //return Icon(Icons.business, size: 50.r, color: Colors.grey);
+    return Image.asset( AssetsPath.profileIcon, fit: BoxFit.scaleDown );
   }
 }

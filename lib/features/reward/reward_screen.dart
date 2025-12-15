@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:organization/controller/reward/reward_controller.dart';
+import 'package:organization/features/reward/widget/filter_button.dart';
 import 'package:organization/features/reward/widget/reward_card_widget.dart';
 import 'package:organization/features/widgets/custom_asset_image.dart';
 import 'package:organization/features/widgets/custom_button_widget.dart';
@@ -18,6 +19,7 @@ import '../widgets/bottom_sheet_widget.dart';
 
 class RewardScreen extends StatelessWidget {
   final RewardController controller = Get.find<RewardController>();
+  RxBool switchActive = false.obs;
 
   @override
   Widget build(BuildContext context) {
@@ -45,21 +47,94 @@ class RewardScreen extends StatelessWidget {
 
       body: RefreshIndicator(
         onRefresh: () async{
+          //get all rewards on refresh - no filter
+          controller.selectedFilter.value = "all";
+          controller.isFilterLoading.value = false;
           await controller.getAllRewards();
         },
         child: SingleChildScrollView(
           physics: AlwaysScrollableScrollPhysics(),
 
           child: Obx(() {
-          if (controller.isLoading.value == true && controller.rewards.isEmpty) {
-            return Center(child: CircularProgressIndicator());
-          } else if (controller.isLoading.value == false &&
-              controller.rewards.isEmpty) {
+          if (controller.isLoading.value == true && controller.isFilterLoading.value == false && controller.rewards.isEmpty) {
+            return SizedBox(
+              height: MediaQuery.of(context).size.height*0.7,
+              child: Center(
+                child: CircularProgressIndicator(),
+              ),);
+          } else if (controller.isLoading.value == false && controller.selectedFilter.value == "all" && controller.rewards.isEmpty) {
             return noReward( context );
           } else {
             return Column(
               children: [
-                rewardList(context: context),
+                SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: Padding(
+                    padding: EdgeInsets.symmetric( horizontal: 15.w),
+                    child: Row(
+                      spacing: 12.w,
+                      children: [
+                        FilterButton(
+                            title: "All",
+                            value: "all",
+                            selected: controller.selectedFilter,
+                            onTap: (){
+                              controller.selectedFilter.value = "all";
+                              controller.isFilterLoading.value = true;
+                              controller.getAllRewards();
+                            }
+                        ),
+                        FilterButton(
+                            title: "Active",
+                            value: "active",
+                            selected: controller.selectedFilter,
+                            onTap: (){
+                              controller.selectedFilter.value = "active";
+                              controller.isFilterLoading.value = true;
+                              controller.getAllRewards();
+                            }
+                        ),
+                        FilterButton(
+                            title: "Disabled",
+                            value: "disabled",
+                            selected: controller.selectedFilter,
+                            onTap: (){
+                              controller.selectedFilter.value = "disabled";
+                              controller.isFilterLoading.value = true;
+                              controller.getAllRewards();
+                            }
+                        ),
+                        FilterButton(
+                            title: "Expiring soon",
+                            value: "expires_soon",
+                            selected: controller.selectedFilter,
+                            onTap: (){
+                              controller.selectedFilter.value = "expires_soon";
+                              controller.isFilterLoading.value = true;
+                              controller.getAllRewards();
+                            }
+                        )
+                      ],
+                    ),
+                  ),
+                ),
+                Obx((){
+                  if( controller.isFilterLoading.value == true && controller.rewards.isEmpty ){
+                    return SizedBox(
+                      height: MediaQuery.of(context).size.height*0.7,
+                      child: Center(
+                        child: CircularProgressIndicator(),
+                      ),);
+                  }else if( controller.isFilterLoading.value == false && controller.rewards.isEmpty ){
+                    return SizedBox(
+                      height: MediaQuery.of(context).size.height*0.7,
+                      child: Center(
+                      child: Text("No rewards found!"),
+                    ),);
+                  }else{
+                    return rewardList(context: context);
+                  }
+                }),
                 SizedBox(height: 90.h),
               ],
             );
@@ -147,25 +222,34 @@ class RewardScreen extends StatelessWidget {
         //ONLINE REDEMPTIONS
         final bool isGiftCard = model.onlineMethods?.giftCard ?? false;
         final bool isDiscountCode = model.onlineMethods?.discountCode ?? false;
+        RxBool rewardIsActive = model.isActive.obs;
 
         return Padding(
           padding: EdgeInsets.symmetric(horizontal: 15.w, vertical: 8.h),
-          child: RewardCard(
-            title: model.title,
-            expiryDate: model.expiryDate.toString(),
-            redemptions: model.redemptions,
-            isActive: model.isActive,
-            type: model.type,
-            isQr: isQr,
-            isNfc: isNfc,
-            isStaticCode: isStaticCode,
-            isGiftCard: isGiftCard,
-            isDiscountCode: isDiscountCode,
-            onDeleteClick: (){
-              showDeleteBottomSheet( model.id );
-              //showRewardDeleteDialog( model.id );
-            }
-          ),
+          child: Obx((){
+            return RewardCard(
+              title: model.title,
+              expiryDate: model.expiryDate.toString(),
+              redemptions: model.redemptions,
+              isActive: rewardIsActive.value,
+              type: model.type,
+              isQr: isQr,
+              isNfc: isNfc,
+              isStaticCode: isStaticCode,
+              isGiftCard: isGiftCard,
+              isDiscountCode: isDiscountCode,
+              onDeleteClick: (){
+                showDeleteBottomSheet( model.id );
+                //showRewardDeleteDialog( model.id );
+              }, onStatusChanged: (bool newStatus ) {
+                rewardIsActive.value = newStatus;
+              //STATUS UPDATE API CALL
+              print("Status update");
+              controller.updateRewardStatus(rewardId: model.id, isActive: newStatus );
+              print("Status updatedddddd");
+            },
+            );
+          })
         );
       },
     );

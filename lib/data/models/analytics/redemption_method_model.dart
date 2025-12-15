@@ -14,7 +14,7 @@ class RedemptionMethodModel{
     return RedemptionMethodModel(
         method: json['method'] ?? "",
         count: json['count'] ?? 0,
-        percentage: json['percentage'] ?? 0
+        percentage: (json['percentage'] as num?)?.toDouble() ?? 0.0
     );
   }
 

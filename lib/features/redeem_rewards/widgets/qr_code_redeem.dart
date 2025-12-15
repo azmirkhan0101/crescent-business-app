@@ -24,7 +24,9 @@ class _QRCodeWidgetState extends State<QRCodeWidget> {
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        CustomText(text: "Scan QR code",
+        CustomText(
+          //text: "Scan QR code",
+          text: scannedCode ?? "",
           color: AppColors.headlineTextColor,
           fontWeight: FontWeight.w600,
           fontSize: 24.sp,

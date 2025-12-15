@@ -3,7 +3,7 @@ class ApiEndpoints {
   //=======================BASE====================================
   //BASE URL
   static const baseUrl =
-      "https://ann-passage-mpegs-watching.trycloudflare.com/api/v1";
+      "https://texts-enhanced-phentermine-menus.trycloudflare.com/api/v1";
   //=======================AUTH====================================
   //LOGIN/SIGNIN
   static const login = "/auth/signin";
@@ -41,7 +41,13 @@ static const recentActivity = "/business/recent-activity";//HOME SCREEN RECENT A
   //========================REWARD===============================
   //CREATE REWARD - INSTORE AND ONLINE
   static const createRewardInStore = "/rewards"; //SAME FOR ONLINE
-  static const getAllRewards =
-      "/rewards/business/my-rewards?status=active&search&page=1&limit=10"; //TODO: CONTROL STATUS, PAGE, LIMIT FROM CONTROLLER
+  static String getAllRewards({required String status}){
+    //TODO: CONTROL STATUS, PAGE, LIMIT FROM CONTROLLER
+    return "/rewards/business/my-rewards?status=$status&search&page=1&limit=10";
+  }
+  static String updateRewardStatus({required String rewardID}){
+    return "/rewards/$rewardID/status";
+  }
+
   static const deleteReward = "/rewards/";//BUSINESS ID WILL BE PASSED FROM CONTROLLER IN PARAMETER
 }

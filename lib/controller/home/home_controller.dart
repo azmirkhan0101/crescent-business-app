@@ -5,6 +5,7 @@ import 'package:get_storage/get_storage.dart';
 import 'package:organization/data/models/home/home_stats_model.dart';
 import 'package:organization/data/models/home/monthly_stats.dart';
 import 'package:organization/data/models/home/recent_activity_model.dart';
+import 'package:organization/data/models/profile/business_profile_model.dart';
 import 'package:organization/utils/api_endpoints.dart';
 import 'package:http/http.dart' as http;
 import 'package:organization/utils/app_constants.dart';
@@ -16,14 +17,26 @@ class HomeController extends GetxController{
 
     getBusinessOverview();
     getRecentActivity();
+    getProfileData();
     super.onInit();
   }
 
   final storage = GetStorage();
+  RxString profileImageUrl = "".obs;
+  RxString userName = "".obs;
   RxBool isRecentActivityLoading = true.obs;
   RxList<RecentActivityModel> recentActivities = <RecentActivityModel>[].obs;
   Rxn<HomeStatsModel> homeStatModel = Rxn<HomeStatsModel>(null);
   RxList<MonthlyStats> monthlyStats = <MonthlyStats>[].obs;
+
+  //GET PROFILE IMAGE URL AND USERNAME FROM STORAGE
+  getProfileData(){
+    BusinessProfileModel? model = BusinessProfileModel.fromJson(storage.read( businessProfileModelKey ));
+    if( model != null ){
+      profileImageUrl.value = model.logoImage ?? "";
+      userName.value = model.name;
+    }
+  }
 
   //GET BUSINESS OVERVIEW - HOME SCREEN STATS
   getBusinessOverview() async{

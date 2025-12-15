@@ -1,13 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:organization/controller/analytics/analytics_controller.dart';
 import 'package:organization/features/analytics/widget/analytics_card_widget.dart';
 import 'package:organization/features/analytics/widget/analytics_chart_widget.dart';
-import 'package:organization/features/analytics/widget/analytics_data_class.dart';
-import 'package:organization/features/analytics/widget/analytics_header_widget.dart';
 import 'package:organization/features/analytics/widget/bottom_sheet_widget.dart';
 import 'package:organization/features/analytics/widget/redemption_card_chart_widget.dart';
 import 'package:organization/features/analytics/widget/reward_list_item_widget.dart';
@@ -15,12 +12,8 @@ import 'package:organization/features/widgets/custom_asset_image.dart';
 import 'package:organization/features/widgets/custom_card_widget.dart';
 import 'package:organization/features/widgets/custom_text.dart';
 import 'package:organization/utils/app_color.dart';
-import 'package:organization/utils/app_text_styles.dart';
 
-import '../../utils/app_size.dart';
 import '../../utils/assets_path.dart';
-
-import 'data/models/analytics_card_model.dart';
 
 class AnalyticsScreen extends StatelessWidget {
 
@@ -32,88 +25,35 @@ class AnalyticsScreen extends StatelessWidget {
       child: Scaffold(
         extendBody: true,
         backgroundColor: Color(0xFFF7F7F7),
-        body: SingleChildScrollView(
-          padding: EdgeInsets.symmetric(horizontal: 16.w),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              SizedBox(height: 20.h),
-
-              //HEADER - APPBAR
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    'Analytics',
-                    style: GoogleFonts.familjenGrotesk(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 20,
-                      color: AppColors.headlineTColor,
-                    ),
-                  ),
-                  Row(
-                    children: [
-                      Container(
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(10),
-                          boxShadow: [
-                            BoxShadow(
-                              color: const Color(0x199E9E9E),
-                              spreadRadius: 1,
-                              blurRadius: 5,
-                              offset: const Offset(0, 3),
-                            ),
-                          ],
-                        ),
-                        child: DropdownButtonHideUnderline(
-                          child: DropdownButton<String>(
-                            value: 'Last 7 Days',
-                            icon: const Icon(
-                              Icons.keyboard_arrow_down,
-                              color: Colors.black,
-                            ),
-                            style: GoogleFonts.inter(
-                              fontWeight: FontWeight.w400,
-                              color: AppColors.blackTextColor,
-                              fontSize: 14.sp,
-                            ),
-
-                            onChanged: (String? newValue) {
-                              // Handle dropdown change
-                            },
-                            items:
-                                <String>[
-                                  'Last 7 Days',
-                                  'Last 30 Days',
-                                  'This Month',
-                                  'Last Month',
-                                ].map<DropdownMenuItem<String>>((String value) {
-                                  return DropdownMenuItem<String>(
-                                    value: value,
-                                    child: Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                        horizontal: 12.0,
-                                      ),
-                                      child: Text(value),
-                                    ),
-                                  );
-                                }).toList(),
-                          ),
-                        ),
+        body: RefreshIndicator(
+          onRefresh: () async{
+            await controller.getBusinessAnalytics();
+          },
+          child: SingleChildScrollView(
+            physics: AlwaysScrollableScrollPhysics(),
+            padding: EdgeInsets.symmetric(horizontal: 16.w),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                SizedBox(height: 20.h),
+                //HEADER - APPBAR
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      'Analytics',
+                      style: GoogleFonts.familjenGrotesk(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 20,
+                        color: AppColors.headlineTColor,
                       ),
-                      const SizedBox(width: 8),
-                      GestureDetector(
-                        onTap: () {
-                          openBottomSheet(context);
-                        },
-                        child: Container(
-                          height: 40.h,
-                          width: 40.w,
-                          padding: EdgeInsets.all(8),
+                    ),
+                    Row(
+                      children: [
+                        Container(
                           decoration: BoxDecoration(
                             color: Colors.white,
-                            shape: BoxShape.circle,
+                            borderRadius: BorderRadius.circular(10),
                             boxShadow: [
                               BoxShadow(
                                 color: const Color(0x199E9E9E),
@@ -123,104 +63,167 @@ class AnalyticsScreen extends StatelessWidget {
                               ),
                             ],
                           ),
-                          child: SvgPicture.asset(
-                            AssetsPath.export,
-                            height: 10.h,
-                            width: 10.w,
-                            fit: BoxFit.contain,
+                          child: DropdownButtonHideUnderline(
+                            child: DropdownButton<String>(
+                              value: 'Last 7 Days',
+                              icon: const Icon(
+                                Icons.keyboard_arrow_down,
+                                color: Colors.black,
+                              ),
+                              style: GoogleFonts.inter(
+                                fontWeight: FontWeight.w400,
+                                color: AppColors.blackTextColor,
+                                fontSize: 14.sp,
+                              ),
+
+                              onChanged: (String? newValue) {
+                                // Handle dropdown change
+                              },
+                              items:
+                                  <String>[
+                                    'Last 7 Days',
+                                    'Last 30 Days',
+                                    'This Month',
+                                    'Last Month',
+                                  ].map<DropdownMenuItem<String>>((String value) {
+                                    return DropdownMenuItem<String>(
+                                      value: value,
+                                      child: Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                          horizontal: 12.0,
+                                        ),
+                                        child: Text(value),
+                                      ),
+                                    );
+                                  }).toList(),
+                            ),
                           ),
                         ),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-              SizedBox(height: 16.h),
-
-              //REDEMPTION PIE CHART SECTION
-              Obx((){
-                return RedemptionChartWidget(
-                  totalRedemptions: controller.businessAnalyticsModel.value?.totalRedemptions ?? 0,
-                  methods: controller.businessAnalyticsModel.value?.methods ?? [],
-                );
-              }),
-              SizedBox(height: 16.h),
-
-              ///card
-              SizedBox(
-                height: 380.h,
-                child: GridView.builder(
-                  shrinkWrap: true,
-                  physics: const NeverScrollableScrollPhysics(),
-                  itemCount: StatsModel.sampleList.length,
-                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 2,
-                    crossAxisSpacing: 2.w,
-                    mainAxisSpacing: 2.h,
-                  ),
-                  itemBuilder: (context, index) {
-                    final item = analyticsData[index];
-                    return AnalyticsCardWidget(
-                      topIcon: item["topIcon"]!,
-                      title: item["title"]!,
-                      subtitle: item["subtitle"]!,
-                      bottomText: item["bottomText"]!,
-                      bottomEndText: item["bottomEndText"]!,
-                      isIncrease: false,
-                    );
-                  },
-                ),
-              ),
-              const AnalyticsCardChart(),
-              SizedBox(height: 16.h),
-              CustomCard(
-                height: 197.h,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      children: [
-                        CustomAssetsImage(
-                          assetsPath: AssetsPath.rocketIcon,
-                          height: 24.h,
-                          width: 24.w,
-                        ),
-                        SizedBox(width: 8.w),
-                        CustomText(
-                          text: "Top Rewards",
-                          fontWeight: FontWeight.w500,
-                          fontSize: 14.sp,
-                          color: AppColors.blackTextColor,
+                        const SizedBox(width: 8),
+                        IconButton(
+                            onPressed: (){
+                              openBottomSheet(context);
+                            },
+                            style: ButtonStyle(
+                                backgroundColor: WidgetStatePropertyAll(AppColors.white),
+                                elevation: WidgetStatePropertyAll(4), shadowColor: WidgetStatePropertyAll(Color(0x199E9E9E))),
+                            icon: Icon(Icons.upload, size: 20, color: AppColors.black,)
                         ),
                       ],
                     ),
-                    RewardListItem(
-                      rewardText: '10% Off Latte',
-                      percentage: 40.2,
-                      isGrowth: true,
-                      assetsIcon: AssetsPath.rewardDiscountIcon,
-                    ),
-                    RewardListItem(
-                      rewardText: '10% Off Latte',
-                      percentage: 40.2,
-                      isGrowth: true,
-                      assetsIcon: AssetsPath.rewardDiscountIcon,
-                    ),
-                    RewardListItem(
-                      rewardText: '10% Off Latte',
-                      percentage: 40.2,
-                      isGrowth: true,
-                      assetsIcon: AssetsPath.rewardDiscountIcon,
-                    ),
                   ],
                 ),
-              ),
-              SizedBox(height: 90.h),
-            ],
+                SizedBox(height: 16.h),
+                //=============================DEBUG BUTTON=================================
+                ElevatedButton(onPressed: (){
+                  print("Methods length: ${controller.businessAnalyticsModel.value}");
+                  controller.businessAnalyticsModel.value = null;
+                  controller.methods.value = [];
+                  controller.topRewards.value = [];
+                }, child: Text("Debug")
+                ),
+                //REDEMPTION PIE CHART SECTION
+                Obx((){
+                  return RedemptionChartWidget(
+                    totalRedemptions: controller.businessAnalyticsModel.value?.totalRedemptions ?? 0,
+                    methods: controller.methods,
+                  );
+                }),
+                SizedBox(height: 16.h),
+                //===============WEBSITE VISIT - PROFILE VIEW================
+                Row(
+                  spacing: 5.w,
+                  mainAxisSize: MainAxisSize.max,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Expanded(
+                      child: Obx((){
+                        return AnalyticsCardWidget(
+                            isProfileViewsCard: true,
+                            timeLine: controller.timeLine.value,
+                            count: controller.businessAnalyticsModel.value?.websiteViews ?? 0,
+                            percentage: controller.businessAnalyticsModel.value?.websitePercentage ?? 0.0,
+                            isIncrease: controller.businessAnalyticsModel.value?.websiteViewsIncrease ?? false
+                        );
+                      }),
+                    ),
+                    Expanded(
+                      child: Obx((){
+                        return AnalyticsCardWidget(
+                            isProfileViewsCard: false,
+                            timeLine: controller.timeLine.value,
+                            count: controller.businessAnalyticsModel.value?.profileViews ?? 0,
+                            percentage: controller.businessAnalyticsModel.value?.profilePercentage ?? 0.0,
+                            isIncrease: controller.businessAnalyticsModel.value?.profileViewsIncrease ?? false
+                        );
+                      }),
+                    )
+                  ],
+                ),
+                //========================REWARD ANALYTICS GRAPH===========================
+                const AnalyticsCardChart(),
+                SizedBox(height: 16.h),
+                //================TOP REWARDS SECTION====================
+                CustomCard(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        children: [
+                          CustomAssetsImage(
+                            assetsPath: AssetsPath.rocketIcon,
+                            height: 24.h,
+                            width: 24.w,
+                          ),
+                          SizedBox(width: 8.w),
+                          CustomText(
+                            text: "Top Rewards",
+                            fontWeight: FontWeight.w500,
+                            fontSize: 14.sp,
+                            color: AppColors.blackTextColor,
+                          ),
+                        ],
+                      ),
+                      Obx((){
+                        if( controller.isTopRewardsLoading.value ){
+                          return Center(child: CircularProgressIndicator(),);
+                        }else if( !controller.isTopRewardsLoading.value && controller.topRewards.isEmpty ){
+                          return Center(
+                            child: Padding(
+                              padding: EdgeInsets.symmetric( vertical: 15.h),
+                              child: Text( "No top rewards found", style: TextStyle(color: AppColors.black),),
+                            ),
+                          );
+                        }else{
+                          return topRewardList( context );
+                        }
+                      }),
+                    ],
+                  )
+                ),
+                SizedBox(height: 90.h),
+              ],
+            ),
           ),
         ),
       ),
     );
+  }
+
+
+  //TOP REWARD LIST
+  topRewardList(BuildContext context){
+    return ListView.builder(
+      shrinkWrap: true,
+      itemCount: controller.topRewards.length,
+        itemBuilder: (context, index){
+          return RewardListItem(
+            rewardText: controller.topRewards[index].title,
+            percentage: controller.topRewards[index].percentage,
+            isGrowth: true,
+            assetsIcon: AssetsPath.rewardDiscountIcon,//TODO: GET ICON FROM API OR SHOW STATIC ICON IF NULL
+          );
+    });
   }
 
   //BOTTOM SHEET - EXPORT CSV - PDF

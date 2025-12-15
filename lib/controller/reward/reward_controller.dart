@@ -31,6 +31,8 @@ class RewardController extends GetxController {
   RxList<RewardModel> rewards = <RewardModel>[].obs;
   //LOADING CONTROL
   RxBool isLoading = true.obs;
+  //FILTER LOADING CONTROL
+  RxBool isFilterLoading = false.obs;
 
   static const List<String> categories = [
     "Food",
@@ -50,9 +52,47 @@ class RewardController extends GetxController {
   RxBool qrCode = true.obs;
   RxBool staticCode = false.obs;
   RxBool nfcTap = false.obs;
+  //CONTROL CHECK BOXES - AT LEAST ONE VALUE MUST BE TRUE
+  void toggleQrCode(bool value) {
+    qrCode.value = value;
+
+    if (!qrCode.value && !staticCode.value && !nfcTap.value) {
+      qrCode.value = true; // keep at least one true
+    }
+  }
+  void toggleStaticCode(bool value) {
+    staticCode.value = value;
+
+    if (!qrCode.value && !staticCode.value && !nfcTap.value) {
+      staticCode.value = true;
+    }
+  }
+  void toggleNfcTap(bool value) {
+    nfcTap.value = value;
+
+    if (!qrCode.value && !staticCode.value && !nfcTap.value) {
+      nfcTap.value = true;
+    }
+  }
   //ONLINE OPTIONS
   RxBool discountCode = true.obs;
   RxBool giftCard = false.obs;
+  //CONTROL CHECK BOXES - AT LEAST ONE VALUE MUST REMAIN TRUE
+  void toggleDiscountCode(bool value) {
+    discountCode.value = value;
+
+    if (!discountCode.value && !giftCard.value) {
+      discountCode.value = true; // keep at least one true
+    }
+  }
+
+  void toggleGiftCard(bool value) {
+    giftCard.value = value;
+
+    if (!discountCode.value && !giftCard.value) {
+      giftCard.value = true; // keep at least one true
+    }
+  }
   final Rx<File?> rewardImage = Rx<File?>(null);
   final Rx<File?> csvFile = Rx<File?>(null);
 
@@ -65,13 +105,16 @@ class RewardController extends GetxController {
   final TextEditingController startDate = TextEditingController();//TODO: NO NEED. GENERATE TIME DURING API CALL
   final TextEditingController redemptionLimitController = TextEditingController();
 
+  //['all', 'active', 'disabled', 'expires_soon'] - filter reference
+  //DEFAULT FILTER "all"
+  final RxString selectedFilter = 'all'.obs;
 
   //GET ALL REWARDS
   getAllRewards() async{
     isLoading.value = true;
     rewards.value = [];
     try{
-      Uri uri = Uri.parse( ApiEndpoints.baseUrl + ApiEndpoints.getAllRewards );
+      Uri uri = Uri.parse( ApiEndpoints.baseUrl + ApiEndpoints.getAllRewards(status: selectedFilter.value) );
 
       Map<String, String> headers = {
         "Authorization" : "Bearer ${storage.read( accessTokenKey )}"
@@ -100,27 +143,10 @@ class RewardController extends GetxController {
     }finally{
       WidgetsBinding.instance.addPostFrameCallback((_) {
         isLoading.value = false;
+        isFilterLoading.value = false;
       });
     }
   }
-
-  //SAMPLE RESPONSE OF GET REWARDS
-  Map<String, dynamic> responseSample = {
-    "success": true,
-    "message": "Statistics retrieved successfully",
-    "data": {
-      "totalRewards": 0,
-      "activeRewards": 0,
-      "expiredRewards": 0,
-      "soldOutRewards": 0,
-      "totalRedemptions": 0,
-      "totalViews": 0,
-      "averageRedemptionRate": 0,
-      "topRewards": [],
-      "rewardsByCategory": [],
-      "rewardsByType": {"inStore": 0, "online": 0},
-    },
-  };
 
 //CREATE REWARD IN STORE
   createRewardInStore() async{
@@ -305,6 +331,32 @@ class RewardController extends GetxController {
     }
   }
 
+  //UPDATE REWARD STATUS - FROM TOGGLE SWITCH IN REWARD CARD
+  updateRewardStatus({required String rewardId, required bool isActive }) async{
+    
+    try{
+      Uri uri = Uri.parse( ApiEndpoints.baseUrl + ApiEndpoints.updateRewardStatus(rewardID: rewardId));
+
+      Map<String, String> headers = {
+        "Content-type" : "application/json",
+        "Authorization" : "Bearer ${storage.read(accessTokenKey)}"
+      };
+
+      Map<String, bool> payLoad = {
+        "isActive": isActive
+      };
+
+      print("Payload: ${jsonEncode(payLoad)}");
+      print("Id: ${rewardId}");
+
+      http.Response response = await http.patch( uri, body: jsonEncode(payLoad), headers: headers );
+
+      print("Status: ${response.statusCode}");
+      print("Body: ${response.body}");
+    }catch(e){
+      print("Status update catch: ${e}");
+    }
+  }
 
   //DELETE REWARD
   deleteReward( String rewardId ) async{

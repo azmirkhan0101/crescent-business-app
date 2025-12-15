@@ -29,10 +29,10 @@ class BusinessAnalyticsModel {
     return BusinessAnalyticsModel(
         totalRedemptions: json['totalRedemptions'] ?? 0,
         profileViews: json['profileCurrent'] ?? 0,
-        profilePercentage: json['profileChange'] ?? 0,
+        profilePercentage: (json['profileChange'] as num?)?.toDouble() ?? 0.0,
         profileViewsIncrease: json['profileIncrease'] ?? false,
         websiteViews: json['websiteCurrent'] ?? 0,
-        websitePercentage: json['websiteChange'] ?? 0,
+        websitePercentage: (json['websiteChange'] as num?)?.toDouble() ?? 0.0,
         websiteViewsIncrease: json['websiteIncrease'] ?? false,
         methods: (json['methods'] as List).map((e){
           return RedemptionMethodModel.fromJson(e);

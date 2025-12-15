@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:http/http.dart' as http;
 import 'package:organization/data/models/analytics/business_analytics_model.dart';
+import 'package:organization/data/models/analytics/redemption_method_model.dart';
 import 'package:organization/data/models/analytics/top_rewards_model.dart';
 
 import '../../utils/api_endpoints.dart';
@@ -19,8 +20,12 @@ class AnalyticsController extends GetxController{
   }
 
   final storage = GetStorage();
+  //TIMELINE - FOR ANALYTICS CARD
+  RxString timeLine = "Last 7 days".obs;
   //BUSINESS ANALYTICS
   Rxn<BusinessAnalyticsModel> businessAnalyticsModel = Rxn<BusinessAnalyticsModel>(null);
+  //REDEMPTION METHOD MODEL
+  RxList<RedemptionMethodModel> methods = <RedemptionMethodModel>[].obs;
   //TOP REWARDS LIST
   RxList<TopRewardModel> topRewards = <TopRewardModel>[].obs;
   //CONTROL TOP REWARDS LOADING - SHOW PROGRESSBAR
@@ -46,6 +51,8 @@ class AnalyticsController extends GetxController{
       if (response.statusCode == 200) {
         print("Successsssss business analytics");
         businessAnalyticsModel.value = BusinessAnalyticsModel.fromJson( jsonDecode(response.body)['data'] );
+        methods.value = businessAnalyticsModel.value?.methods ?? [];
+        print("Successsssss222222222222 business analytics");
         topRewards.value = businessAnalyticsModel.value?.topRewards ?? [];
       }
     }catch(e){
