@@ -3,9 +3,11 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:http/http.dart' as http;
+import 'package:mime/mime.dart';
 import 'package:organization/core/show_snackbar.dart';
 import 'package:organization/data/models/reward/instore_reward_create_model.dart';
 import 'package:organization/data/models/reward/online_reward_create_model.dart';
@@ -13,6 +15,8 @@ import 'package:organization/data/models/reward/reward_model.dart';
 import 'package:organization/utils/api_endpoints.dart';
 import 'package:organization/utils/app_color.dart';
 import 'package:organization/utils/app_constants.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:path/path.dart' as p;
 
 class RewardController extends GetxController {
 
@@ -194,12 +198,23 @@ class RewardController extends GetxController {
       request.fields["data"] = jsonEncode( inStoreCreateModel!.toJson() );
 
       if( rewardImage.value != null ){
-        request.files.add(
-            await http.MultipartFile.fromPath(
+        final compressedImage = await compressImage( rewardImage.value! );
+        if( compressedImage != null ){
+          final mimeType =
+              lookupMimeType(compressedImage.path)?.split('/') ??
+                  ['application', 'octet-stream'];
+
+          request.files.add(
+              await http.MultipartFile.fromPath(
                 "rewardImage",
-                rewardImage.value!.path
-            )
-        );
+                compressedImage.path,
+                contentType: http.MediaType(
+                  mimeType[0],
+                  mimeType[1],
+                ),
+              )
+          );
+        }
       }
 
       var response = await request.send().timeout(Duration(seconds: 10));
@@ -273,12 +288,24 @@ class RewardController extends GetxController {
 
       //REWARD IMAGE
       if( rewardImage.value != null ){
-        request.files.add(
-            await http.MultipartFile.fromPath(
+
+        final compressedImage = await compressImage( rewardImage.value! );
+        if( compressedImage != null ){
+          final mimeType =
+              lookupMimeType(compressedImage.path)?.split('/') ??
+                  ['application', 'octet-stream'];
+
+          request.files.add(
+              await http.MultipartFile.fromPath(
                 "rewardImage",
-                rewardImage.value!.path
-            )
-        );
+                compressedImage.path,
+                contentType: http.MediaType(
+                  mimeType[0],
+                  mimeType[1],
+                ),
+              )
+          );
+        }
       }
 
       //CSV FILE FOR DISCOUNT CODES
@@ -391,6 +418,24 @@ class RewardController extends GetxController {
   String capitalizeFirstLetter(String s) {
     if (s.isEmpty) return s;
     return s[0].toUpperCase() + s.substring(1);
+  }
+
+  //COMPRESS IMAGE
+  Future<File?> compressImage(File file) async {
+    final dir = await getTemporaryDirectory();
+    final targetPath = p.join(
+      dir.path,
+      '${DateTime.now().millisecondsSinceEpoch}.jpg',
+    );
+
+    final result = await FlutterImageCompress.compressAndGetFile(
+      file.absolute.path,
+      targetPath,
+      quality: 50,// 0 - 100
+      format: CompressFormat.jpeg,
+    );
+
+    return result != null ? File(result.path) : null;
   }
 
 }

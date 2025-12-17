@@ -3,14 +3,18 @@ import 'dart:io';
 import 'dart:ui';
 
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:mime/mime.dart';
 import 'package:organization/data/models/profile/business_profile_model.dart';
 import 'package:organization/utils/app_constants.dart';
+import 'package:path_provider/path_provider.dart';
 
 import '../../routes/app_pages.dart';
 import '../../utils/api_endpoints.dart';
 import 'package:http/http.dart' as http;
+import 'package:path/path.dart' as p;
 
 import '../../utils/app_color.dart';
 
@@ -32,16 +36,34 @@ class BusinessProfileController extends GetxController{
   //COVER AND LOGO IMAGES - NULLABLE
   Rx<File?> coverImage = Rx<File?>(null);
   Rx<File?> logoImage = Rx<File?>(null);
+  //COVER IMAGE URL
+  RxString coverImageUrl = "".obs;
+  //LOGO IMAGE URL
+  RxString logoImageUrl = "".obs;
 
   @override
   void onInit() {
 
-    var profileData = storage.read( businessProfileModelKey );
-    model.value = BusinessProfileModel.fromJson( profileData );
-    editProfileModel = BusinessProfileModel.fromJson( profileData );
+    getProfileData();
+    editProfileModel = BusinessProfileModel.fromJson( storage.read( businessProfileModelKey ) );
     locationNames.value = editProfileModel.locations ?? [];
 
     super.onInit();
+  }
+
+  //RETRIEVE PROFILE DATA FROM STORAGE
+  getProfileData(){
+
+    model.value = BusinessProfileModel.fromJson( storage.read( businessProfileModelKey ) );
+    final retrievedModel = model.value;
+    if( retrievedModel != null ){
+      logoImageUrl.value = retrievedModel.logoImage == null || retrievedModel.logoImage!.isEmpty
+          ? ""
+          : "${ApiEndpoints.imageBaseUrl}${retrievedModel.logoImage}";
+      coverImageUrl.value = retrievedModel.coverImage == null || retrievedModel.coverImage!.isEmpty
+          ? ""
+          : "${ApiEndpoints.imageBaseUrl}${retrievedModel.coverImage}";
+    }
   }
 
   //UPDATE BUSINESS PROFILE
@@ -67,16 +89,45 @@ class BusinessProfileController extends GetxController{
       request.fields["data"] = jsonEncode(data);
       // Add optional cover image
       if( coverImage.value != null ){
-        request.files.add(
-          await http.MultipartFile.fromPath(
-            "coverImage",
-            coverImage.value!.path,
-          ),
-        );
-      }
+
+        final compressedCoverImage = await compressImage( coverImage.value! );
+        if( compressedCoverImage != null ){
+          final mimeType =
+              lookupMimeType(compressedCoverImage.path)?.split('/') ??
+                  ['application', 'octet-stream'];
+
+          request.files.add(
+              await http.MultipartFile.fromPath(
+                "coverImage",
+                compressedCoverImage.path,
+                contentType: http.MediaType(
+                  mimeType[0],
+                  mimeType[1],
+                ),
+              )
+          );
+        }
 
       // Add optional logo image
       if( logoImage.value != null ){
+        final compressedLogoImage = await compressImage( logoImage.value! );
+        if( compressedLogoImage != null ) {
+          final mimeType =
+              lookupMimeType(compressedLogoImage.path)?.split('/') ??
+                  ['application', 'octet-stream'];
+
+          request.files.add(
+              await http.MultipartFile.fromPath(
+                "coverImage",
+                compressedLogoImage.path,
+                contentType: http.MediaType(
+                  mimeType[0],
+                  mimeType[1],
+                ),
+              )
+          );
+        }
+      }
         request.files.add(
           await http.MultipartFile.fromPath(
             "logoImage",
@@ -129,7 +180,7 @@ class BusinessProfileController extends GetxController{
         //SAVE PROFILE DATA IN STORAGE
         storage.write( businessProfileModelKey, model.toJson() );
         //RETRIEVE PROFILE DATA FROM STORAGE NOW TO SHOW IN PROFILE SCREEN
-        readUpdatedProfileData();
+        getProfileData();
       }else if( response.statusCode == 401 ){//ACCESS TOKEN INVALID
         showSnackBar(
             title: "Session Expired!",
@@ -148,10 +199,23 @@ class BusinessProfileController extends GetxController{
     }
   }
 
-  //READ UPDATED PROFILE DATA FROM STORAGE
-  readUpdatedProfileData(){
-    var profileData = storage.read( businessProfileModelKey );
-    model.value = BusinessProfileModel.fromJson( profileData );
+
+  //COMPRESS IMAGE
+  Future<File?> compressImage(File file) async {
+    final dir = await getTemporaryDirectory();
+    final targetPath = p.join(
+      dir.path,
+      '${DateTime.now().millisecondsSinceEpoch}.jpg',
+    );
+
+    final result = await FlutterImageCompress.compressAndGetFile(
+      file.absolute.path,
+      targetPath,
+      quality: 50,// 0 - 100
+      format: CompressFormat.jpeg,
+    );
+
+    return result != null ? File(result.path) : null;
   }
 
   //SHOW SNACKBAR

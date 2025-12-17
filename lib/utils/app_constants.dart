@@ -16,3 +16,11 @@ const String delete = "delete";
 //REWARD TYPE
 const String typeInStore = "in-store";
 const String typeOnline = "online";
+
+//TIME FILTER FOR BUSINESS ANALYTICS API PARAMETER
+const List<String> analyticsTimeFilters = [
+  "last_7_days",
+  "last_30_days",
+  "this_month",
+  "last_month",
+];

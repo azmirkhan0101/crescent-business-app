@@ -28,6 +28,13 @@ class AnalyticsCardWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
+    String percentageText =
+    percentage % 1 == 0
+        ? percentage.toInt().toString()
+        : percentage.toString();
+
+
     return CustomCard(
       height: 162.h,
       color: AppColors.white,
@@ -78,7 +85,7 @@ class AnalyticsCardWidget extends StatelessWidget {
                 children: [
                   //PERCENTAGE
                   CustomText(
-                    text: "$percentage",
+                    text: "$percentageText %",
                     fontWeight: FontWeight.w400,
                     fontSize: 14.sp,
                     color: AppColors.blackTextColor,

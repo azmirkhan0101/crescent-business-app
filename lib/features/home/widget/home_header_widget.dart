@@ -40,19 +40,6 @@ class HomeHeaderWidget extends StatelessWidget {
                   ),
                   child: ClipOval( child: buildProfileImage() ),
                 ),
-                // User/Business Logo
-                // Container(
-                //   height: 44.h,
-                //   width: 44.w,
-                //   decoration: BoxDecoration(
-                //     shape: BoxShape.circle,
-                //     image: DecorationImage(
-                //       image: AssetImage(AssetsPath.businessProfileImage),
-                //       fit: BoxFit.cover,
-                //     ),
-                //   ),
-                // ),
-
                 const SizedBox(width: 12),
                 // Welcome text and user name
                 Column(

@@ -2,13 +2,17 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:http/http.dart' as http;
+import 'package:mime/mime.dart';
 import 'package:organization/data/models/signup/business_signup_model.dart';
 import 'package:organization/routes/app_pages.dart';
 import 'package:organization/utils/api_endpoints.dart';
 import 'package:organization/utils/app_constants.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:path/path.dart' as p;
 
 import '../../core/show_snackbar.dart';
 import '../../utils/app_color.dart';
@@ -147,12 +151,24 @@ class SignUpController extends GetxController {
 
       // Add profileImage (optional)
       if (logo != null) {
-        request.files.add(
-          await http.MultipartFile.fromPath(
-            "logoImage",
-            logo.path,
-          ),
-        );
+
+        final compressedImage = await compressImage( logo );
+        if( compressedImage != null ){
+          final mimeType =
+              lookupMimeType(compressedImage.path)?.split('/') ??
+                  ['application', 'octet-stream'];
+
+          request.files.add(
+              await http.MultipartFile.fromPath(
+                "logoImage",
+                compressedImage.path,
+                contentType: http.MediaType(
+                  mimeType[0],
+                  mimeType[1],
+                ),
+              )
+          );
+        }
       }
 
       // Send request
@@ -241,6 +257,25 @@ class SignUpController extends GetxController {
   //     barrierDismissible: false,
   //   );
   // }
+
+
+  //COMPRESS IMAGE
+  Future<File?> compressImage(File file) async {
+    final dir = await getTemporaryDirectory();
+    final targetPath = p.join(
+      dir.path,
+      '${DateTime.now().millisecondsSinceEpoch}.jpg',
+    );
+
+    final result = await FlutterImageCompress.compressAndGetFile(
+      file.absolute.path,
+      targetPath,
+      quality: 50,// 0 - 100
+      format: CompressFormat.jpeg,
+    );
+
+    return result != null ? File(result.path) : null;
+  }
 
   @override
   void onClose() {

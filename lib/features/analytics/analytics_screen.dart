@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:organization/controller/analytics/analytics_controller.dart';
+import 'package:organization/controller/reward/reward_controller.dart';
 import 'package:organization/features/analytics/widget/analytics_card_widget.dart';
 import 'package:organization/features/analytics/widget/analytics_chart_widget.dart';
 import 'package:organization/features/analytics/widget/bottom_sheet_widget.dart';
@@ -48,6 +49,7 @@ class AnalyticsScreen extends StatelessWidget {
                         color: AppColors.headlineTColor,
                       ),
                     ),
+                    //TIME FILTER DROPDOWN
                     Row(
                       children: [
                         Container(
@@ -64,28 +66,24 @@ class AnalyticsScreen extends StatelessWidget {
                             ],
                           ),
                           child: DropdownButtonHideUnderline(
-                            child: DropdownButton<String>(
-                              value: 'Last 7 Days',
-                              icon: const Icon(
-                                Icons.keyboard_arrow_down,
-                                color: Colors.black,
-                              ),
-                              style: GoogleFonts.inter(
-                                fontWeight: FontWeight.w400,
-                                color: AppColors.blackTextColor,
-                                fontSize: 14.sp,
-                              ),
-
-                              onChanged: (String? newValue) {
-                                // Handle dropdown change
-                              },
-                              items:
-                                  <String>[
-                                    'Last 7 Days',
-                                    'Last 30 Days',
-                                    'This Month',
-                                    'Last Month',
-                                  ].map<DropdownMenuItem<String>>((String value) {
+                              child: Obx((){
+                                return DropdownButton<String>(
+                                  value: controller.selectedTimeline.value,
+                                  icon: const Icon(
+                                    Icons.keyboard_arrow_down,
+                                    color: Colors.black,
+                                  ),
+                                  style: GoogleFonts.inter(
+                                    fontWeight: FontWeight.w400,
+                                    color: AppColors.blackTextColor,
+                                    fontSize: 14.sp,
+                                  ),
+                                  onChanged: (String? newValue) {
+                                    controller.updateFilterTimeLine(  newValue );
+                                    controller.getBusinessAnalytics();
+                                  },
+                                  items:
+                                  controller.timeLines.map<DropdownMenuItem<String>>((String value) {
                                     return DropdownMenuItem<String>(
                                       value: value,
                                       child: Padding(
@@ -96,8 +94,9 @@ class AnalyticsScreen extends StatelessWidget {
                                       ),
                                     );
                                   }).toList(),
-                            ),
-                          ),
+                                );
+                              })
+                          )
                         ),
                         const SizedBox(width: 8),
                         IconButton(
@@ -116,10 +115,11 @@ class AnalyticsScreen extends StatelessWidget {
                 SizedBox(height: 16.h),
                 //=============================DEBUG BUTTON=================================
                 ElevatedButton(onPressed: (){
-                  print("Methods length: ${controller.businessAnalyticsModel.value}");
-                  controller.businessAnalyticsModel.value = null;
-                  controller.methods.value = [];
-                  controller.topRewards.value = [];
+                  print("Titles: ${controller.rewardTitles}");
+                  //print("Methods length: ${controller.businessAnalyticsModel.value}");
+                  //controller.businessAnalyticsModel.value = null;
+                  //controller.methods.value = [];
+                  //controller.topRewards.value = [];
                 }, child: Text("Debug")
                 ),
                 //REDEMPTION PIE CHART SECTION
@@ -140,7 +140,7 @@ class AnalyticsScreen extends StatelessWidget {
                       child: Obx((){
                         return AnalyticsCardWidget(
                             isProfileViewsCard: true,
-                            timeLine: controller.timeLine.value,
+                            timeLine: controller.selectedTimeline.value,
                             count: controller.businessAnalyticsModel.value?.websiteViews ?? 0,
                             percentage: controller.businessAnalyticsModel.value?.websitePercentage ?? 0.0,
                             isIncrease: controller.businessAnalyticsModel.value?.websiteViewsIncrease ?? false
@@ -151,7 +151,7 @@ class AnalyticsScreen extends StatelessWidget {
                       child: Obx((){
                         return AnalyticsCardWidget(
                             isProfileViewsCard: false,
-                            timeLine: controller.timeLine.value,
+                            timeLine: controller.selectedTimeline.value,
                             count: controller.businessAnalyticsModel.value?.profileViews ?? 0,
                             percentage: controller.businessAnalyticsModel.value?.profilePercentage ?? 0.0,
                             isIncrease: controller.businessAnalyticsModel.value?.profileViewsIncrease ?? false
@@ -161,7 +161,18 @@ class AnalyticsScreen extends StatelessWidget {
                   ],
                 ),
                 //========================REWARD ANALYTICS GRAPH===========================
-                const AnalyticsCardChart(),
+                Obx((){
+                  return AnalyticsCardChart(
+                    items: controller.rewardTitles.value,
+                    selectedTitle: controller.selectedTitle.value,
+                    onItemSelected: ( String selectedValue ) {
+                      controller.selectedTitle.value = selectedValue;
+                      controller.getRewardAnalyticsById(rewardId: controller.rewardIds[controller.rewardTitles.indexOf(selectedValue)]);
+                    },
+                    summaryModel: controller.summeryModel.value,
+                    graphList: [],
+                  );
+                }),
                 SizedBox(height: 16.h),
                 //================TOP REWARDS SECTION====================
                 CustomCard(

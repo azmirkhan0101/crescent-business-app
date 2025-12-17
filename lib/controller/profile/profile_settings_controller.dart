@@ -7,17 +7,42 @@ import 'package:organization/core/show_snackbar.dart';
 import 'package:organization/routes/app_pages.dart';
 import 'package:organization/utils/api_endpoints.dart';
 
+import '../../data/models/profile/business_profile_model.dart';
 import '../../utils/app_color.dart';
 import '../../utils/app_constants.dart';
 import 'package:http/http.dart' as http;
 
 class ProfileSettingsController extends GetxController {
+
+  @override
+  void onInit() {
+
+
+    super.onInit();
+  }
+
+  //GET LOGO IMAGE URL AND USER NAME
+  getProfileData(){
+    BusinessProfileModel? model = BusinessProfileModel.fromJson(storage.read( businessProfileModelKey ));
+    if( model != null ){
+      logoImageUrl.value = model.logoImage == null || model.logoImage!.isEmpty
+          ? ""
+          : "${ApiEndpoints.imageBaseUrl}${model.logoImage}";
+      businessName.value = model.name;
+      businessEmail.value = model.businessEmail;
+    }
+  }
   //1. change password
   //2. subscriptions
   //3. logout
   //4. delete account
 
   final storage = GetStorage();
+
+  //LOGO IMAGE URL
+  RxString logoImageUrl = "".obs;
+  RxString businessName = "".obs;
+  RxString businessEmail = "".obs;
 
   //=================CHANGE PASSWORD=======================//
   final TextEditingController currentPassword = TextEditingController();

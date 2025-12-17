@@ -2,8 +2,10 @@ class ApiEndpoints {
 
   //=======================BASE====================================
   //BASE URL
-  static const baseUrl =
-      "https://texts-enhanced-phentermine-menus.trycloudflare.com/api/v1";
+  static const baseUrl = "https://candidate-index-opportunities-moscow.trycloudflare.com/api/v1";
+  static const imageBaseUrl = "https://candidate-index-opportunities-moscow.trycloudflare.com/";
+
+
   //=======================AUTH====================================
   //LOGIN/SIGNIN
   static const login = "/auth/signin";
@@ -21,6 +23,8 @@ class ApiEndpoints {
   static const otpVerifyForgotPassword = "/auth/verify-forgot-password-otp";
   //RESET PASSWORD - NEW PASSWORD
   static const resetPassword = "/auth/reset-password";
+
+
   //=======================PROFILE====================================
   //GET PROFILE
   static const getProfile = "/auth/profile";
@@ -30,24 +34,36 @@ class ApiEndpoints {
   static const deleteAccount = "/auth/delete-account";
   //UPDATE PROFILE
   static const updateProfile = "/business/update-profile";
+
+
   //=========================HOME==============================
 static const businessOverview = "/business/overview";//HOME SCREEN STATS
 static const recentActivity = "/business/recent-activity";//HOME SCREEN RECENT ACTIVITY
+
+
 //=======================ANALYTICS====================================
   //GET ANALYTICS
-  static const businessAnalytics = "/business/analytics?timeFilter=last_7_days";//TODO: PASS TIME FILTER PARAMETER FROM CONTROLLER
-  //REWARD ANALYTICS STATS
-  static const rewardAnalytics = "/business/analytics/";//TODO: PASS REWARD ID FROM CONTROLLER
+  static businessAnalytics({required String timeFilter}){
+    return "/business/analytics?timeFilter=$timeFilter";
+  }
+  //REWARD ANALYTICS BY ID
+  static String rewardAnalytics({required String rewardId}){
+    return "/business/analytics/$rewardId";
+  }
+
   //========================REWARD===============================
   //CREATE REWARD - INSTORE AND ONLINE
   static const createRewardInStore = "/rewards"; //SAME FOR ONLINE
-  static String getAllRewards({required String status}){
+  static String getAllRewards({required String status, String search = ""}){
     //TODO: CONTROL STATUS, PAGE, LIMIT FROM CONTROLLER
-    return "/rewards/business/my-rewards?status=$status&search&page=1&limit=10";
+    if( search.isEmpty ){//NO SEARCH
+      return "/rewards/business/my-rewards?status=$status&search&page=1&limit=10";
+    }else{//SEARCH
+      return "/rewards/business/my-rewards?status=$status&search=$search&page=1&limit=10";
+    }
   }
   static String updateRewardStatus({required String rewardID}){
     return "/rewards/$rewardID/status";
   }
-
   static const deleteReward = "/rewards/";//BUSINESS ID WILL BE PASSED FROM CONTROLLER IN PARAMETER
 }

@@ -113,6 +113,7 @@ locationItem({required String locationName}){
       height: 52.h,
       width: double.infinity,
       child: Row(
+        mainAxisAlignment: MainAxisAlignment.start,
         children: [
           CustomAssetsImage(assetsPath: AssetsPath.locationIcon),
           SizedBox(width: 8.w),
@@ -125,6 +126,7 @@ locationItem({required String locationName}){
               fontWeight: FontWeight.w500,
               fontSize: 14.sp,
               color: AppColors.blackTextColor,
+              textAlign: TextAlign.left
             ),
           ),
         ],

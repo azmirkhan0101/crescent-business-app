@@ -1,3 +1,61 @@
+var rewardAnalytics = {
+  "success": true,
+  "message": "Reward analytics retrived successfully!",
+  "data": {
+    "summary": {"views": 0, "claims": 0, "redemptions": 0},
+    "chartData": [
+      {
+        "date": "2025-12-11",
+        "day": 11,
+        "views": 0,
+        "claims": 0,
+        "redemptions": 0,
+      },
+      {
+        "date": "2025-12-12",
+        "day": 12,
+        "views": 0,
+        "claims": 0,
+        "redemptions": 0,
+      },
+      {
+        "date": "2025-12-13",
+        "day": 13,
+        "views": 0,
+        "claims": 0,
+        "redemptions": 0,
+      },
+      {
+        "date": "2025-12-14",
+        "day": 14,
+        "views": 0,
+        "claims": 0,
+        "redemptions": 0,
+      },
+      {
+        "date": "2025-12-15",
+        "day": 15,
+        "views": 0,
+        "claims": 0,
+        "redemptions": 0,
+      },
+      {
+        "date": "2025-12-16",
+        "day": 16,
+        "views": 0,
+        "claims": 0,
+        "redemptions": 0,
+      },
+      {
+        "date": "2025-12-17",
+        "day": 17,
+        "views": 0,
+        "claims": 0,
+        "redemptions": 0,
+      },
+    ],
+  },
+};
 
 var businessAnalytics = {
   "totalRedemptions": 1,
@@ -8,21 +66,9 @@ var businessAnalytics = {
   "websiteChange": 0,
   "websiteIncrease": false,
   "methods": [
-    {
-      "method": "qr",
-      "count": 0,
-      "percentage": 0
-    },
-    {
-      "method": "nfc",
-      "count": 0,
-      "percentage": 0
-    },
-    {
-      "method": "static-code",
-      "count": 1,
-      "percentage": 100
-    }
+    {"method": "qr", "count": 0, "percentage": 0},
+    {"method": "nfc", "count": 0, "percentage": 0},
+    {"method": "static-code", "count": 1, "percentage": 100},
   ],
   "topRewards": [
     {
@@ -31,21 +77,15 @@ var businessAnalytics = {
       "rewardId": "693cf11050d8bc24512b044a",
       "title": "Food reward1",
       "redemptionLimit": 67,
-      "percentage": 1.49
-    }
-  ]
+      "percentage": 1.49,
+    },
+  ],
 };
-
 
 var getRecentActivity = {
   "success": true,
   "message": "Recent activity retrieved successfully",
-  "meta": {
-    "page": 1,
-    "limit": 20,
-    "total": 3,
-    "totalPage": 1
-  },
+  "meta": {"page": 1, "limit": 20, "total": 3, "totalPage": 1},
   "data": [
     {
       "title": "Dec 9, 2025",
@@ -57,9 +97,9 @@ var getRecentActivity = {
           "rewardTitle": "\$25 Gift Card",
           "userName": null,
           "qrCode": null,
-          "timeAgo": "2 days ago"
-        }
-      ]
+          "timeAgo": "2 days ago",
+        },
+      ],
     },
     {
       "title": "Dec 8, 2025",
@@ -73,7 +113,7 @@ var getRecentActivity = {
           "userImage": "/images/image-1765432767234.jpg",
           "rewardTitle": "Free Tea",
           "redemptionMethod": "static-code",
-          "timeAgo": "2 days ago"
+          "timeAgo": "2 days ago",
         },
         {
           "_id": "6936d61243232039a271a5f3",
@@ -82,13 +122,12 @@ var getRecentActivity = {
           "rewardTitle": "Free Tea",
           "userName": null,
           "qrCode": null,
-          "timeAgo": "2 days ago"
-        }
-      ]
-    }
-  ]
+          "timeAgo": "2 days ago",
+        },
+      ],
+    },
+  ],
 };
-
 
 var getMyBusinessOverview = {
   "success": true,
@@ -99,109 +138,43 @@ var getMyBusinessOverview = {
       "lastSevenDaysRedeemed": 0,
       "previousSevenDaysRedeemed": 0,
       "sevenDaysGrowthPercentage": 0,
-      "isIncrease": false
+      "isIncrease": false,
     },
     "monthlyStats": [
-      {
-        "month": "JAN 2025",
-        "redeemed": 0,
-        "reward": 0
-      },
-      {
-        "month": "FEB 2025",
-        "redeemed": 0,
-        "reward": 0
-      },
-      {
-        "month": "MAR 2025",
-        "redeemed": 0,
-        "reward": 0
-      },
-      {
-        "month": "APR 2025",
-        "redeemed": 0,
-        "reward": 0
-      },
-      {
-        "month": "MAY 2025",
-        "redeemed": 0,
-        "reward": 0
-      },
-      {
-        "month": "JUN 2025",
-        "redeemed": 0,
-        "reward": 0
-      },
-      {
-        "month": "JUL 2025",
-        "redeemed": 0,
-        "reward": 0
-      },
-      {
-        "month": "AUG 2025",
-        "redeemed": 0,
-        "reward": 0
-      },
-      {
-        "month": "SEP 2025",
-        "redeemed": 0,
-        "reward": 0
-      },
-      {
-        "month": "OCT 2025",
-        "redeemed": 0,
-        "reward": 0
-      },
-      {
-        "month": "NOV 2025",
-        "redeemed": 0,
-        "reward": 0
-      },
-      {
-        "month": "DEC 2025",
-        "redeemed": 0,
-        "reward": 0
-      }
+      {"month": "JAN 2025", "redeemed": 0, "reward": 0},
+      {"month": "FEB 2025", "redeemed": 0, "reward": 0},
+      {"month": "MAR 2025", "redeemed": 0, "reward": 0},
+      {"month": "APR 2025", "redeemed": 0, "reward": 0},
+      {"month": "MAY 2025", "redeemed": 0, "reward": 0},
+      {"month": "JUN 2025", "redeemed": 0, "reward": 0},
+      {"month": "JUL 2025", "redeemed": 0, "reward": 0},
+      {"month": "AUG 2025", "redeemed": 0, "reward": 0},
+      {"month": "SEP 2025", "redeemed": 0, "reward": 0},
+      {"month": "OCT 2025", "redeemed": 0, "reward": 0},
+      {"month": "NOV 2025", "redeemed": 0, "reward": 0},
+      {"month": "DEC 2025", "redeemed": 0, "reward": 0},
     ],
     "overallProgress": {
       "totalRedemptionLimit": 0,
       "totalRedeemedCount": 0,
-      "percentage": 0
-    }
-  }
+      "percentage": 0,
+    },
+  },
 };
 
-
-
-
-
 class ZTest {
-
   var allRewardResponse = {
-    "success":true,
-    "message":"Business rewards retrieved successfully",
-    "meta":{
-      "page":1,
-      "limit":10,
-      "total":0,
-      "totalPage":0
-    },
-    "data":[
-
-    ]
+    "success": true,
+    "message": "Business rewards retrieved successfully",
+    "meta": {"page": 1, "limit": 10, "total": 0, "totalPage": 0},
+    "data": [],
   };
 }
-
 
 var sample = {
   "success": true,
   "message": "Business rewards retrieved successfully",
-  "meta": {
-    "page": 1,
-    "limit": 10,
-    "total": 2,
-    "totalPage": 1
-  },
+  "meta": {"page": 1, "limit": 10, "total": 2, "totalPage": 1},
   "data": [
     {
       "_id": "6937c2c9e48d37fefde7eb51",
@@ -218,65 +191,62 @@ var sample = {
       "startDate": "2025-12-09T06:33:45.838Z",
       "status": "active",
       "isActive": true,
-      "onlineRedemptionMethods": {
-        "discountCode": true,
-        "giftCard": true
-      },
+      "onlineRedemptionMethods": {"discountCode": true, "giftCard": true},
       "codes": [
         {
           "code": "SUMMER2024",
           "isGiftCard": false,
           "isDiscountCode": true,
-          "isUsed": false
+          "isUsed": false,
         },
         {
           "code": "https://merchant.com/redeem/abc-123-def",
           "isGiftCard": true,
           "isDiscountCode": false,
-          "isUsed": false
+          "isUsed": false,
         },
         {
           "code": "WELCOME50",
           "isGiftCard": false,
           "isDiscountCode": true,
-          "isUsed": false
+          "isUsed": false,
         },
         {
           "code": "https://merchant.com/redeem/xyz-789-ghi",
           "isGiftCard": true,
           "isDiscountCode": false,
-          "isUsed": false
+          "isUsed": false,
         },
         {
           "code": "SAVE25NOW",
           "isGiftCard": false,
           "isDiscountCode": true,
-          "isUsed": false
+          "isUsed": false,
         },
         {
           "code": "https://giftcards.com/claim?id=987654321",
           "isGiftCard": true,
           "isDiscountCode": false,
-          "isUsed": false
+          "isUsed": false,
         },
         {
           "code": "FLASH10",
           "isGiftCard": false,
           "isDiscountCode": true,
-          "isUsed": false
+          "isUsed": false,
         },
         {
           "code": "VIPMEMBER25",
           "isGiftCard": false,
           "isDiscountCode": true,
-          "isUsed": false
+          "isUsed": false,
         },
         {
           "code": "https://rewards.business.com/v/lkj-456-mnb",
           "isGiftCard": true,
           "isDiscountCode": false,
-          "isUsed": false
-        }
+          "isUsed": false,
+        },
       ],
       "featured": false,
       "priority": 1,
@@ -284,7 +254,7 @@ var sample = {
       "redemptions": 0,
       "limitUpdateHistory": [],
       "createdAt": "2025-12-09T06:33:45.848Z",
-      "updatedAt": "2025-12-09T06:33:45.848Z"
+      "updatedAt": "2025-12-09T06:33:45.848Z",
     },
     {
       "_id": "6936d61243232039a271a5f3",
@@ -304,7 +274,7 @@ var sample = {
       "inStoreRedemptionMethods": {
         "qrCode": true,
         "staticCode": true,
-        "nfcTap": true
+        "nfcTap": true,
       },
       "codes": [
         {
@@ -314,14 +284,14 @@ var sample = {
           "isUsed": true,
           "redemptionId": "6936fb00af5237d44d7883ce",
           "usedAt": "2025-12-08T16:21:20.998Z",
-          "usedBy": "69301feaddbf3fdf987e86e8"
+          "usedBy": "69301feaddbf3fdf987e86e8",
         },
         {
           "code": "5CA51FC90306",
           "isGiftCard": false,
           "isDiscountCode": false,
-          "isUsed": false
-        }
+          "isUsed": false,
+        },
       ],
       "featured": true,
       "priority": 10,
@@ -329,7 +299,7 @@ var sample = {
       "redemptions": 1,
       "limitUpdateHistory": [],
       "createdAt": "2025-12-08T13:43:46.660Z",
-      "updatedAt": "2025-12-08T16:21:20.999Z"
-    }
-  ]
+      "updatedAt": "2025-12-08T16:21:20.999Z",
+    },
+  ],
 };

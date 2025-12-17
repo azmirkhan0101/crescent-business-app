@@ -54,6 +54,11 @@ dependencies:
   flutter_dotenv: ^6.0.0
   flutter_native_splash: ^2.4.7
   intl: ^0.20.2
+  http_parser: ^4.1.2
+  mime: ^2.0.0
+  flutter_image_compress: ^2.4.0
+  path_provider: ^2.1.5
+  dropdown_search: ^6.0.2
 
 
 

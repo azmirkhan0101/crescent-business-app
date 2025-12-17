@@ -24,6 +24,11 @@ class HomeBarChartWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
+    String percentageText =
+    activityPercentage % 1 == 0
+        ? activityPercentage.toInt().toString()
+        : activityPercentage.toString();
+
     final filteredStats = filterMonthlyStats(stats);
     final rawMax = getMaxValue(filteredStats);
     final maxY = roundToNiceNumber(rawMax);
@@ -66,7 +71,7 @@ class HomeBarChartWidget extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
                   Text(
-                    "${activityPercentage} %",
+                    "${percentageText} %",
                     style: AppTextStyle.headlineLStyle
                         .copyWith(fontSize: AppSizes.headlineXL),
                   ),

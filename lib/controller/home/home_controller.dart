@@ -33,7 +33,9 @@ class HomeController extends GetxController{
   getProfileData(){
     BusinessProfileModel? model = BusinessProfileModel.fromJson(storage.read( businessProfileModelKey ));
     if( model != null ){
-      profileImageUrl.value = model.logoImage ?? "";
+      profileImageUrl.value = model.logoImage == null || model.logoImage!.isEmpty
+          ? ""
+          : "${ApiEndpoints.imageBaseUrl}${model.logoImage}";
       userName.value = model.name;
     }
   }

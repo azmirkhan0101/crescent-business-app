@@ -67,27 +67,30 @@ class _MyProfileScreenState extends State<ProfileSettingsScreen> {
                   ),
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(40.r),
-                    child: Image.asset(
-                      AssetsPath.businessProfileImage,
-                      fit: BoxFit.cover,
-                    ),
+                    child: Obx((){
+                      return buildProfileImage();
+                    })
                   ),
                 ),
-                CustomText(
-                  text: "Talha S.",
-                  fontSize: 24.sp,
-                  fontWeight: FontWeight.w500,
-                  color: const Color(0xFF000C0B),
-                ),
+                Obx((){
+                  return CustomText(
+                    text: controller.businessName.value,
+                    fontSize: 24.sp,
+                    fontWeight: FontWeight.w500,
+                    color: const Color(0xFF000C0B),
+                  );
+                }),
 
                 SizedBox(height: 4.h),
 
-                CustomText(
-                  text: "talha@gmail.com",
-                  fontSize: 12.sp,
-                  fontWeight: FontWeight.w400,
-                  color: Colors.grey,
-                ),
+                Obx((){
+                  return CustomText(
+                    text: controller.businessEmail.value,
+                    fontSize: 12.sp,
+                    fontWeight: FontWeight.w400,
+                    color: Colors.grey,
+                  );
+                }),
               ],
             ),
           ),
@@ -114,13 +117,14 @@ class _MyProfileScreenState extends State<ProfileSettingsScreen> {
                   },
                 ),
 
-                _buildProfileOption(
-                  title: "Subscriptions",
-                  icon: Icons.subscriptions_outlined,
-                  onTap: () {
-                    Get.toNamed(AppRoutes.subscription);
-                  },
-                ),
+                //SUBSCRIPTION OPTION - DISABLED IN THIS VERSION
+                // _buildProfileOption(
+                //   title: "Subscriptions",
+                //   icon: Icons.subscriptions_outlined,
+                //   onTap: () {
+                //     Get.toNamed(AppRoutes.subscription);
+                //   },
+                // ),
                 _buildProfileOption(
                   title: "Terms & Conditions",
                   icon: Icons.info_outline,
@@ -254,5 +258,15 @@ class _MyProfileScreenState extends State<ProfileSettingsScreen> {
         ),
       ),
     );
+  }
+
+
+  //BUILD PROFILE IMAGE
+  Widget buildProfileImage() {
+    if ( controller.logoImageUrl.value.isNotEmpty ) {
+      return Image.network( controller.logoImageUrl.value, fit: BoxFit.cover );
+    }
+
+    return Icon(Icons.business, color: Colors.grey, size: 38.r,);
   }
 }

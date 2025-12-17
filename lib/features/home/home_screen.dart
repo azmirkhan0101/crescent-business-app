@@ -13,6 +13,7 @@ import 'package:organization/features/home/widget/home_card_widget.dart';
 import 'package:organization/features/home/widget/home_header_widget.dart';
 import 'package:organization/features/widgets/custom_text.dart';
 import 'package:organization/routes/app_pages.dart';
+import 'package:organization/utils/api_endpoints.dart';
 import 'package:organization/utils/assets_path.dart';
 import '../../utils/app_color.dart';
 import '../../utils/app_text_styles.dart';
@@ -54,7 +55,9 @@ class HomeScreen extends StatelessWidget {
                   //TODO: DEBUG BUTTON, REMOVE LATER
                   ElevatedButton(
                     onPressed: () {
-                      controller.profileImageUrl.value = "https://images.unsplash.com/photo-1701615004837-40d8573b6652?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTF8fHVzZXJ8ZW58MHx8MHx8fDA%3D";
+                      print("Logooooooo: ${controller.profileImageUrl.value}");
+                      //controller.profileImageUrl.value = controller.storage.re
+                      //controller.profileImageUrl.value = "https://images.unsplash.com/photo-1701615004837-40d8573b6652?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTF8fHVzZXJ8ZW58MHx8MHx8fDA%3D";
                       print("Active reward: ${controller.homeStatModel.value?.overview.totalActiveRewards}");
                       //controller.getBusinessOverview();
                       //controller.getRecentActivity();
