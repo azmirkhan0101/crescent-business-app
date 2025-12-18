@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:organization/controller/auth/sign_up_controller.dart';
+import 'package:organization/core/show_snackbar.dart';
 import 'package:organization/features/on_boarding/widgets/onboarding_appbar.dart';
 import 'package:organization/features/on_boarding/widgets/bottom_button_widget.dart';
 import 'package:organization/routes/app_pages.dart';
@@ -31,11 +32,18 @@ class BusinessContactInfoScreen extends StatelessWidget {
             SizedBox(height: 60.h),
             OnBoardingAppbarWidget(
               suffix:GestureDetector(
-                onTap: (){
-                  controller.businessSignupModel.businessPhoneNumber = "";
-                  controller.businessSignupModel.businessEmail = "";
-                  controller.businessSignupModel.businessWebsite = "";
-                  Get.toNamed(AppRoutes.storeLocation);
+                onTap: (){//SKIP NUMBER AND EMAIL - WEBSITE IS MUST
+                  if( controller.isValidWebsiteUrl() ){
+                    controller.businessSignupModel.businessPhoneNumber = "";
+                    controller.businessSignupModel.businessEmail = "";
+                    Get.toNamed(AppRoutes.storeLocation);
+                  }else{
+                    showSnackBar(
+                        title: "Business website required",
+                        message: "A valid business website is required.",
+                        backgroundColor: AppColors.warningYellow
+                    );
+                  }
                 },
                   child: CustomText(text: AppText.skip,fontSize: 14.sp,color: AppColors.secondaryTextColor,fontWeight: FontWeight.w400,)),
               totalSteps: 6,

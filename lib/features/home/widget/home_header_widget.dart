@@ -98,7 +98,11 @@ class HomeHeaderWidget extends StatelessWidget {
   //BUILD PROFILE IMAGE
   Widget buildProfileImage() {
     if ( profileImageUrl != null && profileImageUrl!.isNotEmpty) {
-      return Image.network( profileImageUrl!, fit: BoxFit.cover );
+      return Image.network( profileImageUrl!, fit: BoxFit.cover,
+        errorBuilder: (context, error, stackTrace) {
+          return const Icon(Icons.person);
+        },
+      );
     }
 
     //return Icon(Icons.business, size: 50.r, color: Colors.grey);

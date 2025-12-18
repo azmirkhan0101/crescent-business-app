@@ -90,24 +90,31 @@ class SignUpController extends GetxController {
     ).hasMatch(businessEmailController.text.trim());
   }
   //BUSINESS WEBSITE VALIDATION
-  bool validateWebsite() {
-    //ACCEPT EMPTY WEBSITE
-    if( businessWebsiteController.text.trim().isEmpty ){
-      return true;
-    }
-    final regex = RegExp(
-      r'^(https?:\/\/)?([a-z0-9-]+\.)+[a-z]{2,6}(\S*)$',
-      caseSensitive: false,
-    );
-    return regex.hasMatch(businessWebsiteController.text.trim());
+  bool isValidWebsiteUrl() {
+    if ( businessWebsiteController.text.trim().isEmpty) return false;
+
+    final uri = Uri.tryParse(businessWebsiteController.text.trim());
+
+    return uri != null &&
+        (uri.scheme == 'http' || uri.scheme == 'https') &&
+        uri.host.isNotEmpty;
   }
+
   //VALIDATE ALL BUSINESS CONTACT INFORMATION
   void validateBusinessContactInfo(){
-    if( !validatePhoneNumber() || !validateBusinessEmail() || !validateWebsite() ){
+    if( !isValidWebsiteUrl() ){
+      showSnackBar(
+          title: "Invalid website!",
+          message: "Please provide valid business website url.",
+          backgroundColor: AppColors.warningYellow
+      );
+      return;
+    }
+    if( !validatePhoneNumber() || !validateBusinessEmail() ){
       showSnackBar(
           title: "Invalid information!",
           message: "Please provide valid business contact information.",
-          backgroundColor: AppColors.errorRed
+          backgroundColor: AppColors.warningYellow
       );
       return;
     }
@@ -124,7 +131,7 @@ class SignUpController extends GetxController {
       showSnackBar(
           title: "Invalid Email or Password Format!",
           message: "Please ensure your email is valid and your password meets the specified criteria.",
-          backgroundColor: AppColors.errorRed
+          backgroundColor: AppColors.warningYellow
       );
       return;
     }
@@ -175,29 +182,16 @@ class SignUpController extends GetxController {
       var response = await request.send();
       var responseBody = await response.stream.bytesToString();
       var responseData = jsonDecode(responseBody);
-      print("Status: ${response.statusCode}");
-      print("Body: ${responseBody}");
-
-      //TODO: ERROR DEBUG
-      if( logo != null ){
-        logImageDetails(logo);
-      }
 
       if (response.statusCode == 200 || response.statusCode == 201) {//ACCOUNT CREATED -> SAVE EMAIL -> GO TO OTP VERIFY
-        print("1");
         bool isVerificationRequired = responseData['data']['requiresVerification'] ?? false;
-        print("2");
         storage.write( requireVerificationKey, isVerificationRequired );
-        print("3");
         storage.write( emailKey, businessSignupModel.email );//saving for verify now(if user skips verification this time)
-        print("4");
         Map<String, dynamic> arguments = {
           emailKey : businessSignupModel.email,
           isSignupKey : true
         };
-        print("5");
         Get.offAllNamed(AppRoutes.otpVerify, arguments: arguments );
-        print("6");
       }else if( response.statusCode == 400 ){//USER ALREADY EXISTS
         showSnackBar(
             title: "User Exists!",
@@ -221,22 +215,6 @@ class SignUpController extends GetxController {
     }
 
   }
-
-  void logImageDetails(File file) async {
-    final name = file.path.split('/').last;
-    final size = await file.length();
-    final ext = file.path.split('.').last;
-
-    print("----- IMAGE INFO -----");
-    print("Name: $name");
-    print("Extension: $ext");
-    print("Size: $size bytes");
-    print("Size KB: ${size / 1024}");
-    print("Size MB: ${size / (1024 * 1024)}");
-    print("Path: ${file.path}");
-    print("----------------------");
-  }
-
 
   //SHOW LOADING ALERT DIALOG
   // showLoadingAlert({String title = "Loading..."}){

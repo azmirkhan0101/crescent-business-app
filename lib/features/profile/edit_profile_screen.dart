@@ -9,6 +9,7 @@ import 'package:google_places_flutter/model/prediction.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:organization/controller/profile/business_profile_controller.dart';
 import 'package:organization/features/profile/widget/business_profile_image_widget.dart';
+import 'package:organization/features/profile/widget/image_edit_widget.dart';
 import 'package:organization/features/profile/widget/location_widget.dart';
 import 'package:organization/features/profile/widget/profile_heading_text_widget.dart';
 import 'package:organization/features/widgets/custom_text.dart';
@@ -20,6 +21,7 @@ import '../../utils/app_text.dart';
 import '../widgets/custom_text_field_widget.dart';
 
 class EditProfileScreen extends StatelessWidget {
+
   final BusinessProfileController controller = Get.find<BusinessProfileController>();
   final TextEditingController textEditingController = TextEditingController();
   final String googleApiKey = dotenv.env['GOOGLE_API_KEY']!;
@@ -60,21 +62,19 @@ class EditProfileScreen extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Cover image
-        BusinessProfileWidget(
-        coverImageUrl: controller.editProfileModel.coverImage,
-          logoImageUrl: controller.editProfileModel.logoImage,
-          isEditScreen: true,
-          onCoverPicked: (file){
-            controller.coverImage.value = file;
-          },
-          onLogoPicked: (file){
-            controller.logoImage.value = file;
-          },
-        ),
-
-            SizedBox(height: 60.h),
-
+            // Cover and logo image
+            Obx((){
+              return ImageEditWidget(
+                coverImageUrl: controller.coverImageUrl.value,
+                logoImageUrl: controller.logoImageUrl.value,
+                onCoverPicked: (file){
+                  controller.coverImage.value = file;
+                },
+                onLogoPicked: (file){
+                  controller.logoImage.value = file;
+                },
+              );
+            }),
             /// Form fields
             Form(
               child: Column(

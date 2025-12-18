@@ -46,6 +46,13 @@ class AnalyticsCardChart<T> extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              //DEGUG BUTTON TODO:
+              ElevatedButton(onPressed: (){
+                //=====================================================================
+                print("Graphs: ${graphList}");
+                print("Filtered: ${(filteredStats)}");
+                print("Views: ${viewsDataSource(filteredStats)}");
+              }, child: Text("Debug")),
               // 🔹 Top Row (Image + Title)
               Row(
                 children: [
@@ -153,7 +160,7 @@ class AnalyticsCardChart<T> extends StatelessWidget {
                 child: SfCartesianChart(
                   primaryXAxis: NumericAxis(
                     minimum: 0,//COMPARE WITH CURRENT DATE
-                    maximum: 6, //MAX 7 || 1
+                    maximum: 9, //MAX 7 || 1
                     interval: 1,
                     majorGridLines: MajorGridLines(
                       width: 1,
@@ -193,15 +200,7 @@ class AnalyticsCardChart<T> extends StatelessWidget {
                   series: <CartesianSeries>[
                     /// Views Series (Green)
                     SplineSeries<ChartData, double>(
-                      dataSource: [
-                        ChartData(x: 0, count: 2),
-                        ChartData(x: 1, count: 4),
-                        ChartData(x: 2, count: 1),
-                        ChartData(x: 3, count: 5),
-                        ChartData(x: 4, count: 2),
-                        ChartData(x: 5, count: 3),
-                        ChartData(x: 6, count: 4),
-                      ],
+                      dataSource: viewsDataSource( filteredStats ),
                       xValueMapper: (data, _) => data.x,
                       yValueMapper: (data, _) => data.count,
                       color: Colors.green,
@@ -211,15 +210,7 @@ class AnalyticsCardChart<T> extends StatelessWidget {
 
                     /// Claims Series (Blue)
                     SplineSeries<ChartData, double>(
-                      dataSource: [
-                        ChartData(x: 0, count: 3),
-                        ChartData(x: 1, count: 4),
-                        ChartData(x: 2, count: 2),
-                        ChartData(x: 3, count: 4),
-                        ChartData(x: 4, count: 5),
-                        ChartData(x: 5, count: 1),
-                        ChartData(x: 6, count: 0),
-                      ],
+                      dataSource: claimDataSource( filteredStats ),
                       xValueMapper: (data, _) => data.x,
                       yValueMapper: (data, _) => data.count,
                       color: Colors.blue,
@@ -295,11 +286,11 @@ class AnalyticsCardChart<T> extends StatelessWidget {
 
     if( data.isEmpty ) return data;//SKIP IF DATA IS EMPTY
 
-    return data.length <=7
+    return data.length <=10
         ?
         data
         :
-        data.sublist( data.length - 7 );
+        data.sublist( data.length - 10 );
 
   }
 
@@ -318,10 +309,43 @@ List<String> dayLabels(List<GraphDataModel> graphs){
     }
     //GET DAYS FROM FILTERED LIST
     for( final model in graphs ){
-      days.add( model.date );
+      days.add( "${model.day}" );
     }
     return days;
 }
+
+
+//Views DATA SOURCE
+  List<ChartData> viewsDataSource( List<GraphDataModel> filteredGraphs ){
+
+    List<ChartData> viewsDataList = [];
+    if( filteredGraphs.isEmpty ){
+      return viewsDataList;
+    }
+    int x = 0;
+    for( final model in filteredGraphs ){
+      viewsDataList.add( ChartData( x: x.toDouble(), count: model.views.toDouble() ));
+      x++;
+    }
+    return viewsDataList;
+  }
+
+
+//CLAIM DATA SOURCE
+  List<ChartData> claimDataSource( List<GraphDataModel> filteredGraphs ){
+
+    List<ChartData> claimDataList = [];
+    if( filteredGraphs.isEmpty ){
+      return claimDataList;
+    }
+    int x = 0;
+    for( final model in filteredGraphs ){
+      claimDataList.add( ChartData( x: x.toDouble(), count: model.claims.toDouble() ));
+      x++;
+    }
+    return claimDataList;
+  }
+
 
 //REDEEM DATA SOURCE
 List<ChartData> redeemDataSource( List<GraphDataModel> filteredGraphs ){
@@ -337,22 +361,6 @@ List<ChartData> redeemDataSource( List<GraphDataModel> filteredGraphs ){
     }
     return redeemDataList;
 }
-
-//Views DATA SOURCE
-  //TODO: UPDATE IT JUST COPIED NOW
-  List<ChartData> viewsDataSource( List<GraphDataModel> filteredGraphs ){
-
-    List<ChartData> redeemDataList = [];
-    if( filteredGraphs.isEmpty ){
-      return redeemDataList;
-    }
-    int x = 0;
-    for( final model in filteredGraphs ){
-      redeemDataList.add( ChartData( x: x.toDouble(), count: model.redemptions.toDouble() ));
-      x++;
-    }
-    return redeemDataList;
-  }
 
 
 }

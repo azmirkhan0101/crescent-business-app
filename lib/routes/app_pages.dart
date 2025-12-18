@@ -198,34 +198,4 @@ class AppPages {
     ),
 
   ];
-      /// ----------------- Bottom Navigation -----------------
-      // ShellRoute(
-      //   builder: (context, state, child) {
-      //     return MainNavigationScreen(child: child);
-      //   },
-      //   routes: [
-      //     GoRoute(
-      //       path: RoutesPath.home,
-      //       builder: (context, state) => const HomeScreen(),
-      //     ),
-      //     GoRoute(
-      //       path: RoutesPath.analytics,
-      //       builder: (context, state) => const AnalyticsScreen(),
-      //     ),
-      //     GoRoute(
-      //       path: RoutesPath.redeemScanner,
-      //       builder: (context, state) => const RedeemScannerScreen(),
-      //     ),
-      //
-      //     GoRoute(
-      //       path: RoutesPath.tabScreen,
-      //       builder: (context, state) => const TabRewardScreen(),
-      //     ),
-      //
-      //     GoRoute(
-      //       path: RoutesPath.businessProfile,
-      //       builder: (context, state) => const BusinessProfileScreen(),
-      //     ),
-      //   ],
-      // )
 }

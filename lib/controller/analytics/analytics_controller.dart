@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:http/http.dart' as http;
 import 'package:organization/data/models/analytics/business_analytics_model.dart';
+import 'package:organization/data/models/analytics/graph_data_model.dart';
 import 'package:organization/data/models/analytics/redemption_method_model.dart';
 import 'package:organization/data/models/analytics/reward_analytics_model.dart';
 import 'package:organization/data/models/analytics/summary_model.dart';
@@ -21,6 +22,9 @@ class AnalyticsController extends GetxController {
   @override
   void onInit() {
     getBusinessAnalytics();
+    if( rewardIds.isNotEmpty ){
+      getRewardAnalyticsById(rewardId: rewardIds[rewardTitles.indexOf(selectedTitle.value)]);
+    }
 
     ever( rewardController.rewards, (newData) {
       print("Analytics detected new reward data: ${newData.length}");
@@ -120,6 +124,7 @@ class AnalyticsController extends GetxController {
   
   Rxn<SummaryModel> summeryModel = Rxn<SummaryModel>(null);
   Rxn<RewardAnalyticsModel> model = Rxn<RewardAnalyticsModel>(null);
+  RxList<GraphDataModel> graphs = <GraphDataModel>[].obs;
   
   //GET REWARD ANALYTICS FOR GRAPH
 getRewardAnalyticsById({required String rewardId}) async{
@@ -139,6 +144,7 @@ getRewardAnalyticsById({required String rewardId}) async{
       if( response.statusCode == 200 ){//FETCHED ANALYTICS
         model.value = RewardAnalyticsModel.fromJson( jsonDecode( response.body )['data'] );
         summeryModel.value = model.value?.summaryModel;
+        graphs.value = model.value?.graphDataModels ?? [];
       }
     }catch(e){
 

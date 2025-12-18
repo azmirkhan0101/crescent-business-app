@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:organization/features/widgets/custom_asset_image.dart';
 import 'package:organization/routes/app_pages.dart';
+import 'package:organization/utils/api_endpoints.dart';
 import 'package:organization/utils/app_color.dart';
 import 'package:organization/utils/app_constants.dart';
 import 'package:organization/utils/app_text_styles.dart';
@@ -10,6 +11,8 @@ import 'package:organization/utils/assets_path.dart';
 import 'custom_switch.dart';
 
 class RewardCard extends StatefulWidget {
+
+  final String? image;
   final String title;
   final String? expiryDate;
   final int redemptions;
@@ -27,6 +30,7 @@ class RewardCard extends StatefulWidget {
 
   const RewardCard({
     super.key,
+    this.image,
     required this.title,
     required this.expiryDate,
     required this.redemptions,
@@ -62,6 +66,11 @@ class _RewardCardState extends State<RewardCard> {
   @override
   Widget build(BuildContext context) {
 
+    String imageUrl = "";
+    if( widget.image != null ){
+      imageUrl = ApiEndpoints.imageBaseUrl + widget.image!;
+    }
+
     return Container(
       height: 161.h,
       padding: EdgeInsets.all(12.w),
@@ -84,11 +93,23 @@ class _RewardCardState extends State<RewardCard> {
           /// -------- Title + Popup --------
           Row(
             children: [
-              Image.asset(
-                widget.type == typeOnline ? AssetsPath.onlineRewardIcon : AssetsPath.instoreRewardIcon,
+              Image.network(
+                imageUrl,
                 height: 24.h,
                 width: 24.w,
+                fit: BoxFit.cover,
+                errorBuilder: (context, error, stackTrace) {
+                  return Image.asset(
+                    widget.type == typeOnline
+                        ? AssetsPath.onlineRewardIcon
+                        : AssetsPath.instoreRewardIcon,
+                    height: 24.h,
+                    width: 24.w,
+                    fit: BoxFit.cover,
+                  );
+                },
               ),
+
               SizedBox(width: 8.w),
               Text(
                 widget.title,

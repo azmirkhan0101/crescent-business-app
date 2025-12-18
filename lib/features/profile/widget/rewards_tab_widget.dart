@@ -1,11 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:organization/data/models/reward/reward_model.dart';
 import 'package:organization/features/profile/widget/profile_reward_card_widget.dart';
-import '../data/models/reward_model.dart';
 
 
 class RewardsTab extends StatelessWidget {
-  const RewardsTab({super.key});
+
+  final List<RewardModel> rewards;
+
+  const RewardsTab({
+    super.key,
+    required this.rewards
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -16,22 +22,34 @@ class RewardsTab extends StatelessWidget {
             physics: NeverScrollableScrollPhysics(),
             shrinkWrap: true,
             padding: EdgeInsets.zero,
-            itemCount: rewardOptions.length,
+            itemCount: rewards.length,
             gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
               crossAxisCount: 2,
               mainAxisSpacing: 8.h,
               crossAxisSpacing: 8.w,
-              mainAxisExtent: 140.h,
+              mainAxisExtent: 150.h,
             ),
             itemBuilder: (context, index) {
-              final option = rewardOptions[index];
+
+              final RewardModel model = rewards[index];
+              //INSTORE REDEMPTIONS
+              final bool isQr = model.inStoreMethods?.qrCode ?? false;
+              final bool isNfc = model.inStoreMethods?.nfcTap ?? false;
+              final bool isStaticCode = model.inStoreMethods?.staticCode ?? false;
+              //ONLINE REDEMPTIONS
+              final bool isGiftCard = model.onlineMethods?.giftCard ?? false;
+              final bool isDiscountCode = model.onlineMethods?.discountCode ?? false;
+
               return ProfileRewardCardWidget(
-                topIcon: option.topIcon,
-                title: option.title,
-                subtitle: option.subtitle,
-                bottomIcon1: option.bottomIcon1,
-                bottomIcon2: option.bottomIcon2,
-                bottomText: option.bottomText,
+                image: model.image,
+                title: model.title,
+                  expiryDate: model.expiryDate.toString(),
+                type: model.type,
+                isQr: isQr,
+                isNfc: isNfc,
+                isStaticCode: isStaticCode,
+                isGiftCard: isGiftCard,
+                isDiscountCode: isDiscountCode,
               );
             },
           ),

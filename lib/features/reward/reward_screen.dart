@@ -228,6 +228,7 @@ class RewardScreen extends StatelessWidget {
           padding: EdgeInsets.symmetric(horizontal: 15.w, vertical: 8.h),
           child: Obx((){
             return RewardCard(
+              image: model.image,
               title: model.title,
               expiryDate: model.expiryDate.toString(),
               redemptions: model.redemptions,

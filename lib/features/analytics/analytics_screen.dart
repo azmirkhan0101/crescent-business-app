@@ -29,6 +29,10 @@ class AnalyticsScreen extends StatelessWidget {
         body: RefreshIndicator(
           onRefresh: () async{
             await controller.getBusinessAnalytics();
+            if( controller.rewardIds.isNotEmpty ){
+              await controller.getRewardAnalyticsById(rewardId: controller.rewardIds[controller.rewardTitles.indexOf(controller.selectedTitle.value)]);
+            }
+
           },
           child: SingleChildScrollView(
             physics: AlwaysScrollableScrollPhysics(),
@@ -170,7 +174,7 @@ class AnalyticsScreen extends StatelessWidget {
                       controller.getRewardAnalyticsById(rewardId: controller.rewardIds[controller.rewardTitles.indexOf(selectedValue)]);
                     },
                     summaryModel: controller.summeryModel.value,
-                    graphList: [],
+                    graphList: controller.graphs.value,
                   );
                 }),
                 SizedBox(height: 16.h),

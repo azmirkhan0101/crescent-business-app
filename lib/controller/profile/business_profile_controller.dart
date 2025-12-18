@@ -8,6 +8,7 @@ import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:mime/mime.dart';
 import 'package:organization/data/models/profile/business_profile_model.dart';
+import 'package:organization/data/models/reward/reward_model.dart';
 import 'package:organization/utils/app_constants.dart';
 import 'package:path_provider/path_provider.dart';
 
@@ -17,6 +18,7 @@ import 'package:http/http.dart' as http;
 import 'package:path/path.dart' as p;
 
 import '../../utils/app_color.dart';
+import '../reward/reward_controller.dart';
 
 class BusinessProfileController extends GetxController{
 
@@ -41,12 +43,20 @@ class BusinessProfileController extends GetxController{
   //LOGO IMAGE URL
   RxString logoImageUrl = "".obs;
 
+  //REWARD LIST FOR REWARDS TAB
+  final RewardController rewardController = Get.find<RewardController>();
+  RxList<RewardModel> rewards = <RewardModel>[].obs;
+
   @override
   void onInit() {
 
     getProfileData();
     editProfileModel = BusinessProfileModel.fromJson( storage.read( businessProfileModelKey ) );
     locationNames.value = editProfileModel.locations ?? [];
+
+    ever( rewardController.rewards, (newData) {
+      rewards.value = newData;
+    });
 
     super.onInit();
   }
@@ -84,7 +94,7 @@ class BusinessProfileController extends GetxController{
       final url = Uri.parse( ApiEndpoints.baseUrl + ApiEndpoints.updateProfile );
       var request = http.MultipartRequest("PATCH", url );
       request.headers["Authorization"] = "Bearer ${storage.read( accessTokenKey )}";
-      request.headers["Accept"] = "application/json";
+      //request.headers["Accept"] = "application/json";
       // Add text data
       request.fields["data"] = jsonEncode(data);
       // Add optional cover image
@@ -118,7 +128,7 @@ class BusinessProfileController extends GetxController{
 
           request.files.add(
               await http.MultipartFile.fromPath(
-                "coverImage",
+                "logoImage",
                 compressedLogoImage.path,
                 contentType: http.MediaType(
                   mimeType[0],
@@ -128,12 +138,6 @@ class BusinessProfileController extends GetxController{
           );
         }
       }
-        request.files.add(
-          await http.MultipartFile.fromPath(
-            "logoImage",
-            logoImage.value!.path,
-          ),
-        );
       }
       // Send request
       var streamedResponse = await request.send();

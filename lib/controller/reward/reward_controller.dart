@@ -136,12 +136,7 @@ class RewardController extends GetxController {
             return RewardModel.fromJson(e);
           }).toList();
         });
-
-
       }
-
-      print("Status: ${response.statusCode}");
-      print("Body: ${response.body}");
     }catch(e){
       print("All reward catch: ${e}");
     }finally{

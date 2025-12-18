@@ -121,7 +121,17 @@ class BusinessProfileScreen extends StatelessWidget {
             child: TabBarView(
               children: [
                 OverviewTab(model: controller.model.value!),
-                RewardsTab(),
+                Obx((){
+                  if( controller.rewards.isEmpty ){
+                    return Center(
+                      child: Text("No rewards found!"),
+                    );
+                  }else{
+                    return RewardsTab(
+                      rewards: controller.rewards.value,
+                    );
+                  }
+                })
               ],
             ),
           ),
