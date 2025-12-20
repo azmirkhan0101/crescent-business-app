@@ -3,7 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
 import 'package:organization/features/widgets/custom_card_widget.dart';
 import 'package:organization/utils/app_color.dart';
-import 'package:organization/utils/app_text_styles.dart';
+
 import '../../widgets/custom_text.dart';
 import 'apply_widget.dart';
 

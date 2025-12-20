@@ -26,6 +26,7 @@ class RewardCard extends StatefulWidget {
   final bool isGiftCard;
   final bool isDiscountCode;
   final VoidCallback onDeleteClick;
+  final VoidCallback onEditClick;
   final Function(bool) onStatusChanged;
 
   const RewardCard({
@@ -42,6 +43,7 @@ class RewardCard extends StatefulWidget {
     this.isGiftCard = false,
     this.isDiscountCode = false,
     required this.onDeleteClick,
+    required this.onEditClick,
     required this.onStatusChanged,
   });
 
@@ -186,8 +188,7 @@ class _RewardCardState extends State<RewardCard> {
                 ],
                 onSelected: (value) {
                   if( value.compareTo( edit ) == 0 ){//EDIT CLICKED
-                    //TODO: EDIT REWARD
-                    Get.toNamed( AppRoutes.editReward );
+                    widget.onEditClick();
                   }else{//DELETE CLICKED
                     //DELETE REWARD
                     widget.onDeleteClick();

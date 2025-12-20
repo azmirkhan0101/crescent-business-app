@@ -248,6 +248,8 @@ class RewardScreen extends StatelessWidget {
               print("Status update");
               controller.updateRewardStatus(rewardId: model.id, isActive: newStatus );
               print("Status updatedddddd");
+            }, onEditClick: () { 
+                Get.toNamed( AppRoutes.editReward, arguments: model );
             },
             );
           })

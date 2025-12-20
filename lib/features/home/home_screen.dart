@@ -201,6 +201,7 @@ class HomeScreen extends StatelessWidget {
     required List<RecentActivityModel> recentActivities,
   }) {
     return ListView.builder(
+      physics: NeverScrollableScrollPhysics(),
       shrinkWrap: true,
       itemCount: recentActivities.length,
       itemBuilder: (context, mainListIndex) {

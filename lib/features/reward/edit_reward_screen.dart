@@ -1,18 +1,19 @@
 import 'dart:io';
 
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:get_storage/get_storage.dart';
+import 'package:get/get_connect/http/src/utils/utils.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:organization/controller/reward/edit_reward_controller.dart';
+import 'package:organization/features/reward/widget/custom_checkbox.dart';
 import 'package:organization/features/reward/widget/expiry_limit_section.dart';
+import 'package:organization/features/reward/widget/online_options_widget.dart';
 import 'package:organization/features/reward/widget/redemption_methods_section.dart';
 import 'package:organization/features/widgets/custom_card_widget.dart';
 import 'package:organization/utils/app_text_styles.dart';
-import 'package:organization/utils/assets_path.dart';
 
-import '../../controller/reward/reward_controller.dart';
-import '../../routes/app_pages.dart';
 import '../../utils/app_color.dart';
 import '../../utils/app_text.dart';
 import '../on_boarding/widgets/bottom_button_widget.dart';
@@ -22,7 +23,7 @@ import '../widgets/text_field_title_widget.dart';
 
 class EditRewardScreen extends StatelessWidget {
 
-  final RewardController controller = Get.find<RewardController>();
+  final EditRewardController controller = Get.find<EditRewardController>();
   bool isInstoreTabSelected = true;//GET IT FROM ARGS
   String imageUrl2 = "https://plus.unsplash.com/premium_photo-1683749809341-23a70a91b195?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTN8fHJld2FyZHxlbnwwfHwwfHx8MA%3D%3D";
   String imageUrl = "";
@@ -66,14 +67,14 @@ class EditRewardScreen extends StatelessWidget {
             TextFieldTitleWidget(text: "Reward name"),
             SizedBox(height: 8.h),
             CustomTextField(
-              hintText: "10% Off Latte",
+              hintText: "",
               controller: controller.titleController,
             ),
             SizedBox(height: 16.h),
             //description
             TextFieldTitleWidget(text: AppText.description),
             CustomTextField(
-              hintText: "Get a free coffee on your next visit.",
+              hintText: "",
               maxLines: 3,
               controller: controller.descriptionController,
             ),
@@ -124,7 +125,7 @@ class EditRewardScreen extends StatelessWidget {
                         width: double.infinity,
                         text: "Delete image",
                         onPressed: () {
-                          controller.rewardImage.value = null;
+                          controller.rewardImage?.value = null;
                         },
                       ),
                     ],
@@ -135,49 +136,77 @@ class EditRewardScreen extends StatelessWidget {
             SizedBox(height: 25),
             //EXPIRY DATE AND LIMIT
             ExpiryLimitSection(
-              controller: controller.redemptionLimitController,
+              initialDate: controller.dateTime,
+              controller: controller.limitController,
               onDateSelected: (date){
-                controller.expiryDate = date;
+                controller.dateTime = date;
               },
             ),
             SizedBox(height: 25),
 
             //RedemptionMethodsSection
-            /// RedemptionMethodsSection
+            Text("Select redemption methods:",
+            style: TextStyle(color: AppColors.black,
+            fontSize: 15.sp,
+              fontWeight: FontWeight.w500
+            ),
+            ),
             Obx((){
-              return RedemptionMethodsSection(
-                qrCode: controller.qrCode.value,
-                nfcTap: controller.nfcTap.value,
-                staticCode: controller.staticCode.value,
-                onQRCodeChanged: (isChecked){
-                  controller.qrCode.value = isChecked;
+              if( controller.isInstore.value ){
+                return inStoreOptions();
+              }else{
+                return OnlineOptions(
+                  fileName: controller.csvFileName.value,
+                  onPickFile: (){
+                    pickCSV();
+                  },
+                  onDelete: (){
+                    controller.csvFile?.value = null;
+                  },
+                  discountCode: controller.discountCode.value,
+                  giftCard: controller.giftCard.value,
+                  onDiscountCodeChanged: (bool isChecked) {
+                    controller.toggleDiscountCode( isChecked );
+                  }, onGiftCardChanged: (bool isChecked) {
+                  controller.toggleGiftCard( isChecked );
                 },
-                onNfcTapChanged: (isChecked){
-                  controller.nfcTap.value = isChecked;
-                },
-                onStaticCodeChanged: (isChecked){
-                  controller.staticCode.value = isChecked;
-                }, onTabChanged: (bool instoreTabSelected) {
-                isInstoreTabSelected = instoreTabSelected;
-              },
-                //ONLINE OPTIONS
-                discountCode: controller.discountCode.value,
-                giftCard: controller.giftCard.value,
-                onDiscountCodeChanged: (bool isChecked) {
-                  controller.discountCode.value = isChecked;
-                }, onGiftCardChanged: (bool isChecked) {
-                controller.giftCard.value = isChecked;
-              },
-                onPickFile: () {  }, //TODO: ADD FUNCTIONS
-                onDelete: () {  },//TODO: SAME
-              );
+                );
+              }
             }),
+            // Obx((){
+            //   return RedemptionMethodsSection(
+            //     qrCode: controller.qrCode.value,
+            //     nfcTap: controller.nfcTap.value,
+            //     staticCode: controller.staticCode.value,
+            //     onQRCodeChanged: (isChecked){
+            //       controller.qrCode.value = isChecked;
+            //     },
+            //     onNfcTapChanged: (isChecked){
+            //       controller.nfcTap.value = isChecked;
+            //     },
+            //     onStaticCodeChanged: (isChecked){
+            //       controller.staticCode.value = isChecked;
+            //     }, onTabChanged: (bool instoreTabSelected) {
+            //     isInstoreTabSelected = instoreTabSelected;
+            //   },
+            //     //ONLINE OPTIONS
+            //     discountCode: controller.discountCode.value,
+            //     giftCard: controller.giftCard.value,
+            //     onDiscountCodeChanged: (bool isChecked) {
+            //       controller.discountCode.value = isChecked;
+            //     }, onGiftCardChanged: (bool isChecked) {
+            //     controller.giftCard.value = isChecked;
+            //   },
+            //     onPickFile: () {  }, //TODO: ADD FUNCTIONS
+            //     onDelete: () {  },//TODO: SAME
+            //   );
+            // }),
             SizedBox( height: 20.h,),
             BottomButtonWidget(
                 onPressed: (){
                   print("Online reward:");
                   if( isInstoreTabSelected ){//INSTORE REWARD
-                    controller.createRewardInStore();
+                    //controller.createRewardInStore();
                   }else{//ONLINE REWARD
                     print("Online reward: ${controller.discountCode.value},,,,${controller.giftCard.value}");
                   }
@@ -195,7 +224,7 @@ class EditRewardScreen extends StatelessWidget {
   showBottomSheet( BuildContext context ){
     Get.bottomSheet(BottomSheet(
         onClosing: (){},
-        backgroundColor: AppColors.primaryColor,
+        backgroundColor: AppColors.white,
         enableDrag: true,
         builder: (context){
       return Container(
@@ -211,7 +240,7 @@ class EditRewardScreen extends StatelessWidget {
               pickCameraImage();
             },
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: AppColors.successGreen
+                  backgroundColor: AppColors.primaryColor
                 ),
                 child: Text("Camera", style: TextStyle(color: AppColors.white),)),
             ElevatedButton(onPressed: (){
@@ -220,7 +249,7 @@ class EditRewardScreen extends StatelessWidget {
               }
               pickGalleryImage();
             }, style: ElevatedButton.styleFrom(
-                backgroundColor: AppColors.successGreen
+                backgroundColor: AppColors.primaryColor
             ),child: Text("Gallery", style: TextStyle(color: AppColors.white),)),
           ],
         ),
@@ -234,7 +263,7 @@ class EditRewardScreen extends StatelessWidget {
     final XFile? image = await picker.pickImage(source: ImageSource.gallery);
 
     if (image != null) {
-      controller.rewardImage.value = File(image.path);
+      controller.rewardImage?.value = File(image.path);
     }
   }
 
@@ -244,19 +273,79 @@ class EditRewardScreen extends StatelessWidget {
     final XFile? image = await picker.pickImage(source: ImageSource.camera);
 
     if (image != null) {
-      controller.rewardImage.value = File(image.path);
+      controller.rewardImage?.value = File(image.path);
     }
   }
 
 
 //SHOW IMAGE BASED ON DATA
   Widget buildRewardImage() {
-    if ( controller.rewardImage.value != null ) {
-      return Image.file(controller.rewardImage.value!, fit: BoxFit.cover);
-    } else if ( imageUrl != null && imageUrl!.isNotEmpty) {
-      return Image.network( imageUrl!, fit: BoxFit.cover);
+    if ( controller.rewardImage?.value != null ) {
+      return Image.file(controller.rewardImage!.value!, fit: BoxFit.cover);
+    } else if ( controller.rewardImageUrl.value != null && controller.rewardImageUrl.value!.isNotEmpty) {
+      return Image.network( controller.rewardImageUrl.value!, fit: BoxFit.cover);
     }
     return Icon(Icons.image, size: 50.r, color: Colors.grey);
+  }
+
+
+  //INSTORE OPTIONS
+  inStoreOptions() {
+    return Column(
+      children: [
+        Obx((){
+          return CustomCard(
+              height: 52.h,
+              child: CustomCheckbox(
+                  title: "QR Code",
+                  isChecked: controller.qrCode.value,
+                  onChanged: (isChecked){
+                    controller.toggleQrCode( isChecked ?? false );
+                  }
+              )
+          );
+        }),
+        SizedBox(height: 8.h),
+        Obx((){
+          return CustomCard(
+              height: 52.h,
+              child: CustomCheckbox(
+                  title: "NFC Tap",
+                  isChecked: controller.nfcTap.value,
+                  onChanged: (isChecked){
+                    controller.toggleNfcTap( isChecked ?? false );
+                  }
+              )
+          );
+        }),
+        SizedBox(height: 8.h),
+        Obx((){
+          return CustomCard(
+              height: 52.h,
+              child: CustomCheckbox(
+                  title: "Static Code",
+                  isChecked: controller.staticCode.value,
+                  onChanged: (isChecked){
+                    controller.toggleStaticCode( isChecked ?? false );
+                  }
+              )
+          );
+        })
+      ],
+    );
+  }
+
+  //PICK CSV FILE FOR DISCOUNT CODES - ONLINE REWARD
+  Future<void> pickCSV() async {
+    final result = await FilePicker.platform.pickFiles(
+      type: FileType.custom,
+      allowedExtensions: ['csv'],
+    );
+
+    if (result != null && result.files.single.path != null) {
+      controller.csvFileName.value = result.files.single.name;
+      controller.csvFile?.value = File(result.files.single.path!);
+    }
   }
 
 

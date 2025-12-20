@@ -20,6 +20,10 @@ import 'package:path/path.dart' as p;
 
 class RewardController extends GetxController {
 
+
+  //EDIT
+  RewardModel? editModel;
+
   @override
   void onInit() {
 

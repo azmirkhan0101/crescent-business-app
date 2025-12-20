@@ -2,8 +2,8 @@ class ApiEndpoints {
 
   //=======================BASE====================================
   //BASE URL
-  static const baseUrl = "https://aluminium-loose-nurses-movers.trycloudflare.com/api/v1";
-  static const imageBaseUrl = "https://aluminium-loose-nurses-movers.trycloudflare.com/";
+  static const baseUrl = "https://conduct-macro-band-interaction.trycloudflare.com/api/v1";
+  static const imageBaseUrl = "https://conduct-macro-band-interaction.trycloudflare.com/";
 
 
   //=======================AUTH====================================

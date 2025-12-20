@@ -17,7 +17,7 @@ class ProfileSettingsController extends GetxController {
   @override
   void onInit() {
 
-
+    getProfileData();
     super.onInit();
   }
 

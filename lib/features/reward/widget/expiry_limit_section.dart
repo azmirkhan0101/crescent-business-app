@@ -10,8 +10,9 @@ class ExpiryLimitSection extends StatelessWidget {
 
   final TextEditingController controller;
   final Function(DateTime) onDateSelected;
+  final DateTime? initialDate;
 
-  const ExpiryLimitSection({super.key, required this.controller, required this.onDateSelected,});
+  const ExpiryLimitSection({super.key, required this.controller, required this.onDateSelected, this.initialDate,});
 
   @override
   Widget build(BuildContext context) {
@@ -26,6 +27,7 @@ class ExpiryLimitSection extends StatelessWidget {
         const SizedBox(height: 10),
 
         CustomDatePickerField(
+          initialDate: initialDate,
             onDateSelected: (date){
               if( date!= null ){
                 onDateSelected(date);
