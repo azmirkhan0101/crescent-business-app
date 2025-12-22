@@ -27,7 +27,7 @@ class ProfileSettingsController extends GetxController {
     if( model != null ){
       logoImageUrl.value = model.logoImage == null || model.logoImage!.isEmpty
           ? ""
-          : "${ApiEndpoints.imageBaseUrl}${model.logoImage}";
+          : "${model.logoImage}";
       businessName.value = model.name;
       businessEmail.value = model.businessEmail;
     }

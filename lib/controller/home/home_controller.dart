@@ -35,7 +35,7 @@ class HomeController extends GetxController{
     if( model != null ){
       profileImageUrl.value = model.logoImage == null || model.logoImage!.isEmpty
           ? ""
-          : "${ApiEndpoints.imageBaseUrl}${model.logoImage}";
+          : "${model.logoImage}";
       userName.value = model.name;
     }
   }

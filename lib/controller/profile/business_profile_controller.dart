@@ -69,10 +69,10 @@ class BusinessProfileController extends GetxController{
     if( retrievedModel != null ){
       logoImageUrl.value = retrievedModel.logoImage == null || retrievedModel.logoImage!.isEmpty
           ? ""
-          : "${ApiEndpoints.imageBaseUrl}${retrievedModel.logoImage}";
+          : "${retrievedModel.logoImage}";
       coverImageUrl.value = retrievedModel.coverImage == null || retrievedModel.coverImage!.isEmpty
           ? ""
-          : "${ApiEndpoints.imageBaseUrl}${retrievedModel.coverImage}";
+          : "${retrievedModel.coverImage}";
     }
   }
 

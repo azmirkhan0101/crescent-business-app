@@ -82,7 +82,7 @@ class RewardModel {
       )
           : null,
       codes:
-      (json["codes"] as List).map((e) => RewardCode.fromJson(e)).toList(),
+      ((json["codes"] as List<dynamic>?) ?? []).map((e) => RewardCode.fromJson(e)).toList(),
       featured: json["featured"],
       priority: json["priority"],
       redemptions: json["redemptions"],

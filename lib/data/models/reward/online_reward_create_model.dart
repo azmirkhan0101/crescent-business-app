@@ -13,6 +13,24 @@ class OnlineRewardCreateModel {
     "featured": false
   };
 
+
+  var b = {
+    "businessId": "{{businessId}}",
+    "title": "\$25 Gift Card Online 2",
+    "description": "Redeem this \$25 gift card online.",
+    "type": "online",
+    "category": "other",
+    "redemptionLimit": 9,
+    "onlineRedemptionMethods": {
+      "giftCard": true,
+      "discountCode": true
+    },
+    "featured": false,
+    "startDate": "{{startDate}}",
+    "expiryDate": "{{expiryDate}}"
+  };
+
+
   final String businessId;
   final String? title;
   final String? description;

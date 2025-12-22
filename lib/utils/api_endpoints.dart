@@ -2,9 +2,8 @@ class ApiEndpoints {
 
   //=======================BASE====================================
   //BASE URL
-  static const baseUrl = "https://conduct-macro-band-interaction.trycloudflare.com/api/v1";
-  static const imageBaseUrl = "https://conduct-macro-band-interaction.trycloudflare.com/";
-
+  static const baseUrl = "http://13.55.115.124:5000/api/v1";
+  //static const imageBaseUrl = "http://13.55.115.124:5000/";
 
   //=======================AUTH====================================
   //LOGIN/SIGNIN
@@ -54,8 +53,8 @@ static const recentActivity = "/business/recent-activity";//HOME SCREEN RECENT A
   //========================REWARD===============================
   //CREATE REWARD - INSTORE AND ONLINE
   static const createRewardInStore = "/rewards"; //SAME FOR ONLINE
+  static const createRewardOnline = "/rewards/online"; //SAME FOR ONLINE
   static String getAllRewards({required String status, String search = ""}){
-    //TODO: CONTROL STATUS, PAGE, LIMIT FROM CONTROLLER
     if( search.isEmpty ){//NO SEARCH
       return "/rewards/business/my-rewards?status=$status&search&page=1&limit=10";
     }else{//SEARCH

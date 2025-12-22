@@ -41,7 +41,7 @@ class ProfileRewardCardWidget extends StatelessWidget {
 
     String imageUrl = "";
     if( image != null ){
-      imageUrl = ApiEndpoints.imageBaseUrl + image!;
+      imageUrl = image!;
     }
     String? date;
     if( expiryDate != null ){

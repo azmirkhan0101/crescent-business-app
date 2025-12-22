@@ -91,7 +91,7 @@ class EditRewardController extends GetxController{
     dateTime = model.expiryDate;
     limitController.text = model.redemptionLimit.toString();
     if( model.image != null ){
-      rewardImageUrl.value = "${ApiEndpoints.imageBaseUrl}${model.image}";
+      rewardImageUrl.value = "${model.image}";
     }else{
       rewardImageUrl.value = "";
     }

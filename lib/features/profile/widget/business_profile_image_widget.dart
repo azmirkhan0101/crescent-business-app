@@ -130,7 +130,20 @@ class _BusinessProfileWidgetState extends State<BusinessProfileWidget> {
     if (_coverFile != null) {
       return Image.file(_coverFile!, fit: BoxFit.cover);
     } else if (widget.coverImageUrl != null && widget.coverImageUrl!.isNotEmpty) {
-      return Image.network(widget.coverImageUrl!, fit: BoxFit.cover);
+      return Image.network(
+        widget.coverImageUrl!,
+        fit: BoxFit.cover,
+        errorBuilder: (context, error, stackTrace) {
+          return Center(
+            child: Icon(
+              Icons.image,
+              size: 100.r,
+              color: Colors.white,
+            ),
+          );
+        },
+      );
+
     }
     return Icon(Icons.image, size: 100.r, color: Colors.white);
   }
@@ -139,7 +152,19 @@ class _BusinessProfileWidgetState extends State<BusinessProfileWidget> {
     if (_logoFile != null) {
       return Image.file(_logoFile!, fit: BoxFit.cover);
     } else if (widget.logoImageUrl != null && widget.logoImageUrl!.isNotEmpty) {
-      return Image.network(widget.logoImageUrl!, fit: BoxFit.cover);
+      return Image.network(
+        widget.coverImageUrl!,
+        fit: BoxFit.cover,
+        errorBuilder: (context, error, stackTrace) {
+          return Center(
+            child: Icon(
+              Icons.business,
+              size: 100.r,
+              color: Colors.white,
+            ),
+          );
+        },
+      );
     }
     return Icon(Icons.business, size: 50.r, color: Colors.grey);
   }

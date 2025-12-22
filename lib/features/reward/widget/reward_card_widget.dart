@@ -70,7 +70,7 @@ class _RewardCardState extends State<RewardCard> {
 
     String imageUrl = "";
     if( widget.image != null ){
-      imageUrl = ApiEndpoints.imageBaseUrl + widget.image!;
+      imageUrl = widget.image!;
     }
 
     return Container(

@@ -134,7 +134,7 @@ class RewardController extends GetxController {
       print("Body: ${response.body}");
 
       if( response.statusCode == 200 ){
-        var tempRewards = jsonDecode(response.body)['data'] as List;
+        var tempRewards = (jsonDecode(response.body)['data'] as List<dynamic>?) ?? [];
         WidgetsBinding.instance.addPostFrameCallback((_) {
           rewards.value = tempRewards.map((e){
             return RewardModel.fromJson(e);
@@ -216,7 +216,7 @@ class RewardController extends GetxController {
         }
       }
 
-      var response = await request.send().timeout(Duration(seconds: 10));
+      var response = await request.send();
       var responseBody = await response.stream.bytesToString();
 
       if( response.statusCode == 201 ){//REWARD CREATED
@@ -232,13 +232,8 @@ class RewardController extends GetxController {
 
       print("Status: ${response.statusCode}");
       print("Body: $responseBody");
-    }on TimeoutException catch(_){
-      showSnackBar(
-          title: "Time out!",
-          message: "Check your internet connection and try again.",
-          backgroundColor: AppColors.errorRed
-      );
-    } catch(e){
+    }catch(e){
+      print("Create error: ${e}");
       showSnackBar(
           title: "No internet!",
           message: "Check your internet connection and try again.",
@@ -259,7 +254,7 @@ class RewardController extends GetxController {
       return;
     }
 
-    Uri url = Uri.parse( ApiEndpoints.baseUrl + ApiEndpoints.createRewardInStore );//SAME ENDPOINT FOR BOTH
+    Uri url = Uri.parse( ApiEndpoints.baseUrl + ApiEndpoints.createRewardOnline );
 
     onlineCreateModel = OnlineRewardCreateModel(
         businessId: storage.read( businessIdKey ),
@@ -273,7 +268,7 @@ class RewardController extends GetxController {
             giftCard: giftCard.value,
             discountCode: discountCode.value
         ),
-        featured: false
+        featured: false,
     );
 
     try{
