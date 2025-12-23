@@ -14,6 +14,7 @@ class ResetPasswordController extends GetxController{
   final TextEditingController newPasswordController = TextEditingController();
   final TextEditingController confirmPasswordController = TextEditingController();
   final storage = GetStorage();
+  RxBool isResetLoading = false.obs;
   late String resetPasswordToken;
 
   //VALIDATE NEW EMAIL
@@ -32,6 +33,13 @@ class ResetPasswordController extends GetxController{
   // }
 
   resetPassword() async{
+
+    if( isResetLoading.value ){
+      return;
+    }
+
+    isResetLoading.value = true;
+
     if( !isNewPasswordValid() ){
       showSnackBar(
           title: "Password incomplete!",
@@ -79,6 +87,8 @@ class ResetPasswordController extends GetxController{
           message: "Check your internet connection and try again!",
           backgroundColor: AppColors.errorRed
       );
+    }finally{
+      isResetLoading.value = false;
     }
   }
 }

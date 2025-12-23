@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -11,6 +12,7 @@ import 'package:organization/utils/api_endpoints.dart';
 import 'package:organization/utils/app_constants.dart';
 
 import '../../core/show_snackbar.dart';
+import '../../services/firebase_notification_service.dart';
 import '../../utils/app_color.dart';
 
 class OtpVerificationController extends GetxController {
@@ -18,6 +20,7 @@ class OtpVerificationController extends GetxController {
   final TextEditingController otpController = TextEditingController();
   var isOtpValid = false.obs;
   final storage = GetStorage();
+  RxBool isOtpVerifying = false.obs;
   late String email;
   late bool isSignup;//CHECKS IF SIGNUP VERIFICATION OR FORGOT PASSWORD VERIFICATION
 
@@ -27,6 +30,12 @@ class OtpVerificationController extends GetxController {
 
   //SUBMIT OTP FOR SIGNUP EMAIL VERIFICATION
   void submitSignupOtp() async {
+
+    if( isOtpVerifying.value ){
+      return;
+    }
+
+    isOtpVerifying.value = true;
 
     if (!isOtpValid.value) {
       Get.snackbar("Error", "Please enter the complete PIN");
@@ -59,6 +68,7 @@ class OtpVerificationController extends GetxController {
           if( isSignup ){//SIGNUP OTP VERIFIED -> SAVE TOKENS & GET PROFILE DATA TO SHOW IN SETUP COMPLETE SCREEN
             saveOtpResponse(responseData);
             storage.write( requireVerificationKey, false );//VERIFICATION DONE, NOT REQUIRED ANY MORE
+            await updateFcmToken();
             getProfileData();
           }else{
             Get.offAndToNamed(AppRoutes.resetPassword);
@@ -103,7 +113,44 @@ class OtpVerificationController extends GetxController {
           backgroundColor: AppColors.errorRed
       );
     }finally{
-     // closeDialog();
+     isOtpVerifying.value = false;
+    }
+  }
+
+
+  //UPDATE FCM TOKEN
+  updateFcmToken() async{
+
+    try{
+      String? token = await FirebaseNotificationService.instance.getToken();
+      print( token );
+
+      Uri uri = Uri.parse( ApiEndpoints.baseUrl + ApiEndpoints.updateFcmToken );
+
+      Map<String, String> headers = {
+        "Authorization": "Bearer ${storage.read( accessTokenKey )}",
+      };
+
+      String deviceType = "android";
+
+      // Detect the device type
+      if (Platform.isAndroid) {
+        deviceType = 'android';
+      } else{
+        deviceType = 'ios';
+      }
+
+      final payLoad = {
+        "fcmToken": token,
+        "deviceType": deviceType
+      };
+
+      http.Response response = await http.patch( uri, headers: headers, body: jsonEncode( payLoad ) );
+
+      print("Tokennnnn: ${response.body}");
+      print("Tokennnnn: ${response.statusCode}");
+    }catch(e){
+
     }
   }
 

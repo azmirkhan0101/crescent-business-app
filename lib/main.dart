@@ -1,13 +1,26 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:organization/services/firebase_notification_service.dart';
 
 import 'app.dart';
 import 'package:flutter/material.dart';
+
+import 'firebase_options.dart';
 void main() async{
 
   WidgetsFlutterBinding.ensureInitialized();
+  // ErrorWidget.builder = (FlutterErrorDetails details) {
+  //   return Container(); // empty container instead of warning
+  // };
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+  await FirebaseNotificationService.instance.initialize();
   await dotenv.load(fileName: ".env");
   await GetStorage.init();
+  String? a = await FirebaseNotificationService.instance.getToken();
+  print( a );
   runApp( MaterialApp(
       debugShowCheckedModeBanner: false,
       home: MyApp()) );

@@ -247,7 +247,14 @@ class AnalyticsScreen extends StatelessWidget {
       context: context,
       isScrollControlled: true,
       backgroundColor: Colors.white,
-      builder: (context) => BottomSheetWidget(),
+      builder: (context) => BottomSheetWidget(onExportClick: (bool isPdf) {
+        if( isPdf ){
+          controller.exportToPdf( controller.businessAnalyticsModel.value );
+        }else{
+          controller.exportToCsv( controller.businessAnalyticsModel.value );
+        }
+      },),
     );
   }
 }
+

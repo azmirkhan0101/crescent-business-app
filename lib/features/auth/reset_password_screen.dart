@@ -101,15 +101,31 @@ class ResetPasswordScreen extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            CustomButton(
-              buttonTextStyle: GoogleFonts.familjenGrotesk(
-                  color: AppColors.buttonTextColor,fontSize: 18.sp,fontWeight: FontWeight.w700),
-              text: AppText.resetPasswordButton,
-              onPressed: () {
-                controller.resetPasswordToken = resetPasswordToken;
-                controller.resetPassword();
-              },
-            ),
+            Center(child:
+            Obx((){
+              return CustomButton(
+                isLoading: controller.isResetLoading.value,
+                text: AppText.resetPasswordButton,
+                onPressed: () {
+                  controller.resetPasswordToken = resetPasswordToken;
+                  controller.resetPassword();
+                },
+                buttonTextStyle: GoogleFonts.familjenGrotesk(
+                  color: AppColors.buttonTextColor,
+                  fontSize: 18.sp,
+                  fontWeight: FontWeight.w700,
+                ),
+              );
+            }),),
+            // CustomButton(
+            //   buttonTextStyle: GoogleFonts.familjenGrotesk(
+            //       color: AppColors.buttonTextColor,fontSize: 18.sp,fontWeight: FontWeight.w700),
+            //   text: AppText.resetPasswordButton,
+            //   onPressed: () {
+            //     controller.resetPasswordToken = resetPasswordToken;
+            //     controller.resetPassword();
+            //   },
+            // ),
             SizedBox(height: AppSizes.paddingMedium),
             RichTextWidget(
               firstText: AppText.changedYourMind,

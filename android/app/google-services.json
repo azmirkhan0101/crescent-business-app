@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "899950650260",
+    "project_id": "crecent-change",
+    "storage_bucket": "crecent-change.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:899950650260:android:5c5ab07daf3ede457ba581",
+        "android_client_info": {
+          "package_name": "com.raiyanrahmat.crescent_change_business_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAVUg5XsVvDS4KC90iagvfvG-ASKq8-qOM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:899950650260:android:5edef42c7a2e65727ba581",
+        "android_client_info": {
+          "package_name": "com.raiyanrahmat.cresent_charge_user_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAVUg5XsVvDS4KC90iagvfvG-ASKq8-qOM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

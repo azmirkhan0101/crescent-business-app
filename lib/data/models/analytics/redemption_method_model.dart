@@ -1,5 +1,4 @@
-class RedemptionMethodModel{
-
+class RedemptionMethodModel {
   final String method;
   final int count;
   final double percentage;
@@ -7,22 +6,22 @@ class RedemptionMethodModel{
   RedemptionMethodModel({
     required this.method,
     required this.count,
-    required this.percentage
+    required this.percentage,
   });
 
-  factory RedemptionMethodModel.fromJson(Map<String, dynamic> json){
+  factory RedemptionMethodModel.fromJson(Map<String, dynamic> json) {
     return RedemptionMethodModel(
-        method: json['method'] ?? "",
-        count: json['count'] ?? 0,
-        percentage: (json['percentage'] as num?)?.toDouble() ?? 0.0
+      method: json['method'] as String? ?? '',
+      count: json['count'] as int? ?? 0,
+      percentage: (json['percentage'] as num?)?.toDouble() ?? 0.0,
     );
   }
 
-  Map<String, dynamic> toJson(){
+  Map<String, dynamic> toJson() {
     return {
-      "method" : method,
-      "count" : count,
-      "percentage" : percentage,
+      'method': method,
+      'count': count,
+      'percentage': percentage,
     };
   }
 }

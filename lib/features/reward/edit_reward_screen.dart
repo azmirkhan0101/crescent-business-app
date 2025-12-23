@@ -25,9 +25,6 @@ class EditRewardScreen extends StatelessWidget {
 
   final EditRewardController controller = Get.find<EditRewardController>();
   bool isInstoreTabSelected = true;//GET IT FROM ARGS
-  String imageUrl2 = "https://plus.unsplash.com/premium_photo-1683749809341-23a70a91b195?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTN8fHJld2FyZHxlbnwwfHwwfHx8MA%3D%3D";
-  String imageUrl = "";
-
 
   @override
   Widget build(BuildContext context) {
@@ -229,28 +226,35 @@ class EditRewardScreen extends StatelessWidget {
         builder: (context){
       return Container(
         height: 150.h,
-        child: Row(
-          mainAxisSize: MainAxisSize.max,
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
+        child: Column(
           children: [
-            ElevatedButton(onPressed: (){
-              if( Get.isBottomSheetOpen ?? false ){
-                Get.back();
-              }
-              pickCameraImage();
-            },
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: AppColors.primaryColor
-                ),
-                child: Text("Camera", style: TextStyle(color: AppColors.white),)),
-            ElevatedButton(onPressed: (){
-              if( Get.isBottomSheetOpen ?? false ){
-                Get.back();
-              }
-              pickGalleryImage();
-            }, style: ElevatedButton.styleFrom(
-                backgroundColor: AppColors.primaryColor
-            ),child: Text("Gallery", style: TextStyle(color: AppColors.white),)),
+            SizedBox(height: 25.h,),
+            Text("Select option to upload photo"),
+            SizedBox(height: 15.h,),
+            Row(
+              mainAxisSize: MainAxisSize.max,
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                ElevatedButton(onPressed: (){
+                  if( Get.isBottomSheetOpen ?? false ){
+                    Get.back();
+                  }
+                  pickCameraImage();
+                },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: AppColors.primaryColor
+                    ),
+                    child: Text("Camera", style: TextStyle(color: AppColors.white),)),
+                ElevatedButton(onPressed: (){
+                  if( Get.isBottomSheetOpen ?? false ){
+                    Get.back();
+                  }
+                  pickGalleryImage();
+                }, style: ElevatedButton.styleFrom(
+                    backgroundColor: AppColors.primaryColor
+                ),child: Text("Gallery", style: TextStyle(color: AppColors.white),)),
+              ],
+            ),
           ],
         ),
       );
@@ -283,7 +287,19 @@ class EditRewardScreen extends StatelessWidget {
     if ( controller.rewardImage?.value != null ) {
       return Image.file(controller.rewardImage!.value!, fit: BoxFit.cover);
     } else if ( controller.rewardImageUrl.value != null && controller.rewardImageUrl.value!.isNotEmpty) {
-      return Image.network( controller.rewardImageUrl.value!, fit: BoxFit.cover);
+      return Image.network(
+        controller.rewardImageUrl.value!,
+        fit: BoxFit.cover,
+        errorBuilder: (context, error, stackTrace) {
+          return Center(
+            child: Icon(
+              Icons.redeem,
+              size: 100.r,
+              color: Colors.white,
+            ),
+          );
+        },
+      );
     }
     return Icon(Icons.image, size: 50.r, color: Colors.grey);
   }

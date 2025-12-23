@@ -29,6 +29,7 @@ class SignUpController extends GetxController {
 
   BusinessSignupModel businessSignupModel = BusinessSignupModel();
   final storage = GetStorage();
+  RxBool isSignupLoading = false.obs;
 
   void hideLoading() {
     if (Get.isDialogOpen == true) {
@@ -143,6 +144,12 @@ class SignUpController extends GetxController {
   //SIGN UP
   Future<void> signup() async {
 
+    if( isSignupLoading.value ){
+      return;
+    }
+
+    isSignupLoading.value = true;
+
     try{
       final url = Uri.parse( ApiEndpoints.baseUrl + ApiEndpoints.signup );
       File? logo = businessSignupModel.logo;
@@ -212,6 +219,8 @@ class SignUpController extends GetxController {
           message: "Something went wrong. Please try again.",
           backgroundColor: AppColors.errorRed
       );
+    }finally{
+      isSignupLoading.value = false;
     }
 
   }

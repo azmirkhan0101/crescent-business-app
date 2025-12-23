@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
+import 'package:organization/controller/redeem/redeem_controller.dart';
 import 'package:organization/features/redeem_rewards/widgets/nfc_redeem.dart';
 import 'package:organization/features/redeem_rewards/widgets/qr_code_redeem.dart';
 import 'package:organization/features/redeem_rewards/widgets/static_code_redeem.dart';
@@ -15,11 +17,13 @@ class RedeemScannerScreen extends StatefulWidget {
 }
 
 class _RedeemScannerScreenState extends State<RedeemScannerScreen> {
+
+  final RedeemController controller = Get.find<RedeemController>();
   int _selectedIndex = 0;
 
-  final List<Widget> _tabs = const [
+  final List<Widget> _tabs = [
     QRCodeWidget(),
-    NFCWidget(),
+    //NFCWidget(),
     StaticCodeWidget(),
   ];
 
@@ -59,49 +63,74 @@ class _RedeemScannerScreenState extends State<RedeemScannerScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      // 1. Set this to false to handle the background manually or
+      // let the SingleChildScrollView handle the view insets.
+      resizeToAvoidBottomInset: true,
       body: Container(
-
         decoration: BoxDecoration(
           gradient: _gradients[_selectedIndex],
         ),
         child: SafeArea(
-          child: Column(
-            mainAxisSize: MainAxisSize.max,
-            children: [
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
-                child: Align(
-                  alignment: Alignment.topLeft,
-                  child: CustomText(text: "Redeem",
-                  color: AppColors.blackTextColor,
-                    fontWeight: FontWeight.w700,
-                    fontSize: 24.sp,
-                    language: true,
+          child: LayoutBuilder(
+            builder: (context, constraints) {
+              return SingleChildScrollView(
+                // This ensures the content can scroll when the keyboard is up
+                physics: const ClampingScrollPhysics(),
+                child: ConstrainedBox(
+                  constraints: BoxConstraints(
+                    minHeight: constraints.maxHeight,
+                  ),
+                  child: IntrinsicHeight(
+                    child: Column(
+                      mainAxisSize: MainAxisSize.max,
+                      children: [
+                        Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
+                          child: Align(
+                            alignment: Alignment.topLeft,
+                            child: CustomText(
+                              text: "Redeem",
+                              color: AppColors.blackTextColor,
+                              fontWeight: FontWeight.w700,
+                              fontSize: 24.sp,
+                              language: true,
+                            ),
+                          ),
+                        ),
+                        SizedBox(height: 25.h),
+
+                        // Tab Content
+                        Center(child: _tabs[_selectedIndex]),
+
+                        // 2. We use Spacer inside IntrinsicHeight to push
+                        // the bottom bar down when there's room.
+                        const Spacer(),
+
+                        SizedBox(height: 25.h),
+
+                        /// Custom TabBar
+                        Container(
+                          margin: EdgeInsets.symmetric(horizontal: 20.w, vertical: 12.h),
+                          padding: EdgeInsets.all(4.w),
+                          decoration: BoxDecoration(
+                            color: const Color(0x33FFFFFF),
+                            borderRadius: BorderRadius.circular(30.r),
+                          ),
+                          child: Row(
+                            children: [
+                              _buildTabButton("QR Code", 0),
+                              _buildTabButton("Static Code", 1),
+                            ],
+                          ),
+                        ),
+                        // 3. Adjusted this spacing so it's not too large on small screens
+                        SizedBox(height: 100.h),
+                      ],
+                    ),
                   ),
                 ),
-              ),
-
-              SizedBox( height: 25.h,),
-              Center(child: _tabs[_selectedIndex]),
-
-              SizedBox( height: 25.h,),
-              ///  Custom TabBar
-              Container(
-                margin: EdgeInsets.symmetric(horizontal: 20.w, vertical: 12.h),
-                padding: EdgeInsets.all(4.w),
-                decoration: BoxDecoration(
-                  color: Color(0x33FFFFFF),
-                  borderRadius: BorderRadius.circular(30.r),
-                ),
-                child: Row(
-                  children: [
-                    _buildTabButton("QR Code", 0),
-                    _buildTabButton("NFC", 1),
-                    _buildTabButton("Static Code", 2),
-                  ],
-                ),
-              ),
-            ],
+              );
+            },
           ),
         ),
       ),

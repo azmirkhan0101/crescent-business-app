@@ -146,17 +146,20 @@ class _LoginScreenState extends State<LoginScreen> {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            CustomButton(
-              text: "Login",
-              onPressed: () {
-                controller.login();
-              },
-              buttonTextStyle: GoogleFonts.familjenGrotesk(
-                color: AppColors.buttonTextColor,
-                fontSize: 18.sp,
-                fontWeight: FontWeight.w700,
-              ),
-            ),
+            Obx((){
+              return CustomButton(
+                isLoading: controller.isLoginLoading.value,
+                text: "Login",
+                onPressed: () {
+                  controller.login();
+                },
+                buttonTextStyle: GoogleFonts.familjenGrotesk(
+                  color: AppColors.buttonTextColor,
+                  fontSize: 18.sp,
+                  fontWeight: FontWeight.w700,
+                ),
+              );
+            }),
             SizedBox(height: AppSizes.paddingMedium),
             RichTextWidget(
               firstText: AppText.dontHaveAccount,

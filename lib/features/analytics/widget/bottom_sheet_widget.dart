@@ -9,7 +9,12 @@ import '../../../utils/app_color.dart';
 import '../../../utils/app_text_styles.dart';
 
 class BottomSheetWidget extends StatefulWidget {
-  const BottomSheetWidget({super.key});
+
+  final Function(bool) onExportClick;
+  const BottomSheetWidget({
+    super.key,
+    required this.onExportClick
+  });
 
   @override
   State<BottomSheetWidget> createState() => _BottomSheetWidgetState();
@@ -63,7 +68,10 @@ class _BottomSheetWidgetState extends State<BottomSheetWidget> {
                 fontSize: 18.sp,
                 fontWeight: FontWeight.w700,
               ),
-              onPressed: () {},
+              onPressed: () {
+                //isPdf
+                widget.onExportClick( selectedIndex == 1 );
+              },
               text: "Export",
             ),
           ),

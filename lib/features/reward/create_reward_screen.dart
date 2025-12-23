@@ -4,6 +4,7 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:organization/controller/reward/reward_controller.dart';
 import 'package:organization/features/reward/widget/custom_drop_down.dart';
 import 'package:organization/features/reward/widget/expiry_limit_section.dart';
@@ -16,6 +17,7 @@ import 'package:organization/utils/app_text_styles.dart';
 import '../../utils/app_color.dart';
 import '../../utils/app_text.dart';
 import '../on_boarding/widgets/bottom_button_widget.dart';
+import '../widgets/custom_button_widget.dart';
 import '../widgets/custom_text_field_widget.dart';
 import '../widgets/text_field_title_widget.dart';
 
@@ -152,18 +154,37 @@ class CreateRewardScreen extends StatelessWidget {
             SizedBox(
               height: 20.h,
             ),
-            BottomButtonWidget(
-              onPressed: () {
-                print("Id: ${controller.storage.read( businessIdKey ) ?? "empty"}");
-                if( isInstoreTabSelected ){//INSTORE REWARD
-                  controller.createRewardInStore();
-                }else{//ONLINE REWARD
-                  print("Online reward: ${controller.discountCode.value},,,,${controller.giftCard.value}");
-                  controller.createRewardOnline();
-                }
-              },
-              buttonText: "Create",
-            ),
+            Center(child:
+            Obx((){
+              return CustomButton(
+                isLoading: controller.isCreating.value,
+                text: "Create",
+                onPressed: () {
+                  if( isInstoreTabSelected ){//INSTORE REWARD
+                    controller.createRewardInStore();
+                  }else{//ONLINE REWARD
+                    print("Online reward: ${controller.discountCode.value},,,,${controller.giftCard.value}");
+                    controller.createRewardOnline();
+                  }
+                },
+                buttonTextStyle: GoogleFonts.familjenGrotesk(
+                  color: AppColors.buttonTextColor,
+                  fontSize: 18.sp,
+                  fontWeight: FontWeight.w700,
+                ),
+              );
+            }),)
+            // BottomButtonWidget(
+            //   onPressed: () {
+            //     if( isInstoreTabSelected ){//INSTORE REWARD
+            //       controller.createRewardInStore();
+            //     }else{//ONLINE REWARD
+            //       print("Online reward: ${controller.discountCode.value},,,,${controller.giftCard.value}");
+            //       controller.createRewardOnline();
+            //     }
+            //   },
+            //   buttonText: "Create",
+            // ),
           ],
         ),
       ),

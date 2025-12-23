@@ -3,7 +3,6 @@ import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:organization/data/models/reward/reward_model.dart';
-import 'package:organization/utils/api_endpoints.dart';
 import 'package:organization/utils/app_constants.dart';
 
 class EditRewardController extends GetxController{
@@ -16,6 +15,7 @@ class EditRewardController extends GetxController{
   Rx<File?>? csvFile = Rx<File?>(null);
   Rx<File?>? rewardImage = Rx<File?>(null);
   RxString rewardImageUrl = "".obs;
+  RxBool isUpdating = false.obs;
 
   DateTime? dateTime;
   RxBool isInstore = true.obs;
@@ -109,6 +109,11 @@ class EditRewardController extends GetxController{
 
   updateReward(){
 
+    if( isUpdating.value ){
+      return;
+    }
+
+    isUpdating.value = true;
 
   }
 }

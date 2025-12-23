@@ -78,26 +78,26 @@ class OtpVerificationScreen extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           children: [
             //Reactive Button
-            CustomButton(
-              buttonTextStyle: GoogleFonts.familjenGrotesk(
-                color: AppColors.buttonTextColor,
-                fontSize: 18.sp,
-                fontWeight: FontWeight.w700,
-              ),
-              text: AppText.continueText,
-              onPressed: () {
-                controller.email = email;
-                controller.isSignup = isSignup;
-                if( isSignup ){//OTP FOR SIGNUP
-                  controller.submitSignupOtp();
-                }else{//OTP FOR FORGOT PASSWORD
-                  controller.submitForgotPasswordOtp();
-                }
-
-                //Get.toNamed(AppRoutes.resetPassword);
-              },
-            ),
-
+            Obx((){
+              return CustomButton(
+                isLoading: controller.isOtpVerifying.value,
+                text: AppText.continueText,
+                onPressed: () {
+                  controller.email = email;
+                  controller.isSignup = isSignup;
+                  if( isSignup ){//OTP FOR SIGNUP
+                    controller.submitSignupOtp();
+                  }else{//OTP FOR FORGOT PASSWORD
+                    controller.submitForgotPasswordOtp();
+                  }
+                },
+                buttonTextStyle: GoogleFonts.familjenGrotesk(
+                  color: AppColors.buttonTextColor,
+                  fontSize: 18.sp,
+                  fontWeight: FontWeight.w700,
+                ),
+              );
+            }),
             SizedBox(height: AppSizes.paddingMedium),
             RichTextWidget(
               firstText: "Haven’t receive any code?",

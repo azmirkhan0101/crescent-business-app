@@ -94,18 +94,34 @@ class ForgotPasswordScreen extends StatelessWidget {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              CustomButton(
-                buttonTextStyle: GoogleFonts.familjenGrotesk(
-                  color: AppColors.buttonTextColor,
-                  fontSize: 18.sp,
-                  fontWeight: FontWeight.w700,
-                ),
-                text: AppText.continueText,
-                backgroundColor: AppColors.primaryColor,
-                onPressed: () {
-                  controller.sendVerificationCode();
-                },
+              Center(
+                child: Obx((){
+                  return CustomButton(
+                    isLoading: controller.isVerifying.value,
+                    text: AppText.continueText,
+                    onPressed: () {
+                      controller.sendVerificationCode();
+                    },
+                    buttonTextStyle: GoogleFonts.familjenGrotesk(
+                      color: AppColors.buttonTextColor,
+                      fontSize: 18.sp,
+                      fontWeight: FontWeight.w700,
+                    ),
+                  );
+                }),
               ),
+              // CustomButton(
+              //   buttonTextStyle: GoogleFonts.familjenGrotesk(
+              //     color: AppColors.buttonTextColor,
+              //     fontSize: 18.sp,
+              //     fontWeight: FontWeight.w700,
+              //   ),
+              //   text: AppText.continueText,
+              //   backgroundColor: AppColors.primaryColor,
+              //   onPressed: () {
+              //     controller.sendVerificationCode();
+              //   },
+              // ),
               SizedBox(height: AppSizes.paddingMedium),
               RichTextWidget(
                 firstText: AppText.dontHaveAccount,

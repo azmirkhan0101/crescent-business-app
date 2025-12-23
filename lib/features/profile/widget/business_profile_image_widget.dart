@@ -153,7 +153,7 @@ class _BusinessProfileWidgetState extends State<BusinessProfileWidget> {
       return Image.file(_logoFile!, fit: BoxFit.cover);
     } else if (widget.logoImageUrl != null && widget.logoImageUrl!.isNotEmpty) {
       return Image.network(
-        widget.coverImageUrl!,
+        widget.logoImageUrl!,
         fit: BoxFit.cover,
         errorBuilder: (context, error, stackTrace) {
           return Center(

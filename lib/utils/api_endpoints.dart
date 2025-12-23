@@ -61,8 +61,16 @@ static const recentActivity = "/business/recent-activity";//HOME SCREEN RECENT A
       return "/rewards/business/my-rewards?status=$status&search=$search&page=1&limit=10";
     }
   }
+  static String updateReward({required String rewardId}){
+    return "/rewards/$rewardId}";
+  }
   static String updateRewardStatus({required String rewardID}){
     return "/rewards/$rewardID/status";
   }
   static const deleteReward = "/rewards/";//BUSINESS ID WILL BE PASSED FROM CONTROLLER IN PARAMETER
+
+//REDEEM
+  static const String redeemReward = "/rewards/redeem";
+//FCM
+static const updateFcmToken = "/auth/update-fcm";
 }

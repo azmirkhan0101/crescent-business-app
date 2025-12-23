@@ -45,11 +45,17 @@ class VerifyNowScreen extends StatelessWidget {
                 backgroundColor: AppColors.successGreen,
                 padding: EdgeInsets.symmetric( horizontal: 60.w, vertical: 10.h )
               ),
-              child: CustomText( text: "Verify Now",
-              color: AppColors.white,
-                fontSize: 15.sp,
-                fontWeight: FontWeight.w700,
-              )
+              child: Obx((){
+                if( controller.isVerificationLoading.value ){
+                  return CircularProgressIndicator(color: AppColors.white,);
+                }else{
+                  return CustomText( text: "Verify Now",
+                    color: AppColors.white,
+                    fontSize: 15.sp,
+                    fontWeight: FontWeight.w700,
+                  );
+                }
+              })
           ),
           SizedBox(
             height: 40.h,

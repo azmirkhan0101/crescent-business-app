@@ -2,7 +2,6 @@ import 'redemption_method_model.dart';
 import 'top_rewards_model.dart';
 
 class BusinessAnalyticsModel {
-
   final int totalRedemptions;
   final int profileViews;
   final double profilePercentage;
@@ -22,25 +21,30 @@ class BusinessAnalyticsModel {
     required this.websitePercentage,
     required this.websiteViewsIncrease,
     required this.methods,
-    required this.topRewards
+    required this.topRewards,
   });
 
-  factory BusinessAnalyticsModel.fromJson(Map<String, dynamic> json){
+  factory BusinessAnalyticsModel.fromJson(Map<String, dynamic> json) {
+    var methodsList = json['methods'] as List?;
+    List<RedemptionMethodModel> methods = methodsList != null
+        ? methodsList.map((i) => RedemptionMethodModel.fromJson(i)).toList()
+        : [];
+
+    var topRewardsList = json['topRewards'] as List?;
+    List<TopRewardModel> topRewards = topRewardsList != null
+        ? topRewardsList.map((i) => TopRewardModel.fromJson(i)).toList()
+        : [];
+
     return BusinessAnalyticsModel(
-        totalRedemptions: json['totalRedemptions'] ?? 0,
-        profileViews: json['profileCurrent'] ?? 0,
-        profilePercentage: (json['profileChange'] as num?)?.toDouble() ?? 0.0,
-        profileViewsIncrease: json['profileIncrease'] ?? false,
-        websiteViews: json['websiteCurrent'] ?? 0,
-        websitePercentage: (json['websiteChange'] as num?)?.toDouble() ?? 0.0,
-        websiteViewsIncrease: json['websiteIncrease'] ?? false,
-        methods: (json['methods'] as List).map((e){
-          return RedemptionMethodModel.fromJson(e);
-        }).toList(),
-        topRewards: (json['topRewards'] as List<dynamic>? ?? []).map((e){
-          return TopRewardModel.fromJson(e);
-        }).toList()
+      totalRedemptions: json['total_redemptions'] as int? ?? 0,
+      profileViews: json['profile_views'] as int? ?? 0,
+      profilePercentage: (json['profile_percentage'] as num?)?.toDouble() ?? 0.0,
+      profileViewsIncrease: json['profile_views_increase'] as bool? ?? false,
+      websiteViews: json['website_views'] as int? ?? 0,
+      websitePercentage: (json['website_percentage'] as num?)?.toDouble() ?? 0.0,
+      websiteViewsIncrease: json['website_views_increase'] as bool? ?? false,
+      methods: methods,
+      topRewards: topRewards,
     );
   }
 }
-

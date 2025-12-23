@@ -18,20 +18,24 @@ class RedeemScannerCompleteScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
-
     return Scaffold(
-
-      bottomNavigationBar: Padding(
-        padding: EdgeInsets.all(16.w),
-        child: CustomButton(
-          buttonTextStyle: GoogleFonts.familjenGrotesk(
-              color: AppColors.buttonTextColor,fontSize: 18.sp,fontWeight: FontWeight.w700),
-          backgroundColor: AppColors.black,
-          textColor: AppColors.white,
-          text: AppText.done,
-          onPressed: () {
-            Get.toNamed(AppRoutes.mainNav);
-          },
+      backgroundColor: AppColors.white,
+      bottomNavigationBar: Container(
+        color: Color(0xFFD1FF43),
+        child: SafeArea(
+          child: Padding(
+            padding: EdgeInsets.symmetric( horizontal: 16.w, vertical: 25.h),
+            child: CustomButton(
+              buttonTextStyle: GoogleFonts.familjenGrotesk(
+                  color: AppColors.white,
+                  fontSize: 18.sp,
+                  fontWeight: FontWeight.w700),
+              backgroundColor: AppColors.black,
+              textColor: AppColors.white,
+              text: AppText.done,
+              onPressed: () => Get.toNamed(AppRoutes.mainNav),
+            ),
+          ),
         ),
       ),
 

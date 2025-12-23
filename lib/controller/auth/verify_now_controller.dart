@@ -13,6 +13,7 @@ import '../../utils/api_endpoints.dart';
 class VerifyNowController extends GetxController{
 
   final storage = GetStorage();
+  RxBool isVerificationLoading = false.obs;
 
   String? email(){
     return storage.read( emailKey );
@@ -20,6 +21,12 @@ class VerifyNowController extends GetxController{
 
   //VERIFY NOW CLICK -> SEND SIGNUP OTP ( SAME AS RESEND SIGNUP OTP )
   void sendVerificationOtp() async{
+
+    if( isVerificationLoading.value ){
+      return;
+    }
+
+    isVerificationLoading.value = true;
 
     try{
       Uri uri = Uri.parse( ApiEndpoints.baseUrl + ApiEndpoints.otpResendSignup );
@@ -66,6 +73,8 @@ class VerifyNowController extends GetxController{
           message: "Something went wrong. Please try again,",
           backgroundColor: AppColors.errorRed
       );
+    }finally{
+      isVerificationLoading.value = false;
     }
 
 

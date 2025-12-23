@@ -59,6 +59,16 @@ dependencies:
   flutter_image_compress: ^2.4.0
   path_provider: ^2.1.5
   dropdown_search: ^6.0.2
+  csv: ^6.0.0
+  change_app_package_name: ^1.5.0
+  firebase_core: ^4.3.0
+  firebase_messaging: ^16.1.0
+  flutter_local_notifications: ^19.5.0
+  platform: ^3.1.6
+  permission_handler: ^12.0.1
+  device_info_plus: ^12.3.0
+  pdf: ^3.11.3
+  printing: ^5.14.2
 
 
 

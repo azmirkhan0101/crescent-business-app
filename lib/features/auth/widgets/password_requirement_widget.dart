@@ -27,10 +27,10 @@ class _PasswordRequirementsState extends State<PasswordRequirements> {
           color: AppColors.secondaryTextColor,
         ),
         SizedBox(height: 8.h),
-        _buildRequirementItem(AppText.passwordRequirementCharacters, false),
+        _buildRequirementItem(AppText.passwordRequirementCharacters, true),
         _buildRequirementItem(AppText.passwordRequirementLetters, true),
         _buildRequirementItem(AppText.passwordRequirementNumber, true),
-        _buildRequirementItem(AppText.passwordRequirementSpecial, false),
+        _buildRequirementItem(AppText.passwordRequirementSpecial, true),
       ],
     );
   }
@@ -46,10 +46,13 @@ class _PasswordRequirementsState extends State<PasswordRequirements> {
             color: isChecked ? Colors.green : Colors.transparent, // ✅ use passed bool
           ),
           const SizedBox(width: 8),
-          Text(
-            text,
-            style: AppTextStyle.mediumStyle.copyWith(
-              fontSize: AppSizes.smallTSize,
+          Expanded(
+            child: Text(
+              overflow: TextOverflow.ellipsis,
+              text,
+              style: AppTextStyle.mediumStyle.copyWith(
+                fontSize: AppSizes.smallTSize,
+              ),
             ),
           ),
         ],

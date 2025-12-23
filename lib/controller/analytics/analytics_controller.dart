@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:http/http.dart' as http;
+import 'package:organization/controller/analytics/analytics_exporter.dart';
 import 'package:organization/data/models/analytics/business_analytics_model.dart';
 import 'package:organization/data/models/analytics/graph_data_model.dart';
 import 'package:organization/data/models/analytics/redemption_method_model.dart';
@@ -152,4 +153,26 @@ getRewardAnalyticsById({required String rewardId}) async{
 
 
 }
+
+
+//EXPORT TO CSV
+exportToCsv( BusinessAnalyticsModel? model ) async{
+  if( model == null ){
+    return;
+  }
+  //EXPORT TO CSV
+  AnalyticsExporter exporter = AnalyticsExporter();
+  exporter.exportToCSV( model );
+}
+
+//EXPORT TO CSV
+  exportToPdf( BusinessAnalyticsModel? model ) async{
+    print("Csvvvvvvvvvvvv7");
+  if( model == null ){
+    return;
+  }
+    print("Csvvvvvvvvvvvv6");
+    AnalyticsExporter exporter = AnalyticsExporter();
+    exporter.exportToPDF( model );
+  }
 }

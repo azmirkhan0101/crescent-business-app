@@ -15,6 +15,7 @@ class ForgotPasswordController extends GetxController {
 
   final TextEditingController emailController = TextEditingController();
   final storage = GetStorage();
+  RxBool isVerifying = false.obs;
 
   bool isEmailValid() {
     return RegExp(
@@ -24,6 +25,13 @@ class ForgotPasswordController extends GetxController {
 
   //VALIDATE EMAIL AND SEND OTP
   sendVerificationCode() async{
+
+    if( isVerifying.value ){
+      return;
+    }
+
+    isVerifying.value = true;
+
     if( !isEmailValid() ){
       showSnackBar(
           title: "Invalid Email!",
@@ -78,6 +86,8 @@ class ForgotPasswordController extends GetxController {
           message: "Something went wrong. Please try again",
           backgroundColor: AppColors.errorRed
       );
+    }finally{
+      isVerifying.value = false;
     }
 
 

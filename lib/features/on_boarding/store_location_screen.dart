@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:google_places_flutter/google_places_flutter.dart';
 import 'package:google_places_flutter/model/prediction.dart';
 import 'package:organization/features/on_boarding/widgets/onboarding_appbar.dart';
@@ -13,6 +14,7 @@ import '../../../utils/app_color.dart';
 import '../../../utils/app_size.dart';
 import '../../controller/auth/sign_up_controller.dart';
 import '../profile/widget/location_widget.dart';
+import '../widgets/custom_button_widget.dart';
 import '../widgets/custom_text.dart';
 import '../widgets/custom_text_field_widget.dart';
 import '../widgets/heading_text_widget.dart';
@@ -81,13 +83,32 @@ class StoreLocationScreen extends StatelessWidget {
       ),
 
       /// continue Button
-      bottomNavigationBar: BottomButtonWidget(
-        onPressed: () {
-          controller.businessSignupModel.locations = locationNames;
-          controller.signup();
-        },
-        buttonText: AppText.continueText,
+      bottomNavigationBar: Padding(
+        padding: EdgeInsets.symmetric( horizontal: 25.w, vertical: 30.h ),
+        child: Obx((){
+          return CustomButton(
+            isLoading: controller.isSignupLoading.value,
+            text: AppText.continueText,
+            onPressed: () {
+              controller.businessSignupModel.locations = locationNames;
+              controller.signup();
+            },
+            buttonTextStyle: GoogleFonts.familjenGrotesk(
+              color: AppColors.buttonTextColor,
+              fontSize: 18.sp,
+              fontWeight: FontWeight.w700,
+            ),
+          );
+        }),
       ),
+      //
+      // BottomButtonWidget(
+      //   onPressed: () {
+      //     controller.businessSignupModel.locations = locationNames;
+      //     controller.signup();
+      //   },
+      //   buttonText: AppText.continueText,
+      // ),
     );
   }
 

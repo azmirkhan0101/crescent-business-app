@@ -14,10 +14,12 @@ import 'package:organization/utils/app_constants.dart';
 
 import '../../core/show_snackbar.dart';
 import '../../data/models/profile/business_profile_model.dart';
+import '../../services/firebase_notification_service.dart';
 
 class LoginController extends GetxController{
 
   final storage = GetStorage();
+  RxBool isLoginLoading = false.obs;
 
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
@@ -37,6 +39,13 @@ class LoginController extends GetxController{
 
   //VALIDATE EMAIL PASSWORD AND THEN LOGIN -> if verified -> go to home -> else -> go to verified screen
   login() async{
+
+    if( isLoginLoading.value ){
+      return;
+    }
+
+    isLoginLoading.value = true;
+
     if( !isEmailValid() || !isPasswordValid() ){
       showSnackBar(
           title: "Incorrect Credentials!",
@@ -68,6 +77,7 @@ class LoginController extends GetxController{
         saveOtpResponse( responseData );
         storage.write( requireVerificationKey, false );
         //GET PROFILE AND GO TO MAIN -> HOME
+        await updateFcmToken();
         getProfileData();
       }else if( response.statusCode == 400 ){//ACCOUNT FOUND, BUT NOT VERIFIED
         showSnackBar(
@@ -132,6 +142,44 @@ class LoginController extends GetxController{
           message: "Please try again later.",
           backgroundColor: AppColors.errorRed
       );
+    }finally{
+      isLoginLoading.value = false;
+    }
+  }
+
+  //UPDATE FCM TOKEN
+  updateFcmToken() async{
+
+    try{
+      String? token = await FirebaseNotificationService.instance.getToken();
+      print( token );
+
+      Uri uri = Uri.parse( ApiEndpoints.baseUrl + ApiEndpoints.updateFcmToken );
+
+      Map<String, String> headers = {
+        "Authorization": "Bearer ${storage.read( accessTokenKey )}",
+      };
+
+      String deviceType = "android";
+
+      // Detect the device type
+      if (Platform.isAndroid) {
+        deviceType = 'android';
+      } else{
+        deviceType = 'ios';
+      }
+
+      final payLoad = {
+        "fcmToken": token,
+        "deviceType": deviceType
+      };
+
+      http.Response response = await http.patch( uri, headers: headers, body: jsonEncode( payLoad ) );
+
+      print("Tokennnnn: ${response.body}");
+      print("Tokennnnn: ${response.statusCode}");
+    }catch(e){
+
     }
   }
 

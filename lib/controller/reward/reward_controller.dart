@@ -32,6 +32,7 @@ class RewardController extends GetxController {
   }
 
   final storage = GetStorage();
+  RxBool isCreating = false.obs;
   InStoreRewardCreateModel? inStoreCreateModel;
   OnlineRewardCreateModel? onlineCreateModel;
   String category = categories[0];
@@ -123,6 +124,7 @@ class RewardController extends GetxController {
     rewards.value = [];
     try{
       Uri uri = Uri.parse( ApiEndpoints.baseUrl + ApiEndpoints.getAllRewards(status: selectedFilter.value) );
+      print(uri.toString());
 
       Map<String, String> headers = {
         "Authorization" : "Bearer ${storage.read( accessTokenKey )}"
@@ -153,6 +155,12 @@ class RewardController extends GetxController {
 
 //CREATE REWARD IN STORE
   createRewardInStore() async{
+
+    if( isCreating.value ){
+      return;
+    }
+
+    isCreating.value = true;
 
     if( titleController.text.trim().isEmpty || descriptionController.text.trim().isEmpty ){
       showSnackBar(
@@ -239,11 +247,27 @@ class RewardController extends GetxController {
           message: "Check your internet connection and try again.",
           backgroundColor: AppColors.errorRed
       );
+    }finally{
+      isCreating.value = false;
+      qrCode.value = true;
+      staticCode.value = false;
+      nfcTap.value = false;
+      titleController.clear();
+      descriptionController.clear();
+      rewardImage.value = null;
+      expiryDate = null;
+      redemptionLimitController.clear();
     }
   }
 
   //CREATE REWARD ONLINE
   createRewardOnline() async{
+
+    if( isCreating.value ){
+      return;
+    }
+
+    isCreating.value = true;
 
     if( titleController.text.trim().isEmpty || descriptionController.text.trim().isEmpty ){
       showSnackBar(
@@ -349,6 +373,15 @@ class RewardController extends GetxController {
           message: "Check your internet connection and try again.",
           backgroundColor: AppColors.errorRed
       );
+    }finally{
+      isCreating.value = false;
+      discountCode.value = true;
+      giftCard.value = false;
+      titleController.clear();
+      descriptionController.clear();
+      rewardImage.value = null;
+      expiryDate = null;
+      redemptionLimitController.clear();
     }
   }
 
