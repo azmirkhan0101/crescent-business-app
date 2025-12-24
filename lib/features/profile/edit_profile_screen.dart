@@ -8,7 +8,6 @@ import 'package:google_places_flutter/google_places_flutter.dart';
 import 'package:google_places_flutter/model/prediction.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:organization/controller/profile/business_profile_controller.dart';
-import 'package:organization/features/profile/widget/business_profile_image_widget.dart';
 import 'package:organization/features/profile/widget/image_edit_widget.dart';
 import 'package:organization/features/profile/widget/location_widget.dart';
 import 'package:organization/features/profile/widget/profile_heading_text_widget.dart';
@@ -32,9 +31,7 @@ class EditProfileScreen extends StatelessWidget {
       backgroundColor: const Color(0xFFF7F7F7),
       //app bar
       appBar: AppBar(
-        scrolledUnderElevation: 0,
-        clipBehavior: Clip.none,
-        backgroundColor: Colors.transparent,
+        forceMaterialTransparency: true,
         centerTitle: true,
         leading: IconButton(
           icon: Icon(Icons.arrow_back_ios, size: 20.w),

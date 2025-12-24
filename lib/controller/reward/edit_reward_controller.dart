@@ -1,11 +1,25 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
+import 'package:mime/mime.dart';
 import 'package:organization/data/models/reward/reward_model.dart';
+import 'package:organization/utils/api_endpoints.dart';
 import 'package:organization/utils/app_constants.dart';
+import 'package:http/http.dart' as http;
+
+import 'package:path_provider/path_provider.dart';
+import 'package:path/path.dart' as p;
+
+import '../../core/show_snackbar.dart';
+import '../../utils/app_color.dart';
 
 class EditRewardController extends GetxController{
+
+  final storage = GetStorage();
 
   RewardModel? model;
   TextEditingController titleController = TextEditingController();
@@ -107,13 +121,123 @@ class EditRewardController extends GetxController{
   }
 
 
-  updateReward(){
+  //UPDATE INSTORE REWARD
+  updateInstoreReward({required String rewardId}) async{
 
     if( isUpdating.value ){
       return;
     }
 
-    isUpdating.value = true;
+    //isUpdating.value = true;
 
+    Uri uri = Uri.parse( ApiEndpoints.baseUrl + ApiEndpoints.updateReward(rewardId: rewardId) );
+
+    Map<String, String> headers = {
+      "Content-type" : "application/json",
+      "Authorization" : "Bearer ${storage.read( accessTokenKey )}"
+    };
+
+    final payLoad = {
+      "title": titleController.text.trim().isEmpty ? model?.title : titleController.text.trim(),
+      "description": descriptionController.text.trim().isEmpty ? model?.description : descriptionController.text.trim(),
+      "category": model?.category,
+      "redemptionLimit": model?.redemptionLimit,
+      "startDate": model?.startDate,
+      "expiryDate": dateTime,
+      "featured": model?.featured,
+      "isActive": model?.isActive,
+      "updateReason": "Updated redemption methods and expiry date",
+      "inStoreRedemptionMethods": {
+        "qrCode": qrCode.value,
+        "staticCode": staticCode.value,
+        "nfcTap": nfcTap.value
+      },
+      "onlineRedemptionMethods": null
+    };
+
+
+    try{
+      var request = http.MultipartRequest("PATCH", uri );
+      request.headers.addAll({
+        "Authorization": "Bearer ${storage.read( accessTokenKey )}",
+        "Content-Type": "application/json",
+      });
+
+      request.fields["data"] = jsonEncode( payLoad );
+
+      if( rewardImage?.value != null ){
+        final compressedImage = await compressImage( rewardImage!.value! );
+        if( compressedImage != null ){
+          final mimeType =
+              lookupMimeType(compressedImage.path)?.split('/') ??
+                  ['application', 'octet-stream'];
+
+          request.files.add(
+              await http.MultipartFile.fromPath(
+                "rewardImage",
+                compressedImage.path,
+                contentType: http.MediaType(
+                  mimeType[0],
+                  mimeType[1],
+                ),
+              )
+          );
+        }
+      }
+
+      var response = await request.send();
+      var responseBody = await response.stream.bytesToString();
+
+      if( response.statusCode == 201 ){//REWARD CREATED
+        //GO BACK TO REWARDS SCREEN
+        //getAllRewards();
+        Get.back();
+        showSnackBar(
+            title: "Done!",
+            message: "Reward created successfully",
+            backgroundColor: AppColors.successGreen
+        );
+      }
+
+      print("Status: ${response.statusCode}");
+      print("Body: $responseBody");
+    }catch(e){
+      print("Create error: ${e}");
+      showSnackBar(
+          title: "No internet!",
+          message: "Check your internet connection and try again.",
+          backgroundColor: AppColors.errorRed
+      );
+    }finally{
+      // isCreating.value = false;
+      // qrCode.value = true;
+      // staticCode.value = false;
+      // nfcTap.value = false;
+      // titleController.clear();
+      // descriptionController.clear();
+      // rewardImage.value = null;
+      // expiryDate = null;
+      // redemptionLimitController.clear();
+    }
+  }
+
+
+
+  //COMPRESS IMAGE
+  Future<File?> compressImage(File file) async {
+    final dir = await getTemporaryDirectory();
+    final targetPath = p.join(
+      dir.path,
+      '${DateTime.now().millisecondsSinceEpoch}.jpg',
+    );
+
+    final result = await FlutterImageCompress.compressAndGetFile(
+      file.absolute.path,
+      targetPath,
+      quality: 50,// 0 - 100
+      format: CompressFormat.jpeg,
+    );
+
+    return result != null ? File(result.path) : null;
   }
 }

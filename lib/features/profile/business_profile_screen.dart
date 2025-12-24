@@ -45,6 +45,7 @@ class BusinessProfileScreen extends StatelessWidget {
             ),
             IconButton(
               onPressed: () {
+                controller.setControllerValues();
                 Get.toNamed(AppRoutes.editProfile);
               },
               icon: Icon(Icons.edit_outlined),

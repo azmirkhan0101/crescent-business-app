@@ -69,6 +69,8 @@ dependencies:
   device_info_plus: ^12.3.0
   pdf: ^3.11.3
   printing: ^5.14.2
+  nfc_manager: ^4.1.1
+  nfc_manager_ndef: ^1.1.0
 
 
 

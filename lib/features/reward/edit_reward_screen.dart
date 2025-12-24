@@ -4,13 +4,12 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:get/get_connect/http/src/utils/utils.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:organization/controller/reward/edit_reward_controller.dart';
 import 'package:organization/features/reward/widget/custom_checkbox.dart';
+import 'package:organization/features/reward/widget/edit_expiry_limit_section.dart';
 import 'package:organization/features/reward/widget/expiry_limit_section.dart';
 import 'package:organization/features/reward/widget/online_options_widget.dart';
-import 'package:organization/features/reward/widget/redemption_methods_section.dart';
 import 'package:organization/features/widgets/custom_card_widget.dart';
 import 'package:organization/utils/app_text_styles.dart';
 
@@ -30,8 +29,7 @@ class EditRewardScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.white,
-        elevation: 0,
+        forceMaterialTransparency: true,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back_ios, color: Colors.black, size: 20),
           onPressed: () {
@@ -132,13 +130,15 @@ class EditRewardScreen extends StatelessWidget {
             ),
             SizedBox(height: 25),
             //EXPIRY DATE AND LIMIT
-            ExpiryLimitSection(
-              initialDate: controller.dateTime,
-              controller: controller.limitController,
-              onDateSelected: (date){
-                controller.dateTime = date;
-              },
-            ),
+            Obx((){
+              return EditExpiryLimitSection(
+                initialDate: controller.dateTime,
+                controller: controller.limitController,
+                onDateSelected: (date){
+                  controller.dateTime = date;
+                }, isInstore: controller.isInstore.value,
+              );
+            }),
             SizedBox(height: 25),
 
             //RedemptionMethodsSection
@@ -152,8 +152,12 @@ class EditRewardScreen extends StatelessWidget {
               if( controller.isInstore.value ){
                 return inStoreOptions();
               }else{
+                String fileName = controller.csvFileName.value;
+                if( fileName.isEmpty ){
+                  fileName = "Discount Codes";
+                }
                 return OnlineOptions(
-                  fileName: controller.csvFileName.value,
+                  fileName: fileName,
                   onPickFile: (){
                     pickCSV();
                   },
@@ -208,7 +212,7 @@ class EditRewardScreen extends StatelessWidget {
                     print("Online reward: ${controller.discountCode.value},,,,${controller.giftCard.value}");
                   }
                 },
-                buttonText: "Update"
+                buttonText: "Save"
             )
           ],
         ),

@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
 import 'package:organization/controller/redeem/redeem_controller.dart';
+import 'package:organization/features/widgets/button_widget.dart';
 import 'package:organization/features/widgets/custom_card_widget.dart';
 import 'package:organization/utils/app_color.dart';
 
@@ -35,20 +36,20 @@ class _QRCodeWidgetState extends State<QRCodeWidget> {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           CustomText(
-            //text: "Scan QR code",
-            text: scannedCode ?? "",
+            text: "Scan QR code",
             color: AppColors.headlineTextColor,
             fontWeight: FontWeight.w600,
             fontSize: 24.sp,
             language: true,
           ),
-      
-          // Text(
-          //   "Scan QR code",
-          //   style: AppTextStyle.headlineLStyle.copyWith(
-          //     fontWeight: FontWeight.w600,
-          //   ),
-          // ),
+          //TODO: REMOVE THIS LATER
+          CustomText(
+            text: "Debug code: ${scannedCode ?? ""}",
+            color: AppColors.headlineTextColor,
+            fontWeight: FontWeight.w600,
+            fontSize: 14.sp,
+            language: true,
+          ),
           SizedBox(height: 8.h),
       
           CustomText(text: "Please point the camera at the QR Code",
@@ -63,15 +64,15 @@ class _QRCodeWidgetState extends State<QRCodeWidget> {
           //   style: AppTextStyle.mediumStyle,
           // ),
           SizedBox(height: 24.h),
-          // ✅ Scanner Box
+          //Scanner Box
           SizedBox(
-            width: 200.h,
-            height: 200.w,
+            width: 190.h,
+            height: 190.w,
             child: ClipRRect(
               borderRadius: BorderRadius.circular(16),
               child: Stack(
                 children: [
-                  // 📷 Live Camera
+                  //Live Camera
                   MobileScanner(
                     controller: _controller,
                     onDetect: (capture) async {
@@ -87,7 +88,7 @@ class _QRCodeWidgetState extends State<QRCodeWidget> {
                     },
                   ),
       
-                  // 🎨 Corner Border Overlay
+                  //Corner Border Overlay
                   CustomPaint(
                     size: const Size(double.infinity, double.infinity),
                     painter: _ScannerCornerPainter(),
@@ -114,18 +115,9 @@ class _QRCodeWidgetState extends State<QRCodeWidget> {
                   fontSize: 12.sp,
                   language: false,
                 ),
-      
-      
-                // Text(
-                //   "Enter code manually",
-                //   style: AppTextStyle.mediumStyle.copyWith(
-                //     fontSize: 12.sp,
-                //     color: AppColors.blackTextColor,
-                //   ),
-                // ),
               ),
               SizedBox(
-                width: 75.w, // 👈 fixed width
+                width: 75.w,
                 child: Divider(color: Color(0xFF777777), thickness: 1.w),
               ),
             ],
@@ -162,10 +154,9 @@ class _QRCodeWidgetState extends State<QRCodeWidget> {
           //
           // ],
           SizedBox(
-            height: 70.h,
+            height: 60.h,
             width: 279.w,
             child: CustomCard(
-              // ✅ Removed Expanded. TextField now sits directly inside Center/CustomCard.
               child: Center(
                 child: TextField(
                   controller: widget.textEditingController,
@@ -189,7 +180,6 @@ class _QRCodeWidgetState extends State<QRCodeWidget> {
           SizedBox(height: 16.h),
           ApplyWidget(onPressed: () {
             redeemController.redeemReward(code: widget.textEditingController.text.trim(), method: "static-code");
-            widget.textEditingController.clear();
           }),
         ],
       ),

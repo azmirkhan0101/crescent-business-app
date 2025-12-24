@@ -148,7 +148,7 @@ class RewardScreen extends StatelessWidget {
   //NO REWARD
   noReward( BuildContext context ) {
     return SizedBox(
-      height: MediaQuery.of(context).size.height,
+      height: MediaQuery.of(context).size.height*0.75,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.center,
@@ -164,11 +164,18 @@ class RewardScreen extends StatelessWidget {
             style: AppTextStyle.headlineLStyle.copyWith(fontSize: 18.sp),
           ),
           SizedBox(height: 12.h),
-          Text(
-            textAlign: TextAlign.center,
-            maxLines: 3,
-            "Track redemptions, edit existing rewards, or add something new to surprise your customers.",
-            style: AppTextStyle.mediumStyle,
+          Padding(
+            padding: EdgeInsets.symmetric( horizontal: 10.w ),
+            child: Text(
+              textAlign: TextAlign.center,
+              maxLines: 4,
+              "Track redemptions, edit existing rewards, or add something new to surprise your customers.",
+              style: GoogleFonts.inter(
+                fontWeight: FontWeight.w400,
+                fontSize: 13,
+                color: AppColors.secondaryTextColor,
+              )
+            ),
           ),
           SizedBox(height: 12.h),
           CustomButton(

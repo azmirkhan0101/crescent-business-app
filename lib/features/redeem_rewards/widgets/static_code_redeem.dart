@@ -3,8 +3,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:organization/utils/app_color.dart';
 import 'package:organization/utils/app_text_styles.dart';
+
 import '../../../controller/redeem/redeem_controller.dart';
-import '../../../routes/app_pages.dart';
 import '../../widgets/custom_card_widget.dart';
 import 'apply_widget.dart';
 
@@ -19,7 +19,7 @@ class StaticCodeWidget extends StatelessWidget {
     final RedeemController controller = Get.find<RedeemController>();
 
     return Column(
-      mainAxisSize: MainAxisSize.min, // Changed to min so it doesn't try to take full screen height
+      mainAxisSize: MainAxisSize.max, // Changed to min so it doesn't try to take full screen height
       children: [
         Text(
           "Enter Redeem Code",
@@ -27,12 +27,12 @@ class StaticCodeWidget extends StatelessWidget {
             fontWeight: FontWeight.w600,
           ),
         ),
-        SizedBox(height: 70.h),
+        SizedBox(height: 150.h),
         SizedBox(
           height: 70.h,
           width: 279.w,
           child: CustomCard(
-            // ✅ Removed Expanded. TextField now sits directly inside Center/CustomCard.
+            //Removed Expanded. TextField now sits directly inside Center/CustomCard.
             child: Center(
               child: TextField(
                 controller: textEditingController,
@@ -41,7 +41,7 @@ class StaticCodeWidget extends StatelessWidget {
                   color: AppColors.buttonTextColor,
                 ),
                 decoration: InputDecoration(
-                  hintText: "enter your code here", // Fixed typo "you" to "your"
+                  hintText: "enter your code here",
                   hintStyle: AppTextStyle.mediumStyle.copyWith(
                     color: AppColors.buttonTextColor.withOpacity(0.6),
                   ),
@@ -53,11 +53,19 @@ class StaticCodeWidget extends StatelessWidget {
             ),
           ),
         ),
-        SizedBox(height: 20.h),
+        Obx((){
+          if( controller.isStaticCodeInvalid.value ){
+            return Padding(padding: EdgeInsets.symmetric(vertical: 4.h),
+              child: Text("Invalid code. Please try again.", style: TextStyle(color: AppColors.blackishRed, fontWeight: FontWeight.w400),),
+            );
+          }else{
+            return SizedBox.shrink();
+          }
+        }),
+        SizedBox(height: 15.h),
         ApplyWidget(
           onPressed: () {
             controller.redeemReward(code: textEditingController.text.trim(), method: "static-code");
-            textEditingController.clear();
           },
         ),
       ],

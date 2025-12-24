@@ -7,10 +7,6 @@ import 'package:get/get_utils/get_utils.dart';
 import 'package:organization/features/widgets/custom_text.dart';
 import 'package:organization/utils/app_color.dart';
 
-/// Subscription Page
-///
-/// This page displays subscription plans and features for users to upgrade
-/// their experience with premium features and benefits.
 class SubscriptionPage extends StatefulWidget {
   const SubscriptionPage({super.key});
 
@@ -33,20 +29,31 @@ class _SubscriptionPageState extends State<SubscriptionPage> {
           // Content
           SafeArea(
             child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 28.0),
-              child: Column(
-                children: [
-                  // App Bar
-                  _buildAppBar(context),
-                 SizedBox(height: 15.h,),
-                  // Header Section
-                  _buildHeaderSection(),
-                  Spacer(),
-
-                  _buildSubscriptionContent(context),
+              padding: EdgeInsets.symmetric(horizontal: 20.w),
+              child: CustomScrollView(
+                slivers: [
+                  SliverToBoxAdapter(
+                    child: Column(
+                      children: [
+                        _buildAppBar(context),
+                        SizedBox(height: 15.h),
+                        _buildHeaderSection(),
+                      ],
+                    ),
+                  ),
+                  SliverFillRemaining(
+                    hasScrollBody: false, // Allows content to be smaller than the screen
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.end, // Pushes child to bottom
+                      children: [
+                        _buildSubscriptionContent(context),
+                        SizedBox( height: 40.h,)
+                      ],
+                    ),
+                  ),
                 ],
               ),
-            )
+            ),
           ),
         ],
       ),
@@ -115,16 +122,15 @@ class _SubscriptionPageState extends State<SubscriptionPage> {
     );
   }
 
-  /// Build header section with title and description
+  //Build header section with title and description
   Widget _buildHeaderSection() {
     return Column(
       children: [
-
         CustomText(
           textAlign: TextAlign.center,
           maxLines: 2,
           text: "Start making an effortless impact",
-          fontSize: 32.sp,
+          fontSize: 28.sp,
           fontWeight: FontWeight.w600,
           color: AppColors.white,
         ),
@@ -136,7 +142,7 @@ class _SubscriptionPageState extends State<SubscriptionPage> {
           maxLines: 2,
           textAlign: TextAlign.center,
           text: "Give your way, grow your impact, unlock little wins as you go.",
-          fontSize: 16.sp,
+          fontSize: 15.sp,
           fontWeight: FontWeight.w400,
           color: AppColors.white,
         ),
@@ -264,6 +270,7 @@ class _SubscriptionPageState extends State<SubscriptionPage> {
   /// Build subscription plans section
   Widget _buildSubscriptionPlans() {
     return Row(
+      spacing: 8.w,
       children: [
         // Free Plan
         Expanded(
@@ -276,9 +283,6 @@ class _SubscriptionPageState extends State<SubscriptionPage> {
             isSelected: _selectedPlan == 0,
           ),
         ),
-
-        SizedBox(width: 8.w),
-
         // 6 Months Plan
         Expanded(
           child: _buildPlanCard(
@@ -320,89 +324,91 @@ class _SubscriptionPageState extends State<SubscriptionPage> {
               ? Border.all(color: const Color(0xFFD1FF43), width: 2)
               : null,
         ),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            // Price Section
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-
-
-                CustomText(
-
-                  text:title,
-                  fontSize: 16.sp,
-                  fontWeight: FontWeight.bold,
-                  color: AppColors.white
-                ),
-
-
-
-                // Text(
-                //   title,
-                //   style: TextStyle(
-                //     fontFamily: DonationFonts.interDisplay,
-                //     fontSize: 16.rfs,
-                //     fontWeight: FontWeight.bold,
-                //     color: Colors.white,
-                //     height: 1.25,
-                //   ),
-                // ),
-
-                SizedBox(height: 12.h),
-
-                if (subtitle != null)
-                  RichText(
-                    text: TextSpan(
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              // Price Section
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+          
+          
+                  CustomText(
+          
+                    text:title,
+                    fontSize: 16.sp,
+                    fontWeight: FontWeight.bold,
+                    color: AppColors.white
+                  ),
+          
+          
+          
+                  // Text(
+                  //   title,
+                  //   style: TextStyle(
+                  //     fontFamily: DonationFonts.interDisplay,
+                  //     fontSize: 16.rfs,
+                  //     fontWeight: FontWeight.bold,
+                  //     color: Colors.white,
+                  //     height: 1.25,
+                  //   ),
+                  // ),
+          
+                  SizedBox(height: 12.h),
+          
+                  if (subtitle != null)
+                    RichText(
+                      text: TextSpan(
+                        style: TextStyle(
+          
+                          fontSize: 20.sp,
+                          fontWeight: FontWeight.w400,
+                          color: Colors.white,
+                          height: 1.2,
+                        ),
+                        children: [
+                          TextSpan(text: price),
+                          const TextSpan(text: ' '),
+                          TextSpan(text: subtitle),
+                        ],
+                      ),
+                    )
+                  else
+                    Text(
+                      price,
                       style: TextStyle(
-
+                        //fontFamily: DonationFonts.interDisplay,
                         fontSize: 20.sp,
                         fontWeight: FontWeight.w400,
                         color: Colors.white,
                         height: 1.2,
                       ),
-                      children: [
-                        TextSpan(text: price),
-                        const TextSpan(text: ' '),
-                        TextSpan(text: subtitle),
-                      ],
                     ),
-                  )
-                else
-                  Text(
-                    price,
-                    style: TextStyle(
-                      //fontFamily: DonationFonts.interDisplay,
-                      fontSize: 20.sp,
-                      fontWeight: FontWeight.w400,
-                      color: Colors.white,
-                      height: 1.2,
-                    ),
-                  ),
-              ],
-            ),
-
-            // Features or Description
-            if (features != null && features.isNotEmpty)
-              Column(
-                children: features
-                    .map((feature) => _buildFeatureBullet(feature))
-                    .toList(),
-              )
-            else
-              Text(
-                description,
-                style: TextStyle(
-                 // fontFamily: DonationFonts.interDisplay,
-                  fontSize: 14.sp,
-                  fontWeight: FontWeight.w400,
-                  color: const Color(0xFFEBE9EC),
-                  height: 1.29,
-                ),
+                ],
               ),
-          ],
+          
+              // Features or Description
+              if (features != null && features.isNotEmpty)
+                Column(
+                  children: features
+                      .map((feature) => _buildFeatureBullet(feature))
+                      .toList(),
+                )
+              else
+                Text(
+                  description,
+                  style: TextStyle(
+                   // fontFamily: DonationFonts.interDisplay,
+                    fontSize: 14.sp,
+                    fontWeight: FontWeight.w400,
+                    color: const Color(0xFFEBE9EC),
+                    height: 1.29,
+                  ),
+                ),
+            ],
+          ),
         ),
       ),
     );

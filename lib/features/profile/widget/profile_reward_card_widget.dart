@@ -56,23 +56,26 @@ class ProfileRewardCardWidget extends StatelessWidget {
         children: [
           Row(
             children: [
-              Image.network(
-                imageUrl,
-                height: 24.h,
-                width: 24.w,
-                fit: BoxFit.cover,
-                errorBuilder: (context, error, stackTrace) {
-                  return Image.asset(
-                    type == typeOnline
-                        ? AssetsPath.onlineRewardIcon
-                        : AssetsPath.instoreRewardIcon,
-                    height: 24.h,
-                    width: 24.w,
-                    fit: BoxFit.cover,
-                  );
-                },
+              ClipRRect(
+                borderRadius: BorderRadius.circular(5.r),
+                child: Image.network(
+                  imageUrl,
+                  height: 24.h,
+                  width: 24.w,
+                  fit: BoxFit.cover,
+                  errorBuilder: (context, error, stackTrace) {
+                    return Image.asset(
+                      type == typeOnline
+                          ? AssetsPath.onlineRewardIcon
+                          : AssetsPath.instoreRewardIcon,
+                      height: 24.h,
+                      width: 24.w,
+                      fit: BoxFit.cover,
+                    );
+                  },
+                ),
               ),
-              SizedBox(height: 8.w),
+              SizedBox(width: 6.w),
               /// Title
               Expanded(
                 child: Text(

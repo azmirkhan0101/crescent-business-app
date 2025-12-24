@@ -1,22 +1,19 @@
 import 'dart:convert';
 import 'dart:io';
-import 'dart:ui';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:http/http.dart' as http;
 import 'package:mime/mime.dart';
 import 'package:organization/data/models/profile/business_profile_model.dart';
 import 'package:organization/data/models/reward/reward_model.dart';
 import 'package:organization/utils/app_constants.dart';
+import 'package:path/path.dart' as p;
 import 'package:path_provider/path_provider.dart';
 
-import '../../routes/app_pages.dart';
 import '../../utils/api_endpoints.dart';
-import 'package:http/http.dart' as http;
-import 'package:path/path.dart' as p;
-
 import '../../utils/app_color.dart';
 import '../reward/reward_controller.dart';
 
@@ -28,12 +25,12 @@ class BusinessProfileController extends GetxController{
   RxList<String> locationNames = <String>[].obs;
 
   //BUSINESS DETAILS TO UPDATE - IF EMPTY, UPDATE WITH PREVIOUS DATA
-  final TextEditingController nameController = TextEditingController();
-  final TextEditingController taglineController = TextEditingController();
-  final TextEditingController descriptionController = TextEditingController();
-  final TextEditingController websiteController = TextEditingController();
-  final TextEditingController phoneController = TextEditingController();
-  final TextEditingController emailController = TextEditingController();
+  TextEditingController nameController = TextEditingController();
+  TextEditingController taglineController = TextEditingController();
+  TextEditingController descriptionController = TextEditingController();
+  TextEditingController websiteController = TextEditingController();
+  TextEditingController phoneController = TextEditingController();
+  TextEditingController emailController = TextEditingController();
 
   //COVER AND LOGO IMAGES - NULLABLE
   Rx<File?> coverImage = Rx<File?>(null);
@@ -76,9 +73,18 @@ class BusinessProfileController extends GetxController{
     }
   }
 
+  //SET MODEL VALUES IN CONTROLLERS FOR EDITING
+  setControllerValues(){
+    nameController.text = model.value?.name ?? "";
+    taglineController.text = model.value?.tagline ?? "";
+    descriptionController.text = model.value?.description ?? "";
+    websiteController.text = model.value?.businessWebsite ?? "";
+    phoneController.text = model.value?.businessPhoneNumber ?? "";
+    emailController.text = model.value?.businessEmail ?? "";
+  }
+
   //UPDATE BUSINESS PROFILE
   updateBusinessProfile() async{
-    //showLoadingAlert( title: "Updating..." );
     final Map<String, dynamic> data = {
       "category": editProfileModel.category,//CATEGORY UNCHANGED
       "name": nameController.text.trim().isEmpty ? editProfileModel.name : nameController.text.trim(),

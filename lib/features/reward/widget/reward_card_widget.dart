@@ -95,23 +95,25 @@ class _RewardCardState extends State<RewardCard> {
           /// -------- Title + Popup --------
           Row(
             children: [
-              Image.network(
-                imageUrl,
-                height: 24.h,
-                width: 24.w,
-                fit: BoxFit.cover,
-                errorBuilder: (context, error, stackTrace) {
-                  return Image.asset(
-                    widget.type == typeOnline
-                        ? AssetsPath.onlineRewardIcon
-                        : AssetsPath.instoreRewardIcon,
-                    height: 24.h,
-                    width: 24.w,
-                    fit: BoxFit.cover,
-                  );
-                },
+              ClipRRect(
+                borderRadius: BorderRadius.circular(5.r),
+                child: Image.network(
+                  imageUrl,
+                  height: 24.h,
+                  width: 24.w,
+                  fit: BoxFit.cover,
+                  errorBuilder: (context, error, stackTrace) {
+                    return Image.asset(
+                      widget.type == typeOnline
+                          ? AssetsPath.onlineRewardIcon
+                          : AssetsPath.instoreRewardIcon,
+                      height: 24.h,
+                      width: 24.w,
+                      fit: BoxFit.cover,
+                    );
+                  },
+                ),
               ),
-
               SizedBox(width: 8.w),
               Text(
                 widget.title,

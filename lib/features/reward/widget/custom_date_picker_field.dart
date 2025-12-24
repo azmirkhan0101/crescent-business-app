@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:organization/utils/app_color.dart';
 
 class CustomDatePickerField extends StatefulWidget {
   final Function(DateTime?) onDateSelected;
@@ -49,6 +50,7 @@ class _CustomDatePickerFieldState extends State<CustomDatePickerField> {
   @override
   Widget build(BuildContext context) {
     return Card(
+      color: AppColors.white,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(14),
         side: BorderSide( width: 1, color: Colors.grey.shade400)

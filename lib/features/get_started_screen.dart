@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -78,30 +80,30 @@ class GetStartedScreen extends StatelessWidget {
               ),
 
               SizedBox(height: 12.h),
-
+              AnimatedLoadingRow(),
               /// loading
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  CustomAssetsImage(
-                    assetsPath: AssetsPath.loadingStarIcon,
-                    height: 15.h,
-                    width: 15.w,
-                  ),
-                  SizedBox(width: 1.5.w),
-                  CustomAssetsImage(
-                    assetsPath: AssetsPath.loadingDotIcon,
-                    height: 12.h,
-                    width: 12.w,
-                  ),
-                  SizedBox(width: 1.5.w),
-                  CustomAssetsImage(
-                    assetsPath: AssetsPath.loadingDotIcon,
-                    height: 12.h,
-                    width: 12.w,
-                  ),
-                ],
-              ),
+              // Row(
+              //   mainAxisAlignment: MainAxisAlignment.center,
+              //   children: [
+              //     CustomAssetsImage(
+              //       assetsPath: AssetsPath.loadingStarIcon,
+              //       height: 15.h,
+              //       width: 15.w,
+              //     ),
+              //     SizedBox(width: 1.5.w),
+              //     CustomAssetsImage(
+              //       assetsPath: AssetsPath.loadingDotIcon,
+              //       height: 12.h,
+              //       width: 12.w,
+              //     ),
+              //     SizedBox(width: 1.5.w),
+              //     CustomAssetsImage(
+              //       assetsPath: AssetsPath.loadingDotIcon,
+              //       height: 12.h,
+              //       width: 12.w,
+              //     ),
+              //   ],
+              // ),
             ],
           ),
         ),
@@ -138,3 +140,71 @@ class GetStartedScreen extends StatelessWidget {
     );
   }
 }
+
+
+
+
+class AnimatedLoadingRow extends StatefulWidget {
+  @override
+  _AnimatedLoadingRowState createState() => _AnimatedLoadingRowState();
+}
+
+class _AnimatedLoadingRowState extends State<AnimatedLoadingRow> {
+  // This list tracks the order of the items
+  List<int> _order = [0, 1, 2];
+  Timer? _timer;
+
+  @override
+  void initState() {
+    super.initState();
+    // Start the loop
+    _timer = Timer.periodic(Duration(milliseconds: 1800), (timer) {
+      setState(() {
+        // Shift the list: [0, 1, 2] -> [2, 0, 1] -> [1, 2, 0]
+        int last = _order.removeLast();
+        _order.insert(0, last);
+      });
+    });
+  }
+
+  @override
+  void dispose() {
+    _timer?.cancel();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    // Define your items in a list to map them to their current positions
+    List<Widget> items = [
+      CustomAssetsImage(
+        assetsPath: AssetsPath.loadingStarIcon,
+        height: 15.h,
+        width: 15.w,
+      ),
+      CustomAssetsImage(
+        assetsPath: AssetsPath.loadingDotIcon,
+        height: 12.h,
+        width: 12.w,
+      ),
+      CustomAssetsImage(
+        assetsPath: AssetsPath.loadingDotIcon,
+        height: 12.h,
+        width: 12.w,
+      ),
+    ];
+
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: _order.map((index) {
+        return AnimatedContainer(
+          duration: Duration(milliseconds: 800),
+          curve: Curves.easeInOut,
+          margin: EdgeInsets.symmetric(horizontal: 0.75.w), // Half of your 1.5.w gap
+          child: items[index],
+        );
+      }).toList(),
+    );
+  }
+}
+

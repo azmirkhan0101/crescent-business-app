@@ -52,10 +52,16 @@ class _PasswordRequirementsState extends State<PasswordRequirements> {
       padding: const EdgeInsets.symmetric(vertical: 4.0),
       child: Row(
         children: [
-          Icon(
-            Icons.check_circle,
-            color: isChecked ? Colors.green : Colors.transparent, // ✅ use passed bool
-          ),
+          if( isChecked )
+            Icon(
+              Icons.check_circle_rounded,
+              color: Colors.green,
+            ),
+          if( !isChecked )
+            Icon(
+              Icons.check_circle_outline_rounded,
+              color: Colors.black,
+            ),
           const SizedBox(width: 8),
           Expanded(
             child: Text(

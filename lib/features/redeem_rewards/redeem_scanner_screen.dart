@@ -23,7 +23,7 @@ class _RedeemScannerScreenState extends State<RedeemScannerScreen> {
 
   final List<Widget> _tabs = [
     QRCodeWidget(),
-    //NFCWidget(),
+    NFCWidget(),
     StaticCodeWidget(),
   ];
 
@@ -63,8 +63,6 @@ class _RedeemScannerScreenState extends State<RedeemScannerScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // 1. Set this to false to handle the background manually or
-      // let the SingleChildScrollView handle the view insets.
       resizeToAvoidBottomInset: true,
       body: Container(
         decoration: BoxDecoration(
@@ -74,7 +72,6 @@ class _RedeemScannerScreenState extends State<RedeemScannerScreen> {
           child: LayoutBuilder(
             builder: (context, constraints) {
               return SingleChildScrollView(
-                // This ensures the content can scroll when the keyboard is up
                 physics: const ClampingScrollPhysics(),
                 child: ConstrainedBox(
                   constraints: BoxConstraints(
@@ -97,34 +94,29 @@ class _RedeemScannerScreenState extends State<RedeemScannerScreen> {
                             ),
                           ),
                         ),
-                        SizedBox(height: 25.h),
+                        SizedBox(height: 15.h),
 
                         // Tab Content
                         Center(child: _tabs[_selectedIndex]),
-
-                        // 2. We use Spacer inside IntrinsicHeight to push
-                        // the bottom bar down when there's room.
                         const Spacer(),
-
                         SizedBox(height: 25.h),
-
                         /// Custom TabBar
                         Container(
                           margin: EdgeInsets.symmetric(horizontal: 20.w, vertical: 12.h),
                           padding: EdgeInsets.all(4.w),
                           decoration: BoxDecoration(
                             color: const Color(0x33FFFFFF),
-                            borderRadius: BorderRadius.circular(30.r),
+                            borderRadius: BorderRadius.circular(12.r),
                           ),
                           child: Row(
                             children: [
                               _buildTabButton("QR Code", 0),
-                              _buildTabButton("Static Code", 1),
+                              _buildTabButton("NFC", 1),
+                              _buildTabButton("Static Code", 2),
                             ],
                           ),
                         ),
-                        // 3. Adjusted this spacing so it's not too large on small screens
-                        SizedBox(height: 100.h),
+                        SizedBox(height: 90.h),
                       ],
                     ),
                   ),
@@ -137,7 +129,7 @@ class _RedeemScannerScreenState extends State<RedeemScannerScreen> {
     );
   }
 
-  /// ✅ Tab Button
+  //Tab Button
   Widget _buildTabButton(String text, int index) {
     final bool isSelected = _selectedIndex == index;
 
@@ -152,7 +144,7 @@ class _RedeemScannerScreenState extends State<RedeemScannerScreen> {
           padding: EdgeInsets.symmetric(vertical: 10.h),
           decoration: BoxDecoration(
             color: isSelected ? Colors.black : Colors.transparent,
-            borderRadius: BorderRadius.circular(25.r),
+            borderRadius: BorderRadius.circular(12.r),
           ),
           alignment: Alignment.center,
           child: Text(
