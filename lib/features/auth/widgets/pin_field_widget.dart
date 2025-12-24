@@ -32,8 +32,8 @@ class PinFieldWidget extends StatelessWidget {
       pinTheme: PinTheme(
         shape: PinCodeFieldShape.box,
         borderRadius: BorderRadius.circular(12),
-        fieldHeight: 45,
-        fieldWidth: 45,
+        fieldHeight: 40,
+        fieldWidth: 40,
         activeFillColor: Colors.white,
         inactiveFillColor: Colors.white,
         selectedFillColor: Colors.white,

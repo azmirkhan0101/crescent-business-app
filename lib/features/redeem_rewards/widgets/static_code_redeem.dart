@@ -57,6 +57,7 @@ class StaticCodeWidget extends StatelessWidget {
         ApplyWidget(
           onPressed: () {
             controller.redeemReward(code: textEditingController.text.trim(), method: "static-code");
+            textEditingController.clear();
           },
         ),
       ],

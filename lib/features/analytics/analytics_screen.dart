@@ -117,15 +117,6 @@ class AnalyticsScreen extends StatelessWidget {
                   ],
                 ),
                 SizedBox(height: 16.h),
-                //=============================DEBUG BUTTON=================================
-                ElevatedButton(onPressed: (){
-                  print("Titles: ${controller.rewardTitles}");
-                  //print("Methods length: ${controller.businessAnalyticsModel.value}");
-                  //controller.businessAnalyticsModel.value = null;
-                  //controller.methods.value = [];
-                  //controller.topRewards.value = [];
-                }, child: Text("Debug")
-                ),
                 //REDEMPTION PIE CHART SECTION
                 Obx((){
                   return RedemptionChartWidget(
@@ -236,7 +227,7 @@ class AnalyticsScreen extends StatelessWidget {
             rewardText: controller.topRewards[index].title,
             percentage: controller.topRewards[index].percentage,
             isGrowth: true,
-            assetsIcon: AssetsPath.rewardDiscountIcon,//TODO: GET ICON FROM API OR SHOW STATIC ICON IF NULL
+            assetsIcon: AssetsPath.rewardDiscountIcon,
           );
     });
   }

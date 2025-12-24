@@ -26,9 +26,10 @@ class VerifyNowController extends GetxController{
       return;
     }
 
-    isVerificationLoading.value = true;
+
 
     try{
+      isVerificationLoading.value = true;
       Uri uri = Uri.parse( ApiEndpoints.baseUrl + ApiEndpoints.otpResendSignup );
       Map<String, String> payLoad = {
         "email": email()!

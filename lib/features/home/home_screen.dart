@@ -52,18 +52,6 @@ class HomeScreen extends StatelessWidget {
                       profileImageUrl: controller.profileImageUrl.value,
                     );
                   }),
-                  //TODO: DEBUG BUTTON, REMOVE LATER
-                  ElevatedButton(
-                    onPressed: () {
-                      print("Logooooooo: ${controller.profileImageUrl.value}");
-                      //controller.profileImageUrl.value = controller.storage.re
-                      //controller.profileImageUrl.value = "https://images.unsplash.com/photo-1701615004837-40d8573b6652?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTF8fHVzZXJ8ZW58MHx8MHx8fDA%3D";
-                      print("Active reward: ${controller.homeStatModel.value?.overview.totalActiveRewards}");
-                      //controller.getBusinessOverview();
-                      //controller.getRecentActivity();
-                    },
-                    child: Text("debug"),
-                  ),
                   Text(
                     "Overview",
                     style: GoogleFonts.familjenGrotesk(

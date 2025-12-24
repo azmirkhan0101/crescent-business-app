@@ -2,6 +2,7 @@
 const String isSignupKey = "isSignupKey";
 const String emailKey = "emailKey";
 const String businessIdKey = "businessIdKey";
+const String businessAuthIdKey = "businessAuthIdKey";
 const String accessTokenKey = "accessTokenKey";
 const String refreshTokenKey = "refreshTokenKey";
 const String requireVerificationKey = "requireVerificationKey";

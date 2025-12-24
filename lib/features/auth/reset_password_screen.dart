@@ -54,10 +54,14 @@ class ResetPasswordScreen extends StatelessWidget {
                   /// Password Field
 
                   CustomTextField(
+                    onChanged: (String value){
+                      controller.checkRequirements(value);
+                    },
                     hintText: "Enter New Password",
                     suffixImagePath: AssetsPath.eyeIcon,
                     prefixImagePath: AssetsPath.lockIcon,
                     controller: controller.newPasswordController,
+                    isPassword: true,
                   ),
 
 
@@ -69,6 +73,7 @@ class ResetPasswordScreen extends StatelessWidget {
                     suffixImagePath: AssetsPath.eyeIcon,
                     prefixImagePath: AssetsPath.lockIcon,
                     controller: controller.confirmPasswordController,
+                    isPassword: true,
                   ),
 
                   // CustomTextFieldWidget(
@@ -87,7 +92,14 @@ class ResetPasswordScreen extends StatelessWidget {
             SizedBox(height: 20.h),
 
             ///required text
-            PasswordRequirements(),
+            Obx((){
+              return PasswordRequirements(
+                isEightCharacters: controller.isEightCharacters.value,
+                isBothCasesPresent: controller.isBothCasesPresent.value,
+                isNumeralPresent: controller.isNumeralPresent.value,
+                isSpecialCharPresent: controller.isSpecialCharPresent.value,
+              );
+            })
           ],
         ),
       ),

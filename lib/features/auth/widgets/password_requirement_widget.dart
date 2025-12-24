@@ -8,7 +8,18 @@ import 'package:organization/utils/app_text_styles.dart';
 import '../../../utils/app_text.dart';
 
 class PasswordRequirements extends StatefulWidget {
-  const PasswordRequirements({super.key});
+
+  final bool isEightCharacters;
+  final bool isBothCasesPresent;
+  final bool isNumeralPresent;
+  final bool isSpecialCharPresent;
+  const PasswordRequirements({
+    super.key,
+    required this.isEightCharacters,
+    required this.isBothCasesPresent,
+    required this.isNumeralPresent,
+    required this.isSpecialCharPresent
+  });
 
   @override
   State<PasswordRequirements> createState() => _PasswordRequirementsState();
@@ -27,10 +38,10 @@ class _PasswordRequirementsState extends State<PasswordRequirements> {
           color: AppColors.secondaryTextColor,
         ),
         SizedBox(height: 8.h),
-        _buildRequirementItem(AppText.passwordRequirementCharacters, true),
-        _buildRequirementItem(AppText.passwordRequirementLetters, true),
-        _buildRequirementItem(AppText.passwordRequirementNumber, true),
-        _buildRequirementItem(AppText.passwordRequirementSpecial, true),
+        _buildRequirementItem(AppText.passwordRequirementCharacters, widget.isEightCharacters),
+        _buildRequirementItem(AppText.passwordRequirementLetters, widget.isBothCasesPresent),
+        _buildRequirementItem(AppText.passwordRequirementNumber, widget.isNumeralPresent),
+        _buildRequirementItem(AppText.passwordRequirementSpecial, widget.isSpecialCharPresent),
       ],
     );
   }
@@ -48,6 +59,7 @@ class _PasswordRequirementsState extends State<PasswordRequirements> {
           const SizedBox(width: 8),
           Expanded(
             child: Text(
+              maxLines: 2,
               overflow: TextOverflow.ellipsis,
               text,
               style: AppTextStyle.mediumStyle.copyWith(

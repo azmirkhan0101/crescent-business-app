@@ -148,9 +148,8 @@ class SignUpController extends GetxController {
       return;
     }
 
-    isSignupLoading.value = true;
-
     try{
+      isSignupLoading.value = true;
       final url = Uri.parse( ApiEndpoints.baseUrl + ApiEndpoints.signup );
       File? logo = businessSignupModel.logo;
 

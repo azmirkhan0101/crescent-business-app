@@ -17,6 +17,28 @@ class ResetPasswordController extends GetxController{
   RxBool isResetLoading = false.obs;
   late String resetPasswordToken;
 
+  //REQUIREMENT CHECKBOX CONTROLLER
+  RxBool isEightCharacters = false.obs;
+  RxBool isBothCasesPresent = false.obs;
+  RxBool isNumeralPresent = false.obs;
+  RxBool isSpecialCharPresent = false.obs;
+
+  void checkRequirements(String value) {
+    // 1. Check length
+    isEightCharacters.value = value.length >= 8;
+
+    // 2. Check for both Upper and Lower case
+    isBothCasesPresent.value =
+        value.contains(RegExp(r'[a-z]')) && value.contains(RegExp(r'[A-Z]'));
+
+    // 3. Check for numbers
+    isNumeralPresent.value = value.contains(RegExp(r'[0-9]'));
+
+    // 4. Check for special characters
+    isSpecialCharPresent.value =
+        value.contains(RegExp(r'[!@#$%^&*(),.?":{}|<>]'));
+  }
+
   //VALIDATE NEW EMAIL
   bool isNewPasswordValid() {
     final regex = RegExp(
@@ -37,8 +59,6 @@ class ResetPasswordController extends GetxController{
     if( isResetLoading.value ){
       return;
     }
-
-    isResetLoading.value = true;
 
     if( !isNewPasswordValid() ){
       showSnackBar(
@@ -63,6 +83,7 @@ class ResetPasswordController extends GetxController{
     };
 
     try{
+      isResetLoading.value = true;
       http.Response response = await http.post( uri, body: payLoad );
       print("Status codeee: ${response.statusCode}");
       print("Reset pass response: ${response.body}");

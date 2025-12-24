@@ -30,8 +30,6 @@ class ForgotPasswordController extends GetxController {
       return;
     }
 
-    isVerifying.value = true;
-
     if( !isEmailValid() ){
       showSnackBar(
           title: "Invalid Email!",
@@ -42,6 +40,7 @@ class ForgotPasswordController extends GetxController {
     }
 
     try{
+      isVerifying.value = true;
       Uri uri = Uri.parse( ApiEndpoints.baseUrl + ApiEndpoints.otpForgotPassword );
 
       Map<String, String> payLoad = {

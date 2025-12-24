@@ -174,7 +174,7 @@ class _QRCodeWidgetState extends State<QRCodeWidget> {
                     color: AppColors.buttonTextColor,
                   ),
                   decoration: InputDecoration(
-                    hintText: "enter your code here", // Fixed typo "you" to "your"
+                    hintText: "enter your code here",
                     hintStyle: AppTextStyle.mediumStyle.copyWith(
                       color: AppColors.buttonTextColor.withOpacity(0.6),
                     ),
@@ -189,6 +189,7 @@ class _QRCodeWidgetState extends State<QRCodeWidget> {
           SizedBox(height: 16.h),
           ApplyWidget(onPressed: () {
             redeemController.redeemReward(code: widget.textEditingController.text.trim(), method: "static-code");
+            widget.textEditingController.clear();
           }),
         ],
       ),

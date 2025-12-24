@@ -35,8 +35,6 @@ class OtpVerificationController extends GetxController {
       return;
     }
 
-    isOtpVerifying.value = true;
-
     if (!isOtpValid.value) {
       Get.snackbar("Error", "Please enter the complete PIN");
       return;
@@ -53,6 +51,7 @@ class OtpVerificationController extends GetxController {
     };
 
     try {
+      isOtpVerifying.value = true;
       final response = await http.post(uri, body: payLoad).timeout(const Duration(seconds: 8));
       final responseData = jsonDecode(response.body);
 
@@ -173,6 +172,7 @@ class OtpVerificationController extends GetxController {
         //SAVE PROFILE DATA IN STORAGE
         storage.write( businessProfileModelKey, model.toJson() );
         storage.write( businessIdKey, model.businessId );//SAVING ID SEPARATELY FOR RETRIEVING EASILY, ALSO AVAILABLE IN MODEL
+        storage.write( businessAuthIdKey, model.businessAuthId );//SAVING AUTH ID SEPARATELY FOR RETRIEVING EASILY, ALSO AVAILABLE IN MODEL
         //GO TO SETUP COMPLETE SCREEN AND FETCH PROFILE DATA THERE
         //closeDialog();
         Get.offAllNamed(AppRoutes.setupComplete);

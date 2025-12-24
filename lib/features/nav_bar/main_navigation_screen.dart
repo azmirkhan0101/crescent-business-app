@@ -84,12 +84,6 @@ class MainNavigationScreen extends StatelessWidget {
           )
         ],
       ),
-      floatingActionButton: Container(
-        margin: EdgeInsets.only(bottom: 60),
-        child: ElevatedButton(onPressed: (){
-          print("Tokennnnnn: ${storage.read(accessTokenKey)}");
-        }, child: Text("Click")),
-      )
     );
   }
 }

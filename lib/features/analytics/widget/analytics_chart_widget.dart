@@ -46,13 +46,6 @@ class AnalyticsCardChart<T> extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              //DEGUG BUTTON TODO:
-              ElevatedButton(onPressed: (){
-                //=====================================================================
-                print("Graphs: ${graphList}");
-                print("Filtered: ${(filteredStats)}");
-                print("Views: ${viewsDataSource(filteredStats)}");
-              }, child: Text("Debug")),
               // 🔹 Top Row (Image + Title)
               Row(
                 children: [

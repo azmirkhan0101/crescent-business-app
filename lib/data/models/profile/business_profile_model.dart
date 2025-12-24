@@ -8,6 +8,7 @@ class BusinessProfileModel{
   String description;
   String email;
   String businessId;
+  String businessAuthId;
   String businessPhoneNumber;
   String businessEmail;
   String businessWebsite;
@@ -22,6 +23,7 @@ class BusinessProfileModel{
     required this.description,
     required this.email,
     required this.businessId,
+    required this.businessAuthId,
     required this.businessEmail,
     required this.businessPhoneNumber,
     required this.businessWebsite,
@@ -40,6 +42,7 @@ class BusinessProfileModel{
         description: json['description'] ?? "",
         email: json['auth']['email'] ?? "",
         businessId: json['_id'] ?? "",
+        businessAuthId: json['auth']['_id'] ?? "",
         businessEmail: json['businessEmail'] ?? "",
         businessPhoneNumber: json['businessPhoneNumber'] ?? "",
         businessWebsite: json['businessWebsite'] ?? "",
@@ -52,7 +55,10 @@ class BusinessProfileModel{
   Map<String, dynamic> toJson() {
     return {
       "_id": businessId,
-      "auth": {"email": email},
+      "auth": {
+        "_id": businessAuthId,
+        "email": email
+      },
       "category": category,
       "name": name,
       "tagLine": tagline,

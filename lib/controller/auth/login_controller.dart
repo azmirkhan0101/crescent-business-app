@@ -44,8 +44,6 @@ class LoginController extends GetxController{
       return;
     }
 
-    isLoginLoading.value = true;
-
     if( !isEmailValid() || !isPasswordValid() ){
       showSnackBar(
           title: "Incorrect Credentials!",
@@ -56,6 +54,7 @@ class LoginController extends GetxController{
     }
 
     try {
+      isLoginLoading.value = true;
       Map<String, dynamic> credentials = {
         "email": emailController.text.trim(),
         "password": passwordController.text.trim(),
@@ -202,6 +201,7 @@ class LoginController extends GetxController{
         //SAVE PROFILE DATA IN STORAGE
         storage.write( businessProfileModelKey, model.toJson() );
         storage.write( businessIdKey, model.businessId );//SAVING ID SEPARATELY FOR RETRIEVING EASILY, ALSO AVAILABLE IN MODEL
+        storage.write( businessAuthIdKey, model.businessAuthId );//SAVING AUTH ID SEPARATELY FOR RETRIEVING EASILY, ALSO AVAILABLE IN MODEL
         //GO TO MAIN -> HOME -> GET HOME DATA, ANALYTICS THERE
         Get.offAllNamed(AppRoutes.mainNav);
       }else if( response.statusCode == 401 ){//ACCESS TOKEN INVALID
