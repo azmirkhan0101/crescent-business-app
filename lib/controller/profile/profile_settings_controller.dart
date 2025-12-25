@@ -21,6 +21,29 @@ class ProfileSettingsController extends GetxController {
     super.onInit();
   }
 
+  //REQUIREMENT CHECKBOX CONTROLLER
+  RxBool isEightCharacters = false.obs;
+  RxBool isBothCasesPresent = false.obs;
+  RxBool isNumeralPresent = false.obs;
+  RxBool isSpecialCharPresent = false.obs;
+
+  void checkRequirements(String value) {
+    // 1. Check length
+    isEightCharacters.value = value.length >= 8;
+
+    // 2. Check for both Upper and Lower case
+    isBothCasesPresent.value =
+        value.contains(RegExp(r'[a-z]')) && value.contains(RegExp(r'[A-Z]'));
+
+    // 3. Check for numbers
+    isNumeralPresent.value = value.contains(RegExp(r'[0-9]'));
+
+    // 4. Check for special characters
+    isSpecialCharPresent.value =
+        value.contains(RegExp(r'[!@#$%^&*(),.?":{}|<>]'));
+  }
+
+
   //GET LOGO IMAGE URL AND USER NAME
   getProfileData(){
     BusinessProfileModel? model = BusinessProfileModel.fromJson(storage.read( businessProfileModelKey ));

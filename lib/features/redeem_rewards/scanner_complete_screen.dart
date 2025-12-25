@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:organization/data/models/redeem/redeemed_model.dart';
 import 'package:organization/features/redeem_rewards/widgets/redeem_complete_card_widget.dart';
 import 'package:organization/features/widgets/custom_asset_image.dart';
 import 'package:organization/utils/assets_path.dart';
@@ -13,10 +14,18 @@ import '../../utils/app_text_styles.dart';
 import '../widgets/custom_button_widget.dart';
 
 class RedeemScannerCompleteScreen extends StatelessWidget {
-  const RedeemScannerCompleteScreen({super.key});
+  RedeemScannerCompleteScreen({super.key});
+
+  RedeemedRewardModel? model;
 
   @override
   Widget build(BuildContext context) {
+
+    if( Get.arguments is RedeemedRewardModel ){
+      model = Get.arguments as RedeemedRewardModel;
+    }else{
+      model = null;
+    }
 
     return Scaffold(
       backgroundColor: AppColors.white,
@@ -33,7 +42,7 @@ class RedeemScannerCompleteScreen extends StatelessWidget {
               backgroundColor: AppColors.black,
               textColor: AppColors.white,
               text: AppText.done,
-              onPressed: () => Get.toNamed(AppRoutes.mainNav),
+              onPressed: () => Get.back(),
             ),
           ),
         ),
@@ -52,13 +61,18 @@ class RedeemScannerCompleteScreen extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   const SizedBox(),
-                  Container(
-                    padding: EdgeInsets.all(8.w),
-                    decoration: const BoxDecoration(
-                      color: Color(0x0DD1FF43),
-                    ),
-                    child: CustomAssetsImage(
-                      assetsPath: AssetsPath.crossIcon,
+                  GestureDetector(
+                    onTap: (){
+                      Get.back();
+                    },
+                    child: Container(
+                      padding: EdgeInsets.all(8.w),
+                      decoration: const BoxDecoration(
+                        color: Color(0x0DD1FF43),
+                      ),
+                      child: CustomAssetsImage(
+                        assetsPath: AssetsPath.crossIcon,
+                      ),
                     ),
                   ),
                 ],
@@ -87,9 +101,12 @@ class RedeemScannerCompleteScreen extends StatelessWidget {
 
               const SizedBox(height: 24),
 
-              RedeemCompleteCardWidget(),
-
-
+              RedeemCompleteCardWidget(
+                title: model?.title ?? "",
+                dateTime: model?.redeemedAt ?? DateTime.now(),
+                redemptionCount: model?.redeemedCount ?? 0,
+                redemptionMethod: model?.redemptionMethod ?? "qr",
+              ),
             ],
           ),
         ),

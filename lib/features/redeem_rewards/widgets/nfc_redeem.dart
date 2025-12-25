@@ -7,6 +7,8 @@ import '../../../utils/assets_path.dart';
 
 class NFCWidget extends StatelessWidget {
 
+  //NFC IS DISABLED IN THIS VERSION=============================================
+
   final RedeemController redeemController = Get.find<RedeemController>();
   NFCWidget({super.key});
 
@@ -35,7 +37,7 @@ class NFCWidget extends StatelessWidget {
                 children: [
                   GestureDetector(
                     onTap: () {
-                      redeemController.startNfcRead();
+                      //redeemController.startNfcRead();
                     },
                     child: Image.asset(
                       AssetsPath.nfcIcon,
@@ -54,7 +56,7 @@ class NFCWidget extends StatelessWidget {
                   ),
                   Obx((){
                     return Text(
-                      'NFC tag: ${redeemController.nfcTag.value}',
+                      'NFC tag: ',//${redeemController.nfcTag.value}
                       style: TextStyle(
                         fontSize: 16.sp,
                         color: AppColors.blackTextColor,

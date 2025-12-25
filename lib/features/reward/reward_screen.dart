@@ -247,14 +247,11 @@ class RewardScreen extends StatelessWidget {
               isGiftCard: isGiftCard,
               isDiscountCode: isDiscountCode,
               onDeleteClick: (){
-                showDeleteBottomSheet( model.id );
-                //showRewardDeleteDialog( model.id );
+                showRewardDeleteDialog( rewardId: model.id );
               }, onStatusChanged: (bool newStatus ) {
                 rewardIsActive.value = newStatus;
               //STATUS UPDATE API CALL
-              print("Status update");
               controller.updateRewardStatus(rewardId: model.id, isActive: newStatus );
-              print("Status updatedddddd");
             }, onEditClick: () { 
                 Get.toNamed( AppRoutes.editReward, arguments: model );
             },
@@ -265,86 +262,105 @@ class RewardScreen extends StatelessWidget {
     );
   }
 
-  //REWARD DELETE BOTTOM SHEET
-  void showDeleteBottomSheet( String rewardId ) {
-    Get.bottomSheet(
-      BottomSheetWidget(
-        title: "Delete Reward",
-        description: "Are you sure you want to delete this reward? This action cannot be undone.",
-        primaryButtonText: "Delete",
-        secondaryButtonText: "Cancel",
-        onPrimaryPressed: () {
-          Get.back(closeOverlays: true);
-          controller.deleteReward( rewardId );
-        },
-        onSecondaryPressed: () {
-          Get.back(closeOverlays: true);
-        },
-      ),
-      isScrollControlled: true,
-      backgroundColor: Colors.transparent,
-    );
-  }
-  //TODO: DELETE THIS IF DIALOG CLOSE DOES NOT WORK. THE ABOVE BOTTOM SHEET WILL DO THE WORK
   //DELETE ALERT
-  void showRewardDeleteDialog( String rewardId ) {
-    Get.defaultDialog(
-      title: "Delete Reward",
-      titleStyle: const TextStyle(
-        fontSize: 18,
-        fontWeight: FontWeight.w600,
-        color: Colors.black87,
-      ),
-      contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-      middleText: "Are you sure you want to delete this reward?",
-      middleTextStyle: const TextStyle(
-        fontSize: 15,
-        color: Colors.black54,
-      ),
+  void showRewardDeleteDialog({required String rewardId}) {
+    showDialog(
+      context: Get.context!,
       barrierDismissible: true,
-      confirm: Container(
-        height: 42,
-        width: 120,
-        decoration: BoxDecoration(
-          color: const Color(0xFFE53935), // Soft red for delete
-          borderRadius: BorderRadius.circular(8),
-        ),
-        child: TextButton(
-          onPressed: () {
-            Get.back(closeOverlays: true);
-            controller.deleteReward( rewardId );
-          },
-          child: const Text(
-            "Delete",
+      builder: (context) {
+        return AlertDialog(
+          title: Row(
+            children: [
+              Icon(Icons.delete, color: AppColors.red,),
+              Text(
+                "Delete Reward",
+                style: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.w600,
+                  color: Colors.black87,
+                ),
+              ),
+            ],
+          ),
+          content: const Text(
+            "Are you sure you want to delete this reward?",
             style: TextStyle(
-              color: Colors.white,
-              fontWeight: FontWeight.w600,
+              fontSize: 15,
+              color: Colors.black54,
             ),
           ),
-        ),
-      ),
+          actionsAlignment: MainAxisAlignment.spaceBetween,
+          actionsPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+          actions: [
+            Row(
+              children: [
+                // Cancel button
+                Expanded(
+                  child: Container(
+                    height: 42,
+                    decoration: BoxDecoration(
+                      color: const Color(0xFFEEEEEE),
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    child: TextButton(
+                      onPressed: () => Navigator.of(context).pop(),
+                      child: const Text(
+                        "Cancel",
+                        style: TextStyle(color: Colors.black87, fontWeight: FontWeight.w600),
+                      ),
+                    ),
+                  ),
+                ),
 
-      cancel: Container(
-        height: 42,
-        width: 120,
-        decoration: BoxDecoration(
-          color: const Color(0xFFEEEEEE), // Light grey background
-          borderRadius: BorderRadius.circular(8),
-        ),
-        child: TextButton(
-          onPressed: () {
-            //Get.back();
-            Navigator.of(Get.context!).pop();//TODO: DIALOG NOT CLOSING
-          },
-          child: const Text(
-            "Cancel",
-            style: TextStyle(
-              color: Colors.black87,
-              fontWeight: FontWeight.w600,
+                SizedBox(width: 12.w), // Spacing between buttons
+
+                // Delete button
+                Expanded(
+                  child: Container(
+                    height: 42,
+                    decoration: BoxDecoration(
+                      color: const Color(0xFFE53935),
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    child: TextButton(
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                        controller.deleteReward(rewardId);
+                      },
+                      child: const Text(
+                        "Delete",
+                        style: TextStyle(color: Colors.white, fontWeight: FontWeight.w600),
+                      ),
+                    ),
+                  ),
+                ),
+              ],
             ),
-          ),
-        ),
-      ),
+          ],
+        );
+      },
     );
   }
+
+  //REWARD DELETE BOTTOM SHEET
+  // void showDeleteBottomSheet( String rewardId ) {
+  //   Get.bottomSheet(
+  //     BottomSheetWidget(
+  //       title: "Delete Reward",
+  //       description: "Are you sure you want to delete this reward? This action cannot be undone.",
+  //       primaryButtonText: "Delete",
+  //       secondaryButtonText: "Cancel",
+  //       onPrimaryPressed: () {
+  //         Get.back(closeOverlays: true);
+  //         controller.deleteReward( rewardId );
+  //       },
+  //       onSecondaryPressed: () {
+  //         Get.back(closeOverlays: true);
+  //       },
+  //     ),
+  //     isScrollControlled: true,
+  //     backgroundColor: Colors.transparent,
+  //   );
+  // }
+
 }

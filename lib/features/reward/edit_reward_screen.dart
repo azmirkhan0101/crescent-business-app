@@ -4,6 +4,7 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:organization/controller/reward/edit_reward_controller.dart';
 import 'package:organization/features/reward/widget/custom_checkbox.dart';
@@ -23,7 +24,6 @@ import '../widgets/text_field_title_widget.dart';
 class EditRewardScreen extends StatelessWidget {
 
   final EditRewardController controller = Get.find<EditRewardController>();
-  bool isInstoreTabSelected = true;//GET IT FROM ARGS
 
   @override
   Widget build(BuildContext context) {
@@ -121,6 +121,7 @@ class EditRewardScreen extends StatelessWidget {
                         text: "Delete image",
                         onPressed: () {
                           controller.rewardImage?.value = null;
+                          controller.rewardImageUrl.value = "";
                         },
                       ),
                     ],
@@ -203,17 +204,26 @@ class EditRewardScreen extends StatelessWidget {
             //   );
             // }),
             SizedBox( height: 20.h,),
-            BottomButtonWidget(
-                onPressed: (){
-                  print("Online reward:");
-                  if( isInstoreTabSelected ){//INSTORE REWARD
-                    //controller.createRewardInStore();
+            Center(child:
+            Obx((){
+              return CustomButton(
+                isLoading: controller.isUpdating.value,
+                text: "Save",
+                onPressed: () {
+                  if( controller.isInstore.value ){//INSTORE REWARD
+                    controller.updateInstoreReward();
                   }else{//ONLINE REWARD
-                    print("Online reward: ${controller.discountCode.value},,,,${controller.giftCard.value}");
+                    controller.updateOnlineReward();
                   }
                 },
-                buttonText: "Save"
-            )
+                buttonTextStyle: GoogleFonts.familjenGrotesk(
+                  color: AppColors.buttonTextColor,
+                  fontSize: 18.sp,
+                  fontWeight: FontWeight.w700,
+                ),
+              );
+            }),),
+            SizedBox( height: 40.h,),
           ],
         ),
       )

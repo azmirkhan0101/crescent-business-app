@@ -62,7 +62,7 @@ static const recentActivity = "/business/recent-activity";//HOME SCREEN RECENT A
     }
   }
   static String updateReward({required String rewardId}){
-    return "/rewards/$rewardId}";
+    return "/rewards/$rewardId";
   }
   static String updateRewardStatus({required String rewardID}){
     return "/rewards/$rewardID/status";
@@ -73,4 +73,7 @@ static const recentActivity = "/business/recent-activity";//HOME SCREEN RECENT A
   static const String redeemReward = "/rewards/redeem";
 //FCM
 static const updateFcmToken = "/auth/update-fcm";
+
+//TERMS AND CONDITIONS
+static const String termsAndConditions = "/content";
 }

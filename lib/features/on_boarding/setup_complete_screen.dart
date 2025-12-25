@@ -18,7 +18,6 @@ import '../widgets/custom_text.dart';
 
 class BusinessSetupCompleteScreen extends StatelessWidget {
 
-  final storage = GetStorage();
   final SetupCompleteController controller = Get.find<SetupCompleteController>();
 
   @override
@@ -47,8 +46,6 @@ class BusinessSetupCompleteScreen extends StatelessWidget {
               alignment: AlignmentGeometry.topRight,
               child: IconButton(
                   onPressed: (){
-                String accessToken = storage.read( accessTokenKey );
-                print("Access tokennnnnnnnnnnnnnn: ${accessToken}");
                 Get.offAllNamed( AppRoutes.mainNav );
               },
                   icon: Icon(Icons.close)),
@@ -141,7 +138,7 @@ class BusinessSetupCompleteScreen extends StatelessWidget {
                                         controller.model.value!.logoImage!,
                                         fit: BoxFit.cover,
                                         errorBuilder: (context, error, stack) {
-                                          return Icon(Icons.person, size: 40.r,);
+                                          return Icon(Icons.business, size: 40.r,);
                                         },
                                       )
 
@@ -246,8 +243,6 @@ class BusinessSetupCompleteScreen extends StatelessWidget {
                   fontWeight: FontWeight.w700,
                 ),
                 onPressed: () {
-                  String accessToken = storage.read( accessTokenKey );
-                  print("Access tokennnnnnnnnnnnnnn: ${accessToken}");
                   Get.offAllNamed( AppRoutes.mainNav );
                 },
               ),

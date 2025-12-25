@@ -68,9 +68,9 @@ class RewardModel {
       redemptionLimit: json["redemptionLimit"],
       redeemedCount: json["redeemedCount"],
       remainingCount: json["remainingCount"],
-      startDate: DateTime.parse(json["startDate"]),
+      startDate: DateTime.parse(json["startDate"]).toLocal(),
       expiryDate:
-      json["expiryDate"] != null ? DateTime.parse(json["expiryDate"]) : null,
+      json["expiryDate"] != null ? DateTime.parse(json["expiryDate"]).toLocal() : null,
       status: json["status"],
       isActive: json["isActive"],
       onlineMethods: json["onlineRedemptionMethods"] != null

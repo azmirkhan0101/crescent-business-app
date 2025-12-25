@@ -6,6 +6,7 @@ import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:mime/mime.dart';
+import 'package:organization/controller/reward/reward_controller.dart';
 import 'package:organization/data/models/reward/reward_model.dart';
 import 'package:organization/utils/api_endpoints.dart';
 import 'package:organization/utils/app_constants.dart';
@@ -19,6 +20,8 @@ import '../../utils/app_color.dart';
 
 class EditRewardController extends GetxController{
 
+  RewardController rewardController = Get.find<RewardController>();
+
   final storage = GetStorage();
 
   RewardModel? model;
@@ -26,7 +29,7 @@ class EditRewardController extends GetxController{
   TextEditingController descriptionController = TextEditingController();
   TextEditingController limitController = TextEditingController();
   RxString csvFileName = "".obs;
-  Rx<File?>? csvFile = Rx<File?>(null);
+  final Rx<File?> csvFile = Rx<File?>(null);
   Rx<File?>? rewardImage = Rx<File?>(null);
   RxString rewardImageUrl = "".obs;
   RxBool isUpdating = false.obs;
@@ -122,28 +125,25 @@ class EditRewardController extends GetxController{
 
 
   //UPDATE INSTORE REWARD
-  updateInstoreReward({required String rewardId}) async{
+  updateInstoreReward() async{
 
     if( isUpdating.value ){
       return;
     }
 
-    //isUpdating.value = true;
+    Uri uri = Uri.parse( ApiEndpoints.baseUrl + ApiEndpoints.updateReward(rewardId: model!.id ) );
 
-    Uri uri = Uri.parse( ApiEndpoints.baseUrl + ApiEndpoints.updateReward(rewardId: rewardId) );
-
-    Map<String, String> headers = {
-      "Content-type" : "application/json",
-      "Authorization" : "Bearer ${storage.read( accessTokenKey )}"
-    };
+    int? redemptionLimit;
+    redemptionLimit = int.tryParse( limitController.text.trim() );
+    redemptionLimit == null ? redemptionLimit = model?.redemptionLimit : redemptionLimit = redemptionLimit;
 
     final payLoad = {
       "title": titleController.text.trim().isEmpty ? model?.title : titleController.text.trim(),
       "description": descriptionController.text.trim().isEmpty ? model?.description : descriptionController.text.trim(),
       "category": model?.category,
-      "redemptionLimit": model?.redemptionLimit,
-      "startDate": model?.startDate,
-      "expiryDate": dateTime,
+      "redemptionLimit": redemptionLimit ?? 10,
+      "startDate": model?.startDate.toIso8601String(),
+      "expiryDate": dateTime?.toIso8601String(),
       "featured": model?.featured,
       "isActive": model?.isActive,
       "updateReason": "Updated redemption methods and expiry date",
@@ -155,8 +155,8 @@ class EditRewardController extends GetxController{
       "onlineRedemptionMethods": null
     };
 
-
     try{
+      isUpdating.value = true;
       var request = http.MultipartRequest("PATCH", uri );
       request.headers.addAll({
         "Authorization": "Bearer ${storage.read( accessTokenKey )}",
@@ -186,38 +186,137 @@ class EditRewardController extends GetxController{
       }
 
       var response = await request.send();
-      var responseBody = await response.stream.bytesToString();
 
-      if( response.statusCode == 201 ){//REWARD CREATED
+      if( response.statusCode == 200 ){//REWARD UPDATED
         //GO BACK TO REWARDS SCREEN
-        //getAllRewards();
+        rewardController.getAllRewards();
         Get.back();
         showSnackBar(
             title: "Done!",
-            message: "Reward created successfully",
+            message: "Reward updated successfully.",
             backgroundColor: AppColors.successGreen
         );
+      }else if( response.statusCode == 400 ){
+        showSnackBar(title: "Error!", message: "Something went wrong. Please try again.", backgroundColor: AppColors.errorRed);
+      }else if( response.statusCode == 429 ){//TOO MANY REQUEST
+        showSnackBar(
+          title: "Update Limit Reached",
+          message: "Redemption limit updates are allowed every 24 hours.",
+          backgroundColor: AppColors.warningYellow,
+        );
       }
-
-      print("Status: ${response.statusCode}");
-      print("Body: $responseBody");
     }catch(e){
-      print("Create error: ${e}");
       showSnackBar(
           title: "No internet!",
           message: "Check your internet connection and try again.",
           backgroundColor: AppColors.errorRed
       );
     }finally{
-      // isCreating.value = false;
-      // qrCode.value = true;
-      // staticCode.value = false;
-      // nfcTap.value = false;
-      // titleController.clear();
-      // descriptionController.clear();
-      // rewardImage.value = null;
-      // expiryDate = null;
-      // redemptionLimitController.clear();
+      isUpdating.value = false;
+    }
+  }
+
+  //UPDATE ONLINE REWARD
+  updateOnlineReward() async{
+
+    if( isUpdating.value ){
+      return;
+    }
+
+    Uri uri = Uri.parse( ApiEndpoints.baseUrl + ApiEndpoints.updateReward(rewardId: model!.id ) );
+
+    final payLoad = {
+      "title": titleController.text.trim().isEmpty ? model?.title : titleController.text.trim(),
+      "description": descriptionController.text.trim().isEmpty ? model?.description : descriptionController.text.trim(),
+      "category": model?.category,
+      "redemptionLimit": model?.redemptionLimit,
+      "startDate": model?.startDate.toIso8601String(),
+      "expiryDate": dateTime?.toIso8601String(),
+      "featured": model?.featured,
+      "isActive": model?.isActive,
+      "updateReason": "Updated redemption methods and expiry date",
+      "inStoreRedemptionMethods": null,
+      "onlineRedemptionMethods": {
+        "giftCard": giftCard.value,
+        "discountCode": discountCode.value,
+      },
+    };
+
+
+    try{
+      isUpdating.value = true;
+      var request = http.MultipartRequest("PATCH", uri );
+      request.headers.addAll({
+        "Authorization": "Bearer ${storage.read( accessTokenKey )}",
+        "Content-Type": "application/json",
+      });
+
+      request.fields["data"] = jsonEncode( payLoad );
+
+      if( rewardImage?.value != null ){
+        final compressedImage = await compressImage( rewardImage!.value! );
+        if( compressedImage != null ){
+          final mimeType =
+              lookupMimeType(compressedImage.path)?.split('/') ??
+                  ['application', 'octet-stream'];
+
+          request.files.add(
+              await http.MultipartFile.fromPath(
+                "rewardImage",
+                compressedImage.path,
+                contentType: http.MediaType(
+                  mimeType[0],
+                  mimeType[1],
+                ),
+              )
+          );
+        }
+      }
+
+      //CSV FILE FOR DISCOUNT CODES
+      if( csvFile.value != null ){
+        request.files.add(
+          await http.MultipartFile.fromPath(
+            "codesFiles",
+            csvFile.value!.path,
+            contentType: http.MediaType("text", "csv"),
+          ),
+        );
+
+      }
+
+      var response = await request.send();
+      var responseBody = await response.stream.bytesToString();
+
+      if( response.statusCode == 200 ){//REWARD UPDATED
+        //GO BACK TO REWARDS SCREEN
+        rewardController.getAllRewards();
+        Get.back();
+        showSnackBar(
+            title: "Done!",
+            message: "Reward updated successfully.",
+            backgroundColor: AppColors.successGreen
+        );
+      }else if( response.statusCode == 400 ){
+        showSnackBar(title: "Error!", message: "Something went wrong. Please try again.", backgroundColor: AppColors.errorRed);
+      }else if( response.statusCode == 429 ){//TOO MANY REQUEST
+        showSnackBar(
+          title: "Update Limit Reached",
+          message: "Redemption limit updates are allowed every 24 hours.",
+          backgroundColor: AppColors.warningYellow,
+        );
+      }
+
+      print("Status: ${response.statusCode}");
+      print("Body: $responseBody");
+    }catch(e){
+      showSnackBar(
+          title: "No internet!",
+          message: "Check your internet connection and try again.",
+          backgroundColor: AppColors.warningYellow
+      );
+    }finally{
+      isUpdating.value = false;
     }
   }
 

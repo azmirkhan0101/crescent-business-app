@@ -194,49 +194,49 @@ class _MyProfileScreenState extends State<ProfileSettingsScreen> {
           actionsAlignment: MainAxisAlignment.spaceBetween,
           actionsPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
           actions: [
-            // Cancel button
-            Container(
-              height: 42,
-              width: 120,
-              decoration: BoxDecoration(
-                color: const Color(0xFFEEEEEE),
-                borderRadius: BorderRadius.circular(8),
-              ),
-              child: TextButton(
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-                child: const Text(
-                  "Cancel",
-                  style: TextStyle(
-                    color: Colors.black87,
-                    fontWeight: FontWeight.w600,
+            Row(
+              children: [
+                // Cancel button
+                Expanded(
+                  child: Container(
+                    height: 42,
+                    decoration: BoxDecoration(
+                      color: const Color(0xFFEEEEEE),
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    child: TextButton(
+                      onPressed: () => Navigator.of(context).pop(),
+                      child: const Text(
+                        "Cancel",
+                        style: TextStyle(color: Colors.black87, fontWeight: FontWeight.w600),
+                      ),
+                    ),
                   ),
                 ),
-              ),
-            ),
 
-            // Delete button
-            Container(
-              height: 42,
-              width: 120,
-              decoration: BoxDecoration(
-                color: Color(0xFFE53935),
-                borderRadius: BorderRadius.circular(8),
-              ),
-              child: TextButton(
-                onPressed: () {
-                  Navigator.of(context).pop();
-                  controller.logOut();
-                },
-                child: const Text(
-                  "Logout",
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.w600,
+                 SizedBox(width: 12.w), // Spacing between buttons
+
+                // Delete button
+                Expanded(
+                  child: Container(
+                    height: 42,
+                    decoration: BoxDecoration(
+                      color: const Color(0xFFE53935),
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    child: TextButton(
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                        controller.logOut();
+                      },
+                      child: const Text(
+                        "Logout",
+                        style: TextStyle(color: Colors.white, fontWeight: FontWeight.w600),
+                      ),
+                    ),
                   ),
                 ),
-              ),
+              ],
             ),
           ],
         );
@@ -274,49 +274,49 @@ class _MyProfileScreenState extends State<ProfileSettingsScreen> {
           actionsAlignment: MainAxisAlignment.spaceBetween,
           actionsPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
           actions: [
-            // Cancel button
-            Container(
-              height: 42,
-              width: 120,
-              decoration: BoxDecoration(
-                color: const Color(0xFFEEEEEE),
-                borderRadius: BorderRadius.circular(8),
-              ),
-              child: TextButton(
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-                child: const Text(
-                  "Cancel",
-                  style: TextStyle(
-                    color: Colors.black87,
-                    fontWeight: FontWeight.w600,
+            Row(
+              children: [
+                // Cancel button
+                Expanded(
+                  child: Container(
+                    height: 42,
+                    decoration: BoxDecoration(
+                      color: const Color(0xFFEEEEEE),
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    child: TextButton(
+                      onPressed: () => Navigator.of(context).pop(),
+                      child: const Text(
+                        "Cancel",
+                        style: TextStyle(color: Colors.black87, fontWeight: FontWeight.w600),
+                      ),
+                    ),
                   ),
                 ),
-              ),
-            ),
 
-            // Delete button
-            Container(
-              height: 42,
-              width: 120,
-              decoration: BoxDecoration(
-                color: Color(0xFFE53935),
-                borderRadius: BorderRadius.circular(8),
-              ),
-              child: TextButton(
-                onPressed: () {
-                  Navigator.of(context).pop();
-                  controller.deleteAccount();
-                },
-                child: const Text(
-                  "Delete",
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.w600,
+                 SizedBox(width: 12.w), // Spacing between buttons
+
+                // Delete button
+                Expanded(
+                  child: Container(
+                    height: 42,
+                    decoration: BoxDecoration(
+                      color: const Color(0xFFE53935),
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    child: TextButton(
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                        controller.deleteAccount();
+                      },
+                      child: const Text(
+                        "Delete",
+                        style: TextStyle(color: Colors.white, fontWeight: FontWeight.w600),
+                      ),
+                    ),
                   ),
                 ),
-              ),
+              ],
             ),
           ],
         );

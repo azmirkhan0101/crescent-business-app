@@ -60,33 +60,38 @@ class HomeHeaderWidget extends StatelessWidget {
             ),
           ),
           // Notification icon
-          Container(
-            width: 40.w,
-            height: 40.h,
-            decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              color: Colors.white,
-              boxShadow: [
-                BoxShadow(
-                  color: const Color(0x199E9E9E),
-                  spreadRadius: 1,
-                  blurRadius: 5,
-                  offset: const Offset(0, 2),
-                ),
-              ],
-            ),
-            child: Stack(
-              alignment: Alignment.center,
-              children: [
-                CustomAssetsImage(
-                    assetsPath: AssetsPath.alertIcon
-                ),
-                Positioned(
-                  top: 10,
-                  right: 10,
-                  child: CircleAvatar(radius: 4.r, backgroundColor: Colors.red),
-                ),
-              ],
+          GestureDetector(
+            onTap: (){
+              Get.toNamed(AppRoutes.notification);
+            },
+            child: Container(
+              width: 40.w,
+              height: 40.h,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                color: Colors.white,
+                boxShadow: [
+                  BoxShadow(
+                    color: const Color(0x199E9E9E),
+                    spreadRadius: 1,
+                    blurRadius: 5,
+                    offset: const Offset(0, 2),
+                  ),
+                ],
+              ),
+              child: Stack(
+                alignment: Alignment.center,
+                children: [
+                  CustomAssetsImage(
+                      assetsPath: AssetsPath.alertIcon
+                  ),
+                  Positioned(
+                    top: 10,
+                    right: 10,
+                    child: CircleAvatar(radius: 4.r, backgroundColor: Colors.red),
+                  ),
+                ],
+              ),
             ),
           ),
         ],

@@ -11,6 +11,7 @@ import 'package:organization/utils/assets_path.dart';
 import '../../../utils/app_color.dart';
 import '../../../utils/app_size.dart';
 import '../../utils/app_text.dart';
+import '../auth/widgets/password_requirement_widget.dart';
 import '../widgets/custom_asset_image.dart';
 import '../widgets/custom_button_widget.dart';
 import '../widgets/custom_text.dart';
@@ -74,6 +75,9 @@ class ChangePasswordScreen extends StatelessWidget {
                   CustomTextField(
                     hintText: "**********",
                     controller: controller.newPassword,
+                    onChanged: (String value){
+                      controller.checkRequirements(value);
+                    },
                     prefixImagePath: AssetsPath.lockIcon,
                     suffixImagePath: AssetsPath.eyeIcon,
                     isPassword: true,
@@ -146,23 +150,15 @@ class ChangePasswordScreen extends StatelessWidget {
               ),
             ),
             SizedBox( height: 10.h,),
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                CustomAssetsImage(assetsPath: AssetsPath.infoIcon),
-                Expanded(
-                  child: CustomText(
-                    textAlign: TextAlign.justify,
-                    text: AppText.passwordRequirements,
-                    language: false,
-                    fontSize: 12.sp,
-                    fontWeight: FontWeight.w400,
-                    color: AppColors.secondaryTextColor,
-                    overflow: TextOverflow.visible,
-                  ),
-                ),
-              ],
-            ),
+            ///required text
+            Obx((){
+              return PasswordRequirements(
+                isEightCharacters: controller.isEightCharacters.value,
+                isBothCasesPresent: controller.isBothCasesPresent.value,
+                isNumeralPresent: controller.isNumeralPresent.value,
+                isSpecialCharPresent: controller.isSpecialCharPresent.value,
+              );
+            }),
             SizedBox(height: 42.h),
             Center(
               child: CustomButton(

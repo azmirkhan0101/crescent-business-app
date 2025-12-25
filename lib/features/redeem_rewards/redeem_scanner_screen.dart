@@ -23,7 +23,7 @@ class _RedeemScannerScreenState extends State<RedeemScannerScreen> {
 
   final List<Widget> _tabs = [
     QRCodeWidget(),
-    NFCWidget(),
+    //NFCWidget(),
     StaticCodeWidget(),
   ];
 
@@ -111,8 +111,8 @@ class _RedeemScannerScreenState extends State<RedeemScannerScreen> {
                           child: Row(
                             children: [
                               _buildTabButton("QR Code", 0),
-                              _buildTabButton("NFC", 1),
-                              _buildTabButton("Static Code", 2),
+                              //_buildTabButton("NFC", 1),
+                              _buildTabButton("Static Code", 1),
                             ],
                           ),
                         ),

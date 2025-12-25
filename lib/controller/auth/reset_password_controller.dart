@@ -1,13 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:http/http.dart' as http;
 import 'package:organization/routes/app_pages.dart';
 import 'package:organization/utils/api_endpoints.dart';
-import 'package:organization/utils/app_constants.dart';
 
 import '../../core/show_snackbar.dart';
 import '../../utils/app_color.dart';
-import 'package:http/http.dart' as http;
 
 class ResetPasswordController extends GetxController{
 

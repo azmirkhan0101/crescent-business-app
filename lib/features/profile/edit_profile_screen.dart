@@ -142,7 +142,13 @@ class EditProfileScreen extends StatelessWidget {
             SizedBox(height: 12.h),
 
             //LOCATION AUTOCOMPLETE - GOOGLE PLACES
-            placesAutoCompleteTextField(),
+            PlacesSearchField(
+              googleApiKey: googleApiKey,
+              textEditingController: textEditingController,
+              onItemClick: (placeName){
+              controller.locationNames.add(placeName);
+            },
+            ),
             Obx(() {
               return ListView.builder(
                 shrinkWrap: true,
@@ -175,12 +181,30 @@ class EditProfileScreen extends StatelessWidget {
       return null;
     }
   }
+}
 
-  //GOOGLE PLACE AUTOCOMPLETE
-  placesAutoCompleteTextField() {
+
+class PlacesSearchField extends StatelessWidget {
+
+  final String googleApiKey;
+  final TextEditingController textEditingController;
+  final Function(String) onItemClick;
+
+
+   PlacesSearchField({
+    super.key,
+     required this.googleApiKey,
+     required this.textEditingController,
+     required this.onItemClick
+   });
+
+  @override
+  Widget build(BuildContext context) {
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 20),
       child: GooglePlaceAutoCompleteTextField(
+        textInputAction: TextInputAction.done,
+        keyboardType: TextInputType.text,
         textEditingController: textEditingController,
         googleAPIKey: googleApiKey,
         inputDecoration: InputDecoration(
@@ -192,17 +216,19 @@ class EditProfileScreen extends StatelessWidget {
         //countries: ["in", "fr"],
         isLatLngRequired: true,
         getPlaceDetailWithLatLng: (Prediction prediction) {
-          print("placeDetails" + prediction.lat.toString());
+          //print("placeDetails" + prediction.lat.toString());
         },
 
         itemClick: (Prediction prediction) {
           final placeName = prediction.description ?? "";
           textEditingController.text = placeName;
           //ADD PLACE NAME IN LOCATIONS LIST
-          controller.locationNames.add(placeName);
+          onItemClick(placeName);
+          //controller.locationNames.add(placeName);
           textEditingController.selection = TextSelection.fromPosition(
             TextPosition(offset: prediction.description?.length ?? 0),
           );
+          FocusScope.of(context).unfocus();
         },
         seperatedBuilder: Divider(),
         containerHorizontalPadding: 10,

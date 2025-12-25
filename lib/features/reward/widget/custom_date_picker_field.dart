@@ -37,7 +37,8 @@ class _CustomDatePickerFieldState extends State<CustomDatePickerField> {
     );
 
     if (picked != null) {
-      final onlyDate = DateTime(picked.year, picked.month, picked.day);
+      final utcDate = picked.toUtc();
+      final onlyDate = DateTime(utcDate.year, utcDate.month, utcDate.day);
 
       setState(() {
         selectedDate = onlyDate;

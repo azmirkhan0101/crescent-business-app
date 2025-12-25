@@ -160,8 +160,6 @@ class RewardController extends GetxController {
       return;
     }
 
-    isCreating.value = true;
-
     if( titleController.text.trim().isEmpty || descriptionController.text.trim().isEmpty ){
       showSnackBar(
           title: "Enter details",
@@ -181,11 +179,11 @@ class RewardController extends GetxController {
         businessId: storage.read( businessIdKey ),
         title: capitalizeFirstLetter(titleController.text.trim()),
         description: descriptionController.text.trim(),
-        type: "in-store",//hard coded
+        type: "in-store",
         category: category.toLowerCase(),
         redemptionLimit: redemptionLimit!,
-        startDate: DateTime.now(),
-        expiryDate: expiryDate ?? DateTime( 2050, 1, 1),
+        startDate: DateTime.now().toUtc(),
+        expiryDate: expiryDate ?? DateTime( 2050, 1, 1).toUtc(),
         inStoreRedemptionMethods: CreateInStoreRedemptionMethods(
             qrCode: qrCode.value,
             staticCode: staticCode.value,
@@ -196,6 +194,7 @@ class RewardController extends GetxController {
     );
 
     try{
+      isCreating.value = true;
       var request = http.MultipartRequest("POST", url);
       request.headers.addAll({
         "Authorization": "Bearer ${storage.read( accessTokenKey )}",
@@ -229,12 +228,26 @@ class RewardController extends GetxController {
 
       if( response.statusCode == 201 ){//REWARD CREATED
         //GO BACK TO REWARDS SCREEN
+        qrCode.value = true;
+        staticCode.value = false;
+        nfcTap.value = false;
+        titleController.clear();
+        descriptionController.clear();
+        rewardImage.value = null;
+        expiryDate = null;
+        redemptionLimitController.clear();
         getAllRewards();
         Get.back();
         showSnackBar(
             title: "Done!",
             message: "Reward created successfully",
             backgroundColor: AppColors.successGreen
+        );
+      }else{
+        showSnackBar(
+            title: "Error occurred!",
+            message: "Something went wrong. Please try again.",
+            backgroundColor: AppColors.errorRed
         );
       }
 
@@ -249,14 +262,6 @@ class RewardController extends GetxController {
       );
     }finally{
       isCreating.value = false;
-      qrCode.value = true;
-      staticCode.value = false;
-      nfcTap.value = false;
-      titleController.clear();
-      descriptionController.clear();
-      rewardImage.value = null;
-      expiryDate = null;
-      redemptionLimitController.clear();
     }
   }
 
@@ -267,13 +272,20 @@ class RewardController extends GetxController {
       return;
     }
 
-    isCreating.value = true;
-
     if( titleController.text.trim().isEmpty || descriptionController.text.trim().isEmpty ){
       showSnackBar(
           title: "Enter details",
           message: "Enter title and description to create a new reward.",
-          backgroundColor: AppColors.errorRed
+          backgroundColor: AppColors.warningYellow
+      );
+      return;
+    }
+
+    if( csvFile.value == null ){
+      showSnackBar(
+          title: "Codes required!",
+          message: "CSV file is required to create online reward.",
+          backgroundColor: AppColors.warningYellow
       );
       return;
     }
@@ -286,7 +298,7 @@ class RewardController extends GetxController {
         description: descriptionController.text.trim(),
         type: "online",//hard coded
         category: category.toLowerCase(),
-        startDate: DateTime.now(),
+        startDate: DateTime.now().toUtc(),
         expiryDate: expiryDate ?? DateTime( 2050, 1, 1),
         onlineRedemptionMethods: CreateOnlineRedemptionMethods(
             giftCard: giftCard.value,
@@ -296,6 +308,7 @@ class RewardController extends GetxController {
     );
 
     try{
+      isCreating.value = true;
       var request = http.MultipartRequest("POST", url);
       request.headers.addAll({
         "Authorization": "Bearer ${storage.read( accessTokenKey )}",
@@ -335,8 +348,6 @@ class RewardController extends GetxController {
             contentType: http.MediaType("text", "csv"),
           ),
         );
-        print("CSV file: ${csvFile.value!.path}");
-        //print("CSV file: ${csvFile.value!.}");
       }
 
       var response = await request.send().timeout(Duration(seconds: 10));
@@ -347,6 +358,13 @@ class RewardController extends GetxController {
 
       if( response.statusCode == 201 ){//REWARD CREATED
         //GET REWARD LIST -> GO BACK TO REWARDS SCREEN
+        discountCode.value = true;
+        giftCard.value = false;
+        titleController.clear();
+        descriptionController.clear();
+        rewardImage.value = null;
+        expiryDate = null;
+        redemptionLimitController.clear();
         getAllRewards();
         Get.back();
         showSnackBar(
@@ -358,6 +376,12 @@ class RewardController extends GetxController {
         showSnackBar(
             title: "Repeated code!",
             message: "Some codes were found repeated. Try again with new codes.",
+            backgroundColor: AppColors.warningYellow
+        );
+      }else{
+        showSnackBar(
+            title: "Error Occurred!",
+            message: "Something went wrong. Please try again.",
             backgroundColor: AppColors.warningYellow
         );
       }
@@ -375,13 +399,6 @@ class RewardController extends GetxController {
       );
     }finally{
       isCreating.value = false;
-      discountCode.value = true;
-      giftCard.value = false;
-      titleController.clear();
-      descriptionController.clear();
-      rewardImage.value = null;
-      expiryDate = null;
-      redemptionLimitController.clear();
     }
   }
 
