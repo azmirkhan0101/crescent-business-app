@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:organization/features/widgets/custom_text.dart';
+import 'package:organization/utils/assets_gen/assets.gen.dart';
 import 'package:organization/utils/assets_path.dart';
 
 import '../../../utils/app_color.dart';
@@ -42,8 +44,8 @@ class AnalyticsCardWidget extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           /// Top Icon
-          Image.asset(
-              isProfileViewsCard ? AssetsPath.profileIcon : AssetsPath.clickIcon,
+          SvgPicture.asset(
+              isProfileViewsCard ? Assets.icons.profileIcon : Assets.icons.clickIcon,
               //color: topIconColor,
               height: 24.h,
               width: 24.w

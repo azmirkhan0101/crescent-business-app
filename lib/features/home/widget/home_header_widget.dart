@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:organization/features/widgets/custom_asset_image.dart';
 import 'package:organization/routes/app_pages.dart';
+import 'package:organization/utils/assets_gen/assets.gen.dart';
 import '../../../utils/app_text_styles.dart';
 import '../../../utils/assets_path.dart';
 
@@ -81,9 +83,10 @@ class HomeHeaderWidget extends StatelessWidget {
               child: Stack(
                 alignment: Alignment.center,
                 children: [
-                  CustomAssetsImage(
-                      assetsPath: AssetsPath.salonImage
-                  ),
+                  // CustomAssetsImage(
+                  //     assetsPath: AssetsPath.alertIcon
+                  // ),
+                  SvgPicture.asset(Assets.icons.notification, height: 25.h, width: 25.w,),
                   Positioned(
                     top: 10,
                     right: 10,
@@ -104,12 +107,12 @@ class HomeHeaderWidget extends StatelessWidget {
     if ( profileImageUrl != null && profileImageUrl!.isNotEmpty) {
       return Image.network( profileImageUrl!, fit: BoxFit.cover,
         errorBuilder: (context, error, stackTrace) {
-          return const Icon(Icons.person);
+          return const Icon(Icons.business);
         },
       );
     }
 
     //return Icon(Icons.business, size: 50.r, color: Colors.grey);
-    return Image.asset( AssetsPath.profileIcon, fit: BoxFit.scaleDown );
+    return Icon(Icons.business);
   }
 }

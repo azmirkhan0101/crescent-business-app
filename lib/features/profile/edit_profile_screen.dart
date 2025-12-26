@@ -13,6 +13,7 @@ import 'package:organization/features/profile/widget/location_widget.dart';
 import 'package:organization/features/profile/widget/profile_heading_text_widget.dart';
 import 'package:organization/features/widgets/custom_text.dart';
 import 'package:organization/utils/app_color.dart';
+import 'package:organization/utils/assets_gen/assets.gen.dart';
 import 'package:organization/utils/assets_path.dart';
 
 import '../../utils/app_size.dart';
@@ -102,23 +103,20 @@ class EditProfileScreen extends StatelessWidget {
                     hintText: controller.editProfileModel.description,
                     controller: controller.descriptionController,
                   ),
-
                   SizedBox(height: 16.h),
-
                   /// globalization
                   ProfileHeadingTextWidget(title: AppText.website),
                   SizedBox(height: AppSizes.paddingSmallH),
                   CustomTextField(
-                    prefixImagePath: AssetsPath.globeIcon,
+                    prefixIconPath: Assets.icons.globe,
                     hintText: controller.editProfileModel.businessWebsite ?? "",
                     controller: controller.websiteController,
                   ),
                   SizedBox(height: 16.h),
-
                   /// business phone
                   ProfileHeadingTextWidget(title: AppText.businessPhone),
                   CustomTextField(
-                    prefixImagePath: AssetsPath.callIcon,
+                    prefixIconPath: Assets.icons.call,
                     hintText: controller.editProfileModel.businessPhoneNumber ?? "",
                     controller: controller.phoneController,
                   ),
@@ -128,7 +126,7 @@ class EditProfileScreen extends StatelessWidget {
                   ProfileHeadingTextWidget(title: AppText.email),
                   SizedBox(height: AppSizes.paddingSmallH),
                   CustomTextField(
-                    prefixImagePath: AssetsPath.mailIcon,
+                    prefixIconPath: Assets.icons.mail,
                     hintText: controller.editProfileModel.businessEmail ?? "",
                     controller: controller.emailController,
                   ),
@@ -164,6 +162,7 @@ class EditProfileScreen extends StatelessWidget {
                 },
               );
             }),
+            SizedBox(height: 30.h,)
           ],
         ),
       ),

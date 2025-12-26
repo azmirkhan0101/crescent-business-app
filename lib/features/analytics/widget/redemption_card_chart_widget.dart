@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:organization/data/models/analytics/redemption_method_model.dart';
 import 'package:organization/features/widgets/custom_text.dart';
 import 'package:organization/utils/app_color.dart';
 import 'package:organization/utils/app_size.dart';
 import 'package:organization/utils/app_text_styles.dart';
+import 'package:organization/utils/assets_gen/assets.gen.dart';
 import 'package:organization/utils/assets_path.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
@@ -75,11 +77,11 @@ class RedemptionChartWidget extends StatelessWidget {
                   children: [
                     Row(
                       children: [
-                        Image.asset(
-                          AssetsPath.scanQrIcon,
+                        SvgPicture.asset(
+                          Assets.icons.scanQrCode,
                           height: AppSizes.iconS24H,
                           width: AppSizes.iconS24W,
-                          color: AppColors.primaryColor,
+                          colorFilter: ColorFilter.mode(AppColors.primaryColor, BlendMode.srcIn),
                         ),
                         SizedBox(width: 5.w),
                         Expanded(

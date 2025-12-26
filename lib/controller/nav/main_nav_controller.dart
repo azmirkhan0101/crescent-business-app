@@ -4,10 +4,8 @@ import 'package:organization/features/analytics/analytics_screen.dart';
 import 'package:organization/features/home/home_screen.dart';
 import 'package:organization/features/profile/business_profile_screen.dart';
 import 'package:organization/features/redeem_rewards/redeem_scanner_screen.dart';
-import 'package:organization/features/reward/edit_reward_screen.dart';
 import 'package:organization/features/reward/reward_screen.dart';
-
-import '../../utils/assets_path.dart';
+import 'package:organization/utils/assets_gen/assets.gen.dart';
 
 class MainNavController extends GetxController{
 
@@ -22,10 +20,10 @@ class MainNavController extends GetxController{
   ];
 
   final List<String> navItemIconPath = [
-    AssetsPath.homeIcon,
-    AssetsPath.chartIcon,
-    AssetsPath.scanQrIcon,
-    AssetsPath.starEmphasisIcon,
-    AssetsPath.userIcon
+    Assets.icons.navHome,
+    Assets.icons.navAnalytics,
+    Assets.icons.scanQrCode,
+    Assets.icons.navRewards,
+    Assets.icons.account
   ];
 }

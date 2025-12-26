@@ -10,6 +10,7 @@ import 'package:organization/utils/app_color.dart';
 import 'package:organization/utils/app_text.dart';
 import 'package:organization/utils/assets_path.dart';
 import '../../../utils/app_size.dart';
+import '../../utils/assets_gen/assets.gen.dart';
 import '../widgets/custom_text.dart';
 import '../widgets/custom_text_field_widget.dart';
 import '../widgets/heading_text_widget.dart';
@@ -71,7 +72,7 @@ class BusinessContactInfoScreen extends StatelessWidget {
 
                   CustomTextField(
                     hintText: AppText.enterBusinessPhoneNumber,
-                    prefixImagePath: AssetsPath.callIcon,
+                    prefixIconPath: Assets.icons.call,
                     controller: controller.businessPhoneController,
                   ),
 
@@ -80,7 +81,7 @@ class BusinessContactInfoScreen extends StatelessWidget {
 
                   CustomTextField(
                     hintText: AppText.enterBusinessEmail,
-                    prefixImagePath: AssetsPath.mailIcon,
+                    prefixIconPath: Assets.icons.mail,
                     controller: controller.businessEmailController,
                   ),
 
@@ -88,7 +89,7 @@ class BusinessContactInfoScreen extends StatelessWidget {
                   SizedBox(height: AppSizes.paddingSmallH),
                   CustomTextField(
                     hintText: AppText.enterWebsite,
-                    prefixImagePath: AssetsPath.globeIcon,
+                    prefixIconPath: Assets.icons.globe,
                     controller: controller.businessWebsiteController,
                   ),
                 ],

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:organization/controller/nav/main_nav_controller.dart';import 'package:organization/utils/app_constants.dart';
@@ -67,11 +68,11 @@ class MainNavigationScreen extends StatelessWidget {
                                 borderRadius: BorderRadius.circular(24.r),
                               ),
                               child: Center(
-                                child: Image.asset(
+                                child: SvgPicture.asset(
                                   controller.navItemIconPath[index],
                                   width: 24.sp,
                                   height: 24.sp,
-                                  color: selected ? const Color(0xFF51238D) : Colors.grey,
+                                  colorFilter: ColorFilter.mode(selected ? Color(0xFF51238D) : Colors.grey, BlendMode.srcIn),
                                 ),
                               ),
                             ),

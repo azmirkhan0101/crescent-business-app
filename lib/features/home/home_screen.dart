@@ -14,6 +14,7 @@ import 'package:organization/features/home/widget/home_header_widget.dart';
 import 'package:organization/features/widgets/custom_text.dart';
 import 'package:organization/routes/app_pages.dart';
 import 'package:organization/utils/api_endpoints.dart';
+import 'package:organization/utils/assets_gen/assets.gen.dart';
 import 'package:organization/utils/assets_path.dart';
 import '../../utils/app_color.dart';
 import '../../utils/app_text_styles.dart';
@@ -88,7 +89,7 @@ class HomeScreen extends StatelessWidget {
                       Expanded(
                         child: Obx((){
                           return HomeCardWidget(
-                            topIcon: AssetsPath.starEmphasisIcon,
+                            topIcon: Assets.icons.navRewards,
                             title: 'Active Rewards',
                             bottomText:
                             controller

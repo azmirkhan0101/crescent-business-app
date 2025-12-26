@@ -391,10 +391,8 @@ class OtpVerificationController extends GetxController {
   @override
   void onClose() {
 
-    if( otpController != null ){
-      otpController.dispose();
-    }
-    super.onClose();
+    otpController.dispose();
+      super.onClose();
   }
 
 }

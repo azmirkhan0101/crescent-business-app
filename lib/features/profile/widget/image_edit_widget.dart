@@ -129,9 +129,9 @@ class ImageEditWidget extends StatelessWidget {
         errorBuilder: (context, error, stackTrace) {
           return Center(
             child: Icon(
-              Icons.person,
-              size: 100.r,
-              color: Colors.white,
+              Icons.business,
+              size: 50.r,
+              color: Colors.grey,
             ),
           );
         },

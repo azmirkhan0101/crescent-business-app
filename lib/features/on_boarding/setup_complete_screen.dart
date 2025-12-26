@@ -13,6 +13,7 @@ import 'package:organization/utils/assets_path.dart';
 import '../../utils/app_color.dart';
 import '../../utils/app_text.dart';
 import '../../utils/app_text_styles.dart';
+import '../../utils/assets_gen/assets.gen.dart';
 import '../widgets/custom_button_widget.dart';
 import '../widgets/custom_text.dart';
 
@@ -181,7 +182,7 @@ class BusinessSetupCompleteScreen extends StatelessWidget {
                                     gradientColor1: const Color(0xFFF3EAFE),
                                     gradientColor2: const Color(0xFFE9D9FB),
                                     gradientColor3: const Color(0xFFD8C2F6),
-                                    icon: AssetsPath.globeIcon,
+                                    icon: Assets.icons.globe,
                                     title: AppText.website,
                                     subtitle: controller.model.value!.businessWebsite,
                                     iconBgColor: const Color(0xFFE2D4F9),
@@ -195,7 +196,7 @@ class BusinessSetupCompleteScreen extends StatelessWidget {
                                     gradientColor1: const Color(0xFFF0FFD9),
                                     gradientColor2: const Color(0xFFE6FBCB),
                                     gradientColor3: const Color(0xFFD2F7A2),
-                                    icon: AssetsPath.callIcon,
+                                    icon: Assets.icons.call,
                                     title: AppText.businessPhone,
                                     subtitle: controller.model.value!.businessPhoneNumber,
                                     iconBgColor: const Color(0xFFDBF7B6),
@@ -213,7 +214,7 @@ class BusinessSetupCompleteScreen extends StatelessWidget {
                               gradientColor1: const Color(0xFFFFFFE0),
                               gradientColor2: const Color(0xFFFFF9D9),
                               gradientColor3: const Color(0xFFFFF2B0),
-                              icon: AssetsPath.mailIcon,
+                              icon: Assets.icons.mail,
                               title: AppText.email,
                               subtitle: controller.model.value!.businessEmail,
                               iconBgColor: const Color(0xFFFFF2C2),

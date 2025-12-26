@@ -2,11 +2,13 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:organization/data/models/analytics/graph_data_model.dart';
 import 'package:organization/data/models/analytics/summary_model.dart';
 import 'package:organization/features/widgets/custom_text.dart';
 import 'package:organization/utils/app_color.dart';
+import 'package:organization/utils/assets_gen/assets.gen.dart';
 import 'package:organization/utils/assets_path.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
@@ -49,7 +51,7 @@ class AnalyticsCardChart<T> extends StatelessWidget {
               // 🔹 Top Row (Image + Title)
               Row(
                 children: [
-                  Image.asset(AssetsPath.dataTrendingIcon, height: 24.h, width: 24.w),
+                  SvgPicture.asset(Assets.icons.stats, height: 24.h, width: 24.w),
                   SizedBox(width: 8.w),
                   Text(
                     "Reward Performance",

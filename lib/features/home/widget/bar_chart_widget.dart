@@ -3,10 +3,12 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:organization/data/models/home/monthly_stats.dart';
 import 'package:organization/features/widgets/custom_text.dart';
 import 'package:organization/utils/app_size.dart';
 import 'package:organization/utils/app_text_styles.dart';
+import 'package:organization/utils/assets_gen/assets.gen.dart';
 import 'package:organization/utils/assets_path.dart';
 import '../../../utils/app_color.dart';
 
@@ -34,7 +36,6 @@ class HomeBarChartWidget extends StatelessWidget {
     final maxY = roundToNiceNumber(rawMax);
     final interval = calculateInterval(maxY);
 
-
     return SizedBox(
       height: 343.h,
       child: Card(
@@ -52,14 +53,14 @@ class HomeBarChartWidget extends StatelessWidget {
               // Top Row with icon & title
               Row(
                 children: [
-                  Image.asset(
-                    AssetsPath.dataTrendingIcon,
+                  SvgPicture.asset(
+                    Assets.icons.stats,
                     height: AppSizes.iconS24H,
                     width: AppSizes.iconS24W,
                   ),
                   SizedBox(width: 8.w),
                   Text(
-                    'Stats',
+                    'Bar Chart',
                     style: AppTextStyle.cardTextStyle,
                   ),
                 ],
@@ -78,12 +79,13 @@ class HomeBarChartWidget extends StatelessWidget {
                   SizedBox(width: 12.w),
                   Expanded(
                     child: CustomText(
+                      maxLines: 2,
                       text: "Total activity of monthly redemptions",
                       fontSize: 12.sp,
                       fontWeight: FontWeight.w400,
                       language: false,
                       color: AppColors.secondaryTextColor,
-                      textAlign: TextAlign.justify,
+                      textAlign: TextAlign.left,
                       overflow: TextOverflow.ellipsis,
                     ),
                   ),

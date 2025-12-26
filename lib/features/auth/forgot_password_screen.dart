@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:organization/utils/assets_gen/assets.gen.dart';
 import '../../controller/auth/forgot_pass_controller.dart';
 import '../../core/toast_message.dart';
 import '../../routes/app_pages.dart';
@@ -74,7 +75,7 @@ class ForgotPasswordScreen extends StatelessWidget {
                     SizedBox(height: AppSizes.paddingSmallH),
                     CustomTextField(
                       hintText: AppText.enterEmail,
-                      prefixImagePath: AssetsPath.mailIcon,
+                      prefixIconPath: Assets.icons.mail,
                       controller: controller.emailController,
                     ),
                   ],

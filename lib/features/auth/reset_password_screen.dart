@@ -8,6 +8,7 @@ import 'package:organization/features/auth/widgets/custom_auth_appbar.dart';
 import 'package:organization/features/auth/widgets/password_requirement_widget.dart';
 import 'package:organization/features/auth/widgets/rich_text_widget.dart';
 import 'package:organization/utils/app_text.dart';
+import 'package:organization/utils/assets_gen/assets.gen.dart';
 import 'package:organization/utils/assets_path.dart';
 import '../../../utils/app_color.dart';
 import '../../../utils/app_size.dart';
@@ -58,8 +59,8 @@ class ResetPasswordScreen extends StatelessWidget {
                       controller.checkRequirements(value);
                     },
                     hintText: "Enter New Password",
-                    suffixImagePath: AssetsPath.eyeIcon,
-                    prefixImagePath: AssetsPath.lockIcon,
+                    suffixIconPath: Assets.icons.eye,
+                    prefixIconPath: AssetsPath.lockIcon,
                     controller: controller.newPasswordController,
                     isPassword: true,
                   ),
@@ -70,8 +71,8 @@ class ResetPasswordScreen extends StatelessWidget {
                   SizedBox(height: AppSizes.paddingSmallH),
                   CustomTextField(
                     hintText: "Confirm New Password",
-                    suffixImagePath: AssetsPath.eyeIcon,
-                    prefixImagePath: AssetsPath.lockIcon,
+                    suffixIconPath: Assets.icons.eye,
+                    prefixIconPath: AssetsPath.lockIcon,
                     controller: controller.confirmPasswordController,
                     isPassword: true,
                   ),

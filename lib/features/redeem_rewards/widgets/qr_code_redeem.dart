@@ -42,14 +42,6 @@ class _QRCodeWidgetState extends State<QRCodeWidget> {
             fontSize: 24.sp,
             language: true,
           ),
-          //TODO: REMOVE THIS LATER
-          CustomText(
-            text: "Debug code: ${scannedCode ?? ""}",
-            color: AppColors.headlineTextColor,
-            fontWeight: FontWeight.w600,
-            fontSize: 14.sp,
-            language: true,
-          ),
           SizedBox(height: 8.h),
       
           CustomText(text: "Please point the camera at the QR Code",

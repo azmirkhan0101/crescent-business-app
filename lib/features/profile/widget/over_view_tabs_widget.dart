@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:organization/data/models/profile/business_profile_model.dart';
 import 'package:organization/features/profile/widget/profile_heading_text_widget.dart';
@@ -9,6 +10,7 @@ import 'package:organization/features/widgets/custom_text.dart';
 import 'package:organization/features/widgets/info_card_widget.dart';
 import 'package:organization/utils/app_color.dart';
 import 'package:organization/utils/app_text.dart';
+import 'package:organization/utils/assets_gen/assets.gen.dart';
 import 'package:organization/utils/assets_path.dart';
 
 class OverviewTab extends StatelessWidget {
@@ -37,7 +39,7 @@ class OverviewTab extends StatelessWidget {
                   gradientColor1: Color(0xFFF3EAFE), // 5% opacity
                   gradientColor2: Color(0xFFE9D9FB), // 10% opacity
                   gradientColor3: Color(0xFFD8C2F6), // 40% opacity
-                  icon: AssetsPath.globeIcon,
+                  icon: Assets.icons.globe,
                   title: AppText.website,
                   subtitle: model.businessWebsite,
                   iconBgColor: Color(0xFFE2D4F9),
@@ -51,7 +53,7 @@ class OverviewTab extends StatelessWidget {
                   gradientColor1: Color(0xFFF0FFD9), // 5% opacity
                   gradientColor2: Color(0xFFE6FBCB), // 10% opacity
                   gradientColor3: Color(0xFFD2F7A2), // 40% opacity
-                  icon: AssetsPath.callIcon,
+                  icon: Assets.icons.call,
                   title: AppText.businessPhone,
                   subtitle: model.businessPhoneNumber,
 
@@ -67,7 +69,7 @@ class OverviewTab extends StatelessWidget {
             gradientColor1: Color(0xFFFFFFE0), // 5% opacity
             gradientColor2: Color(0xFFFFF9D9), // 10% opacity
             gradientColor3: Color(0xFFFFF2B0), // 40% opacity
-            icon: AssetsPath.mailIcon,
+            icon: Assets.icons.mail,
             title: AppText.email,
             subtitle: model.businessEmail,
             iconBgColor: Color(0xFFFFF2C2),
@@ -115,7 +117,7 @@ locationItem({required String locationName}){
       child: Row(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
-          CustomAssetsImage(assetsPath: AssetsPath.locationIcon),
+          SvgPicture.asset(Assets.icons.location),
           SizedBox(width: 8.w),
           Expanded(
             child: CustomText(

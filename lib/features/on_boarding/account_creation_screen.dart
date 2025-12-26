@@ -11,6 +11,7 @@ import 'package:organization/utils/assets_path.dart';
 import '../../../utils/app_color.dart';
 import '../../../utils/app_size.dart';
 import '../../controller/auth/sign_up_controller.dart';
+import '../../utils/assets_gen/assets.gen.dart';
 import '../widgets/custom_text_field_widget.dart';
 import '../widgets/heading_text_widget.dart';
 import '../widgets/text_field_title_widget.dart';
@@ -55,7 +56,7 @@ class AccountCreationScreen extends StatelessWidget {
                   SizedBox(height: AppSizes.paddingSmallH),
                   CustomTextField(
                     hintText: "Enter Email",
-                    prefixImagePath: AssetsPath.mailIcon,
+                    prefixIconPath: Assets.icons.mail,
                     controller: controller.emailController,
                   ),
                   SizedBox(height: 10.h),
@@ -65,8 +66,8 @@ class AccountCreationScreen extends StatelessWidget {
                   SizedBox(height: AppSizes.paddingSmallH),
                   CustomTextField(
                     hintText: "**********",
-                    suffixImagePath: AssetsPath.eyeIcon,
-                    prefixImagePath: AssetsPath.lockIcon,
+                    suffixIconPath: Assets.icons.eye,
+                    prefixIconPath: AssetsPath.lockIcon,
                     controller: controller.passwordController,
                     isPassword: true,
                   ),

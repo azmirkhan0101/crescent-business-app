@@ -32,13 +32,11 @@ class HomeController extends GetxController{
   //GET PROFILE IMAGE URL AND USERNAME FROM STORAGE
   getProfileData(){
     BusinessProfileModel? model = BusinessProfileModel.fromJson(storage.read( businessProfileModelKey ));
-    if( model != null ){
-      profileImageUrl.value = model.logoImage == null || model.logoImage!.isEmpty
-          ? ""
-          : "${model.logoImage}";
-      userName.value = model.name;
+    profileImageUrl.value = model.logoImage == null || model.logoImage!.isEmpty
+        ? ""
+        : "${model.logoImage}";
+    userName.value = model.name;
     }
-  }
 
   //GET BUSINESS OVERVIEW - HOME SCREEN STATS
   getBusinessOverview() async{

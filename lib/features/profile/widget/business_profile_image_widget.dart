@@ -66,7 +66,7 @@ class _BusinessProfileWidgetState extends State<BusinessProfileWidget> {
             top: 8,
             right: 8,
             child: GestureDetector(
-              onTap: (){
+              onTap: () {
                 print("Cover clicked");
                 pickImage(true);
               },
@@ -90,10 +90,7 @@ class _BusinessProfileWidgetState extends State<BusinessProfileWidget> {
                 decoration: BoxDecoration(
                   color: Colors.white,
                   shape: BoxShape.circle,
-                  border: Border.all(
-                    width: 2.r,
-                    color: AppColors.successGreen,
-                  ),
+                  border: Border.all(width: 2.r, color: AppColors.successGreen),
                 ),
                 child: ClipOval(child: _buildLogoImage()),
               ),
@@ -105,16 +102,14 @@ class _BusinessProfileWidgetState extends State<BusinessProfileWidget> {
                     behavior: HitTestBehavior.translucent,
                     //HEY CHATGPT, THIS CLICK IS NOT WORKING.
                     onTap: () {
-                      print("Edit logo image");
                       pickImage(false);
                     },
-                    child: IconButton(onPressed: (){
-                      print("Hello");
-                    },
-                        style: ButtonStyle(
-                          backgroundColor: WidgetStatePropertyAll(Colors.black)
-                        ),
-                        icon: Icon(Icons.edit, size: 16.r, color: Colors.white)
+                    child: IconButton(
+                      onPressed: () {},
+                      style: ButtonStyle(
+                        backgroundColor: WidgetStatePropertyAll(Colors.black),
+                      ),
+                      icon: Icon(Icons.edit, size: 16.r, color: Colors.white),
                     ),
                   ),
                 ),
@@ -129,21 +124,17 @@ class _BusinessProfileWidgetState extends State<BusinessProfileWidget> {
   Widget _buildCoverImage() {
     if (_coverFile != null) {
       return Image.file(_coverFile!, fit: BoxFit.cover);
-    } else if (widget.coverImageUrl != null && widget.coverImageUrl!.isNotEmpty) {
+    } else if (widget.coverImageUrl != null &&
+        widget.coverImageUrl!.isNotEmpty) {
       return Image.network(
         widget.coverImageUrl!,
         fit: BoxFit.cover,
         errorBuilder: (context, error, stackTrace) {
           return Center(
-            child: Icon(
-              Icons.image,
-              size: 100.r,
-              color: Colors.white,
-            ),
+            child: Icon(Icons.image, size: 100.r, color: Colors.white),
           );
         },
       );
-
     }
     return Icon(Icons.image, size: 100.r, color: Colors.white);
   }
@@ -157,11 +148,7 @@ class _BusinessProfileWidgetState extends State<BusinessProfileWidget> {
         fit: BoxFit.cover,
         errorBuilder: (context, error, stackTrace) {
           return Center(
-            child: Icon(
-              Icons.business,
-              size: 100.r,
-              color: Colors.white,
-            ),
+            child: Icon(Icons.business, size: 50.r, color: Colors.grey),
           );
         },
       );

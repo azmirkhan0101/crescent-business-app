@@ -11,6 +11,7 @@ import 'package:organization/utils/assets_path.dart';
 import '../../../utils/app_color.dart';
 import '../../../utils/app_size.dart';
 import '../../utils/app_text.dart';
+import '../../utils/assets_gen/assets.gen.dart';
 import '../auth/widgets/password_requirement_widget.dart';
 import '../widgets/custom_asset_image.dart';
 import '../widgets/custom_button_widget.dart';
@@ -60,8 +61,8 @@ class ChangePasswordScreen extends StatelessWidget {
                   CustomTextField(
                     hintText: "**********",
                     controller: controller.currentPassword,
-                    prefixImagePath: AssetsPath.lockIcon,
-                    suffixImagePath: AssetsPath.eyeIcon,
+                    prefixIconPath: AssetsPath.lockIcon,
+                    suffixIconPath: Assets.icons.eye,
                     isPassword: true,
                     // onChanged: (val) => controller.password.value = val,
                   ),
@@ -78,8 +79,8 @@ class ChangePasswordScreen extends StatelessWidget {
                     onChanged: (String value){
                       controller.checkRequirements(value);
                     },
-                    prefixImagePath: AssetsPath.lockIcon,
-                    suffixImagePath: AssetsPath.eyeIcon,
+                    prefixIconPath: AssetsPath.lockIcon,
+                    suffixIconPath: Assets.icons.eye,
                     isPassword: true,
                     // onChanged: (val) => controller.password.value = val,
                   ),
@@ -141,8 +142,8 @@ class ChangePasswordScreen extends StatelessWidget {
               CustomTextField(
                     hintText: "**********",
                     controller: controller.confirmPassword,
-                    prefixImagePath: AssetsPath.lockIcon,
-                    suffixImagePath: AssetsPath.eyeIcon,
+                    prefixIconPath: AssetsPath.lockIcon,
+                    suffixIconPath: Assets.icons.eye,
                     isPassword: true,
                     // onChanged: (val) => controller.password.value = val,
                   ),

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:organization/controller/analytics/analytics_controller.dart';
-import 'package:organization/controller/reward/reward_controller.dart';
 import 'package:organization/features/analytics/widget/analytics_card_widget.dart';
 import 'package:organization/features/analytics/widget/analytics_chart_widget.dart';
 import 'package:organization/features/analytics/widget/bottom_sheet_widget.dart';
@@ -13,6 +13,7 @@ import 'package:organization/features/widgets/custom_asset_image.dart';
 import 'package:organization/features/widgets/custom_card_widget.dart';
 import 'package:organization/features/widgets/custom_text.dart';
 import 'package:organization/utils/app_color.dart';
+import 'package:organization/utils/assets_gen/assets.gen.dart';
 
 import '../../utils/assets_path.dart';
 
@@ -134,22 +135,22 @@ class AnalyticsScreen extends StatelessWidget {
                     Expanded(
                       child: Obx((){
                         return AnalyticsCardWidget(
-                            isProfileViewsCard: true,
+                            isProfileViewsCard: false,
                             timeLine: controller.selectedTimeline.value,
-                            count: controller.businessAnalyticsModel.value?.websiteViews ?? 0,
-                            percentage: controller.businessAnalyticsModel.value?.websitePercentage ?? 0.0,
-                            isIncrease: controller.businessAnalyticsModel.value?.websiteViewsIncrease ?? false
+                            count: controller.businessAnalyticsModel.value?.profileViews ?? 0,
+                            percentage: controller.businessAnalyticsModel.value?.profilePercentage ?? 0.0,
+                            isIncrease: controller.businessAnalyticsModel.value?.profileViewsIncrease ?? false
                         );
                       }),
                     ),
                     Expanded(
                       child: Obx((){
                         return AnalyticsCardWidget(
-                            isProfileViewsCard: false,
+                            isProfileViewsCard: true,
                             timeLine: controller.selectedTimeline.value,
-                            count: controller.businessAnalyticsModel.value?.profileViews ?? 0,
-                            percentage: controller.businessAnalyticsModel.value?.profilePercentage ?? 0.0,
-                            isIncrease: controller.businessAnalyticsModel.value?.profileViewsIncrease ?? false
+                            count: controller.businessAnalyticsModel.value?.websiteViews ?? 0,
+                            percentage: controller.businessAnalyticsModel.value?.websitePercentage ?? 0.0,
+                            isIncrease: controller.businessAnalyticsModel.value?.websiteViewsIncrease ?? false
                         );
                       }),
                     )
@@ -176,8 +177,8 @@ class AnalyticsScreen extends StatelessWidget {
                     children: [
                       Row(
                         children: [
-                          CustomAssetsImage(
-                            assetsPath: AssetsPath.rocketIcon,
+                          SvgPicture.asset(
+                            Assets.icons.topRewards,
                             height: 24.h,
                             width: 24.w,
                           ),

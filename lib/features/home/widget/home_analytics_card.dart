@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:organization/features/widgets/custom_text.dart';
+import 'package:organization/utils/assets_gen/assets.gen.dart';
 import 'package:organization/utils/assets_path.dart';
 
 import '../../../utils/app_color.dart';
@@ -40,9 +42,9 @@ class HomeAnalyticsCard extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           /// Top Icon
-          Image.asset(
-              AssetsPath.scanQrIcon,
-              color: Color(0xFFC08FFF),
+          SvgPicture.asset(
+            Assets.icons.scanQrCode,
+              colorFilter: ColorFilter.mode(Color(0xFFC08FFF), BlendMode.srcIn),
               height: 24.h,
               width: 24.w
           ),
