@@ -13,6 +13,11 @@ import '../../utils/app_constants.dart';
 import 'package:http/http.dart' as http;
 
 class ProfileSettingsController extends GetxController {
+  //1. change password
+  //2. subscriptions
+  //3. logout
+  //4. delete account
+  //5. notification
 
   @override
   void onInit() {
@@ -21,7 +26,19 @@ class ProfileSettingsController extends GetxController {
     super.onInit();
   }
 
-  //REQUIREMENT CHECKBOX CONTROLLER
+
+  final storage = GetStorage();
+  //LOGO IMAGE URL
+  RxString logoImageUrl = "".obs;
+  RxString businessName = "".obs;
+  RxString businessEmail = "".obs;
+
+  //NOTIFICATION SETTINGS
+  bool isPushNotificationEnabled = true;
+  bool isDonationUpdatesEnabled = true;
+  bool isRewardPerksEnabled = true;
+
+  //REQUIREMENT CHECKBOX CONTROLLER - FOR CHANGE PASSWORD SCREEN
   RxBool isEightCharacters = false.obs;
   RxBool isBothCasesPresent = false.obs;
   RxBool isNumeralPresent = false.obs;
@@ -47,25 +64,17 @@ class ProfileSettingsController extends GetxController {
   //GET LOGO IMAGE URL AND USER NAME
   getProfileData(){
     BusinessProfileModel? model = BusinessProfileModel.fromJson(storage.read( businessProfileModelKey ));
-    if( model != null ){
-      logoImageUrl.value = model.logoImage == null || model.logoImage!.isEmpty
-          ? ""
-          : "${model.logoImage}";
-      businessName.value = model.name;
-      businessEmail.value = model.businessEmail;
+    logoImageUrl.value = model.logoImage == null || model.logoImage!.isEmpty
+        ? ""
+        : "${model.logoImage}";
+    businessName.value = model.name;
+    businessEmail.value = model.businessEmail;
+
+    isPushNotificationEnabled = storage.read( pushNotificationKey ) ?? true;
+    isDonationUpdatesEnabled = storage.read( donationUpdatesKey ) ?? true;
+    isRewardPerksEnabled = storage.read( rewardPerksKey ) ?? true;
     }
-  }
-  //1. change password
-  //2. subscriptions
-  //3. logout
-  //4. delete account
 
-  final storage = GetStorage();
-
-  //LOGO IMAGE URL
-  RxString logoImageUrl = "".obs;
-  RxString businessName = "".obs;
-  RxString businessEmail = "".obs;
 
   //=================CHANGE PASSWORD=======================//
   final TextEditingController currentPassword = TextEditingController();
@@ -184,7 +193,7 @@ class ProfileSettingsController extends GetxController {
       http.Response response = await http.delete( uri, headers: headers );
       print("Codeeeeeeeeeeee: ${response.statusCode}");
       print("Body: ${response.body}");
-      if( response.statusCode == 204 ){
+      if( response.statusCode == 200 ){
         await storage.erase();
         Get.offAllNamed( AppRoutes.getStarted );
         showSnackBar(
@@ -206,5 +215,23 @@ class ProfileSettingsController extends GetxController {
         backgroundColor: AppColors.errorRed,
       );
     }
+  }
+
+  //TOGGLE PUSH NOTIFICATION
+togglePushNotification({required bool value}){
+    isPushNotificationEnabled = value;
+    storage.write( pushNotificationKey, isPushNotificationEnabled );
+}
+
+  //TOGGLE PUSH NOTIFICATION
+  toggleDonationUpdates({required bool value}){
+    isDonationUpdatesEnabled = value;
+    storage.write( donationUpdatesKey, isDonationUpdatesEnabled );
+  }
+
+  //TOGGLE PUSH NOTIFICATION
+  toggleRewardPerks({required bool value}){
+    isRewardPerksEnabled = value;
+    storage.write( rewardPerksKey, isRewardPerksEnabled );
   }
 }

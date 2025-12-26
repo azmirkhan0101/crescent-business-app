@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:organization/features/widgets/custom_asset_image.dart';
 import 'package:organization/routes/app_pages.dart';
 import 'package:organization/utils/api_endpoints.dart';
@@ -14,7 +15,7 @@ class RewardCard extends StatefulWidget {
 
   final String? image;
   final String title;
-  final String? expiryDate;
+  final DateTime? expiryDate;
   final int redemptions;
   final bool isActive;
   final String type;
@@ -52,14 +53,16 @@ class RewardCard extends StatefulWidget {
 }
 
 class _RewardCardState extends State<RewardCard> {
-  late String? date;
+  late String? formattedDate;
 
   @override
   void initState() {
 
     if( widget.expiryDate != null ){
-      DateTime dateTime = DateTime.parse( widget.expiryDate! );
-      date = "Expires: ${dateTime.toIso8601String().split('T')[0]}";
+      formattedDate = "Expires: ${DateFormat('yyyy-MM-dd')
+          .format(widget.expiryDate!)}";
+      //DateTime dateTime = DateTime.parse( widget.expiryDate! );
+      //date = "Expires: ${dateTime.toIso8601String().split('T')[0]}";
     }
 
     super.initState();
@@ -207,7 +210,7 @@ class _RewardCardState extends State<RewardCard> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                date ?? "",
+                formattedDate ?? "",
                 style: AppTextStyle.mediumStyle.copyWith(fontSize: 12.sp),
               ),
               Row(

@@ -19,7 +19,7 @@ class StaticCodeWidget extends StatelessWidget {
     final RedeemController controller = Get.find<RedeemController>();
 
     return Column(
-      mainAxisSize: MainAxisSize.max, // Changed to min so it doesn't try to take full screen height
+      mainAxisSize: MainAxisSize.max,
       children: [
         Text(
           "Enter Redeem Code",
@@ -32,7 +32,6 @@ class StaticCodeWidget extends StatelessWidget {
           height: 70.h,
           width: 279.w,
           child: CustomCard(
-            //Removed Expanded. TextField now sits directly inside Center/CustomCard.
             child: Center(
               child: TextField(
                 controller: textEditingController,

@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:organization/features/notification/widgets/notification_card.dart';
+import 'package:get/get.dart';
+import 'package:organization/controller/profile/profile_settings_controller.dart';
+import 'package:organization/features/profile/widget/notification_card.dart';
 
 
 class NotificationScreen extends StatelessWidget {
-  const NotificationScreen({super.key});
+
+  final ProfileSettingsController controller = Get.find<ProfileSettingsController>();
 
   @override
   Widget build(BuildContext context) {
@@ -23,24 +26,33 @@ class NotificationScreen extends StatelessWidget {
         centerTitle: true,
       ),
       body: ListView(
-        children: const [
+        children: [
           NotificationCard(
             title: "Push Notifications",
             subtitle: "Manage what updates you want to hear about from Crescent Change.",
             svgIconPath: "assets/images/Donation.svg",
-            initialValue: true,
+            isEnabled: controller.isPushNotificationEnabled,
+            onChanged: (bool value) {
+              controller.togglePushNotification(value: value);
+            },
           ),
           NotificationCard(
             title: "Donation Updates",
             subtitle: "Get notified when your donation is sent or when a recurring one is coming up.",
             svgIconPath: "assets/images/exclusive-brand-reward.svg",
-            initialValue: false,
+            isEnabled: controller.isDonationUpdatesEnabled,
+            onChanged: (bool value) {
+              controller.toggleDonationUpdates(value: value);
+            },
           ),
           NotificationCard(
             title: "Rewards & Perks",
             subtitle: "We’ll ping you when you earn rewards, perks, or kindness streaks!",
             svgIconPath: "assets/images/star-filled.svg",
-            initialValue: false,
+            isEnabled: controller.isRewardPerksEnabled,
+            onChanged: (bool value) {
+              controller.toggleRewardPerks(value: value);
+            },
           ),
         ],
       ),

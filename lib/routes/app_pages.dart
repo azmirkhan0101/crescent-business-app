@@ -6,7 +6,7 @@ import 'package:organization/features/auth/reset_password_screen.dart';
 import 'package:organization/features/get_started_screen.dart';
 import 'package:organization/features/home/recent_activities.dart';
 import 'package:organization/features/nav_bar/main_navigation_screen.dart';
-import 'package:organization/features/notification/notification_screen.dart';
+import 'package:organization/features/profile/notification_screen.dart';
 import 'package:organization/features/on_boarding/account_creation_screen.dart';
 import 'package:organization/features/on_boarding/business_contact_info_screen.dart';
 import 'package:organization/features/on_boarding/business_info_screen.dart';
@@ -21,7 +21,7 @@ import 'package:organization/features/reward/edit_reward_screen.dart';
 import 'package:organization/features/reward/reward_screen.dart';
 import 'package:organization/features/splash_screen.dart';
 import 'package:organization/features/subscription/subscription_screen.dart';
-import 'package:organization/features/terms_condition/terms_condition_screen.dart';
+import 'package:organization/features/profile/terms_condition_screen.dart';
 
 import '../../features/profile/edit_profile_screen.dart';
 import '../../features/redeem_rewards/on_boarding_store_screen.dart';

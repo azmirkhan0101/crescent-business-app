@@ -55,7 +55,7 @@ class _MyProfileScreenState extends State<ProfileSettingsScreen> {
 
                   Container(
                     width: 80.w,
-                    height: 80.w, // keep it square for circle
+                    height: 80.h,
                     decoration: BoxDecoration(
                       color: Colors.white,
                       shape: BoxShape.circle,
@@ -362,9 +362,15 @@ class _MyProfileScreenState extends State<ProfileSettingsScreen> {
   //BUILD PROFILE IMAGE
   Widget buildProfileImage() {
     if ( controller.logoImageUrl.value.isNotEmpty ) {
-      return Image.network( controller.logoImageUrl.value, fit: BoxFit.cover );
+      return Image.network(
+          controller.logoImageUrl.value,
+          fit: BoxFit.cover,
+        errorBuilder: ( context, error, stackTrace ){
+            return Icon(Icons.business, size: 40.r,);
+        },
+      );
     }
 
-    return Icon(Icons.business, color: Colors.grey, size: 38.r,);
+    return Icon(Icons.business, color: Colors.grey, size: 40.r,);
   }
 }

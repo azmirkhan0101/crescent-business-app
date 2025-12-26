@@ -8,6 +8,10 @@ const String refreshTokenKey = "refreshTokenKey";
 const String requireVerificationKey = "requireVerificationKey";
 const String forgotPasswordTokenKey = "forgotPasswordTokenKey";
 const String businessProfileModelKey = "businessProfileModelKey";
+//NOTIFICATION SETTINGS KEY
+const String pushNotificationKey = "pushNotificationKey";
+const String donationUpdatesKey = "donationUpdatesKey";
+const String rewardPerksKey = "rewardPerksKey";
 
 //REWARD POPUP MENU VALUES
 const String edit = "edit";

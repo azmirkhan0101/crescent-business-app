@@ -237,7 +237,7 @@ class RewardScreen extends StatelessWidget {
             return RewardCard(
               image: model.image,
               title: model.title,
-              expiryDate: model.expiryDate.toString(),
+              expiryDate: model.expiryDate,
               redemptions: model.redemptions,
               isActive: rewardIsActive.value,
               type: model.type,

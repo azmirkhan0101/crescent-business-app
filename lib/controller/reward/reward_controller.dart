@@ -99,7 +99,7 @@ class RewardController extends GetxController {
     giftCard.value = value;
 
     if (!discountCode.value && !giftCard.value) {
-      giftCard.value = true; // keep at least one true
+      giftCard.value = true;
     }
   }
   final Rx<File?> rewardImage = Rx<File?>(null);
@@ -110,8 +110,6 @@ class RewardController extends GetxController {
   //CREATE REWARD CONTROLLERS
   final TextEditingController titleController = TextEditingController();
   final TextEditingController descriptionController = TextEditingController();
-  final TextEditingController categoryController = TextEditingController();//TODO: NO USAGE IN UI, ASK BACKEND
-  final TextEditingController startDate = TextEditingController();//TODO: NO NEED. GENERATE TIME DURING API CALL
   final TextEditingController redemptionLimitController = TextEditingController();
 
   //['all', 'active', 'disabled', 'expires_soon'] - filter reference
@@ -192,6 +190,8 @@ class RewardController extends GetxController {
         onlineRedemptionMethods: null,
         featured: true
     );
+
+    print( "Payload: ${jsonEncode( inStoreCreateModel!.toJson() )}");
 
     try{
       isCreating.value = true;
