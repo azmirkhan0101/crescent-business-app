@@ -1,8 +1,10 @@
 import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:http/http.dart' as http;
 import 'package:organization/core/show_snackbar.dart';
 import 'package:organization/routes/app_pages.dart';
 import 'package:organization/utils/api_endpoints.dart';
@@ -10,7 +12,6 @@ import 'package:organization/utils/api_endpoints.dart';
 import '../../data/models/profile/business_profile_model.dart';
 import '../../utils/app_color.dart';
 import '../../utils/app_constants.dart';
-import 'package:http/http.dart' as http;
 
 class ProfileSettingsController extends GetxController {
   //1. change password
@@ -234,4 +235,5 @@ togglePushNotification({required bool value}){
     isRewardPerksEnabled = value;
     storage.write( rewardPerksKey, isRewardPerksEnabled );
   }
+
 }

@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
@@ -13,6 +14,7 @@ import 'package:organization/utils/app_constants.dart';
 import 'package:path/path.dart' as p;
 import 'package:path_provider/path_provider.dart';
 
+import '../../core/show_snackbar.dart';
 import '../../utils/api_endpoints.dart';
 import '../../utils/app_color.dart';
 import '../reward/reward_controller.dart';
@@ -97,6 +99,7 @@ class BusinessProfileController extends GetxController{
     };
 
     try {
+      showLoadingDialog();
       final url = Uri.parse( ApiEndpoints.baseUrl + ApiEndpoints.updateProfile );
       var request = http.MultipartRequest("PATCH", url );
       request.headers["Authorization"] = "Bearer ${storage.read( accessTokenKey )}";
@@ -149,27 +152,21 @@ class BusinessProfileController extends GetxController{
       var streamedResponse = await request.send();
       var response = await http.Response.fromStream(streamedResponse);
 
-      //closeDialog();
-      print("Update profile status code: ${response.statusCode}");
       if( response.statusCode == 200 ){
-        print("Updated!!!!!!!!!");
-        String result = response.body;
-        print(result);
         //GO BACK TO PROFILE SCREEN
         Get.back();
+        showSnackBar(title: "Profile updated", message: "Your profile has been updated!", backgroundColor: AppColors.successGreen);
         //RELOAD UPDATED PROFILE DATA
         getUpdatedProfileData();
       }else{
-        print("Failed!!!!!!!!!");
-        String result = response.body;
-        print(result);
+        showSnackBar(title: "Error Occurred", message: "Something went wrong. Please try again.", backgroundColor: AppColors.errorRed);
       }
     } catch (e) {
-      print("Update error: $e");
-      //closeDialog();
+      showSnackBar(title: "No internet", message: "Please check your internet connection and try again.", backgroundColor: AppColors.warningYellow);
+    }finally{
+      closLoadingDialog();
     }
 
-    print("Dattaaaaaa: ${data}");
   }
 
   //GET PROFILE DATA USING TOKEN AFTER PROFILE UPDATED
@@ -204,8 +201,6 @@ class BusinessProfileController extends GetxController{
           message: "Something went wrong. Please try again",
           backgroundColor: AppColors.errorRed
       );
-    }finally{
-      //closeDialog();
     }
   }
 
@@ -228,13 +223,44 @@ class BusinessProfileController extends GetxController{
     return result != null ? File(result.path) : null;
   }
 
-  //SHOW SNACKBAR
-  showSnackBar({required String title, required String message, required Color backgroundColor, Color textColor = AppColors.white}) {
-    Get.snackbar(
-        title,
-        message,
-        backgroundColor: backgroundColor,
-        colorText: textColor
+
+  //LOADING ALERT
+  void showLoadingDialog() {
+    if (Get.isDialogOpen == true) return;
+
+    Get.dialog(
+      PopScope(
+        canPop: false,
+        child: Center(
+          child: Container(
+            padding: const EdgeInsets.all(24),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(12),
+            ),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: const [
+                CircularProgressIndicator(),
+                SizedBox(height: 16),
+                Text(
+                  "Updating...",
+                  style: TextStyle(fontSize: 16),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+      barrierDismissible: false,
     );
   }
+
+  //CLOSE LOADING
+  void closLoadingDialog() {
+    if (Get.isDialogOpen == true) {
+      Get.back();
+    }
+  }
+
 }

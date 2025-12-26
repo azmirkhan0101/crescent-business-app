@@ -26,7 +26,6 @@ class HomeHeaderWidget extends StatelessWidget {
         children: [
           GestureDetector(
             onTap: (){
-              //TODO
               Get.toNamed(AppRoutes.profileSettings);
             },
             child: Row(
@@ -83,7 +82,7 @@ class HomeHeaderWidget extends StatelessWidget {
                 alignment: Alignment.center,
                 children: [
                   CustomAssetsImage(
-                      assetsPath: AssetsPath.alertIcon
+                      assetsPath: AssetsPath.salonImage
                   ),
                   Positioned(
                     top: 10,
