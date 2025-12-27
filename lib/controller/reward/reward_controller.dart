@@ -136,7 +136,11 @@ class RewardController extends GetxController {
       if( response.statusCode == 200 ){
         var tempRewards = (jsonDecode(response.body)['data'] as List<dynamic>?) ?? [];
         WidgetsBinding.instance.addPostFrameCallback((_) {
-          rewards.value = tempRewards.map((e){
+          rewards.value = tempRewards.where((e) {
+            // Return true to keep the item, false to skip it
+            return e['isDeleted'] != true;
+          }).map((e) {
+            // Transform the json map into your Model
             return RewardModel.fromJson(e);
           }).toList();
         });

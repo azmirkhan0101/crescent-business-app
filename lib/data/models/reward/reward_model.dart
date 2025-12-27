@@ -14,6 +14,7 @@ class RewardModel {
   final DateTime? expiryDate;
   final String status;
   final bool isActive;
+  final bool isDeleted;
 
   final OnlineRedemptionMethods? onlineMethods;
   final InStoreRedemptionMethods? inStoreMethods;
@@ -44,6 +45,7 @@ class RewardModel {
     this.expiryDate,
     required this.status,
     required this.isActive,
+    required this.isDeleted,
     this.onlineMethods,
     this.inStoreMethods,
     required this.codes,
@@ -73,6 +75,7 @@ class RewardModel {
       json["expiryDate"] != null ? DateTime.parse(json["expiryDate"]).toLocal() : null,
       status: json["status"],
       isActive: json["isActive"],
+      isDeleted: json["isDeleted"] ?? false,
       onlineMethods: json["onlineRedemptionMethods"] != null
           ? OnlineRedemptionMethods.fromJson(json["onlineRedemptionMethods"])
           : null,
@@ -109,6 +112,7 @@ class RewardModel {
       "expiryDate": expiryDate?.toIso8601String(),
       "status": status,
       "isActive": isActive,
+      "isDeleted": isDeleted,
       "onlineRedemptionMethods": onlineMethods?.toJson(),
       "inStoreRedemptionMethods": inStoreMethods?.toJson(),
       "codes": codes.map((e) => e.toJson()).toList(),

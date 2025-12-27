@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:csv/csv.dart';
@@ -12,6 +13,9 @@ class AnalyticsExporter {
 
   // 1. Export to CSV
   Future<void> exportToCSV(BusinessAnalyticsModel data) async {
+
+    print("Model to export: $data");
+
     if (await _requestPermission()) {
       List<List<dynamic>> rows = [];
 
@@ -66,20 +70,28 @@ class AnalyticsExporter {
   Future<void> _saveFile(dynamic content, String fileName, {bool isBytes = false}) async {
     Directory? directory;
     if (Platform.isAndroid) {
-      directory = Directory('/storage/emulated/0/Download');
+      directory = await getDownloadsDirectory();
     } else {
       directory = await getApplicationDocumentsDirectory();
     }
 
-    final file = File("${directory.path}/$fileName");
-
-    if (isBytes) {
-      await file.writeAsBytes(content);
-    } else {
-      await file.writeAsString(content);
+    if (directory == null) {
+      print("Could not get the downloads directory.");
+      return;
     }
 
-    _showNotification(file.path);
+    final file = File("${directory.path}/$fileName");
+
+    try {
+      if (isBytes) {
+        await file.writeAsBytes(content);
+      } else {
+        await file.writeAsString(content);
+      }
+      _showNotification(file.path);
+    } catch (e) {
+      print("Error saving file: $e");
+    }
   }
 
   // Helper: Permissions
