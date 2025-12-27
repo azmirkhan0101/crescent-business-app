@@ -127,6 +127,7 @@ class OtpVerificationController extends GetxController {
       Uri uri = Uri.parse( ApiEndpoints.baseUrl + ApiEndpoints.updateFcmToken );
 
       Map<String, String> headers = {
+        "Content-Type": "application/json",
         "Authorization": "Bearer ${storage.read( accessTokenKey )}",
       };
 
@@ -146,8 +147,8 @@ class OtpVerificationController extends GetxController {
 
       http.Response response = await http.patch( uri, headers: headers, body: jsonEncode( payLoad ) );
 
-      print("Tokennnnn: ${response.body}");
-      print("Tokennnnn: ${response.statusCode}");
+      print("Fcm Tokennnnn: ${response.body}");
+      print("Fcm Tokennnnn: ${response.statusCode}");
     }catch(e){
 
     }
@@ -155,8 +156,6 @@ class OtpVerificationController extends GetxController {
 
   //GET PROFILE DATA USING TOKEN AFTER SIGNUP OTP VERIFIED
   getProfileData() async{
-
-    //showLoadingAlert( title: "Syncing..." );
 
     try{
       Uri uri = Uri.parse( ApiEndpoints.baseUrl + ApiEndpoints.getProfile );
@@ -174,12 +173,25 @@ class OtpVerificationController extends GetxController {
         storage.write( businessIdKey, model.businessId );//SAVING ID SEPARATELY FOR RETRIEVING EASILY, ALSO AVAILABLE IN MODEL
         storage.write( businessAuthIdKey, model.businessAuthId );//SAVING AUTH ID SEPARATELY FOR RETRIEVING EASILY, ALSO AVAILABLE IN MODEL
         //GO TO SETUP COMPLETE SCREEN AND FETCH PROFILE DATA THERE
-        //closeDialog();
-        Get.offAllNamed(AppRoutes.setupComplete);
+        //SAVE SUBSCRIPTION IN STORAGE - IF SUBSCRIBED - GO HOME - ELSE GO TO SUBSCRIPTION SCREEN
+        bool isSubscribed = model.isSubscribed ?? false;
+        print("Signup Otp Profile: ${response.body}");
+        storage.write(subscriptionKey, isSubscribed );
+        if( isSubscribed ){
+          Get.offAllNamed(AppRoutes.setupComplete);
+        }else{
+          Get.offAllNamed(AppRoutes.subscription);
+        }
       }else if( response.statusCode == 401 ){//ACCESS TOKEN INVALID
         showSnackBar(
             title: "Session Expired!",
             message: "Please try again.",
+            backgroundColor: AppColors.errorRed
+        );
+      }else if( response.statusCode == 404 ){//ACCESS TOKEN INVALID
+        showSnackBar(
+            title: "Organisation not found!",
+            message: "Try creating an account again.",
             backgroundColor: AppColors.errorRed
         );
       }
@@ -190,7 +202,7 @@ class OtpVerificationController extends GetxController {
           backgroundColor: AppColors.errorRed
       );
     }finally{
-      //closeDialog();
+
     }
   }
 

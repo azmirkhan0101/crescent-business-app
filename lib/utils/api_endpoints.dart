@@ -72,7 +72,10 @@ static const recentActivity = "/business/recent-activity";//HOME SCREEN RECENT A
 //REDEEM
   static const String redeemReward = "/rewards/redeem";
 //FCM
-static const updateFcmToken = "/auth/update-fcm";
+static const String updateFcmToken = "/auth/update-fcm";
+
+//SUBSCRIPTION
+  static const String subscribe = "/subscription/create-session";
 
 //TERMS AND CONDITIONS
 static const String termsAndConditions = "/content";

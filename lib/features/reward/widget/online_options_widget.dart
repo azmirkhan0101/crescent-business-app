@@ -37,14 +37,14 @@ class OnlineOptions extends StatefulWidget {
 
 class _OnlineOptionsState extends State<OnlineOptions> {
 
-  late bool discountCode;
-  late bool giftCard;
+  //late bool discountCode;
+  //late bool giftCard;
 
   @override
   void initState() {
 
-    discountCode = widget.discountCode;
-    giftCard = widget.giftCard;
+    //discountCode = widget.discountCode;
+    //giftCard = widget.giftCard;
 
     super.initState();
   }
@@ -58,11 +58,8 @@ class _OnlineOptionsState extends State<OnlineOptions> {
           height: 52.h,
           child: CustomCheckbox(
               title: "Discount Code",
-              isChecked: discountCode,
+              isChecked: widget.discountCode,
               onChanged: (isChecked){
-                setState(() {
-                  discountCode = isChecked!;
-                });
                 widget.onDiscountCodeChanged( isChecked ?? false );
               }
           )
@@ -74,11 +71,8 @@ class _OnlineOptionsState extends State<OnlineOptions> {
           height: 52.h,
           child: CustomCheckbox(
               title: "Gift Card",
-              isChecked: giftCard,
+              isChecked: widget.giftCard,
               onChanged: (isChecked){
-                setState(() {
-                  giftCard = isChecked!;
-                });
                 widget.onGiftCardChanged( isChecked ?? false );
               }
           )

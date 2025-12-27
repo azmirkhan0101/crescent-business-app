@@ -89,7 +89,7 @@ class HomeScreen extends StatelessWidget {
                       Expanded(
                         child: Obx((){
                           return HomeCardWidget(
-                            topIcon: Assets.icons.navRewards,
+                            topIcon: Assets.icons.activeRewards,
                             title: 'Active Rewards',
                             bottomText:
                             controller

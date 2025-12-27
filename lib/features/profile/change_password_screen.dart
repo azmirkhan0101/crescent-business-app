@@ -61,7 +61,7 @@ class ChangePasswordScreen extends StatelessWidget {
                   CustomTextField(
                     hintText: "**********",
                     controller: controller.currentPassword,
-                    prefixIconPath: AssetsPath.lockIcon,
+                    prefixIconPath: Assets.icons.lock,
                     suffixIconPath: Assets.icons.eye,
                     isPassword: true,
                     // onChanged: (val) => controller.password.value = val,
@@ -79,7 +79,7 @@ class ChangePasswordScreen extends StatelessWidget {
                     onChanged: (String value){
                       controller.checkRequirements(value);
                     },
-                    prefixIconPath: AssetsPath.lockIcon,
+                    prefixIconPath: Assets.icons.lock,
                     suffixIconPath: Assets.icons.eye,
                     isPassword: true,
                     // onChanged: (val) => controller.password.value = val,
@@ -142,7 +142,7 @@ class ChangePasswordScreen extends StatelessWidget {
               CustomTextField(
                     hintText: "**********",
                     controller: controller.confirmPassword,
-                    prefixIconPath: AssetsPath.lockIcon,
+                    prefixIconPath: Assets.icons.lock,
                     suffixIconPath: Assets.icons.eye,
                     isPassword: true,
                     // onChanged: (val) => controller.password.value = val,
@@ -171,8 +171,7 @@ class ChangePasswordScreen extends StatelessWidget {
                 },
               ),
             ),
-
-
+            SizedBox( height: 40.h,)
           ],
         ),
       ),

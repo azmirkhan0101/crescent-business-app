@@ -1,7 +1,6 @@
 class AssetsPath {
   static const String getStartedImage = "assets/images/get_started_image.png";
   static const String moonIcon = "assets/icons/moon_icon.png";
-  static const String lockIcon = "assets/icons/Lock.png";
   static const String infoIcon = "assets/icons/info_icon.png";
   static const String backIcon = "assets/icons/back.png";
   static const String addProfileIcon = "assets/icons/add_profile_icon.png";
@@ -52,19 +51,10 @@ class AssetsPath {
   static const String radioButton = "assets/icons/radio_button_icon.png";
   static const String radioButton1 = "assets/icons/radio_button1.png";
   static const String radioButton2 = "assets/icons/radio_button2.png";
-  static const String autoServiceIcon = "assets/icons/auto_service_icon.png";
-  static const String bakeryIcon = "assets/icons/bakery_icon.png";
-  static const String cafeIcon = "assets/icons/cafe_icon.png";
-  static const String realStoreIcon = "assets/icons/real_store_icon.png";
-  static const String restaurantIcon = "assets/icons/restaurant_icon.png";
-  static const String wellnessIcon = "assets/icons/wellness_icon.png";
-  static const String otherIcon = "assets/icons/other_icon.png";
   static const String pdfIcon = "assets/icons/pdf_icon.png";
   static const String csvIcon = "assets/icons/csv_icon.png";
   static const String redPlayIcon = "assets/icons/red_play_icon.png";
   static const String export = "assets/icons/export.svg";
   static const String exportPng = "assets/icons/export.png";
-  // image
-  static const String salonImage = "assets/images/salon_image.png";
   static const String stackCardImage = "assets/icons/stack_card_image.png";
 }

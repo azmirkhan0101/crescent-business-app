@@ -60,7 +60,7 @@ class ResetPasswordScreen extends StatelessWidget {
                     },
                     hintText: "Enter New Password",
                     suffixIconPath: Assets.icons.eye,
-                    prefixIconPath: AssetsPath.lockIcon,
+                    prefixIconPath: Assets.icons.lock,
                     controller: controller.newPasswordController,
                     isPassword: true,
                   ),
@@ -72,7 +72,7 @@ class ResetPasswordScreen extends StatelessWidget {
                   CustomTextField(
                     hintText: "Confirm New Password",
                     suffixIconPath: Assets.icons.eye,
-                    prefixIconPath: AssetsPath.lockIcon,
+                    prefixIconPath: Assets.icons.lock,
                     controller: controller.confirmPasswordController,
                     isPassword: true,
                   ),

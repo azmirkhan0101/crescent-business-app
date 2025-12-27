@@ -6,6 +6,7 @@ import 'package:get_storage/get_storage.dart';
 import 'package:organization/routes/app_pages.dart';
 import 'package:organization/utils/app_color.dart';
 import 'package:organization/utils/app_constants.dart';
+import 'package:organization/utils/assets_gen/assets.gen.dart';
 
 enum AuthStatus {
   loggedInAndVerified,
@@ -50,7 +51,7 @@ class SplashScreen extends StatelessWidget {
           if (!snapshot.hasData) {
             return Center(
               child: Image.asset(
-                "assets/images/crescent_change_logo.png",
+                Assets.images.logo1024.keyName,
                 height: 212.h,
                 width: 212.w,
                 fit: BoxFit.cover,

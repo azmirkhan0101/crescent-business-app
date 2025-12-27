@@ -73,6 +73,7 @@ dependencies:
   #nfc_manager_ndef: ^1.1.0
   flutter_html: ^3.0.0
   flutter_gen_runner: ^5.12.0
+  flutter_launcher_icons: ^0.14.4
 
 
 
@@ -105,6 +106,11 @@ flutter:
     - assets/icons/
     - .env
 
+flutter_launcher_icons:
+  android: "launcher_icon"
+  ios: true
+  image_path: "assets/images/app_icon.png"
+  min_sdk_android: 21
 
 flutter_gen:
   output: lib/utils/assets_gen
@@ -112,12 +118,12 @@ flutter_gen:
 flutter_native_splash:
 
   color: "#FFFFFF"  ##====================================[REQUIRED]==========
-  image: assets/images/crescent_change_logo.png
+  image: assets/images/logo1024.png
   fullscreen: true                # default false
   android_12:
     # background color
     color: "#FFFFFF"
-    image: assets/images/crescent_change_logo.png
+    image: assets/images/logo1024.png
     # center-logo background color
     icon_background_color: "#FFFFFF"
 

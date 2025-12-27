@@ -78,6 +78,12 @@ class ForgotPasswordController extends GetxController {
             message: "No account found matching this email.",
             backgroundColor: AppColors.errorRed
         );
+      }else{//SERVER ERROR
+        showSnackBar(
+            title: "Failed!",
+            message: "Couldn't send otp. Please try again.",
+            backgroundColor: AppColors.errorRed
+        );
       }
     }catch(e){
       showSnackBar(

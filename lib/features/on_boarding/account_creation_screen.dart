@@ -67,7 +67,7 @@ class AccountCreationScreen extends StatelessWidget {
                   CustomTextField(
                     hintText: "**********",
                     suffixIconPath: Assets.icons.eye,
-                    prefixIconPath: AssetsPath.lockIcon,
+                    prefixIconPath: Assets.icons.lock,
                     controller: controller.passwordController,
                     isPassword: true,
                   ),

@@ -66,12 +66,6 @@ class LoginController extends GetxController{
       print("Response: ${response.body}");
 
       if( response.statusCode == 200 ){//LOGIN SUCCESSFUL
-        showSnackBar(
-            title: "Logged in!",
-            message: "You have successfully logged in.",
-            backgroundColor: AppColors.successGreen
-        );
-
         Map<String, dynamic> responseData = jsonDecode(response.body);
         saveOtpResponse( responseData );
         storage.write( requireVerificationKey, false );
@@ -156,6 +150,7 @@ class LoginController extends GetxController{
       Uri uri = Uri.parse( ApiEndpoints.baseUrl + ApiEndpoints.updateFcmToken );
 
       Map<String, String> headers = {
+        "Content-Type": "application/json",
         "Authorization": "Bearer ${storage.read( accessTokenKey )}",
       };
 
@@ -175,8 +170,8 @@ class LoginController extends GetxController{
 
       http.Response response = await http.patch( uri, headers: headers, body: jsonEncode( payLoad ) );
 
-      print("Tokennnnn: ${response.body}");
-      print("Tokennnnn: ${response.statusCode}");
+      print("Fcm Tokennnnn: ${response.body}");
+      print("Fcm Tokennnnn: ${response.statusCode}");
     }catch(e){
 
     }
@@ -203,7 +198,24 @@ class LoginController extends GetxController{
         storage.write( businessIdKey, model.businessId );//SAVING ID SEPARATELY FOR RETRIEVING EASILY, ALSO AVAILABLE IN MODEL
         storage.write( businessAuthIdKey, model.businessAuthId );//SAVING AUTH ID SEPARATELY FOR RETRIEVING EASILY, ALSO AVAILABLE IN MODEL
         //GO TO MAIN -> HOME -> GET HOME DATA, ANALYTICS THERE
-        Get.offAllNamed(AppRoutes.mainNav);
+        print("Profile data: ${response.body}");
+        bool isSubscribed = model.isSubscribed ?? false;
+        storage.write(subscriptionKey, isSubscribed );
+        if( isSubscribed ){
+          showSnackBar(
+              title: "Logged in!",
+              message: "You have successfully logged in.",
+              backgroundColor: AppColors.successGreen
+          );
+          Get.offAllNamed(AppRoutes.mainNav);
+        }else{
+          showSnackBar(
+              title: "Subscription Required!",
+              message: "You need to subscribe to continue.",
+              backgroundColor: AppColors.successGreen
+          );
+          Get.offAllNamed(AppRoutes.subscription);
+        }
       }else if( response.statusCode == 401 ){//ACCESS TOKEN INVALID
         showSnackBar(
             title: "Session Expired!",
@@ -218,7 +230,7 @@ class LoginController extends GetxController{
           backgroundColor: AppColors.errorRed
       );
     }finally{
-      //closeDialog();
+      isLoginLoading.value = false;
     }
   }
 

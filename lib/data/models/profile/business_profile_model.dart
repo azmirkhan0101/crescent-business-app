@@ -14,6 +14,7 @@ class BusinessProfileModel{
   String businessWebsite;
   String? coverImage;
   String? logoImage;
+  bool? isSubscribed;
   List<String>? locations;
 
   BusinessProfileModel({
@@ -29,6 +30,7 @@ class BusinessProfileModel{
     required this.businessWebsite,
     required this.coverImage,
     required this.logoImage,
+    required this.isSubscribed,
     required this.locations
   });
 
@@ -48,6 +50,7 @@ class BusinessProfileModel{
         businessWebsite: json['businessWebsite'] ?? "",
         coverImage: json['coverImage'] ?? "",
         logoImage: json['logoImage'] ?? "",
+        isSubscribed: json['isSubscribed'] ?? true,
         locations: List<String>.from(json['locations'])
     );
   }
@@ -68,6 +71,7 @@ class BusinessProfileModel{
       "businessWebsite": businessWebsite,
       "coverImage": coverImage,
       "logoImage": logoImage,
+      "isSubscribed": isSubscribed,
       "locations": locations,
     };
   }

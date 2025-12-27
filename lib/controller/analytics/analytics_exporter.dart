@@ -12,9 +12,7 @@ class AnalyticsExporter {
 
   // 1. Export to CSV
   Future<void> exportToCSV(BusinessAnalyticsModel data) async {
-    print("Csvvvvvvvvvvvv8");
     if (await _requestPermission()) {
-      print("Csvvvvvvvvvvvv9");
       List<List<dynamic>> rows = [];
 
       // Headers
@@ -141,7 +139,7 @@ class AnalyticsExporter {
     await _notificationsPlugin.show(
       0, // Notification ID
       'File Saved Successfully',
-      'Location: $fileName', // The body shows the filename
+      '$fileName', // The body shows the filename
       platformChannelSpecifics,
       payload: path, // We pass the path so tapping the notification can open the file
     );

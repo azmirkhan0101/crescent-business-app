@@ -21,7 +21,7 @@ class BottomSheetWidget extends StatefulWidget {
 }
 
 class _BottomSheetWidgetState extends State<BottomSheetWidget> {
-  int? selectedIndex;
+  int selectedIndex = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -87,11 +87,7 @@ class _BottomSheetWidgetState extends State<BottomSheetWidget> {
       child: GestureDetector(
         onTap: () {
           setState(() {
-            if (isSelected) {
-              selectedIndex = null; // deselect if already selected
-            } else {
-              selectedIndex = index; // select new
-            }
+            selectedIndex = index;
           });
         },
         child: Container(

@@ -175,34 +175,6 @@ class EditRewardScreen extends StatelessWidget {
                 );
               }
             }),
-            // Obx((){
-            //   return RedemptionMethodsSection(
-            //     qrCode: controller.qrCode.value,
-            //     nfcTap: controller.nfcTap.value,
-            //     staticCode: controller.staticCode.value,
-            //     onQRCodeChanged: (isChecked){
-            //       controller.qrCode.value = isChecked;
-            //     },
-            //     onNfcTapChanged: (isChecked){
-            //       controller.nfcTap.value = isChecked;
-            //     },
-            //     onStaticCodeChanged: (isChecked){
-            //       controller.staticCode.value = isChecked;
-            //     }, onTabChanged: (bool instoreTabSelected) {
-            //     isInstoreTabSelected = instoreTabSelected;
-            //   },
-            //     //ONLINE OPTIONS
-            //     discountCode: controller.discountCode.value,
-            //     giftCard: controller.giftCard.value,
-            //     onDiscountCodeChanged: (bool isChecked) {
-            //       controller.discountCode.value = isChecked;
-            //     }, onGiftCardChanged: (bool isChecked) {
-            //     controller.giftCard.value = isChecked;
-            //   },
-            //     onPickFile: () {  }, //TODO: ADD FUNCTIONS
-            //     onDelete: () {  },//TODO: SAME
-            //   );
-            // }),
             SizedBox( height: 20.h,),
             Center(child:
             Obx((){

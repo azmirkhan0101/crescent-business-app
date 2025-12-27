@@ -99,7 +99,6 @@ class BusinessProfileController extends GetxController{
     };
 
     try {
-      showLoadingDialog();
       final url = Uri.parse( ApiEndpoints.baseUrl + ApiEndpoints.updateProfile );
       var request = http.MultipartRequest("PATCH", url );
       request.headers["Authorization"] = "Bearer ${storage.read( accessTokenKey )}";
@@ -163,8 +162,6 @@ class BusinessProfileController extends GetxController{
       }
     } catch (e) {
       showSnackBar(title: "No internet", message: "Please check your internet connection and try again.", backgroundColor: AppColors.warningYellow);
-    }finally{
-      closLoadingDialog();
     }
 
   }
@@ -221,46 +218,6 @@ class BusinessProfileController extends GetxController{
     );
 
     return result != null ? File(result.path) : null;
-  }
-
-
-  //LOADING ALERT
-  void showLoadingDialog() {
-    if (Get.isDialogOpen == true) return;
-
-    Get.dialog(
-      PopScope(
-        canPop: false,
-        child: Center(
-          child: Container(
-            padding: const EdgeInsets.all(24),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(12),
-            ),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: const [
-                CircularProgressIndicator(),
-                SizedBox(height: 16),
-                Text(
-                  "Updating...",
-                  style: TextStyle(fontSize: 16),
-                ),
-              ],
-            ),
-          ),
-        ),
-      ),
-      barrierDismissible: false,
-    );
-  }
-
-  //CLOSE LOADING
-  void closLoadingDialog() {
-    if (Get.isDialogOpen == true) {
-      Get.back();
-    }
   }
 
 }

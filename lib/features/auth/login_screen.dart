@@ -70,7 +70,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   SizedBox(height: AppSizes.paddingSmallH),
                   CustomTextField(
                     hintText: "**********",
-                    prefixIconPath: AssetsPath.lockIcon,
+                    prefixIconPath: Assets.icons.lock,
                     suffixIconPath: Assets.icons.eye,
                     controller: controller.passwordController,
                     isPassword: true,

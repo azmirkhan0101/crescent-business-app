@@ -1,3 +1,60 @@
+var x = {
+  "data": {
+    "_id": "694f7b502ce065f0b97854f5",
+    "auth": {
+      "_id": "694f7b4f2ce065f0b97854f3",
+      "email": "azmirdroid@gmail.com",
+      "isProfile": true,
+      "isTwoFactorEnabled": false,
+      "role": "BUSINESS"
+    },
+    "category": "Cafe",
+    "name": "Khan Cafe",
+    "tagLine": "hello tagline",
+    "description": "description",
+    "businessPhoneNumber": "01909352422",
+    "businessEmail": "azmir@mail.com",
+    "businessWebsite": "http://abc.com",
+    "locations": ["Sparktech Agency, Aqua Tower 43, Dhaka, Bangladesh"],
+    "websiteViews": 0,
+    "views": 0,
+    "createdAt": "2025-12-27T06:23:12.632Z",
+    "updatedAt": "2025-12-27T06:23:12.632Z",
+    "coverImage": null,
+    "logoImage": null
+  }
+};
+
+
+var getProfielRes = {
+  "success": true,
+  "message": "Profile data retrieved successfully!",
+  "data": {
+    "_id": "694f7b502ce065f0b97854f5",
+    "auth": {
+      "_id": "694f7b4f2ce065f0b97854f3",
+      "email": "azmirdroid@gmail.com",
+      "isProfile": true,
+      "isTwoFactorEnabled": false,
+      "role": "BUSINESS",
+    },
+    "category": "Cafe",
+    "name": "Khan Cafe",
+    "tagLine": "hello tagline",
+    "description": "description",
+    "businessPhoneNumber": "01909352422",
+    "businessEmail": "azmir@mail.com",
+    "businessWebsite": "http://abc.com",
+    "locations": ["Sparktech Agency, Aqua Tower 43, Dhaka, Bangladesh"],
+    "websiteViews": 0,
+    "views": 0,
+    "createdAt": "2025-12-27T06:23:12.632Z",
+    "updatedAt": "2025-12-27T06:23:12.632Z",
+    "coverImage": null,
+    "logoImage": null,
+  },
+};
+
 var redeemRes = {
   "success": true,
   "message": "Reward redeemed successfully",
@@ -11,25 +68,17 @@ var redeemRes = {
       "type": "in-store",
       "category": "food",
       "redeemedCount": 120,
-      "image": "htttp://www.imageurl.com"
+      "image": "htttp://www.imageurl.com",
     },
     "business": {
       "_id": "6936d5e943232039a271a5ea",
       "name": "TechMart BD",
-      "locations": [
-        "Dhaka",
-        "Chattogram",
-        "Sylhet"
-      ]
+      "locations": ["Dhaka", "Chattogram", "Sylhet"],
     },
     "pointsSpent": 500,
     "status": "redeemed",
     "assignedCode": "698929DDD596",
-    "availableRedemptionMethods": [
-      "qr",
-      "static-code",
-      "nfc"
-    ],
+    "availableRedemptionMethods": ["qr", "static-code", "nfc"],
     "expiresAt": "2026-01-07T16:21:20.917Z",
     "idempotencyKey": "df325cb190dc276a8484544264c398fb",
     "claimedAt": "2025-12-08T16:21:20.918Z",
@@ -37,12 +86,9 @@ var redeemRes = {
     "updatedAt": "2025-12-11T10:31:21.779Z",
     "redeemedAt": "2025-12-11T10:31:21.774Z",
     "redemptionMethod": "static-code",
-    "redeemedByStaff": "6936d5e943232039a271a5ea"
-  }
+    "redeemedByStaff": "6936d5e943232039a271a5ea",
+  },
 };
-
-
-
 
 var rewardAnalytics = {
   "success": true,

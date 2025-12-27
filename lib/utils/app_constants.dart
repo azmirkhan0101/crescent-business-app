@@ -8,6 +8,8 @@ const String refreshTokenKey = "refreshTokenKey";
 const String requireVerificationKey = "requireVerificationKey";
 const String forgotPasswordTokenKey = "forgotPasswordTokenKey";
 const String businessProfileModelKey = "businessProfileModelKey";
+//SUBSCRIPTION KEY
+const String subscriptionKey = "subscriptionKey";
 //NOTIFICATION SETTINGS KEY
 const String pushNotificationKey = "pushNotificationKey";
 const String donationUpdatesKey = "donationUpdatesKey";

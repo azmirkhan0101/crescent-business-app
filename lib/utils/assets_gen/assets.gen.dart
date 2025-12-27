@@ -14,9 +14,6 @@ import 'package:flutter/widgets.dart';
 class $AssetsIconsGen {
   const $AssetsIconsGen();
 
-  /// File path: assets/icons/Lock.png
-  AssetGenImage get lock => const AssetGenImage('assets/icons/Lock.png');
-
   /// File path: assets/icons/Table.png
   AssetGenImage get table => const AssetGenImage('assets/icons/Table.png');
 
@@ -46,16 +43,14 @@ class $AssetsIconsGen {
   AssetGenImage get addProfileIcon =>
       const AssetGenImage('assets/icons/add_profile_icon.png');
 
-  /// File path: assets/icons/auto_service_icon.png
-  AssetGenImage get autoServiceIcon =>
-      const AssetGenImage('assets/icons/auto_service_icon.png');
+  /// File path: assets/icons/auto.png
+  AssetGenImage get auto => const AssetGenImage('assets/icons/auto.png');
 
   /// File path: assets/icons/back.png
   AssetGenImage get back => const AssetGenImage('assets/icons/back.png');
 
-  /// File path: assets/icons/bakery_icon.png
-  AssetGenImage get bakeryIcon =>
-      const AssetGenImage('assets/icons/bakery_icon.png');
+  /// File path: assets/icons/bakery.png
+  AssetGenImage get bakery => const AssetGenImage('assets/icons/bakery.png');
 
   /// File path: assets/icons/book_mark.png
   AssetGenImage get bookMark =>
@@ -69,9 +64,8 @@ class $AssetsIconsGen {
   AssetGenImage get bottomSIcon2 =>
       const AssetGenImage('assets/icons/bottomSIcon2.png');
 
-  /// File path: assets/icons/cafe_icon.png
-  AssetGenImage get cafeIcon =>
-      const AssetGenImage('assets/icons/cafe_icon.png');
+  /// File path: assets/icons/cafe.png
+  AssetGenImage get cafe => const AssetGenImage('assets/icons/cafe.png');
 
   /// File path: assets/icons/calendar_icon.png
   AssetGenImage get calendarIcon =>
@@ -167,6 +161,9 @@ class $AssetsIconsGen {
   /// File path: assets/icons/location.svg
   String get location => 'assets/icons/location.svg';
 
+  /// File path: assets/icons/lock.svg
+  String get lock => 'assets/icons/lock.svg';
+
   /// File path: assets/icons/mail.svg
   String get mail => 'assets/icons/mail.svg';
 
@@ -189,9 +186,8 @@ class $AssetsIconsGen {
   /// File path: assets/icons/notification.svg
   String get notification => 'assets/icons/notification.svg';
 
-  /// File path: assets/icons/other_icon.png
-  AssetGenImage get otherIcon =>
-      const AssetGenImage('assets/icons/other_icon.png');
+  /// File path: assets/icons/other.png
+  AssetGenImage get other => const AssetGenImage('assets/icons/other.png');
 
   /// File path: assets/icons/pdf_icon.png
   AssetGenImage get pdfIcon => const AssetGenImage('assets/icons/pdf_icon.png');
@@ -233,17 +229,16 @@ class $AssetsIconsGen {
   AssetGenImage get rankBadge2 =>
       const AssetGenImage('assets/icons/rank_badge2.png');
 
-  /// File path: assets/icons/real_store_icon.png
-  AssetGenImage get realStoreIcon =>
-      const AssetGenImage('assets/icons/real_store_icon.png');
-
   /// File path: assets/icons/red_play_icon.png
   AssetGenImage get redPlayIcon =>
       const AssetGenImage('assets/icons/red_play_icon.png');
 
-  /// File path: assets/icons/restaurant_icon.png
-  AssetGenImage get restaurantIcon =>
-      const AssetGenImage('assets/icons/restaurant_icon.png');
+  /// File path: assets/icons/restaurant.png
+  AssetGenImage get restaurant =>
+      const AssetGenImage('assets/icons/restaurant.png');
+
+  /// File path: assets/icons/retail.png
+  AssetGenImage get retail => const AssetGenImage('assets/icons/retail.png');
 
   /// File path: assets/icons/reward_discount_icon.png
   AssetGenImage get rewardDiscountIcon =>
@@ -252,6 +247,9 @@ class $AssetsIconsGen {
   /// File path: assets/icons/reward_free_icon.png
   AssetGenImage get rewardFreeIcon =>
       const AssetGenImage('assets/icons/reward_free_icon.png');
+
+  /// File path: assets/icons/saloon.png
+  AssetGenImage get saloon => const AssetGenImage('assets/icons/saloon.png');
 
   /// File path: assets/icons/scan_qr_code.svg
   String get scanQrCode => 'assets/icons/scan_qr_code.svg';
@@ -278,13 +276,12 @@ class $AssetsIconsGen {
   AssetGenImage get vectorCoverImage =>
       const AssetGenImage('assets/icons/vector_cover_image.png');
 
-  /// File path: assets/icons/wellness_icon.png
-  AssetGenImage get wellnessIcon =>
-      const AssetGenImage('assets/icons/wellness_icon.png');
+  /// File path: assets/icons/wellness.png
+  AssetGenImage get wellness =>
+      const AssetGenImage('assets/icons/wellness.png');
 
   /// List of all assets
   List<dynamic> get values => [
-    lock,
     table,
     account,
     activeRewards,
@@ -293,13 +290,13 @@ class $AssetsIconsGen {
     activity3,
     activity4,
     addProfileIcon,
-    autoServiceIcon,
+    auto,
     back,
-    bakeryIcon,
+    bakery,
     bookMark,
     bottomSIcon1,
     bottomSIcon2,
-    cafeIcon,
+    cafe,
     calendarIcon,
     call,
     click,
@@ -327,6 +324,7 @@ class $AssetsIconsGen {
     loadingDot,
     loadingStar,
     location,
+    lock,
     mail,
     moonIcon,
     navAnalytics,
@@ -334,7 +332,7 @@ class $AssetsIconsGen {
     navRewards,
     nfcIcon,
     notification,
-    otherIcon,
+    other,
     pdfIcon,
     playIcon,
     profile,
@@ -346,11 +344,12 @@ class $AssetsIconsGen {
     radioSelected,
     radioUnselected,
     rankBadge2,
-    realStoreIcon,
     redPlayIcon,
-    restaurantIcon,
+    restaurant,
+    retail,
     rewardDiscountIcon,
     rewardFreeIcon,
+    saloon,
     scanQrCode,
     searchIcon,
     stackCardImage,
@@ -358,7 +357,7 @@ class $AssetsIconsGen {
     stats,
     topRewards,
     vectorCoverImage,
-    wellnessIcon,
+    wellness,
   ];
 }
 
@@ -383,10 +382,6 @@ class $AssetsImagesGen {
   AssetGenImage get businessProfileImage =>
       const AssetGenImage('assets/images/business_profile_image.png');
 
-  /// File path: assets/images/crescent_change_logo.png
-  AssetGenImage get crescentChangeLogo =>
-      const AssetGenImage('assets/images/crescent_change_logo.png');
-
   /// File path: assets/images/discount_code.png
   AssetGenImage get discountCode =>
       const AssetGenImage('assets/images/discount_code.png');
@@ -405,6 +400,10 @@ class $AssetsImagesGen {
   /// File path: assets/images/instore_reward_icon.png
   AssetGenImage get instoreRewardIcon =>
       const AssetGenImage('assets/images/instore_reward_icon.png');
+
+  /// File path: assets/images/logo1024.png
+  AssetGenImage get logo1024 =>
+      const AssetGenImage('assets/images/logo1024.png');
 
   /// File path: assets/images/online_reward_icon.png
   AssetGenImage get onlineRewardIcon =>
@@ -432,12 +431,12 @@ class $AssetsImagesGen {
     backgroundImage,
     businessCoverImage,
     businessProfileImage,
-    crescentChangeLogo,
     discountCode,
     exclusiveBrandReward,
     getStartedImage,
     giftCard,
     instoreRewardIcon,
+    logo1024,
     onlineRewardIcon,
     salonImage,
     starFilled,

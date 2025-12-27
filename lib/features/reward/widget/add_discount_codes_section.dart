@@ -20,7 +20,7 @@ class AddDiscountCodesSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final titleToShow = fileName ?? "Discount Cod";
+    final titleToShow = fileName ?? "Discount Codes";
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
