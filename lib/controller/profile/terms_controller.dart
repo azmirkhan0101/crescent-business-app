@@ -31,12 +31,8 @@ class TermsController extends GetxController{
 
       if( response.statusCode == 200 ){
         htmlData.value = (jsonDecode(response.body))['data']['terms'];
-      }else{
-        print("Terms error: ${response.statusCode}");
-        print("Terms error: ${response.body}");
       }
     }catch(e){
-      print("Terms catch: ${e}");
     }finally{
       isLoading.value = false;
     }

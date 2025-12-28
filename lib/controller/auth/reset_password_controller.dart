@@ -84,8 +84,7 @@ class ResetPasswordController extends GetxController{
     try{
       isResetLoading.value = true;
       http.Response response = await http.post( uri, body: payLoad );
-      print("Status codeee: ${response.statusCode}");
-      print("Reset pass response: ${response.body}");
+
       if( response.statusCode == 200 ){
         showSnackBar(
             title: "Success!",

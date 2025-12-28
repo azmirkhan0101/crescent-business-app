@@ -1,15 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:get_storage/get_storage.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:organization/controller/auth/setup_complete_controller.dart';
 import 'package:organization/features/on_boarding/widgets/animated_setup_background.dart';
 import 'package:organization/features/widgets/custom_asset_image.dart';
 import 'package:organization/features/widgets/info_card_widget.dart';
 import 'package:organization/routes/app_pages.dart';
-import 'package:organization/utils/app_constants.dart';
 import 'package:organization/utils/assets_path.dart';
+
 import '../../utils/app_color.dart';
 import '../../utils/app_text.dart';
 import '../../utils/app_text_styles.dart';

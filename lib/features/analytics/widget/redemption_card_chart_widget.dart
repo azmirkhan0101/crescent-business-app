@@ -7,7 +7,6 @@ import 'package:organization/utils/app_color.dart';
 import 'package:organization/utils/app_size.dart';
 import 'package:organization/utils/app_text_styles.dart';
 import 'package:organization/utils/assets_gen/assets.gen.dart';
-import 'package:organization/utils/assets_path.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
 class RedemptionChartWidget extends StatelessWidget {

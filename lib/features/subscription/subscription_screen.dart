@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
-import 'package:get/get_utils/get_utils.dart';
 import 'package:organization/controller/subscription/subscription_controller.dart';
 import 'package:organization/features/widgets/custom_text.dart';
 import 'package:organization/utils/app_color.dart';
@@ -460,7 +459,6 @@ class _SubscriptionPageState extends State<SubscriptionPage> {
   void _handleSubscribe(BuildContext context) {
     String plan = selectedPlan == 0 ? "monthly" : "yearly";
     controller.subscribe(plan: plan);
-    print("Is subscribed ${controller.isSubscribed.value}");
-    //Get.back();
+
   }
 }

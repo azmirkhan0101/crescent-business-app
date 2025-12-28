@@ -19,8 +19,6 @@ void main() async{
   await FirebaseNotificationService.instance.initialize();
   await dotenv.load(fileName: ".env");
   await GetStorage.init();
-  String? a = await FirebaseNotificationService.instance.getToken();
-  print( a );
   runApp( MaterialApp(
       debugShowCheckedModeBanner: false,
       home: MyApp()) );

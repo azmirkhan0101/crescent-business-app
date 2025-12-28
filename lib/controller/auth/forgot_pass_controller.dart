@@ -47,8 +47,6 @@ class ForgotPasswordController extends GetxController {
         "email": emailController.text.trim()
       };
       http.Response response = await http.post( uri, body: payLoad );
-      print("Status codeeee: ${response.statusCode}");
-      print("Response: ${response.body}");
 
       if( response.statusCode == 200 ){//OTP SENT TO EMAIL
 

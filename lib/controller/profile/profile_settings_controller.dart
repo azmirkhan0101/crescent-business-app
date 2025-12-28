@@ -169,7 +169,6 @@ class ProfileSettingsController extends GetxController {
   //SAVE TOKENS IN STORAGE
   void saveTokens(Map<String, dynamic> response) {
     final accessToken = response["data"]["accessToken"];
-    print(accessToken);
     final refreshToken = response["data"]["refreshToken"];
 
     storage.write(accessTokenKey, accessToken);
@@ -192,8 +191,7 @@ class ProfileSettingsController extends GetxController {
       };
 
       http.Response response = await http.delete( uri, headers: headers );
-      print("Codeeeeeeeeeeee: ${response.statusCode}");
-      print("Body: ${response.body}");
+
       if( response.statusCode == 200 ){
         await storage.erase();
         Get.offAllNamed( AppRoutes.getStarted );

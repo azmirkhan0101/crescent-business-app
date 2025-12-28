@@ -8,14 +8,12 @@ import 'package:organization/features/reward/widget/reward_card_widget.dart';
 import 'package:organization/features/widgets/custom_asset_image.dart';
 import 'package:organization/features/widgets/custom_button_widget.dart';
 import 'package:organization/utils/app_color.dart';
-import 'package:organization/utils/app_constants.dart';
 import 'package:organization/utils/app_text.dart';
 import 'package:organization/utils/app_text_styles.dart';
 import 'package:organization/utils/assets_path.dart';
 
 import '../../data/models/reward/reward_model.dart';
 import '../../routes/app_pages.dart';
-import '../widgets/bottom_sheet_widget.dart';
 
 class RewardScreen extends StatelessWidget {
   final RewardController controller = Get.find<RewardController>();
@@ -212,10 +210,7 @@ class RewardScreen extends StatelessWidget {
               ],
             ),
             onPressed: () {
-              print("Id: ${controller.storage.read(businessIdKey)}");
               Get.toNamed(AppRoutes.createReward);
-              //controller.getAllRewards();
-              //controller.getRewardAnalyticsStats();
             },
             text: AppText.continueText,
             buttonTextStyle: GoogleFonts.familjenGrotesk(

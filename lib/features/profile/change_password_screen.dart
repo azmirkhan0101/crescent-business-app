@@ -5,17 +5,12 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:organization/controller/profile/profile_settings_controller.dart';
 import 'package:organization/features/auth/widgets/custom_auth_appbar.dart';
 import 'package:organization/features/widgets/text_field_title_widget.dart';
-import 'package:organization/routes/app_pages.dart';
-import 'package:organization/utils/assets_path.dart';
 
 import '../../../utils/app_color.dart';
 import '../../../utils/app_size.dart';
-import '../../utils/app_text.dart';
 import '../../utils/assets_gen/assets.gen.dart';
 import '../auth/widgets/password_requirement_widget.dart';
-import '../widgets/custom_asset_image.dart';
 import '../widgets/custom_button_widget.dart';
-import '../widgets/custom_text.dart';
 import '../widgets/custom_text_field_widget.dart';
 import '../widgets/heading_text_widget.dart';
 

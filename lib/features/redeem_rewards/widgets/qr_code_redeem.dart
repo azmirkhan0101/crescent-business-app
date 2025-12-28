@@ -3,7 +3,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
 import 'package:organization/controller/redeem/redeem_controller.dart';
-import 'package:organization/features/widgets/button_widget.dart';
 import 'package:organization/features/widgets/custom_card_widget.dart';
 import 'package:organization/utils/app_color.dart';
 
@@ -73,7 +72,6 @@ class _QRCodeWidgetState extends State<QRCodeWidget> {
       
                       if (code != null && code.isNotEmpty && code != scannedCode) {
                         setState(() => scannedCode = code);
-                        print("Codeeeeeeeeeeee: ${code}");
                         redeemController.redeemReward(code: code, method: "qr");
                         await _controller.stop(); // stop after scan
                       }
@@ -179,9 +177,10 @@ class _QRCodeWidgetState extends State<QRCodeWidget> {
   }
 
   @override
-  void dispose() {
-    _controller.dispose();
+  void dispose() async{
+
     super.dispose();
+    await _controller.dispose();
   }
 }
 
@@ -194,11 +193,11 @@ class _ScannerCornerPainter extends CustomPainter {
     final Paint paint = Paint()
       ..color = Colors.black
       ..strokeWidth = 8
-          .w // ✅ মোটা লাইন
+          .w
       ..style = PaintingStyle.stroke
-      ..strokeCap = StrokeCap.round; // ✅ লাইনের শেষ গোল হবে
+      ..strokeCap = StrokeCap.round;
 
-    const double cornerLength = 35; // corner এর লম্বা
+    const double cornerLength = 35;
 
     // 🔹 top-left corner
     canvas.drawLine(const Offset(0, 0), Offset(cornerLength, 0), paint);

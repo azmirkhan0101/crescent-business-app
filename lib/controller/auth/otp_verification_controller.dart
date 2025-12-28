@@ -122,7 +122,6 @@ class OtpVerificationController extends GetxController {
 
     try{
       String? token = await FirebaseNotificationService.instance.getToken();
-      print( token );
 
       Uri uri = Uri.parse( ApiEndpoints.baseUrl + ApiEndpoints.updateFcmToken );
 
@@ -147,8 +146,6 @@ class OtpVerificationController extends GetxController {
 
       http.Response response = await http.patch( uri, headers: headers, body: jsonEncode( payLoad ) );
 
-      print("Fcm Tokennnnn: ${response.body}");
-      print("Fcm Tokennnnn: ${response.statusCode}");
     }catch(e){
 
     }
@@ -175,7 +172,7 @@ class OtpVerificationController extends GetxController {
         //GO TO SETUP COMPLETE SCREEN AND FETCH PROFILE DATA THERE
         //SAVE SUBSCRIPTION IN STORAGE - IF SUBSCRIBED - GO HOME - ELSE GO TO SUBSCRIPTION SCREEN
         bool isSubscribed = model.isSubscribed ?? false;
-        print("Signup Otp Profile: ${response.body}");
+
         storage.write(subscriptionKey, isSubscribed );
         if( isSubscribed ){
           Get.offAllNamed(AppRoutes.setupComplete);
@@ -338,8 +335,7 @@ class OtpVerificationController extends GetxController {
         "token": token
       };
       http.Response response = await http.post( uri, body: payLoad );
-      print("Resend Forgot OTP status: ${response.statusCode}");
-      print("Response: ${response.body}");
+
       if( response.statusCode == 200 ){//OTP SENT AGAIN
         showSnackBar(
             title: "Sent",

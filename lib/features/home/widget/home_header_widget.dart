@@ -2,11 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
-import 'package:organization/features/widgets/custom_asset_image.dart';
 import 'package:organization/routes/app_pages.dart';
 import 'package:organization/utils/assets_gen/assets.gen.dart';
+
 import '../../../utils/app_text_styles.dart';
-import '../../../utils/assets_path.dart';
 
 class HomeHeaderWidget extends StatelessWidget {
 

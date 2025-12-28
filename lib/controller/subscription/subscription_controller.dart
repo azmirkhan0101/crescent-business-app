@@ -50,9 +50,6 @@ class SubscriptionController extends GetxController{
       isSubscribing.value = true;
       http.Response response = await http.post( uri, headers: headers, body: jsonEncode(payLoad) );
 
-      print("Status: ${response.statusCode}");
-      print("Body: ${response.body}");
-
       if( response.statusCode == 201 ){//SUBSCRIPTION SUCCESSFUL
         showSnackBar(title: "Subscribed!", message: "You have successfully subscribed for $plan plan.", backgroundColor: AppColors.successGreen);
       }else{

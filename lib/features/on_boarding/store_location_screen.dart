@@ -6,9 +6,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:google_places_flutter/google_places_flutter.dart';
 import 'package:google_places_flutter/model/prediction.dart';
 import 'package:organization/features/on_boarding/widgets/onboarding_appbar.dart';
-import 'package:organization/features/on_boarding/widgets/bottom_button_widget.dart';
 import 'package:organization/utils/app_text.dart';
-import 'package:organization/utils/assets_path.dart';
 
 import '../../../utils/app_color.dart';
 import '../../../utils/app_size.dart';
@@ -16,9 +14,7 @@ import '../../controller/auth/sign_up_controller.dart';
 import '../profile/widget/location_widget.dart';
 import '../widgets/custom_button_widget.dart';
 import '../widgets/custom_text.dart';
-import '../widgets/custom_text_field_widget.dart';
 import '../widgets/heading_text_widget.dart';
-import '../widgets/text_field_title_widget.dart';
 
 class StoreLocationScreen extends StatelessWidget {
 
@@ -127,7 +123,6 @@ class StoreLocationScreen extends StatelessWidget {
         //countries: ["in", "fr"],
         isLatLngRequired: true,
         getPlaceDetailWithLatLng: (Prediction prediction) {
-          print("placeDetails" + prediction.lat.toString());
         },
 
         itemClick: (Prediction prediction) {

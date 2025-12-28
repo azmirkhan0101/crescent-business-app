@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:organization/controller/auth/reset_password_controller.dart';
 import 'package:organization/features/auth/widgets/custom_auth_appbar.dart';
@@ -9,7 +8,7 @@ import 'package:organization/features/auth/widgets/password_requirement_widget.d
 import 'package:organization/features/auth/widgets/rich_text_widget.dart';
 import 'package:organization/utils/app_text.dart';
 import 'package:organization/utils/assets_gen/assets.gen.dart';
-import 'package:organization/utils/assets_path.dart';
+
 import '../../../utils/app_color.dart';
 import '../../../utils/app_size.dart';
 import '../../routes/app_pages.dart';

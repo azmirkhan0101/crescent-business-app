@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:organization/features/auth/widgets/custom_auth_appbar.dart';
+import 'package:organization/features/auth/widgets/rich_text_widget.dart';
 import 'package:organization/utils/assets_gen/assets.gen.dart';
+
 import '../../controller/auth/forgot_pass_controller.dart';
-import '../../core/toast_message.dart';
 import '../../routes/app_pages.dart';
 import '../../utils/app_color.dart';
 import '../../utils/app_size.dart';
@@ -13,11 +14,7 @@ import '../../utils/app_text.dart';
 import '../widgets/custom_button_widget.dart';
 import '../widgets/custom_text.dart';
 import '../widgets/custom_text_field_widget.dart';
-import '../widgets/heading_text_widget.dart';
 import '../widgets/text_field_title_widget.dart';
-import '../../utils/assets_path.dart';
-import 'package:organization/features/auth/widgets/custom_auth_appbar.dart';
-import 'package:organization/features/auth/widgets/rich_text_widget.dart';
 
 class ForgotPasswordScreen extends StatelessWidget {
 

@@ -306,13 +306,10 @@ class EditRewardController extends GetxController{
           backgroundColor: AppColors.warningYellow,
         );
       }
-
-      print("Status: ${response.statusCode}");
-      print("Body: $responseBody");
     }catch(e){
       showSnackBar(
           title: "No internet!",
-          message: "Che?ck your internet connection and try again.",
+          message: "Check your internet connection and try again.",
           backgroundColor: AppColors.warningYellow
       );
     }finally{
@@ -334,45 +331,10 @@ class EditRewardController extends GetxController{
         "Content-type" : "application/json",
         "Authorization": storage.read( accessTokenKey )
       };
-      http.Response response = await http.delete( uri, headers: headers );
-
-      print("Delete image Status: ${response.statusCode}");
-      print("Delete image Body: ${response.body}");
-      if( response.statusCode == 200 ){
-        showSnackBar(
-            title: "Reward image deleted",
-            message: "The reward has been deleted.",
-            backgroundColor: AppColors.successGreen
-        );
-      }else if( response.statusCode == 400 ){
-        showSnackBar(
-            title: "Failed!",
-            message: "Cannot delete reward image.",
-            backgroundColor: AppColors.warningYellow
-        );
-      }else if( response.statusCode == 409 ){
-        showSnackBar(
-            title: "Failed!",
-            message: "Cannot delete reward image.",
-            backgroundColor: AppColors.warningYellow
-        );
-      }else{
-        showSnackBar(
-            title: "Failed!",
-            message: "Please try again.",
-            backgroundColor: AppColors.warningYellow
-        );
-      }
+      await http.delete( uri, headers: headers );
     }catch(e){
-      showSnackBar(
-          title: "Error occurred",
-          message: "Couldn't delete the reward image.",
-          backgroundColor: AppColors.errorRed
-      );
     }
   }
-
-
 
   //COMPRESS IMAGE
   Future<File?> compressImage(File file) async {

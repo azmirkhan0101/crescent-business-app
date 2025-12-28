@@ -2,12 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:organization/controller/profile/profile_settings_controller.dart';
-import 'package:organization/features/profile/widget/business_profile_image_widget.dart';
 import 'package:organization/features/widgets/button_widget.dart';
 import 'package:organization/features/widgets/custom_text.dart';
 import 'package:organization/routes/app_pages.dart';
 import 'package:organization/utils/app_color.dart';
-import 'package:organization/utils/assets_path.dart';
 
 class ProfileSettingsScreen extends StatefulWidget {
   const ProfileSettingsScreen({super.key});

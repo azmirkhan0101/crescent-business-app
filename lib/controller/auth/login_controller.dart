@@ -62,8 +62,6 @@ class LoginController extends GetxController{
 
       final url = Uri.parse( ApiEndpoints.baseUrl + ApiEndpoints.login );
       http.Response response = await http.post( url, body: credentials ).timeout(Duration(seconds: 10));
-      print("Status codeeee: ${response.statusCode}");
-      print("Response: ${response.body}");
 
       if( response.statusCode == 200 ){//LOGIN SUCCESSFUL
         Map<String, dynamic> responseData = jsonDecode(response.body);
@@ -145,7 +143,6 @@ class LoginController extends GetxController{
 
     try{
       String? token = await FirebaseNotificationService.instance.getToken();
-      print( token );
 
       Uri uri = Uri.parse( ApiEndpoints.baseUrl + ApiEndpoints.updateFcmToken );
 
@@ -170,8 +167,6 @@ class LoginController extends GetxController{
 
       http.Response response = await http.patch( uri, headers: headers, body: jsonEncode( payLoad ) );
 
-      print("Fcm Tokennnnn: ${response.body}");
-      print("Fcm Tokennnnn: ${response.statusCode}");
     }catch(e){
 
     }
@@ -198,7 +193,6 @@ class LoginController extends GetxController{
         storage.write( businessIdKey, model.businessId );//SAVING ID SEPARATELY FOR RETRIEVING EASILY, ALSO AVAILABLE IN MODEL
         storage.write( businessAuthIdKey, model.businessAuthId );//SAVING AUTH ID SEPARATELY FOR RETRIEVING EASILY, ALSO AVAILABLE IN MODEL
         //GO TO MAIN -> HOME -> GET HOME DATA, ANALYTICS THERE
-        print("Profile data: ${response.body}");
         bool isSubscribed = model.isSubscribed ?? false;
         storage.write(subscriptionKey, isSubscribed );
         if( isSubscribed ){

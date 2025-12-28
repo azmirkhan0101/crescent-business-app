@@ -149,16 +149,12 @@ class RewardController extends GetxController {
     //rewards.value = [];
     try{
       Uri uri = Uri.parse( ApiEndpoints.baseUrl + ApiEndpoints.getAllRewards(status: selectedFilter.value, page: currentPage) );
-      print(uri.toString());
 
       Map<String, String> headers = {
         "Authorization" : "Bearer ${storage.read( accessTokenKey )}"
       };
 
       http.Response response = await http.get( uri, headers: headers );
-
-      print("Status: ${response.statusCode}");
-      print("Body: ${response.body}");
 
       if( response.statusCode == 200 ){
         var tempRewards = (jsonDecode(response.body)['data'] as List<dynamic>?) ?? [];
@@ -194,7 +190,6 @@ class RewardController extends GetxController {
         // });
       }
     }catch(e){
-      print("All reward catch: ${e}");
     }finally{
       isLoading.value = false;
       isMoreLoading.value = false;
@@ -246,8 +241,6 @@ class RewardController extends GetxController {
         onlineRedemptionMethods: null,
         featured: true
     );
-
-    print( "Payload: ${jsonEncode( inStoreCreateModel!.toJson() )}");
 
     try{
       isCreating.value = true;
@@ -306,11 +299,7 @@ class RewardController extends GetxController {
             backgroundColor: AppColors.errorRed
         );
       }
-
-      print("Status: ${response.statusCode}");
-      print("Body: $responseBody");
     }catch(e){
-      print("Create error: ${e}");
       showSnackBar(
           title: "No internet!",
           message: "Check your internet connection and try again.",
@@ -409,9 +398,6 @@ class RewardController extends GetxController {
       var response = await request.send().timeout(Duration(seconds: 10));
       var responseBody = await response.stream.bytesToString();
 
-      print("Status: ${response.statusCode}");
-      print("Body: $responseBody");
-
       if( response.statusCode == 201 ){//REWARD CREATED
         //GET REWARD LIST -> GO BACK TO REWARDS SCREEN
         discountCode.value = true;
@@ -473,15 +459,9 @@ class RewardController extends GetxController {
         "isActive": isActive
       };
 
-      print("Payload: ${jsonEncode(payLoad)}");
-      print("Id: ${rewardId}");
-
       http.Response response = await http.patch( uri, body: jsonEncode(payLoad), headers: headers );
-
-      print("Status: ${response.statusCode}");
-      print("Body: ${response.body}");
     }catch(e){
-      print("Status update catch: ${e}");
+
     }
   }
 
@@ -496,8 +476,6 @@ class RewardController extends GetxController {
       };
       http.Response response = await http.delete( uri, headers: headers );
 
-      print("Delete Status: ${response.statusCode}");
-      print("Delete Body: ${response.body}");
       if( response.statusCode == 200 ){
         rewards.removeAt(index);
         showSnackBar(

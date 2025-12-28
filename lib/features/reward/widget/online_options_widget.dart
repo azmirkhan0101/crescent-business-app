@@ -1,11 +1,7 @@
-import 'dart:io';
-
-import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:organization/features/widgets/custom_card_widget.dart';
-import 'package:organization/features/widgets/custom_text.dart';
-import 'package:organization/utils/app_color.dart';
+
 import 'add_discount_codes_section.dart';
 import 'custom_checkbox.dart';
 

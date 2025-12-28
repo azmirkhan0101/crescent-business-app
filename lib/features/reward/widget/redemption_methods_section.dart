@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:organization/features/reward/widget/custom_checkbox.dart';
 
-import '../../../utils/app_color.dart';
 import '../../widgets/custom_card_widget.dart';
 import '../../widgets/text_field_title_widget.dart';
 import 'online_options_widget.dart';

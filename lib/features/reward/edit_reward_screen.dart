@@ -208,7 +208,7 @@ class EditRewardScreen extends StatelessWidget {
         backgroundColor: AppColors.white,
         enableDrag: true,
         builder: (context){
-      return Container(
+      return SizedBox(
         height: 150.h,
         child: Column(
           children: [

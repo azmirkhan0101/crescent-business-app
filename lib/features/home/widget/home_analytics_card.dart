@@ -3,11 +3,9 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:organization/features/widgets/custom_text.dart';
 import 'package:organization/utils/assets_gen/assets.gen.dart';
-import 'package:organization/utils/assets_path.dart';
 
 import '../../../utils/app_color.dart';
 import '../../../utils/app_text_styles.dart';
-
 import '../../widgets/custom_card_widget.dart';
 
 class HomeAnalyticsCard extends StatelessWidget {
@@ -93,8 +91,8 @@ class HomeAnalyticsCard extends StatelessWidget {
                   ),
                   SizedBox(width: 4.w),
                   //INCREASE - DECREASE ICON
-                  Image.asset(
-                      isIncrease ? AssetsPath.increaseIcon : AssetsPath.decreaseIcon,
+                  SvgPicture.asset(
+                      isIncrease ? Assets.icons.increaseIcon : Assets.icons.decreaseIcon,
                       height: 14.w,
                       width: 14.w
                   ),

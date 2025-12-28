@@ -2,12 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:organization/controller/redeem/redeem_controller.dart';
-import 'package:organization/features/redeem_rewards/widgets/nfc_redeem.dart';
 import 'package:organization/features/redeem_rewards/widgets/qr_code_redeem.dart';
 import 'package:organization/features/redeem_rewards/widgets/static_code_redeem.dart';
 import 'package:organization/features/widgets/custom_text.dart';
 import 'package:organization/utils/app_color.dart';
-import 'package:organization/utils/app_text_styles.dart';
 
 class RedeemScannerScreen extends StatefulWidget {
   const RedeemScannerScreen({super.key});
@@ -137,6 +135,7 @@ class _RedeemScannerScreenState extends State<RedeemScannerScreen> {
       child: GestureDetector(
         onTap: () {
           setState(() {
+            controller.isStaticCodeInvalid.value = false;
             _selectedIndex = index;
           });
         },

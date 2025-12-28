@@ -4,8 +4,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:organization/utils/app_color.dart';
 
-import '../../../../utils/app_text_styles.dart';
-
 class RichTextWidget extends StatelessWidget {
   const RichTextWidget({
     super.key,

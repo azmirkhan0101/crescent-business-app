@@ -1,72 +1,14 @@
-import 'dart:io';
+class TestClassOne {}
 
-import 'package:device_info_plus/device_info_plus.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:organization/core/show_snackbar.dart';
-import 'package:organization/utils/app_color.dart';
-import 'package:path_provider/path_provider.dart';
-import 'package:permission_handler/permission_handler.dart';
-import 'package:permission_handler/permission_handler.dart' as OpenAppSettings;
-
-class TestClassOne {
-
-}
-
-
-var x = {
-  "data": {
-    "_id": "694f7b502ce065f0b97854f5",
-    "auth": {
-      "_id": "694f7b4f2ce065f0b97854f3",
-      "email": "azmirdroid@gmail.com",
-      "isProfile": true,
-      "isTwoFactorEnabled": false,
-      "role": "BUSINESS"
-    },
-    "category": "Cafe",
-    "name": "Khan Cafe",
-    "tagLine": "hello tagline",
-    "description": "description",
-    "businessPhoneNumber": "01909352422",
-    "businessEmail": "azmir@mail.com",
-    "businessWebsite": "http://abc.com",
-    "locations": ["Sparktech Agency, Aqua Tower 43, Dhaka, Bangladesh"],
-    "websiteViews": 0,
-    "views": 0,
-    "createdAt": "2025-12-27T06:23:12.632Z",
-    "updatedAt": "2025-12-27T06:23:12.632Z",
-    "coverImage": null,
-    "logoImage": null
-  }
-};
-
-
-var getProfielRes = {
+var redeemRes = {
   "success": true,
-  "message": "Profile data retrieved successfully!",
+  "message": "Reward redeemed successfully",
   "data": {
-    "_id": "694f7b502ce065f0b97854f5",
-    "auth": {
-      "_id": "694f7b4f2ce065f0b97854f3",
-      "email": "azmirdroid@gmail.com",
-      "isProfile": true,
-      "isTwoFactorEnabled": false,
-      "role": "BUSINESS",
-    },
-    "category": "Cafe",
-    "name": "Khan Cafe",
-    "tagLine": "hello tagline",
-    "description": "description",
-    "businessPhoneNumber": "01909352422",
-    "businessEmail": "azmir@mail.com",
-    "businessWebsite": "http://abc.com",
-    "locations": ["Sparktech Agency, Aqua Tower 43, Dhaka, Bangladesh"],
-    "websiteViews": 0,
-    "views": 0,
-    "createdAt": "2025-12-27T06:23:12.632Z",
-    "updatedAt": "2025-12-27T06:23:12.632Z",
-    "coverImage": null,
-    "logoImage": null,
+    "success": true,
+    "rewardTitle": "Asjndodkf",
+    "userName": "Mukarrom",
+    "redeemedAt": "2025-12-28T18:38:44.273Z",
+    "status": "redeemed",
   },
 };
 

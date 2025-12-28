@@ -14,7 +14,6 @@ import 'package:organization/features/profile/widget/profile_heading_text_widget
 import 'package:organization/features/widgets/custom_text.dart';
 import 'package:organization/utils/app_color.dart';
 import 'package:organization/utils/assets_gen/assets.gen.dart';
-import 'package:organization/utils/assets_path.dart';
 
 import '../../utils/app_size.dart';
 import '../../utils/app_text.dart';

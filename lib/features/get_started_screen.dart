@@ -1,18 +1,17 @@
 import 'dart:async';
-import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:organization/controller/analytics/analytics_exporter.dart';
 import 'package:organization/features/widgets/custom_asset_image.dart';
 import 'package:organization/features/widgets/custom_button_widget.dart';
 import 'package:organization/features/widgets/custom_text.dart';
 import 'package:organization/routes/app_pages.dart';
 import 'package:organization/utils/app_color.dart';
 import 'package:organization/utils/app_text.dart';
+import 'package:organization/utils/assets_gen/assets.gen.dart';
 
 import '../../utils/assets_path.dart';
 import 'auth/widgets/rich_text_widget.dart';
@@ -37,8 +36,8 @@ class GetStartedScreen extends StatelessWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Image.asset(
-                    AssetsPath.moonIcon,
+                  SvgPicture.asset(
+                    Assets.icons.crescentLogo,
                     height: 32.h,
                     width: 32.w,
                   ),

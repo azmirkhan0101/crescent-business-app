@@ -48,18 +48,11 @@ class HomeController extends GetxController{
       };
       http.Response response = await http.get( uri, headers: headers );
 
-      print("Status: ${response.statusCode}");
-      print("Overview: ${response.body}");
-
       if( response.statusCode == 200 ){
-        //TODO: PARSE THE RESPONSE HERE
         homeStatModel.value = HomeStatsModel.fromJson( jsonDecode( response.body)['data'] );
         monthlyStats.value = homeStatModel.value?.monthlyStats ?? [];
       }
     }catch(e){
-      print("Something wrong: ${e}");
-    }finally{
-      print( "Finally: ${homeStatModel.value?.overview.lastSevenDaysRedeemed}");
     }
   }
 
@@ -77,9 +70,6 @@ getRecentActivity() async{
     try{
       http.Response response = await http.get( uri, headers: headers );
 
-      print("Status: ${response.statusCode}");
-      print("Body: ${response.body}");
-
       if( response.statusCode == 200 ){
         //TODO: PARSE RESPONSE AND SHOW IN UI
         final decoded = jsonDecode(response.body);
@@ -89,7 +79,6 @@ getRecentActivity() async{
             .toList();
       }
     }catch(e){
-     print("Recent catch: ${e}");
     }finally{
       isRecentActivityLoading.value = false;
     }

@@ -1,14 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:organization/features/widgets/custom_asset_image.dart';
-import 'package:organization/routes/app_pages.dart';
-import 'package:organization/utils/api_endpoints.dart';
 import 'package:organization/utils/app_color.dart';
 import 'package:organization/utils/app_constants.dart';
 import 'package:organization/utils/app_text_styles.dart';
 import 'package:organization/utils/assets_path.dart';
+
 import 'custom_switch.dart';
 
 class RewardCard extends StatefulWidget {

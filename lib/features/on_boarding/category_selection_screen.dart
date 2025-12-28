@@ -1,15 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:organization/controller/auth/sign_up_controller.dart';
+import 'package:organization/features/on_boarding/widgets/bottom_button_widget.dart';
 import 'package:organization/features/on_boarding/widgets/category_card_widget.dart';
 import 'package:organization/features/on_boarding/widgets/onboarding_appbar.dart';
-import 'package:organization/features/on_boarding/widgets/bottom_button_widget.dart';
 import 'package:organization/routes/app_pages.dart';
-import 'package:organization/utils/app_color.dart';
 import 'package:organization/utils/app_text.dart';
-import 'package:organization/utils/assets_gen/assets.gen.dart';
+
 import '../widgets/heading_text_widget.dart';
 import 'data/models/category_item_model.dart';
 

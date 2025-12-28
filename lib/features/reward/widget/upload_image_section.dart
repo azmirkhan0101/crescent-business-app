@@ -71,8 +71,6 @@ class UploadImageSection extends StatelessWidget {
             children: [
               GestureDetector(
                 onTap: (){
-                  print("Upload image");
-                  //TODO: OPEN IMAGE PICKER
                   pickGalleryImage();
                 },
                 child: Column(

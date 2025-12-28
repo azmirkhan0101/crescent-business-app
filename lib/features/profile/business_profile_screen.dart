@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
-import 'package:get/get_instance/src/extension_instance.dart';
-import 'package:get/get_navigation/src/extension_navigation.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:organization/features/profile/widget/business_profile_image_widget.dart';
 import 'package:organization/features/profile/widget/over_view_tabs_widget.dart';
@@ -13,7 +10,6 @@ import '../../controller/profile/business_profile_controller.dart';
 import '../../routes/app_pages.dart';
 import '../../utils/app_color.dart';
 import '../../utils/app_text_styles.dart';
-import '../../utils/assets_path.dart';
 import '../widgets/custom_text.dart';
 
 class BusinessProfileScreen extends StatelessWidget {

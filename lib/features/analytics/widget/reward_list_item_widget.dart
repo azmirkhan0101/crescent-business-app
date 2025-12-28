@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:organization/features/widgets/custom_asset_image.dart';
-import 'package:organization/utils/assets_path.dart';
+import 'package:organization/utils/assets_gen/assets.gen.dart';
+
 import '../../../utils/app_color.dart';
 
 
@@ -57,8 +59,8 @@ class RewardListItem extends StatelessWidget {
                 ),
               ),
               const SizedBox(width: 4.0),
-              CustomAssetsImage(
-                assetsPath: AssetsPath.increaseIcon,
+              SvgPicture.asset(
+                Assets.icons.increaseIcon,
                 height: 14.h,
                 width: 14.w,
               ),
@@ -69,22 +71,3 @@ class RewardListItem extends StatelessWidget {
     );
   }
 }
-
-// Example of how to use this widget
-// In your main widget's build method:
-/*
-Column(
-  children: const [
-    RewardListItem(
-      rewardText: '10% Off Latte',
-      percentage: 40.2,
-      isGrowth: true,
-    ),
-    RewardListItem(
-      rewardText: 'Free Muffin',
-      percentage: 15.5,
-      isGrowth: false,
-    ),
-  ],
-)
-*/

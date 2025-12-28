@@ -46,8 +46,8 @@ class $AssetsIconsGen {
   /// File path: assets/icons/auto.png
   AssetGenImage get auto => const AssetGenImage('assets/icons/auto.png');
 
-  /// File path: assets/icons/back.png
-  AssetGenImage get back => const AssetGenImage('assets/icons/back.png');
+  /// File path: assets/icons/back_icon.svg
+  String get backIcon => 'assets/icons/back_icon.svg';
 
   /// File path: assets/icons/bakery.png
   AssetGenImage get bakery => const AssetGenImage('assets/icons/bakery.png');
@@ -96,6 +96,9 @@ class $AssetsIconsGen {
   AssetGenImage get contactless1 =>
       const AssetGenImage('assets/icons/contactless1.png');
 
+  /// File path: assets/icons/crescent_logo.svg
+  String get crescentLogo => 'assets/icons/crescent_logo.svg';
+
   /// File path: assets/icons/cross.png
   AssetGenImage get cross => const AssetGenImage('assets/icons/cross.png');
 
@@ -103,9 +106,8 @@ class $AssetsIconsGen {
   AssetGenImage get dataTrending =>
       const AssetGenImage('assets/icons/data_trending.png');
 
-  /// File path: assets/icons/decrease_icon.png
-  AssetGenImage get decreaseIcon =>
-      const AssetGenImage('assets/icons/decrease_icon.png');
+  /// File path: assets/icons/decrease_icon.svg
+  String get decreaseIcon => 'assets/icons/decrease_icon.svg';
 
   /// File path: assets/icons/delete.png
   AssetGenImage get delete => const AssetGenImage('assets/icons/delete.png');
@@ -143,6 +145,9 @@ class $AssetsIconsGen {
   /// File path: assets/icons/home.png
   AssetGenImage get home => const AssetGenImage('assets/icons/home.png');
 
+  /// File path: assets/icons/increase_icon.svg
+  String get increaseIcon => 'assets/icons/increase_icon.svg';
+
   /// File path: assets/icons/info_icon.png
   AssetGenImage get infoIcon =>
       const AssetGenImage('assets/icons/info_icon.png');
@@ -167,10 +172,6 @@ class $AssetsIconsGen {
   /// File path: assets/icons/mail.svg
   String get mail => 'assets/icons/mail.svg';
 
-  /// File path: assets/icons/moon_icon.png
-  AssetGenImage get moonIcon =>
-      const AssetGenImage('assets/icons/moon_icon.png');
-
   /// File path: assets/icons/nav_analytics.svg
   String get navAnalytics => 'assets/icons/nav_analytics.svg';
 
@@ -191,10 +192,6 @@ class $AssetsIconsGen {
 
   /// File path: assets/icons/pdf_icon.png
   AssetGenImage get pdfIcon => const AssetGenImage('assets/icons/pdf_icon.png');
-
-  /// File path: assets/icons/play_icon.png
-  AssetGenImage get playIcon =>
-      const AssetGenImage('assets/icons/play_icon.png');
 
   /// File path: assets/icons/profile.png
   AssetGenImage get profile => const AssetGenImage('assets/icons/profile.png');
@@ -228,10 +225,6 @@ class $AssetsIconsGen {
   /// File path: assets/icons/rank_badge2.png
   AssetGenImage get rankBadge2 =>
       const AssetGenImage('assets/icons/rank_badge2.png');
-
-  /// File path: assets/icons/red_play_icon.png
-  AssetGenImage get redPlayIcon =>
-      const AssetGenImage('assets/icons/red_play_icon.png');
 
   /// File path: assets/icons/restaurant.png
   AssetGenImage get restaurant =>
@@ -291,7 +284,7 @@ class $AssetsIconsGen {
     activity4,
     addProfileIcon,
     auto,
-    back,
+    backIcon,
     bakery,
     bookMark,
     bottomSIcon1,
@@ -305,6 +298,7 @@ class $AssetsIconsGen {
     complete,
     complete1,
     contactless1,
+    crescentLogo,
     cross,
     dataTrending,
     decreaseIcon,
@@ -319,6 +313,7 @@ class $AssetsIconsGen {
     eyeTracking,
     globe,
     home,
+    increaseIcon,
     infoIcon,
     link,
     loadingDot,
@@ -326,7 +321,6 @@ class $AssetsIconsGen {
     location,
     lock,
     mail,
-    moonIcon,
     navAnalytics,
     navHome,
     navRewards,
@@ -334,7 +328,6 @@ class $AssetsIconsGen {
     notification,
     other,
     pdfIcon,
-    playIcon,
     profile,
     profileIcon,
     qrCode,
@@ -344,7 +337,6 @@ class $AssetsIconsGen {
     radioSelected,
     radioUnselected,
     rankBadge2,
-    redPlayIcon,
     restaurant,
     retail,
     rewardDiscountIcon,
@@ -369,6 +361,10 @@ class $AssetsImagesGen {
 
   /// File path: assets/images/Donation.svg
   String get donation => 'assets/images/Donation.svg';
+
+  /// File path: assets/images/app_icon.png
+  AssetGenImage get appIcon =>
+      const AssetGenImage('assets/images/app_icon.png');
 
   /// File path: assets/images/background-image.png
   AssetGenImage get backgroundImage =>
@@ -428,6 +424,7 @@ class $AssetsImagesGen {
   List<dynamic> get values => [
     donationOutlineIcon,
     donation,
+    appIcon,
     backgroundImage,
     businessCoverImage,
     businessProfileImage,

@@ -212,7 +212,6 @@ class SignUpController extends GetxController {
         );
       }
     }catch(e){
-      print("Signup catch :${e}");
       showSnackBar(
           title: "Error occurred!",
           message: "Something went wrong. Please try again.",

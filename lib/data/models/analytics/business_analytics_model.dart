@@ -36,13 +36,13 @@ class BusinessAnalyticsModel {
         : [];
 
     return BusinessAnalyticsModel(
-      totalRedemptions: json['total_redemptions'] as int? ?? 0,
-      profileViews: json['profile_views'] as int? ?? 0,
-      profilePercentage: (json['profile_percentage'] as num?)?.toDouble() ?? 0.0,
-      profileViewsIncrease: json['profile_views_increase'] as bool? ?? false,
-      websiteViews: json['website_views'] as int? ?? 0,
-      websitePercentage: (json['website_percentage'] as num?)?.toDouble() ?? 0.0,
-      websiteViewsIncrease: json['website_views_increase'] as bool? ?? false,
+      totalRedemptions: json['totalRedemptions'] as int? ?? 0,
+      profileViews: json['profileCurrent'] as int? ?? 0,
+      profilePercentage: (json['profileChange'] as num?)?.toDouble() ?? 0.0,
+      profileViewsIncrease: json['profileIncrease'] as bool? ?? false,
+      websiteViews: json['websiteCurrent'] as int? ?? 0,
+      websitePercentage: (json['websiteChange'] as num?)?.toDouble() ?? 0.0,
+      websiteViewsIncrease: json['websiteIncrease'] as bool? ?? false,
       methods: methods,
       topRewards: topRewards,
     );
@@ -50,14 +50,14 @@ class BusinessAnalyticsModel {
 
   Map<String, dynamic> toJson() {
     return {
-      'total_redemptions': totalRedemptions,
-      'profile_views': profileViews,
-      'profile_percentage': profilePercentage,
-      'profile_views_increase': profileViewsIncrease,
-      'website_views': websiteViews,
-      'website_percentage': websitePercentage,
-      'website_views_increase': websiteViewsIncrease,
-      // Mapping the lists to JSON
+      'totalRedemptions': totalRedemptions,
+      'profileCurrent': profileViews,
+      'profileChange': profilePercentage,
+      'profileIncrease': profileViewsIncrease,
+      'websiteCurrent': websiteViews,
+      'websiteChange': websitePercentage,
+      'websiteIncrease': websiteViewsIncrease,
+      //Mapping the lists to JSON
       'methods': methods.map((e) => e.toJson()).toList(),
       'topRewards': topRewards.map((e) => e.toJson()).toList(),
     };

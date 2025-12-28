@@ -3,7 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
-import 'package:organization/controller/nav/main_nav_controller.dart';import 'package:organization/utils/app_constants.dart';
+import 'package:organization/controller/nav/main_nav_controller.dart';
 
 import '../../utils/app_size.dart';
 

@@ -4,14 +4,12 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:organization/data/models/profile/business_profile_model.dart';
 import 'package:organization/features/profile/widget/profile_heading_text_widget.dart';
-import 'package:organization/features/widgets/custom_asset_image.dart';
 import 'package:organization/features/widgets/custom_card_widget.dart';
 import 'package:organization/features/widgets/custom_text.dart';
 import 'package:organization/features/widgets/info_card_widget.dart';
 import 'package:organization/utils/app_color.dart';
 import 'package:organization/utils/app_text.dart';
 import 'package:organization/utils/assets_gen/assets.gen.dart';
-import 'package:organization/utils/assets_path.dart';
 
 class OverviewTab extends StatelessWidget {
 

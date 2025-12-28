@@ -1,7 +1,7 @@
 import 'dart:math';
 
-import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:organization/data/models/home/monthly_stats.dart';
@@ -9,7 +9,7 @@ import 'package:organization/features/widgets/custom_text.dart';
 import 'package:organization/utils/app_size.dart';
 import 'package:organization/utils/app_text_styles.dart';
 import 'package:organization/utils/assets_gen/assets.gen.dart';
-import 'package:organization/utils/assets_path.dart';
+
 import '../../../utils/app_color.dart';
 
 class HomeBarChartWidget extends StatelessWidget {

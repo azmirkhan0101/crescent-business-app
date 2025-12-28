@@ -30,7 +30,6 @@ class AnalyticsController extends GetxController {
     }
 
     ever( rewardController.rewards, (newData) {
-      print("Analytics detected new reward data: ${newData.length}");
       updateRewardTitleList( newData );
     });
     super.onInit();
@@ -105,20 +104,14 @@ class AnalyticsController extends GetxController {
     try {
       http.Response response = await http.get(uri, headers: header);
 
-      print(response.statusCode);
-      print(response.body);
-
       if (response.statusCode == 200) {
-        print("Successsssss business analytics");
         businessAnalyticsModel.value = BusinessAnalyticsModel.fromJson(
           jsonDecode(response.body)['data'],
         );
         methods.value = businessAnalyticsModel.value?.methods ?? [];
-        print("Successsssss222222222222 business analytics");
         topRewards.value = businessAnalyticsModel.value?.topRewards ?? [];
       }
     } catch (e) {
-      print("Business analytics catch: ${e}");
     } finally {
       isTopRewardsLoading.value = false;
     }
@@ -139,10 +132,6 @@ getRewardAnalyticsById({required String rewardId}) async{
 
     try{
       http.Response response = await http.get( uri, headers: header );
-
-      print("Reward Id: ${rewardId}");
-      print("Status: ${response.statusCode}");
-      print("Body: ${response.body}");
 
       if( response.statusCode == 200 ){//FETCHED ANALYTICS
         model.value = RewardAnalyticsModel.fromJson( jsonDecode( response.body )['data'] );

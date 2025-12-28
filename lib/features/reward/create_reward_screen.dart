@@ -11,12 +11,10 @@ import 'package:organization/features/reward/widget/expiry_limit_section.dart';
 import 'package:organization/features/reward/widget/redemption_methods_section.dart';
 import 'package:organization/features/reward/widget/upload_image_section.dart';
 import 'package:organization/features/widgets/custom_text.dart';
-import 'package:organization/utils/app_constants.dart';
 import 'package:organization/utils/app_text_styles.dart';
 
 import '../../utils/app_color.dart';
 import '../../utils/app_text.dart';
-import '../on_boarding/widgets/bottom_button_widget.dart';
 import '../widgets/custom_button_widget.dart';
 import '../widgets/custom_text_field_widget.dart';
 import '../widgets/text_field_title_widget.dart';
@@ -162,7 +160,6 @@ class CreateRewardScreen extends StatelessWidget {
                   if( isInstoreTabSelected ){//INSTORE REWARD
                     controller.createRewardInStore();
                   }else{//ONLINE REWARD
-                    print("Online reward: ${controller.discountCode.value},,,,${controller.giftCard.value}");
                     controller.createRewardOnline();
                   }
                 },

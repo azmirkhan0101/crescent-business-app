@@ -3,22 +3,17 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:organization/controller/home/home_controller.dart';
-import 'package:organization/data/models/home/recent_activity_item_model.dart';
 import 'package:organization/data/models/home/recent_activity_model.dart';
 import 'package:organization/features/home/widget/activity_list_tile_widget.dart';
-import 'package:organization/features/home/data/models/activity_data_class.dart';
 import 'package:organization/features/home/widget/bar_chart_widget.dart';
 import 'package:organization/features/home/widget/home_analytics_card.dart';
 import 'package:organization/features/home/widget/home_card_widget.dart';
 import 'package:organization/features/home/widget/home_header_widget.dart';
 import 'package:organization/features/widgets/custom_text.dart';
 import 'package:organization/routes/app_pages.dart';
-import 'package:organization/utils/api_endpoints.dart';
 import 'package:organization/utils/assets_gen/assets.gen.dart';
-import 'package:organization/utils/assets_path.dart';
+
 import '../../utils/app_color.dart';
-import '../../utils/app_text_styles.dart';
-import '../analytics/widget/analytics_card_widget.dart';
 
 class HomeScreen extends StatelessWidget {
   final HomeController controller = Get.find<HomeController>();

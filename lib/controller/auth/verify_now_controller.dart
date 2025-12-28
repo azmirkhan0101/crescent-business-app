@@ -34,9 +34,6 @@ class VerifyNowController extends GetxController{
       };
       http.Response response = await http.post( uri, body: payLoad );
 
-      print("Email: ${email()}");
-      print("Status code: ${response.statusCode}");
-      print("Response ${response.body}");
       if( response.statusCode == 200 ){
         Get.snackbar(
             "OTP sent!",
@@ -58,7 +55,6 @@ class VerifyNowController extends GetxController{
         };
         Get.offNamed( AppRoutes.otpVerify, arguments: arguments );
       }else{
-        print("Try errorrrrrr");
         showSnackBar(
             title: "Error!",
             message: "Something went wrong. Please try again,",
@@ -66,7 +62,6 @@ class VerifyNowController extends GetxController{
         );
       }
     }catch(e){
-      print("Error: ${e}");
       showSnackBar(
           title: "Error!",
           message: "Something went wrong. Please try again,",

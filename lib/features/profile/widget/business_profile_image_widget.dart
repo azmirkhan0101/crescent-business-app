@@ -67,7 +67,6 @@ class _BusinessProfileWidgetState extends State<BusinessProfileWidget> {
             right: 8,
             child: GestureDetector(
               onTap: () {
-                print("Cover clicked");
                 pickImage(true);
               },
               child: CircleAvatar(
