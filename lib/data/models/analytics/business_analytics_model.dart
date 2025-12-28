@@ -47,4 +47,19 @@ class BusinessAnalyticsModel {
       topRewards: topRewards,
     );
   }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'total_redemptions': totalRedemptions,
+      'profile_views': profileViews,
+      'profile_percentage': profilePercentage,
+      'profile_views_increase': profileViewsIncrease,
+      'website_views': websiteViews,
+      'website_percentage': websitePercentage,
+      'website_views_increase': websiteViewsIncrease,
+      // Mapping the lists to JSON
+      'methods': methods.map((e) => e.toJson()).toList(),
+      'topRewards': topRewards.map((e) => e.toJson()).toList(),
+    };
+  }
 }

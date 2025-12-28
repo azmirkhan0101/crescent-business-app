@@ -36,17 +36,19 @@ class RewardScreen extends StatelessWidget {
         ),
         actions: [
           IconButton(
-              onPressed: (){
-                Get.toNamed(AppRoutes.createReward);
-              },
-              style: ButtonStyle(backgroundColor: WidgetStatePropertyAll(AppColors.grey06)),
-              icon: Icon(Icons.add, color: AppColors.black,)
+            onPressed: () {
+              Get.toNamed(AppRoutes.createReward);
+            },
+            style: ButtonStyle(
+              backgroundColor: WidgetStatePropertyAll(AppColors.grey06),
+            ),
+            icon: Icon(Icons.add, color: AppColors.black),
           ),
         ],
       ),
 
       body: RefreshIndicator(
-        onRefresh: () async{
+        onRefresh: () async {
           //get all rewards on refresh - no filter
           controller.selectedFilter.value = "all";
           controller.isFilterLoading.value = false;
@@ -56,99 +58,114 @@ class RewardScreen extends StatelessWidget {
           physics: AlwaysScrollableScrollPhysics(),
 
           child: Obx(() {
-          if (controller.isLoading.value == true && controller.isFilterLoading.value == false && controller.rewards.isEmpty) {
-            return SizedBox(
-              height: MediaQuery.of(context).size.height*0.7,
-              child: Center(
-                child: CircularProgressIndicator(),
-              ),);
-          } else if (controller.isLoading.value == false && controller.selectedFilter.value == "all" && controller.rewards.isEmpty) {
-            return noReward( context );
-          } else {
-            return Column(
-              children: [
-                SingleChildScrollView(
-                  scrollDirection: Axis.horizontal,
-                  child: Padding(
-                    padding: EdgeInsets.symmetric( horizontal: 15.w),
-                    child: Row(
-                      spacing: 12.w,
-                      children: [
-                        FilterButton(
+            if (controller.isLoading.value == true &&
+                controller.isFilterLoading.value == false &&
+                controller.rewards.isEmpty) {
+              return SizedBox(
+                height: MediaQuery.of(context).size.height * 0.7,
+                child: Center(child: CircularProgressIndicator()),
+              );
+            } else if (controller.isLoading.value == false &&
+                controller.selectedFilter.value == "all" &&
+                controller.rewards.isEmpty) {
+              return noReward(context);
+            } else {
+              return Column(
+                children: [
+                  SingleChildScrollView(
+                    controller: controller.scrollController,
+                    scrollDirection: Axis.horizontal,
+                    child: Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 15.w),
+                      child: Row(
+                        spacing: 12.w,
+                        children: [
+                          FilterButton(
                             title: "All",
                             value: "all",
                             selected: controller.selectedFilter,
-                            onTap: (){
+                            onTap: () {
                               controller.selectedFilter.value = "all";
                               controller.isFilterLoading.value = true;
                               controller.getAllRewards();
-                            }
-                        ),
-                        FilterButton(
+                            },
+                          ),
+                          FilterButton(
                             title: "Active",
                             value: "active",
                             selected: controller.selectedFilter,
-                            onTap: (){
+                            onTap: () {
                               controller.selectedFilter.value = "active";
                               controller.isFilterLoading.value = true;
                               controller.getAllRewards();
-                            }
-                        ),
-                        FilterButton(
+                            },
+                          ),
+                          FilterButton(
                             title: "Disabled",
                             value: "disabled",
                             selected: controller.selectedFilter,
-                            onTap: (){
+                            onTap: () {
                               controller.selectedFilter.value = "disabled";
                               controller.isFilterLoading.value = true;
                               controller.getAllRewards();
-                            }
-                        ),
-                        FilterButton(
+                            },
+                          ),
+                          FilterButton(
                             title: "Expiring soon",
                             value: "expires_soon",
                             selected: controller.selectedFilter,
-                            onTap: (){
+                            onTap: () {
                               controller.selectedFilter.value = "expires_soon";
                               controller.isFilterLoading.value = true;
                               controller.getAllRewards();
-                            }
-                        )
-                      ],
+                            },
+                          ),
+                        ],
+                      ),
                     ),
                   ),
-                ),
-                Obx((){
-                  if( controller.isFilterLoading.value == true && controller.rewards.isEmpty ){
-                    return SizedBox(
-                      height: MediaQuery.of(context).size.height*0.7,
-                      child: Center(
-                        child: CircularProgressIndicator(),
-                      ),);
-                  }else if( controller.isFilterLoading.value == false && controller.rewards.isEmpty ){
-                    return SizedBox(
-                      height: MediaQuery.of(context).size.height*0.7,
-                      child: Center(
-                      child: Text("No rewards found!"),
-                    ),);
-                  }else{
-                    return rewardList(context: context);
-                  }
-                }),
-                SizedBox(height: 90.h),
-              ],
-            );
-          }
-                    }),
+                  Obx(() {
+                    if (controller.isFilterLoading.value == true ) {
+                      return SizedBox(
+                        height: MediaQuery.of(context).size.height * 0.7,
+                        child: Center(child: CircularProgressIndicator()),
+                      );
+                    } else if (controller.isFilterLoading.value == false &&
+                        controller.rewards.isEmpty) {
+                      return SizedBox(
+                        height: MediaQuery.of(context).size.height * 0.7,
+                        child: Center(child: Text("No rewards found!")),
+                      );
+                    } else {
+                      return rewardList(context: context);
+                    }
+                  }),
+                  SizedBox(height: 15.h,),
+                  Obx((){
+                    if (controller.isMoreLoading.value){
+                      return Padding(
+                        padding: EdgeInsets.symmetric(vertical: 20),
+                        child: Center(child: CircularProgressIndicator()),
+                      );
+                    }else{
+                      return SizedBox.shrink();
+                    }
+
+                  }),
+                  SizedBox(height: 90.h),
+                ],
+              );
+            }
+          }),
+        ),
       ),
-      )
     );
   }
 
   //NO REWARD
-  noReward( BuildContext context ) {
+  noReward(BuildContext context) {
     return SizedBox(
-      height: MediaQuery.of(context).size.height*0.75,
+      height: MediaQuery.of(context).size.height * 0.75,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.center,
@@ -165,7 +182,7 @@ class RewardScreen extends StatelessWidget {
           ),
           SizedBox(height: 12.h),
           Padding(
-            padding: EdgeInsets.symmetric( horizontal: 10.w ),
+            padding: EdgeInsets.symmetric(horizontal: 10.w),
             child: Text(
               textAlign: TextAlign.center,
               maxLines: 4,
@@ -174,7 +191,7 @@ class RewardScreen extends StatelessWidget {
                 fontWeight: FontWeight.w400,
                 fontSize: 13,
                 color: AppColors.secondaryTextColor,
-              )
+              ),
             ),
           ),
           SizedBox(height: 12.h),
@@ -207,7 +224,7 @@ class RewardScreen extends StatelessWidget {
               fontWeight: FontWeight.w700,
             ),
           ),
-          SizedBox(height: 50.h,)
+          SizedBox(height: 50.h),
         ],
       ),
     );
@@ -233,7 +250,7 @@ class RewardScreen extends StatelessWidget {
 
         return Padding(
           padding: EdgeInsets.symmetric(horizontal: 15.w, vertical: 8.h),
-          child: Obx((){
+          child: Obx(() {
             return RewardCard(
               image: model.image,
               title: model.title,
@@ -246,24 +263,29 @@ class RewardScreen extends StatelessWidget {
               isStaticCode: isStaticCode,
               isGiftCard: isGiftCard,
               isDiscountCode: isDiscountCode,
-              onDeleteClick: (){
-                showRewardDeleteDialog( rewardId: model.id );
-              }, onStatusChanged: (bool newStatus ) {
+              onDeleteClick: () {
+                showRewardDeleteDialog(rewardId: model.id, index: index );
+              },
+              onStatusChanged: (bool newStatus) {
                 rewardIsActive.value = newStatus;
-              //STATUS UPDATE API CALL
-              controller.updateRewardStatus(rewardId: model.id, isActive: newStatus );
-            }, onEditClick: () { 
-                Get.toNamed( AppRoutes.editReward, arguments: model );
-            },
+                //STATUS UPDATE API CALL
+                controller.updateRewardStatus(
+                  rewardId: model.id,
+                  isActive: newStatus,
+                );
+              },
+              onEditClick: () {
+                Get.toNamed(AppRoutes.editReward, arguments: model);
+              },
             );
-          })
+          }),
         );
       },
     );
   }
 
   //DELETE ALERT
-  void showRewardDeleteDialog({required String rewardId}) {
+  void showRewardDeleteDialog({required String rewardId, required int index}) {
     showDialog(
       context: Get.context!,
       barrierDismissible: true,
@@ -271,7 +293,7 @@ class RewardScreen extends StatelessWidget {
         return AlertDialog(
           title: Row(
             children: [
-              Icon(Icons.delete, color: AppColors.red,),
+              Icon(Icons.delete, color: AppColors.red),
               Text(
                 "Delete Reward",
                 style: TextStyle(
@@ -284,13 +306,13 @@ class RewardScreen extends StatelessWidget {
           ),
           content: const Text(
             "Are you sure you want to delete this reward?",
-            style: TextStyle(
-              fontSize: 15,
-              color: Colors.black54,
-            ),
+            style: TextStyle(fontSize: 15, color: Colors.black54),
           ),
           actionsAlignment: MainAxisAlignment.spaceBetween,
-          actionsPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+          actionsPadding: const EdgeInsets.symmetric(
+            horizontal: 20,
+            vertical: 10,
+          ),
           actions: [
             Row(
               children: [
@@ -306,14 +328,16 @@ class RewardScreen extends StatelessWidget {
                       onPressed: () => Navigator.of(context).pop(),
                       child: const Text(
                         "Cancel",
-                        style: TextStyle(color: Colors.black87, fontWeight: FontWeight.w600),
+                        style: TextStyle(
+                          color: Colors.black87,
+                          fontWeight: FontWeight.w600,
+                        ),
                       ),
                     ),
                   ),
                 ),
 
                 SizedBox(width: 12.w), // Spacing between buttons
-
                 // Delete button
                 Expanded(
                   child: Container(
@@ -325,11 +349,14 @@ class RewardScreen extends StatelessWidget {
                     child: TextButton(
                       onPressed: () {
                         Navigator.of(context).pop();
-                        controller.deleteReward(rewardId);
+                        controller.deleteReward( rewardId: rewardId, index: index );
                       },
                       child: const Text(
                         "Delete",
-                        style: TextStyle(color: Colors.white, fontWeight: FontWeight.w600),
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.w600,
+                        ),
                       ),
                     ),
                   ),
@@ -362,5 +389,4 @@ class RewardScreen extends StatelessWidget {
   //     backgroundColor: Colors.transparent,
   //   );
   // }
-
 }

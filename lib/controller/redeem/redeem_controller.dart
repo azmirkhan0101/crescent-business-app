@@ -66,6 +66,7 @@ class RedeemController extends GetxController{
         showSnackBar(title: "Invalid codes!", message: "Please enter valid codes and try again.", backgroundColor: AppColors.warningYellow);
       }
     }catch(e){
+      print("Redeem catch: ${e}");
       showSnackBar(title: "Something went wrong!", message: "Please check your internet connection and try again.", backgroundColor: AppColors.warningYellow);
     }
   }

@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:http/http.dart' as http;
 import 'package:organization/controller/analytics/analytics_exporter.dart';
+import 'package:organization/core/show_snackbar.dart';
 import 'package:organization/data/models/analytics/business_analytics_model.dart';
 import 'package:organization/data/models/analytics/graph_data_model.dart';
 import 'package:organization/data/models/analytics/redemption_method_model.dart';
@@ -11,6 +12,7 @@ import 'package:organization/data/models/analytics/reward_analytics_model.dart';
 import 'package:organization/data/models/analytics/summary_model.dart';
 import 'package:organization/data/models/analytics/top_rewards_model.dart';
 import 'package:organization/data/models/reward/reward_model.dart';
+import 'package:organization/utils/app_color.dart';
 
 import '../../utils/api_endpoints.dart';
 import '../../utils/app_constants.dart';
@@ -158,6 +160,7 @@ getRewardAnalyticsById({required String rewardId}) async{
 //EXPORT TO CSV
 exportToCsv( BusinessAnalyticsModel? model ) async{
   if( model == null ){
+    showSnackBar(title: "No data found", message: "No analytics data found to export.", backgroundColor: AppColors.warningYellow);
     return;
   }
   //EXPORT TO CSV
@@ -167,11 +170,10 @@ exportToCsv( BusinessAnalyticsModel? model ) async{
 
 //EXPORT TO CSV
   exportToPdf( BusinessAnalyticsModel? model ) async{
-    print("Csvvvvvvvvvvvv7");
   if( model == null ){
+    showSnackBar(title: "No data found", message: "No analytics data found to export.", backgroundColor: AppColors.warningYellow);
     return;
   }
-    print("Csvvvvvvvvvvvv6");
     AnalyticsExporter exporter = AnalyticsExporter();
     exporter.exportToPDF( model );
   }

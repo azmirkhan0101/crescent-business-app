@@ -245,6 +245,7 @@ class AnalyticsScreen extends StatelessWidget {
         }else{
           controller.exportToCsv( controller.businessAnalyticsModel.value );
         }
+        Get.back();
       },),
     );
   }

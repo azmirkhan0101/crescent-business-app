@@ -39,12 +39,10 @@ class _CustomDatePickerFieldState extends State<CustomDatePickerField> {
     if (picked != null) {
       final utcDate = picked.toUtc();
       //final onlyDate = DateTime(utcDate.year, utcDate.month, utcDate.day);
-
-      setState(() {
-        selectedDate = utcDate;
-      });
-
       widget.onDateSelected(utcDate);
+      setState(() {
+        selectedDate = utcDate.toLocal();
+      });
     }
   }
 

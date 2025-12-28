@@ -9,14 +9,12 @@ import 'package:image_picker/image_picker.dart';
 import 'package:organization/controller/reward/edit_reward_controller.dart';
 import 'package:organization/features/reward/widget/custom_checkbox.dart';
 import 'package:organization/features/reward/widget/edit_expiry_limit_section.dart';
-import 'package:organization/features/reward/widget/expiry_limit_section.dart';
 import 'package:organization/features/reward/widget/online_options_widget.dart';
 import 'package:organization/features/widgets/custom_card_widget.dart';
 import 'package:organization/utils/app_text_styles.dart';
 
 import '../../utils/app_color.dart';
 import '../../utils/app_text.dart';
-import '../on_boarding/widgets/bottom_button_widget.dart';
 import '../widgets/custom_button_widget.dart';
 import '../widgets/custom_text_field_widget.dart';
 import '../widgets/text_field_title_widget.dart';
@@ -122,6 +120,7 @@ class EditRewardScreen extends StatelessWidget {
                         onPressed: () {
                           controller.rewardImage?.value = null;
                           controller.rewardImageUrl.value = "";
+                          controller.deleteRewardImage();
                         },
                       ),
                     ],
@@ -141,7 +140,6 @@ class EditRewardScreen extends StatelessWidget {
               );
             }),
             SizedBox(height: 25),
-
             //RedemptionMethodsSection
             Text("Select redemption methods:",
             style: TextStyle(color: AppColors.black,
@@ -155,7 +153,7 @@ class EditRewardScreen extends StatelessWidget {
               }else{
                 String fileName = controller.csvFileName.value;
                 if( fileName.isEmpty ){
-                  fileName = "Discount Codes";
+                  fileName = "Discount Code";
                 }
                 return OnlineOptions(
                   fileName: fileName,

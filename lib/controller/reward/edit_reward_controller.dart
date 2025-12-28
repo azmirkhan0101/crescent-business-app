@@ -312,11 +312,63 @@ class EditRewardController extends GetxController{
     }catch(e){
       showSnackBar(
           title: "No internet!",
-          message: "Check your internet connection and try again.",
+          message: "Che?ck your internet connection and try again.",
           backgroundColor: AppColors.warningYellow
       );
     }finally{
       isUpdating.value = false;
+    }
+  }
+
+
+  //DELETE REWARD IMAGE
+  deleteRewardImage() async{
+
+    if( model?.image == null || model!.image!.isEmpty ){
+      return;
+    }
+
+    try{
+      Uri uri = Uri.parse( ApiEndpoints.baseUrl + ApiEndpoints.deleteRewardImage + model!.id );
+      Map<String, String> headers = {
+        "Content-type" : "application/json",
+        "Authorization": storage.read( accessTokenKey )
+      };
+      http.Response response = await http.delete( uri, headers: headers );
+
+      print("Delete image Status: ${response.statusCode}");
+      print("Delete image Body: ${response.body}");
+      if( response.statusCode == 200 ){
+        showSnackBar(
+            title: "Reward image deleted",
+            message: "The reward has been deleted.",
+            backgroundColor: AppColors.successGreen
+        );
+      }else if( response.statusCode == 400 ){
+        showSnackBar(
+            title: "Failed!",
+            message: "Cannot delete reward image.",
+            backgroundColor: AppColors.warningYellow
+        );
+      }else if( response.statusCode == 409 ){
+        showSnackBar(
+            title: "Failed!",
+            message: "Cannot delete reward image.",
+            backgroundColor: AppColors.warningYellow
+        );
+      }else{
+        showSnackBar(
+            title: "Failed!",
+            message: "Please try again.",
+            backgroundColor: AppColors.warningYellow
+        );
+      }
+    }catch(e){
+      showSnackBar(
+          title: "Error occurred",
+          message: "Couldn't delete the reward image.",
+          backgroundColor: AppColors.errorRed
+      );
     }
   }
 

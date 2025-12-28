@@ -54,9 +54,9 @@ static const recentActivity = "/business/recent-activity";//HOME SCREEN RECENT A
   //CREATE REWARD - INSTORE AND ONLINE
   static const createRewardInStore = "/rewards"; //SAME FOR ONLINE
   static const createRewardOnline = "/rewards/online"; //SAME FOR ONLINE
-  static String getAllRewards({required String status, String search = ""}){
+  static String getAllRewards({required String status, String search = "", int page = 1}){
     if( search.isEmpty ){//NO SEARCH
-      return "/rewards/business/my-rewards?status=$status&search&page=1&limit=10";
+      return "/rewards/business/my-rewards?status=$status&search&page=$page&limit=10";
     }else{//SEARCH
       return "/rewards/business/my-rewards?status=$status&search=$search&page=1&limit=10";
     }
@@ -69,6 +69,7 @@ static const recentActivity = "/business/recent-activity";//HOME SCREEN RECENT A
   }
   static const deleteReward = "/rewards/";//BUSINESS ID WILL BE PASSED FROM CONTROLLER IN PARAMETER
 
+  static const deleteRewardImage = "/rewards/delete-image/";
 //REDEEM
   static const String redeemReward = "/rewards/redeem";
 //FCM

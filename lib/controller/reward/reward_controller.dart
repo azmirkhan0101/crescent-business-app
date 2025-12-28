@@ -20,6 +20,7 @@ import 'package:path/path.dart' as p;
 
 class RewardController extends GetxController {
 
+  ScrollController scrollController = ScrollController();
 
   //EDIT
   RewardModel? editModel;
@@ -28,7 +29,19 @@ class RewardController extends GetxController {
   void onInit() {
 
     getAllRewards();
+    scrollController.addListener(() {
+      // Trigger when user scrolls to 90% of the page
+      if (scrollController.position.pixels >= scrollController.position.maxScrollExtent * 0.9) {
+        getAllRewards(isRefresh: false);
+      }
+    });
     super.onInit();
+  }
+
+  @override
+  void onClose() {
+    scrollController.dispose();
+    super.onClose();
   }
 
   final storage = GetStorage();
@@ -42,6 +55,10 @@ class RewardController extends GetxController {
   RxBool isLoading = true.obs;
   //FILTER LOADING CONTROL
   RxBool isFilterLoading = false.obs;
+  //PAGINATION
+  RxBool isMoreLoading = false.obs;
+  int currentPage = 1;
+  bool hasMoreData = true;
 
   static const List<String> categories = [
     "Food",
@@ -117,11 +134,21 @@ class RewardController extends GetxController {
   final RxString selectedFilter = 'all'.obs;
 
   //GET ALL REWARDS
-  getAllRewards() async{
-    isLoading.value = true;
-    rewards.value = [];
+  getAllRewards({bool isRefresh = true}) async{
+
+    if (isRefresh) {
+      currentPage = 1;
+      hasMoreData = true;
+      isLoading.value = true;
+    } else {
+      // If already loading or no more data to fetch, exit
+      if (isMoreLoading.value || !hasMoreData) return;
+      isMoreLoading.value = true;
+    }
+    //isLoading.value = true;
+    //rewards.value = [];
     try{
-      Uri uri = Uri.parse( ApiEndpoints.baseUrl + ApiEndpoints.getAllRewards(status: selectedFilter.value) );
+      Uri uri = Uri.parse( ApiEndpoints.baseUrl + ApiEndpoints.getAllRewards(status: selectedFilter.value, page: currentPage) );
       print(uri.toString());
 
       Map<String, String> headers = {
@@ -135,23 +162,48 @@ class RewardController extends GetxController {
 
       if( response.statusCode == 200 ){
         var tempRewards = (jsonDecode(response.body)['data'] as List<dynamic>?) ?? [];
-        WidgetsBinding.instance.addPostFrameCallback((_) {
-          rewards.value = tempRewards.where((e) {
-            // Return true to keep the item, false to skip it
-            return e['isDeleted'] != true;
-          }).map((e) {
-            // Transform the json map into your Model
-            return RewardModel.fromJson(e);
-          }).toList();
-        });
+        // Filter and Map the data
+        List<RewardModel> fetchedRewards = tempRewards.map((e) {
+          return RewardModel.fromJson(e);
+        }).toList();
+        if (isRefresh) {
+          rewards.value = fetchedRewards;
+        } else {
+          rewards.addAll(fetchedRewards);
+        }
+        // Logic to check if we should stop pagination
+        // If the API returns fewer than 10 items, we've reached the end
+        if (fetchedRewards.length < 10) {
+          hasMoreData = false;
+        } else {
+          currentPage++;
+        }
+        // WidgetsBinding.instance.addPostFrameCallback((_) {
+        //   if (isRefresh) {
+        //     rewards.value = fetchedRewards;
+        //   } else {
+        //     rewards.addAll(fetchedRewards);
+        //   }
+        //   // Logic to check if we should stop pagination
+        //   // If the API returns fewer than 10 items, we've reached the end
+        //   if (fetchedRewards.length < 10) {
+        //     hasMoreData = false;
+        //   } else {
+        //     currentPage++;
+        //   }
+        // });
       }
     }catch(e){
       print("All reward catch: ${e}");
     }finally{
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        isLoading.value = false;
-        isFilterLoading.value = false;
-      });
+      isLoading.value = false;
+      isMoreLoading.value = false;
+      isFilterLoading.value = false;
+      // WidgetsBinding.instance.addPostFrameCallback((_) {
+      //   isLoading.value = false;
+      //   isMoreLoading.value = false;
+      //   isFilterLoading.value = false;
+      // });
     }
   }
 
@@ -434,23 +486,42 @@ class RewardController extends GetxController {
   }
 
   //DELETE REWARD
-  deleteReward( String rewardId ) async{
+  deleteReward({required  String rewardId, required int index }) async{
 
     try{
       Uri uri = Uri.parse( ApiEndpoints.baseUrl + ApiEndpoints.deleteReward + rewardId );
       Map<String, String> headers = {
+        "Content-type" : "application/json",
         "Authorization": storage.read( accessTokenKey )
       };
       http.Response response = await http.delete( uri, headers: headers );
 
-      print("Status: ${response.statusCode}");
-      print("Body: ${response.body}");
+      print("Delete Status: ${response.statusCode}");
+      print("Delete Body: ${response.body}");
       if( response.statusCode == 200 ){
-        getAllRewards();
+        rewards.removeAt(index);
         showSnackBar(
             title: "Reward deleted",
             message: "The reward has been deleted.",
             backgroundColor: AppColors.successGreen
+        );
+      }else if( response.statusCode == 400 ){
+        showSnackBar(
+            title: "Failed!",
+            message: "Cannot delete active reward.",
+            backgroundColor: AppColors.warningYellow
+        );
+      }else if( response.statusCode == 409 ){
+        showSnackBar(
+            title: "Failed!",
+            message: "Cannot delete claimed reward.",
+            backgroundColor: AppColors.warningYellow
+        );
+      }else{
+        showSnackBar(
+            title: "Failed!",
+            message: "Please try again.",
+            backgroundColor: AppColors.warningYellow
         );
       }
     }catch(e){
