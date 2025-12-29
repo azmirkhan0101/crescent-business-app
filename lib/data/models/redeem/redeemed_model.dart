@@ -13,27 +13,24 @@ class RedeemedRewardModel {
     required this.redemptionMethod,
   });
 
-  /// From JSON
   factory RedeemedRewardModel.fromJson(Map<String, dynamic> json) {
-    final reward = json['reward'] ?? {};
 
     return RedeemedRewardModel(
-      title: reward['title'] ?? '',
-      image: reward['image'] ?? '',
-      redeemedCount: reward['redeemedCount'] ?? 0,
-      redeemedAt: DateTime.parse(json['redeemedAt']),
-      redemptionMethod: json['redemptionMethod'] ?? '',
+      title: json['rewardTitle'] ?? '',
+      image: json['image'] ?? '',
+      redeemedCount: json['redemptionCount'] ?? 0,
+      redeemedAt: DateTime.parse(json['redeemedAt']).toLocal(),
+      redemptionMethod: json['method'] ?? '',
     );
   }
 
-  /// To JSON (only selected fields)
   Map<String, dynamic> toJson() {
     return {
-      'title': title,
+      'rewardTitle': title,
       'image': image,
-      'redeemedCount': redeemedCount,
-      'redeemedAt': redeemedAt.toIso8601String(),
-      'redemptionMethod': redemptionMethod,
+      'redemptionCount': redeemedCount,
+      'redeemedAt': redeemedAt.toUtc().toIso8601String(),
+      'method': redemptionMethod,
     };
   }
 }

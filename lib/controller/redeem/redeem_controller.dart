@@ -17,13 +17,6 @@ class RedeemController extends GetxController{
   //RxString nfcTag = "".obs;
   RxBool isStaticCodeInvalid = false.obs;
 
-  //SIMULATION
-  redeemReward2({required String code, required String method}) async{
-    RedeemedRewardModel redeemedRewardModel = RedeemedRewardModel.fromJson( redeemResponse );
-    isStaticCodeInvalid.value = false;
-    Get.toNamed(AppRoutes.scannerComplete, arguments: redeemedRewardModel );
-  }
-
   //REDEEM REWARD
   redeemReward({required String code, required String method}) async{
 
@@ -54,7 +47,7 @@ class RedeemController extends GetxController{
       print("Redeem: ${response.body}");
 
       if( response.statusCode == 200 || response.statusCode == 201 ){
-        RedeemedRewardModel redeemedRewardModel = RedeemedRewardModel.fromJson( jsonDecode( response.body ) );
+        RedeemedRewardModel redeemedRewardModel = RedeemedRewardModel.fromJson( (jsonDecode( response.body ))['data'] );
         isStaticCodeInvalid.value = false;
         Get.toNamed(AppRoutes.scannerComplete, arguments: redeemedRewardModel );
       }else{
@@ -96,46 +89,5 @@ class RedeemController extends GetxController{
   //     },
   //   );
   // }
-
-//sample response
-final redeemResponse = {
-  "_id": "6936fb00af5237d44d7883ce",
-  "user": "69301feaddbf3fdf987e86e8",
-  "reward": {
-    "_id": "6936d61243232039a271a5f3",
-    "title": "Free Tea",
-    "description": "Get a free coffee with any purchase above \$10",
-    "type": "in-store",
-    "category": "food",
-    "redeemedCount": 120,
-    "image": "htttp://www.imageurl.com"
-  },
-  "business": {
-    "_id": "6936d5e943232039a271a5ea",
-    "name": "TechMart BD",
-    "locations": [
-      "Dhaka",
-      "Chattogram",
-      "Sylhet"
-    ]
-  },
-  "pointsSpent": 500,
-  "status": "redeemed",
-  "assignedCode": "698929DDD596",
-  "availableRedemptionMethods": [
-    "qr",
-    "static-code",
-    "nfc"
-  ],
-  "expiresAt": "2026-01-07T16:21:20.917Z",
-  "idempotencyKey": "df325cb190dc276a8484544264c398fb",
-  "claimedAt": "2025-12-08T16:21:20.918Z",
-  "createdAt": "2025-12-08T16:21:20.919Z",
-  "updatedAt": "2025-12-11T10:31:21.779Z",
-  "redeemedAt": "2025-12-11T10:31:21.774Z",
-  "redemptionMethod": "static-code",
-  "redeemedByStaff": "6936d5e943232039a271a5ea"
-};
-
 
 }

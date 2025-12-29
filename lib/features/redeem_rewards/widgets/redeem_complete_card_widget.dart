@@ -3,17 +3,19 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
 import 'package:organization/utils/app_color.dart';
 import 'package:organization/utils/app_text_styles.dart';
+import 'package:organization/utils/assets_gen/assets.gen.dart';
 import 'package:organization/utils/assets_path.dart';
 
 class RedeemCompleteCardWidget extends StatelessWidget {
 
   final String title;
+  final String image;
   final DateTime dateTime;
   final int redemptionCount;
   final String redemptionMethod;
   //FOR CHECKING REDEMPTION METHOD
   final String staticCode = "static-code";
-  final String nfcTap = "nfc";
+  //final String nfcTap = "nfc";
   final String qrCode = "qr";
 
   const RedeemCompleteCardWidget({
@@ -21,7 +23,8 @@ class RedeemCompleteCardWidget extends StatelessWidget {
     required this.title,
     required this.dateTime,
     required this.redemptionCount,
-    required this.redemptionMethod
+    required this.redemptionMethod,
+    required this.image
   });
 
   @override
@@ -44,11 +47,10 @@ class RedeemCompleteCardWidget extends StatelessWidget {
             children: [
               Row(
                 children: [
-                  // Assuming you have an asset for the badge
-                  Image.asset(
-                    AssetsPath.rankBadge2Icon,
-                    width: 24.w,
-                    height: 24.h,
+                  Container(
+                    height: 25.h,
+                    width: 25.w,
+                    child: rewardImage( image ),
                   ),
                   SizedBox(width: 8.w),
                   Text(
@@ -127,9 +129,9 @@ class RedeemCompleteCardWidget extends StatelessWidget {
                           width: 24.w,
                           height: 24.h,
                         ),
-                      if( redemptionMethod == nfcTap )
+                      if( redemptionMethod != staticCode && redemptionMethod != qrCode )
                         Image.asset(
-                          AssetsPath.nfcIcon,
+                          AssetsPath.qrCodeIcon,
                           width: 24.w,
                           height: 24.h,
                         ),
@@ -142,5 +144,20 @@ class RedeemCompleteCardWidget extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  rewardImage( String imageUrl ){
+
+    if( imageUrl.isEmpty ){
+      return Image.asset(AssetsPath.rankBadge2Icon, fit: BoxFit.cover);
+    }else{
+      return Image.network(
+        imageUrl,
+        fit: BoxFit.cover,
+        errorBuilder: ( context, error, stackTrace ){
+          return Image.asset(AssetsPath.rankBadge2Icon, fit: BoxFit.cover);
+        },
+      );
+    }
   }
 }

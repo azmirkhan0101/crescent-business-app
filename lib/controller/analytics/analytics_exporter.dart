@@ -1,9 +1,11 @@
 import 'dart:io';
+import 'dart:math';
 
 import 'package:csv/csv.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:open_filex/open_filex.dart';
 import 'package:organization/core/show_snackbar.dart';
 import 'package:organization/utils/app_color.dart';
 import 'package:path_provider/path_provider.dart';
@@ -16,7 +18,7 @@ import '../../data/models/analytics/business_analytics_model.dart';
 
 class AnalyticsExporter {
 
-  getDirectory() async {
+  Future<Directory?>? getExportDirectory() async {
     try {
       // Android: request permission (same as your original code)
       if (Platform.isAndroid) {
@@ -33,12 +35,12 @@ class AnalyticsExporter {
           if (status.isPermanentlyDenied) {
             await OpenAppSettings.openAppSettings();
             showSnackBar(title: 'Permission Required', message: 'Please grant storage permission in app settings', backgroundColor: AppColors.errorRed);
-            return;
+            return null;
           }
 
           if (!status.isGranted) {
             showSnackBar(title: 'Error', message: 'Storage permission denied. Cannot save PDF.', backgroundColor: AppColors.errorRed);
-            return;
+            return null;
           }
         } else {
           // For older Android versions
@@ -50,24 +52,24 @@ class AnalyticsExporter {
           if (status.isPermanentlyDenied) {
             await OpenAppSettings.openAppSettings();
             showSnackBar(title: 'Permission Required', message: 'Please grant storage permission in app settings', backgroundColor: AppColors.warningYellow);
-            return;
+            return null;
           }
 
           if (!status.isGranted) {
             showSnackBar(title: 'Error', message: 'Storage permission denied. Cannot save PDF.', backgroundColor: AppColors.errorRed);
-            return;
+            return null;
           }
         }
       }
 
-      Directory directory;
+      Directory? directory;
 
       if (Platform.isAndroid) {
-        // ✅ Android: use public storage directory
+        //Android: use public storage directory
         final externalDir = await getExternalStorageDirectory();
         if (externalDir == null) {
           showSnackBar(title: 'Error', message: 'Cannot access external storage', backgroundColor: AppColors.errorRed);
-          return;
+          return null;
         }
 
         // Extract the root path (/storage/emulated/0)
@@ -96,7 +98,7 @@ class AnalyticsExporter {
         } catch (e) {
           debugPrint('Error creating directory: $e');
           showSnackBar(title: 'Error', message: 'Failed to create directory: $e', backgroundColor: AppColors.errorRed);
-          return;
+          return null;
         }
       }
 
@@ -109,21 +111,26 @@ class AnalyticsExporter {
       } catch (e) {
         debugPrint('Directory is not writable: $e');
         showSnackBar(title: 'Error', message: 'Cannot write to directory: $e', backgroundColor: AppColors.errorRed);
-        return;
+        return null;
       }
-
-      // Save the PDF
-
+      if( directory != null ){
+        return directory;
+      }else{
+        return null;
+      }
     } catch (e) {
       showSnackBar(title: 'Error', message: 'Failed to save PDF to storage: $e', backgroundColor: AppColors.errorRed);
+      return null;
     }
   }
 
   // 1. Export to CSV
   Future<void> exportToCSV(BusinessAnalyticsModel data) async {
 
-
-    if (await _requestPermission()) {
+    Directory? directory = await getExportDirectory();
+    if( directory == null ){
+      return;
+    }else{
       List<List<dynamic>> rows = [];
 
       // Headers
@@ -145,18 +152,21 @@ class AnalyticsExporter {
       }
 
       String csvData = const ListToCsvConverter().convert(rows);
-      //await _saveFile(csvData, "business_analytics.csv");
+      await _saveFile(csvData, "business_analytics.csv", directory: directory );
     }
   }
 
   // 2. Export to PDF
   Future<void> exportToPDF(BusinessAnalyticsModel data) async {
 
-    if (await _requestPermission()) {
+    Directory? directory = await getExportDirectory();
+    if( directory == null ){
+      return;
+    }else{
       final pdf = pw.Document();
 
       pdf.addPage(
-        pw.MultiPage( // Use MultiPage in case your lists (methods/rewards) are long
+        pw.MultiPage(
           pageFormat: PdfPageFormat.a4,
           build: (pw.Context context) {
             return [
@@ -203,7 +213,7 @@ class AnalyticsExporter {
       );
 
       final bytes = await pdf.save();
-      //await _saveFile(bytes, "business_analytics.pdf", isBytes: true);
+      await _saveFile(bytes, "business_analytics.pdf", isBytes: true, directory: directory);
     }
   }
 
@@ -249,21 +259,29 @@ class AnalyticsExporter {
 
     await _notificationsPlugin.initialize(
       initializationSettings,
-      onDidReceiveNotificationResponse: (NotificationResponse details) {
-        if (details.payload != null) {
-          // Opens the file when the notification is tapped
-          //OpenFilex.open(details.payload);
+      onDidReceiveNotificationResponse: (NotificationResponse details) async{
+        if (details.payload != null && details.payload!.isNotEmpty) {
+          /// Trigger the file opening logic
+          await _openDownloadedFile(details.payload!);
         }
       },
     );
   }
 
+  Future<void> _openDownloadedFile(String filePath) async {
+    final result = await OpenFilex.open(filePath);
+
+    if (result.type != ResultType.done) {
+      // Handle errors (e.g., file not found or no app to open it)
+      showSnackBar(title: "Cannot open file", message: "Try opening from file manager.", backgroundColor: AppColors.warningYellow);
+    }
+  }
+
   void _showNotification(String path) async {
-    // Define notification details for Android
     const AndroidNotificationDetails androidPlatformChannelSpecifics =
     AndroidNotificationDetails(
-      'export_channel_id', // ID
-      'File Exports',      // Name
+      'export_channel_id',
+      'File Exports',
       channelDescription: 'Notifications for saved CSV and PDF files',
       importance: Importance.max,
       priority: Priority.high,

@@ -105,6 +105,7 @@ class RedeemScannerCompleteScreen extends StatelessWidget {
                 dateTime: model?.redeemedAt ?? DateTime.now(),
                 redemptionCount: model?.redeemedCount ?? 0,
                 redemptionMethod: model?.redemptionMethod ?? "qr",
+                image: model?.image ?? "",
               ),
             ],
           ),
