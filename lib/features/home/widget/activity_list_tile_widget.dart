@@ -47,20 +47,17 @@ class ActivityListTileWidget extends StatelessWidget {
         Container(
            height: 44.h,
           width: 44.w,
+          padding: EdgeInsets.all(10.r),
           decoration: BoxDecoration(
             color: item.type == "creation" ? AppColors.successGreen.withOpacity(0.2) : AppColors.errorRed.withOpacity(0.2),
             shape: BoxShape.circle,
           ),
           child:Image.asset(
             iconPath,
-            height: 24.h,
-            width: 24.w,
+            fit: BoxFit.cover,
           ),
-
-
         ),
         const SizedBox(width: 16),
-
         /// Right side text
         Expanded(
           child: Column(
@@ -75,8 +72,6 @@ class ActivityListTileWidget extends StatelessWidget {
                 maxLines: maxLines,
                 textAlign: TextAlign.left,
               ),
-
-
               const SizedBox(height: 4),
               CustomText(text: item.timeAgo,
                 color: AppColors.secondaryTextColor,
@@ -84,7 +79,6 @@ class ActivityListTileWidget extends StatelessWidget {
                 language: false,
                 fontSize: 12.sp,
               ),
-
             ],
           ),
         ),

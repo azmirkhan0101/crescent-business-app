@@ -181,6 +181,9 @@ class $AssetsIconsGen {
   /// File path: assets/icons/nav_rewards.svg
   String get navRewards => 'assets/icons/nav_rewards.svg';
 
+  /// File path: assets/icons/nfc2.svg
+  String get nfc2 => 'assets/icons/nfc2.svg';
+
   /// File path: assets/icons/nfc_icon.png
   AssetGenImage get nfcIcon => const AssetGenImage('assets/icons/nfc_icon.png');
 
@@ -201,6 +204,9 @@ class $AssetsIconsGen {
 
   /// File path: assets/icons/qr_code.png
   AssetGenImage get qrCode => const AssetGenImage('assets/icons/qr_code.png');
+
+  /// File path: assets/icons/qr_code2.svg
+  String get qrCode2 => 'assets/icons/qr_code2.svg';
 
   /// File path: assets/icons/radio_button1.png
   AssetGenImage get radioButton1 =>
@@ -324,6 +330,7 @@ class $AssetsIconsGen {
     navAnalytics,
     navHome,
     navRewards,
+    nfc2,
     nfcIcon,
     notification,
     other,
@@ -331,6 +338,7 @@ class $AssetsIconsGen {
     profile,
     profileIcon,
     qrCode,
+    qrCode2,
     radioButton1,
     radioButton2,
     radioButtonIcon,

@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:intl/intl.dart';
 import 'package:organization/features/widgets/custom_asset_image.dart';
 import 'package:organization/utils/app_color.dart';
 import 'package:organization/utils/app_constants.dart';
 import 'package:organization/utils/app_text_styles.dart';
+import 'package:organization/utils/assets_gen/assets.gen.dart';
 import 'package:organization/utils/assets_path.dart';
 
 import 'custom_switch.dart';
@@ -75,7 +77,7 @@ class _RewardCardState extends State<RewardCard> {
     }
 
     return Container(
-      height: 161.h,
+      height: 165.h,
       padding: EdgeInsets.all(12.w),
       decoration: BoxDecoration(
         color: Colors.white,
@@ -277,10 +279,10 @@ class _RewardCardState extends State<RewardCard> {
                     children: [
                       //ONLINE REDEMPTION ICONS
                       if( widget.isQr )//QR ICON
-                        CustomAssetsImage(
-                          assetsPath: AssetsPath.qrCodeIcon,
-                          height: 28.h,
-                          width: 28.w,
+                        SvgPicture.asset(
+                          Assets.icons.qrCode2,
+                          height: 24.h,
+                          width: 24.w,
                         ),
                       if( widget.isStaticCode )//STATIC CODE
                       CustomAssetsImage(
@@ -289,8 +291,8 @@ class _RewardCardState extends State<RewardCard> {
                         width: 24.w,
                       ),
                       if( widget.isNfc )//NFC
-                        CustomAssetsImage(
-                          assetsPath: AssetsPath.nfcIcon,
+                        SvgPicture.asset(
+                          Assets.icons.nfc2,
                           height: 24.h,
                           width: 24.w,
                         ),
