@@ -1,5 +1,7 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:shimmer/shimmer.dart';
 
 import '../../../utils/app_color.dart';
 import '../../../utils/app_constants.dart';
@@ -56,23 +58,28 @@ class ProfileRewardCardWidget extends StatelessWidget {
         children: [
           Row(
             children: [
-              ClipRRect(
-                borderRadius: BorderRadius.circular(5.r),
-                child: Image.network(
-                  imageUrl,
-                  height: 24.h,
-                  width: 24.w,
-                  fit: BoxFit.cover,
-                  errorBuilder: (context, error, stackTrace) {
-                    return Image.asset(
+              Container(
+                height: 24.h,
+                width: 24.w,
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(5.r),
+                  child: CachedNetworkImage(
+                    imageUrl: imageUrl,
+                    fit: BoxFit.cover,
+                    placeholder: (context, url) => Shimmer.fromColors(
+                      baseColor: Colors.grey[300]!,
+                      highlightColor: Colors.grey[100]!,
+                      child: Container(color: Colors.white),
+                    ),
+                    errorWidget: (context, url, error) => Image.asset(
                       type == typeOnline
                           ? AssetsPath.onlineRewardIcon
                           : AssetsPath.instoreRewardIcon,
                       height: 24.h,
                       width: 24.w,
                       fit: BoxFit.cover,
-                    );
-                  },
+                    )
+                  ),
                 ),
               ),
               SizedBox(width: 6.w),

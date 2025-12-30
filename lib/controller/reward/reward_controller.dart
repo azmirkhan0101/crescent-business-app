@@ -30,8 +30,12 @@ class RewardController extends GetxController {
 
     getAllRewards();
     scrollController.addListener(() {
+      print("Scroll is working");
+      if (isMoreLoading.value || !hasMoreData) return;
+      print("Scroll is very okay");
       // Trigger when user scrolls to 90% of the page
       if (scrollController.position.pixels >= scrollController.position.maxScrollExtent * 0.9) {
+        print("Yooooooooooooooooo 90 %");
         getAllRewards(isRefresh: false);
       }
     });
@@ -174,31 +178,12 @@ class RewardController extends GetxController {
         } else {
           currentPage++;
         }
-        // WidgetsBinding.instance.addPostFrameCallback((_) {
-        //   if (isRefresh) {
-        //     rewards.value = fetchedRewards;
-        //   } else {
-        //     rewards.addAll(fetchedRewards);
-        //   }
-        //   // Logic to check if we should stop pagination
-        //   // If the API returns fewer than 10 items, we've reached the end
-        //   if (fetchedRewards.length < 10) {
-        //     hasMoreData = false;
-        //   } else {
-        //     currentPage++;
-        //   }
-        // });
       }
     }catch(e){
     }finally{
       isLoading.value = false;
       isMoreLoading.value = false;
       isFilterLoading.value = false;
-      // WidgetsBinding.instance.addPostFrameCallback((_) {
-      //   isLoading.value = false;
-      //   isMoreLoading.value = false;
-      //   isFilterLoading.value = false;
-      // });
     }
   }
 

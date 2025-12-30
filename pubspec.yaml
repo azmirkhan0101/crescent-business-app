@@ -121,9 +121,9 @@ flutter_gen:
 
 flutter_native_splash:
 
-  color: "#FFFFFF"  ##====================================[REQUIRED]==========
+  color: "#FFFFFF"
   image: assets/images/logo1024.png
-  fullscreen: true                # default false
+  fullscreen: true
   android_12:
     # background color
     color: "#FFFFFF"

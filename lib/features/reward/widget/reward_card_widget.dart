@@ -95,26 +95,30 @@ class _RewardCardState extends State<RewardCard> {
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisSize: MainAxisSize.min,
         children: [
-          /// -------- Title + Popup --------
+          //==============Title + Popup===================
           Row(
             children: [
-              ClipRRect(
-                borderRadius: BorderRadius.circular(5.r),
-                child: CachedNetworkImage(
-                  imageUrl: imageUrl,
-                  fit: BoxFit.cover,
-                  placeholder: (context, url) => Shimmer.fromColors(
-                    baseColor: Colors.grey[300]!,
-                    highlightColor: Colors.grey[100]!,
-                    child: Container(color: Colors.white),
-                  ),
-                  errorWidget: (context, url, error) => Image.asset(
-                    widget.type == typeOnline
-                        ? AssetsPath.onlineRewardIcon
-                        : AssetsPath.instoreRewardIcon,
-                    height: 24.h,
-                    width: 24.w,
+              Container(
+                height: 24.h,
+                width: 24.w,
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(5.r),
+                  child: CachedNetworkImage(
+                    imageUrl: imageUrl,
                     fit: BoxFit.cover,
+                    placeholder: (context, url) => Shimmer.fromColors(
+                      baseColor: Colors.grey[300]!,
+                      highlightColor: Colors.grey[100]!,
+                      child: Container(color: Colors.white),
+                    ),
+                    errorWidget: (context, url, error) => Image.asset(
+                      widget.type == typeOnline
+                          ? AssetsPath.onlineRewardIcon
+                          : AssetsPath.instoreRewardIcon,
+                      height: 24.h,
+                      width: 24.w,
+                      fit: BoxFit.cover,
+                    ),
                   ),
                 ),
               ),
@@ -126,7 +130,7 @@ class _RewardCardState extends State<RewardCard> {
                 ),
               ),
               const Spacer(),
-              /// Popup menu
+              //Popup menu
               PopupMenuButton<String>(
                 color: AppColors.white,
                 itemBuilder: (context) => [

@@ -24,6 +24,7 @@ class EditProfileScreen extends StatelessWidget {
   final BusinessProfileController controller = Get.find<BusinessProfileController>();
   final TextEditingController textEditingController = TextEditingController();
   final String googleApiKey = dotenv.env['GOOGLE_API_KEY']!;
+  final FocusNode focusNode = FocusNode();
 
   @override
   Widget build(BuildContext context) {
@@ -144,7 +145,7 @@ class EditProfileScreen extends StatelessWidget {
               textEditingController: textEditingController,
               onItemClick: (placeName){
               controller.locationNames.add(placeName);
-            },
+            }, focusNode: focusNode,
             ),
             Obx(() {
               return ListView.builder(
@@ -187,13 +188,14 @@ class PlacesSearchField extends StatelessWidget {
   final String googleApiKey;
   final TextEditingController textEditingController;
   final Function(String) onItemClick;
-
+  final FocusNode focusNode;
 
    PlacesSearchField({
     super.key,
      required this.googleApiKey,
      required this.textEditingController,
-     required this.onItemClick
+     required this.onItemClick,
+     required this.focusNode,
    });
 
   @override
@@ -205,6 +207,7 @@ class PlacesSearchField extends StatelessWidget {
         keyboardType: TextInputType.text,
         textEditingController: textEditingController,
         googleAPIKey: googleApiKey,
+        focusNode: focusNode,
         inputDecoration: InputDecoration(
           hintText: "Search your location",
           border: InputBorder.none,
@@ -216,7 +219,6 @@ class PlacesSearchField extends StatelessWidget {
         getPlaceDetailWithLatLng: (Prediction prediction) {
           //print("placeDetails" + prediction.lat.toString());
         },
-
         itemClick: (Prediction prediction) {
           final placeName = prediction.description ?? "";
           textEditingController.text = placeName;
@@ -226,7 +228,8 @@ class PlacesSearchField extends StatelessWidget {
           textEditingController.selection = TextSelection.fromPosition(
             TextPosition(offset: prediction.description?.length ?? 0),
           );
-          FocusScope.of(context).unfocus();
+          textEditingController.clear();
+          focusNode.requestFocus();
         },
         seperatedBuilder: Divider(),
         containerHorizontalPadding: 10,

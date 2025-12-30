@@ -22,7 +22,7 @@ class StoreLocationScreen extends StatelessWidget {
   final TextEditingController textEditingController = TextEditingController();
   RxList<String> locationNames = <String>[].obs;
   final String googleApiKey = dotenv.env['GOOGLE_API_KEY']!;
-
+  FocusNode focusNode = FocusNode();
 
   @override
   Widget build(BuildContext context) {
@@ -114,6 +114,7 @@ class StoreLocationScreen extends StatelessWidget {
       child: GooglePlaceAutoCompleteTextField(
         textEditingController: textEditingController,
         googleAPIKey:googleApiKey,
+        focusNode: focusNode,
         inputDecoration: InputDecoration(
           hintText: "Search your location",
           border: InputBorder.none,
@@ -132,15 +133,10 @@ class StoreLocationScreen extends StatelessWidget {
           locationNames.add( placeName );
           textEditingController.selection = TextSelection.fromPosition(
               TextPosition(offset: prediction.description?.length ?? 0));
+          focusNode.requestFocus();
         },
         seperatedBuilder: Divider(),
         containerHorizontalPadding: 10,
-
-        // Optional: specify keyboard type (defaults to TextInputType.streetAddress)
-        // keyboardType: TextInputType.text,
-
-
-        // OPTIONAL// If you want to customize list view item builder
         itemBuilder: (context, index, Prediction prediction) {
           return Container(
             padding: EdgeInsets.all(10),
@@ -155,9 +151,7 @@ class StoreLocationScreen extends StatelessWidget {
             ),
           );
         },
-
         isCrossBtnShown: true,
-
         // default 600 ms ,
       ),
     );

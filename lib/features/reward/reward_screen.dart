@@ -44,7 +44,6 @@ class RewardScreen extends StatelessWidget {
           ),
         ],
       ),
-
       body: RefreshIndicator(
         onRefresh: () async {
           //get all rewards on refresh - no filter
@@ -54,7 +53,7 @@ class RewardScreen extends StatelessWidget {
         },
         child: SingleChildScrollView(
           physics: AlwaysScrollableScrollPhysics(),
-
+          controller: controller.scrollController,
           child: Obx(() {
             if (controller.isLoading.value == true &&
                 controller.isFilterLoading.value == false &&
@@ -71,7 +70,6 @@ class RewardScreen extends StatelessWidget {
               return Column(
                 children: [
                   SingleChildScrollView(
-                    controller: controller.scrollController,
                     scrollDirection: Axis.horizontal,
                     child: Padding(
                       padding: EdgeInsets.symmetric(horizontal: 15.w),
@@ -363,25 +361,4 @@ class RewardScreen extends StatelessWidget {
       },
     );
   }
-
-  //REWARD DELETE BOTTOM SHEET
-  // void showDeleteBottomSheet( String rewardId ) {
-  //   Get.bottomSheet(
-  //     BottomSheetWidget(
-  //       title: "Delete Reward",
-  //       description: "Are you sure you want to delete this reward? This action cannot be undone.",
-  //       primaryButtonText: "Delete",
-  //       secondaryButtonText: "Cancel",
-  //       onPrimaryPressed: () {
-  //         Get.back(closeOverlays: true);
-  //         controller.deleteReward( rewardId );
-  //       },
-  //       onSecondaryPressed: () {
-  //         Get.back(closeOverlays: true);
-  //       },
-  //     ),
-  //     isScrollControlled: true,
-  //     backgroundColor: Colors.transparent,
-  //   );
-  // }
 }
