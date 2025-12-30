@@ -1,9 +1,11 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:organization/routes/app_pages.dart';
 import 'package:organization/utils/assets_gen/assets.gen.dart';
+import 'package:shimmer/shimmer.dart';
 
 import '../../../utils/app_text_styles.dart';
 
@@ -104,14 +106,21 @@ class HomeHeaderWidget extends StatelessWidget {
   //BUILD PROFILE IMAGE
   Widget buildProfileImage() {
     if ( profileImageUrl != null && profileImageUrl!.isNotEmpty) {
-      return Image.network( profileImageUrl!, fit: BoxFit.cover,
-        errorBuilder: (context, error, stackTrace) {
-          return const Icon(Icons.business);
-        },
+      return CachedNetworkImage(
+        imageUrl: profileImageUrl!,
+        fit: BoxFit.cover,
+        // This creates the "shimmering" gray box while loading
+        placeholder: (context, url) => Shimmer.fromColors(
+          baseColor: Colors.grey[300]!,
+          highlightColor: Colors.grey[100]!,
+          child: Container(
+            color: Colors.white,
+          ),
+        ),
+        errorWidget: (context, url, error) => const Icon(Icons.business),
       );
     }
-
     //return Icon(Icons.business, size: 50.r, color: Colors.grey);
-    return Icon(Icons.business);
+    return Icon(Icons.business, size: 50.r, color: Colors.grey);
   }
 }

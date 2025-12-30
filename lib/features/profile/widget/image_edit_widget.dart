@@ -1,9 +1,11 @@
 import 'dart:io';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:shimmer/shimmer.dart';
 
 import '../../../utils/app_color.dart';
 
@@ -102,18 +104,21 @@ class ImageEditWidget extends StatelessWidget {
     if ( coverImage.value != null ) {
       return Image.file(coverImage.value!, fit: BoxFit.cover);
     } else if ( coverImageUrl != null && coverImageUrl!.isNotEmpty) {
-      return Image.network(
-        coverImageUrl!,
-        fit: BoxFit.cover,
-        errorBuilder: (context, error, stackTrace) {
-          return Center(
+      return CachedNetworkImage(
+          imageUrl: coverImageUrl!,
+          fit: BoxFit.cover,
+          placeholder: (context, url) => Shimmer.fromColors(
+            baseColor: Colors.grey[300]!,
+            highlightColor: Colors.grey[100]!,
+            child: Container(color: Colors.white),
+          ),
+          errorWidget: (context, url, error) => Center(
             child: Icon(
               Icons.image,
               size: 100.r,
               color: Colors.white,
             ),
-          );
-        },
+          )
       );
     }
     return Icon(Icons.image, size: 100.r, color: Colors.white);
@@ -123,18 +128,21 @@ class ImageEditWidget extends StatelessWidget {
     if ( logoImage.value != null) {
       return Image.file(logoImage.value!, fit: BoxFit.cover);
     } else if ( logoImageUrl != null && logoImageUrl!.isNotEmpty ) {
-      return Image.network(
-        logoImageUrl!,
-        fit: BoxFit.cover,
-        errorBuilder: (context, error, stackTrace) {
-          return Center(
+      return CachedNetworkImage(
+          imageUrl: logoImageUrl!,
+          fit: BoxFit.cover,
+          placeholder: (context, url) => Shimmer.fromColors(
+            baseColor: Colors.grey[300]!,
+            highlightColor: Colors.grey[100]!,
+            child: Container(color: Colors.white),
+          ),
+          errorWidget: (context, url, error) => Center(
             child: Icon(
               Icons.business,
               size: 50.r,
               color: Colors.grey,
             ),
-          );
-        },
+          )
       );
     }
     return Icon(Icons.business, size: 50.r, color: Colors.grey);

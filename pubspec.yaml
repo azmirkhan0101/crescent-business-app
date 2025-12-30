@@ -76,6 +76,8 @@ dependencies:
   flutter_launcher_icons: ^0.14.4
   path_provider_android: ^2.2.22
   open_filex: ^4.7.0
+  cached_network_image: ^3.4.1
+  shimmer: ^3.0.0
 
 
 

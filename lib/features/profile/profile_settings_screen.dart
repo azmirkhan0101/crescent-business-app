@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -6,6 +7,7 @@ import 'package:organization/features/widgets/button_widget.dart';
 import 'package:organization/features/widgets/custom_text.dart';
 import 'package:organization/routes/app_pages.dart';
 import 'package:organization/utils/app_color.dart';
+import 'package:shimmer/shimmer.dart';
 
 class ProfileSettingsScreen extends StatefulWidget {
   const ProfileSettingsScreen({super.key});
@@ -360,15 +362,17 @@ class _MyProfileScreenState extends State<ProfileSettingsScreen> {
   //BUILD PROFILE IMAGE
   Widget buildProfileImage() {
     if ( controller.logoImageUrl.value.isNotEmpty ) {
-      return Image.network(
-          controller.logoImageUrl.value,
+      return CachedNetworkImage(
+          imageUrl: controller.logoImageUrl.value,
           fit: BoxFit.cover,
-        errorBuilder: ( context, error, stackTrace ){
-            return Icon(Icons.business, size: 40.r,);
-        },
+          placeholder: (context, url) => Shimmer.fromColors(
+            baseColor: Colors.grey[300]!,
+            highlightColor: Colors.grey[100]!,
+            child: Container(color: Colors.white),
+          ),
+          errorWidget: (context, url, error) => Icon(Icons.business, size: 40.r,)
       );
     }
-
     return Icon(Icons.business, color: Colors.grey, size: 40.r,);
   }
 }

@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -8,21 +9,23 @@ import 'package:organization/utils/app_constants.dart';
 import 'package:organization/utils/app_text_styles.dart';
 import 'package:organization/utils/assets_gen/assets.gen.dart';
 import 'package:organization/utils/assets_path.dart';
+import 'package:shimmer/shimmer.dart';
 
 import 'custom_switch.dart';
 
 class RewardCard extends StatefulWidget {
-
   final String? image;
   final String title;
   final DateTime? expiryDate;
   final int redemptions;
   final bool isActive;
   final String type;
+
   //INSTORE REDEMPTIONS
   final bool isQr;
   final bool isNfc;
   final bool isStaticCode;
+
   //ONLINE REDEMPTIONS
   final bool isGiftCard;
   final bool isDiscountCode;
@@ -57,10 +60,9 @@ class _RewardCardState extends State<RewardCard> {
 
   @override
   void initState() {
-
-    if( widget.expiryDate != null ){
-      formattedDate = "Expires: ${DateFormat('yyyy-MM-dd')
-          .format(widget.expiryDate!)}";
+    if (widget.expiryDate != null) {
+      formattedDate =
+          "Expires: ${DateFormat('yyyy-MM-dd').format(widget.expiryDate!)}";
       //DateTime dateTime = DateTime.parse( widget.expiryDate! );
       //date = "Expires: ${dateTime.toIso8601String().split('T')[0]}";
     }
@@ -70,9 +72,8 @@ class _RewardCardState extends State<RewardCard> {
 
   @override
   Widget build(BuildContext context) {
-
     String imageUrl = "";
-    if( widget.image != null ){
+    if (widget.image != null) {
       imageUrl = widget.image!;
     }
 
@@ -94,27 +95,27 @@ class _RewardCardState extends State<RewardCard> {
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisSize: MainAxisSize.min,
         children: [
-
           /// -------- Title + Popup --------
           Row(
             children: [
               ClipRRect(
                 borderRadius: BorderRadius.circular(5.r),
-                child: Image.network(
-                  imageUrl,
-                  height: 24.h,
-                  width: 24.w,
+                child: CachedNetworkImage(
+                  imageUrl: imageUrl,
                   fit: BoxFit.cover,
-                  errorBuilder: (context, error, stackTrace) {
-                    return Image.asset(
-                      widget.type == typeOnline
-                          ? AssetsPath.onlineRewardIcon
-                          : AssetsPath.instoreRewardIcon,
-                      height: 24.h,
-                      width: 24.w,
-                      fit: BoxFit.cover,
-                    );
-                  },
+                  placeholder: (context, url) => Shimmer.fromColors(
+                    baseColor: Colors.grey[300]!,
+                    highlightColor: Colors.grey[100]!,
+                    child: Container(color: Colors.white),
+                  ),
+                  errorWidget: (context, url, error) => Image.asset(
+                    widget.type == typeOnline
+                        ? AssetsPath.onlineRewardIcon
+                        : AssetsPath.instoreRewardIcon,
+                    height: 24.h,
+                    width: 24.w,
+                    fit: BoxFit.cover,
+                  ),
                 ),
               ),
               SizedBox(width: 8.w),
@@ -125,7 +126,6 @@ class _RewardCardState extends State<RewardCard> {
                 ),
               ),
               const Spacer(),
-
               /// Popup menu
               PopupMenuButton<String>(
                 color: AppColors.white,
@@ -192,9 +192,11 @@ class _RewardCardState extends State<RewardCard> {
                   ),
                 ],
                 onSelected: (value) {
-                  if( value.compareTo( edit ) == 0 ){//EDIT CLICKED
+                  if (value.compareTo(edit) == 0) {
+                    //EDIT CLICKED
                     widget.onEditClick();
-                  }else{//DELETE CLICKED
+                  } else {
+                    //DELETE CLICKED
                     //DELETE REWARD
                     widget.onDeleteClick();
                   }
@@ -229,7 +231,7 @@ class _RewardCardState extends State<RewardCard> {
                   CustomSwitch(
                     value: widget.isActive,
                     onChanged: (bool newValue) {
-                      widget.onStatusChanged( newValue );
+                      widget.onStatusChanged(newValue);
                     },
                   ),
                 ],
@@ -278,40 +280,39 @@ class _RewardCardState extends State<RewardCard> {
                     spacing: 10.w,
                     children: [
                       //ONLINE REDEMPTION ICONS
-                      if( widget.isQr )//QR ICON
+                      if (widget.isQr) //QR ICON
                         SvgPicture.asset(
                           Assets.icons.qrCode2,
                           height: 24.h,
                           width: 24.w,
                         ),
-                      if( widget.isStaticCode )//STATIC CODE
-                      CustomAssetsImage(
-                        assetsPath: AssetsPath.staticCodeIcon,
-                        height: 24.h,
-                        width: 24.w,
-                      ),
-                      if( widget.isNfc )//NFC
+                      if (widget.isStaticCode) //STATIC CODE
+                        CustomAssetsImage(
+                          assetsPath: AssetsPath.staticCodeIcon,
+                          height: 24.h,
+                          width: 24.w,
+                        ),
+                      if (widget.isNfc) //NFC
                         SvgPicture.asset(
                           Assets.icons.nfc2,
                           height: 24.h,
                           width: 24.w,
                         ),
                       //INSTORE REDEMPTION ICONS
-                      if( widget.isDiscountCode )//DISCOUNT CODE
+                      if (widget.isDiscountCode) //DISCOUNT CODE
                         CustomAssetsImage(
                           assetsPath: AssetsPath.discountCodeIcon,
                           height: 24.h,
                           width: 24.w,
                         ),
-                      if( widget.isGiftCard )//GIFT CARD
+                      if (widget.isGiftCard) //GIFT CARD
                         CustomAssetsImage(
                           assetsPath: AssetsPath.giftCardIcon,
                           height: 24.h,
                           width: 24.w,
                         ),
                     ],
-                  )
-
+                  ),
                 ],
               ),
             ],

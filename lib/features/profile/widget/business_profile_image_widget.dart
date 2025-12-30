@@ -1,8 +1,10 @@
 import 'dart:io';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:organization/utils/app_color.dart';
+import 'package:shimmer/shimmer.dart';
 
 class BusinessProfileWidget extends StatefulWidget {
   final String? coverImageUrl;
@@ -125,14 +127,17 @@ class _BusinessProfileWidgetState extends State<BusinessProfileWidget> {
       return Image.file(_coverFile!, fit: BoxFit.cover);
     } else if (widget.coverImageUrl != null &&
         widget.coverImageUrl!.isNotEmpty) {
-      return Image.network(
-        widget.coverImageUrl!,
+      return CachedNetworkImage(
+        imageUrl: widget.coverImageUrl!,
         fit: BoxFit.cover,
-        errorBuilder: (context, error, stackTrace) {
-          return Center(
-            child: Icon(Icons.image, size: 100.r, color: Colors.white),
-          );
-        },
+        placeholder: (context, url) => Shimmer.fromColors(
+          baseColor: Colors.grey[300]!,
+          highlightColor: Colors.grey[100]!,
+          child: Container(color: Colors.white),
+        ),
+        errorWidget: (context, url, error) => Center(
+          child: Icon(Icons.image, size: 100.r, color: Colors.white),
+        ),
       );
     }
     return Icon(Icons.image, size: 100.r, color: Colors.white);
@@ -142,14 +147,17 @@ class _BusinessProfileWidgetState extends State<BusinessProfileWidget> {
     if (_logoFile != null) {
       return Image.file(_logoFile!, fit: BoxFit.cover);
     } else if (widget.logoImageUrl != null && widget.logoImageUrl!.isNotEmpty) {
-      return Image.network(
-        widget.logoImageUrl!,
+      return CachedNetworkImage(
+        imageUrl: widget.logoImageUrl!,
         fit: BoxFit.cover,
-        errorBuilder: (context, error, stackTrace) {
-          return Center(
-            child: Icon(Icons.business, size: 50.r, color: Colors.grey),
-          );
-        },
+        placeholder: (context, url) => Shimmer.fromColors(
+          baseColor: Colors.grey[300]!,
+          highlightColor: Colors.grey[100]!,
+          child: Container(color: Colors.white),
+        ),
+        errorWidget: (context, url, error) => Center(
+          child: Icon(Icons.business, size: 50.r, color: Colors.grey),
+        )
       );
     }
     return Icon(Icons.business, size: 50.r, color: Colors.grey);
