@@ -5,6 +5,7 @@ import 'package:mobile_scanner/mobile_scanner.dart';
 import 'package:organization/controller/redeem/redeem_controller.dart';
 import 'package:organization/features/widgets/custom_card_widget.dart';
 import 'package:organization/utils/app_color.dart';
+import 'package:vibration/vibration.dart';
 
 import '../../../utils/app_text_styles.dart';
 import '../../widgets/custom_text.dart';
@@ -25,6 +26,7 @@ class _QRCodeWidgetState extends State<QRCodeWidget> {
 
   final MobileScannerController _controller = MobileScannerController();
   String? scannedCode;
+  bool isProcessing = false;
 
   @override
   Widget build(BuildContext context) {
@@ -49,11 +51,6 @@ class _QRCodeWidgetState extends State<QRCodeWidget> {
             fontSize: 14.sp,
             language: false,
           ),
-      
-          // Text(
-          //   "Please point the camera at the QR Code",
-          //   style: AppTextStyle.mediumStyle,
-          // ),
           SizedBox(height: 24.h),
           //Scanner Box
           SizedBox(
@@ -70,10 +67,23 @@ class _QRCodeWidgetState extends State<QRCodeWidget> {
                       final barcode = capture.barcodes.first;
                       final String? code = barcode.rawValue;
       
-                      if (code != null && code.isNotEmpty && code != scannedCode) {
-                        setState(() => scannedCode = code);
+                      if ( code != null && code.isNotEmpty && code != scannedCode && !isProcessing ) {
+                        setState((){
+                          scannedCode = code;
+                          isProcessing = true;
+                        });
+
+                        await Future.delayed(Duration(milliseconds: 500));
+
+                        if( await Vibration.hasVibrator() ){
+                          Vibration.vibrate(duration: 70);
+                        }
+
+                        await Future.delayed(Duration(milliseconds: 800));
+
                         redeemController.redeemReward(code: code, method: "qr");
-                        await _controller.stop(); // stop after scan
+                        await _controller.stop();
+                        isProcessing = false;
                       }
                     },
                   ),
@@ -113,36 +123,6 @@ class _QRCodeWidgetState extends State<QRCodeWidget> {
             ],
           ),
           SizedBox(height: 16.h),
-      
-          // if (scannedCode != null) ...[
-          //   SingleChildScrollView(
-          //     child: Column(
-          //       mainAxisAlignment: MainAxisAlignment.center,
-          //       children: [
-          //
-          //       Text(
-          //         "Scanned: $scannedCode",
-          //         style: const TextStyle(
-          //           color: Colors.green,
-          //           fontWeight: FontWeight.bold,
-          //         ),
-          //       ),
-          //       const SizedBox(height: 8),
-          //       ElevatedButton(
-          //         onPressed: () async {
-          //           await _controller.start();
-          //           setState(() => scannedCode = null);
-          //         },
-          //         child: const Text("Scan again"),
-          //       ),
-          //
-          //
-          //
-          //
-          //     ],),
-          //   ),
-          //
-          // ],
           SizedBox(
             height: 60.h,
             width: 279.w,
@@ -179,8 +159,9 @@ class _QRCodeWidgetState extends State<QRCodeWidget> {
   @override
   void dispose() async{
 
-    super.dispose();
     await _controller.dispose();
+    widget.textEditingController.dispose();
+    super.dispose();
   }
 }
 

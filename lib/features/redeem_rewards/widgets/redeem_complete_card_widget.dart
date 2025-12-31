@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
@@ -5,6 +6,7 @@ import 'package:organization/utils/app_color.dart';
 import 'package:organization/utils/app_text_styles.dart';
 import 'package:organization/utils/assets_gen/assets.gen.dart';
 import 'package:organization/utils/assets_path.dart';
+import 'package:shimmer/shimmer.dart';
 
 class RedeemCompleteCardWidget extends StatelessWidget {
 
@@ -151,12 +153,17 @@ class RedeemCompleteCardWidget extends StatelessWidget {
     if( imageUrl.isEmpty ){
       return Image.asset(AssetsPath.rankBadge2Icon, fit: BoxFit.cover);
     }else{
-      return Image.network(
-        imageUrl,
+      return CachedNetworkImage(
+        imageUrl: imageUrl,
         fit: BoxFit.cover,
-        errorBuilder: ( context, error, stackTrace ){
-          return Image.asset(AssetsPath.rankBadge2Icon, fit: BoxFit.cover);
-        },
+        placeholder: (context, url) => Shimmer.fromColors(
+          baseColor: Colors.grey[300]!,
+          highlightColor: Colors.grey[100]!,
+          child: Container(
+            color: Colors.white,
+          ),
+        ),
+        errorWidget: (context, url, error) => Image.asset(AssetsPath.rankBadge2Icon, fit: BoxFit.cover)
       );
     }
   }
