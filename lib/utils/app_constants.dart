@@ -10,6 +10,7 @@ const String forgotPasswordTokenKey = "forgotPasswordTokenKey";
 const String businessProfileModelKey = "businessProfileModelKey";
 //SUBSCRIPTION KEY
 const String subscriptionKey = "subscriptionKey";
+const String subscriptionExpiryDateKey = "subscriptionExpiryDateKey";
 //NOTIFICATION SETTINGS KEY
 const String notificationSettingsModelKey = "notificationSettingsModelKey";
 

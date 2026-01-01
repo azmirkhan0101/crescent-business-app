@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:math';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -38,9 +39,13 @@ class ProfileSettingsController extends GetxController {
   RxString businessEmail = "".obs;
 
   //NOTIFICATION SETTINGS
-  bool isPushNotificationEnabled = true;
-  bool isDonationUpdatesEnabled = true;
-  bool isRewardPerksEnabled = true;
+  RxBool isPushNotificationEnabled = true.obs;
+  RxBool isDonationUpdatesEnabled = true.obs;
+  RxBool isRewardPerksEnabled = true.obs;
+  //SWITCH TOGGLE API CALL LOADING CHECK
+  RxBool isPushLoading = false.obs;
+  RxBool isDonationLoading = false.obs;
+  RxBool isRewardPerksLoading = false.obs;
 
   //REQUIREMENT CHECKBOX CONTROLLER - FOR CHANGE PASSWORD SCREEN
   RxBool isEightCharacters = false.obs;
@@ -68,18 +73,25 @@ class ProfileSettingsController extends GetxController {
   //GET LOGO IMAGE URL AND USER NAME
   getProfileData(){
     BusinessProfileModel? model = BusinessProfileModel.fromJson(storage.read( businessProfileModelKey ));
-    settingsModel = NotificationSettingsModel.fromJson(storage.read( notificationSettingsModelKey ));
+    final settings = storage.read( notificationSettingsModelKey );
+    if( settings == null ){
+      settingsModel = null;
+    }else{
+      settingsModel = NotificationSettingsModel.fromJson( settings );
+    }
+    if( settings == null ){
+      getNotificationSettings();
+    }
     logoImageUrl.value = model.logoImage == null || model.logoImage!.isEmpty
         ? ""
         : "${model.logoImage}";
     businessName.value = model.name;
     businessEmail.value = model.businessEmail;
 
-    isPushNotificationEnabled = settingsModel?.pushNotifications ?? true;
-    isDonationUpdatesEnabled = settingsModel?.donations ?? true;
-    isRewardPerksEnabled = settingsModel?.rewardsAndPerks ?? true;
+    isPushNotificationEnabled.value = settingsModel?.pushNotifications ?? true;
+    isDonationUpdatesEnabled.value = settingsModel?.donations ?? true;
+    isRewardPerksEnabled.value = settingsModel?.rewardsAndPerks ?? true;
     }
-
 
   //=================CHANGE PASSWORD=======================//
   final TextEditingController currentPassword = TextEditingController();
@@ -220,19 +232,27 @@ class ProfileSettingsController extends GetxController {
     }
   }
 
-  changeNotificationSettings() async{
+  changeNotificationSettings({required int switchNumber}) async{
 
     try{
+      if( switchNumber == 0 ){//push
+        isPushLoading.value = true;
+      }else if( switchNumber == 1 ){//donation
+        isDonationLoading.value = true;
+      }else{//reward perks
+        isRewardPerksLoading.value = true;
+      }
       Uri uri = Uri.parse( ApiEndpoints.baseUrl + ApiEndpoints.notificationSettings );
 
       Map<String, String> headers = {
+        "Content-type" : "application/json",
         "Authorization" : "Bearer ${storage.read( accessTokenKey )}"
       };
 
       NotificationSettingsModel settingsModel = NotificationSettingsModel(
-          pushNotifications: isPushNotificationEnabled,
-          donations: isDonationUpdatesEnabled,
-          rewardsAndPerks: isRewardPerksEnabled
+          pushNotifications:  switchNumber == 0 ? !isPushNotificationEnabled.value : isPushNotificationEnabled.value,
+          donations: switchNumber == 1 ? !isDonationUpdatesEnabled.value : isDonationUpdatesEnabled.value,
+          rewardsAndPerks: switchNumber == 2 ? !isRewardPerksEnabled.value : isRewardPerksEnabled.value
       );
 
       http.Response response = await http.patch( uri, body: jsonEncode(settingsModel.toJson()), headers: headers );
@@ -241,9 +261,40 @@ class ProfileSettingsController extends GetxController {
       print("Notifffffff: ${response.body}");
 
       if( response.statusCode == 200 ){
-
+        settingsModel = NotificationSettingsModel.fromJson( jsonDecode(response.body)['data']);
+        isPushNotificationEnabled.value = settingsModel.pushNotifications;
+        isDonationUpdatesEnabled.value = settingsModel.donations;
+        isRewardPerksEnabled.value = settingsModel.rewardsAndPerks;
       }else{
 
+      }
+    }catch(e){
+
+    }finally{
+      isPushLoading.value = false;
+      isDonationLoading.value = false;
+      isRewardPerksLoading.value = false;
+    }
+
+  }
+
+  //GET NOTIFICATION SETTINGS
+  getNotificationSettings() async{
+
+    try{
+      Uri uri = Uri.parse( ApiEndpoints.baseUrl + ApiEndpoints.notificationSettings );
+      Map<String, String> headers = {
+        "Content-type" : "application/json",
+        "Authorization" : "Bearer ${storage.read(accessTokenKey)}"
+      };
+
+      http.Response response = await http.get( uri, headers: headers );
+
+      if( response.statusCode == 200 ) {
+        settingsModel = NotificationSettingsModel.fromJson( jsonDecode( response.body )['data'] );
+        isPushNotificationEnabled.value = settingsModel?.pushNotifications ?? true;
+        isDonationUpdatesEnabled.value = settingsModel?.donations ?? true;
+        isRewardPerksEnabled.value = settingsModel?.rewardsAndPerks ?? true;
       }
     }catch(e){
 

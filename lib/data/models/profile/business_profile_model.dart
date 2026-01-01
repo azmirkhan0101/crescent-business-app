@@ -15,6 +15,7 @@ class BusinessProfileModel{
   String? coverImage;
   String? logoImage;
   bool? isSubscribed;
+  String? subscriptionExpiryDate;
   List<String>? locations;
 
   BusinessProfileModel({
@@ -31,6 +32,7 @@ class BusinessProfileModel{
     required this.coverImage,
     required this.logoImage,
     required this.isSubscribed,
+    required this.subscriptionExpiryDate,
     required this.locations
   });
 
@@ -51,6 +53,7 @@ class BusinessProfileModel{
         coverImage: json['coverImage'] ?? "",
         logoImage: json['logoImage'] ?? "",
         isSubscribed: json['isSubscribed'] ?? true,
+        subscriptionExpiryDate: json['subscriptionExpiresAt'] ?? "",
         locations: List<String>.from(json['locations'])
     );
   }
@@ -72,6 +75,7 @@ class BusinessProfileModel{
       "coverImage": coverImage,
       "logoImage": logoImage,
       "isSubscribed": isSubscribed,
+      "subscriptionExpiresAt": subscriptionExpiryDate,
       "locations": locations,
     };
   }

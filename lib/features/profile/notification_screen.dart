@@ -25,38 +25,44 @@ class NotificationScreen extends StatelessWidget {
         ),
         centerTitle: true,
       ),
-      body: ListView(
+      body: Column(
         children: [
-          NotificationCard(
-            title: "Push Notifications",
-            subtitle: "Manage what updates you want to hear about from Crescent Change.",
-            svgIconPath: "assets/images/Donation.svg",
-            isEnabled: controller.isPushNotificationEnabled,
-            onChanged: (bool value) {
-              controller.isPushNotificationEnabled = value;
-              controller.changeNotificationSettings();
-            },
-          ),
-          NotificationCard(
-            title: "Donation Updates",
-            subtitle: "Get notified when your donation is sent or when a recurring one is coming up.",
-            svgIconPath: "assets/images/exclusive-brand-reward.svg",
-            isEnabled: controller.isDonationUpdatesEnabled,
-            onChanged: (bool value) {
-              controller.isDonationUpdatesEnabled = value;
-              controller.changeNotificationSettings();
-            },
-          ),
-          NotificationCard(
-            title: "Rewards & Perks",
-            subtitle: "We’ll ping you when you earn rewards, perks, or kindness streaks!",
-            svgIconPath: "assets/images/star-filled.svg",
-            isEnabled: controller.isRewardPerksEnabled,
-            onChanged: (bool value) {
-              controller.isRewardPerksEnabled = value;
-              controller.changeNotificationSettings();
-            },
-          ),
+          Obx((){
+            return NotificationCard(
+              title: "Push Notifications",
+              subtitle: "Manage what updates you want to hear about from Crescent Change.",
+              svgIconPath: "assets/images/Donation.svg",
+              isEnabled: controller.isPushNotificationEnabled.value,
+              onChanged: (bool value){
+                controller.changeNotificationSettings(switchNumber: 0);
+              },
+              isLoading: controller.isPushLoading.value,
+            );
+          }),
+          Obx((){
+            return NotificationCard(
+              title: "Donation Updates",
+              subtitle: "Get notified when your donation is sent or when a recurring one is coming up.",
+              svgIconPath: "assets/images/exclusive-brand-reward.svg",
+              isEnabled: controller.isDonationUpdatesEnabled.value,
+              onChanged: (bool value){
+                controller.changeNotificationSettings(switchNumber: 1);
+              },
+              isLoading: controller.isDonationLoading.value,
+            );
+          }),
+          Obx((){
+            return NotificationCard(
+              title: "Rewards & Perks",
+              subtitle: "We’ll ping you when you earn rewards, perks, or kindness streaks!",
+              svgIconPath: "assets/images/star-filled.svg",
+              isEnabled: controller.isRewardPerksEnabled.value,
+              onChanged: (bool value){
+                controller.changeNotificationSettings(switchNumber: 2);
+              },
+              isLoading: controller.isRewardPerksLoading.value,
+            );
+          })
         ],
       ),
     );

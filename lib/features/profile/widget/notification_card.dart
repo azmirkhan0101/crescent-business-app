@@ -4,11 +4,12 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:organization/features/widgets/custom_text.dart';
 import 'package:organization/utils/app_color.dart';
 
-class NotificationCard extends StatefulWidget {
+class NotificationCard extends StatelessWidget {
   final String title;
   final String subtitle;
   final String svgIconPath;
   final bool isEnabled;
+  final bool isLoading;
   final ValueChanged<bool> onChanged;
 
   const NotificationCard({
@@ -17,21 +18,9 @@ class NotificationCard extends StatefulWidget {
     required this.subtitle,
     required this.svgIconPath,
     required this.isEnabled,
+    required this.isLoading,
     required this.onChanged,
   });
-
-  @override
-  State<NotificationCard> createState() => _NotificationCardState();
-}
-
-class _NotificationCardState extends State<NotificationCard> {
-  late bool switchValue;
-
-  @override
-  void initState() {
-    super.initState();
-    switchValue = widget.isEnabled;
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -45,36 +34,54 @@ class _NotificationCardState extends State<NotificationCard> {
           vertical: 12,
         ),
         leading: SvgPicture.asset(
-          widget.svgIconPath,
+          svgIconPath,
           width: 28.w,
           height: 28.h,
         ),
         title: CustomText(
           textAlign: TextAlign.start,
-          text: widget.title,
+          text: title,
           fontWeight: FontWeight.w500,
-
           fontSize: 14,
         ),
-
         subtitle: CustomText(
           maxLines: 8,
           textAlign: TextAlign.start,
-          text: widget.subtitle,
+          text: subtitle,
           fontWeight: FontWeight.w400,
-          color: Color(0xFF808080),
+          color: const Color(0xFF808080),
           fontSize: 14,
         ),
-
-        trailing: Switch(
-          value: switchValue,
-          onChanged: (value) {
-            setState(() {
-              switchValue = value;
-            });
-            widget.onChanged(value);
-          },
-          activeColor: AppColors.primaryColor,
+        trailing: SizedBox(
+          width: 50.w,
+          child: Stack(
+            alignment: Alignment.center,
+            children: [
+              // 1. The Switch
+              Switch(
+                value: isEnabled,
+                // Disable the switch UI while loading is true
+                onChanged: isLoading ? null : onChanged,
+                activeColor: AppColors.primaryColor,
+              ),
+              // 2. The Loading Indicator (positioned over the thumb)
+              if (isLoading)
+                Positioned(
+                  // If enabled (ON), thumb is on the right. If disabled (OFF), thumb is on the left.
+                  right: isEnabled ? 6.w : null,
+                  left: !isEnabled ? 6.w : null,
+                  child: SizedBox(
+                    width: 14.w,
+                    height: 14.w,
+                    child: CircularProgressIndicator(
+                      strokeWidth: 2,
+                      // Contrast color: White when on Primary, Primary when on Grey
+                      color: isEnabled ? Colors.white : AppColors.primaryColor,
+                    ),
+                  ),
+                ),
+            ],
+          ),
         ),
       ),
     );

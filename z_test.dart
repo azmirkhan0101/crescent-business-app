@@ -1,5 +1,19 @@
 class TestClassOne {}
 
+var changeNotif = {
+  "success": true,
+  "message": "Notification settings updated successfully",
+  "data": {
+    "_id": "695619764671e5d80da1011b",
+    "user": "69521a320ba280e9348ffa72",
+    "pushNotifications": false,
+    "donations": true,
+    "rewardsAndPerks": true,
+    "createdAt": "2026-01-01T06:51:34.363Z",
+    "updatedAt": "2026-01-01T07:01:25.505Z",
+  },
+};
+
 var redeemRes = {
   "success": true,
   "message": "Reward redeemed successfully",
@@ -14,7 +28,6 @@ var redeemRes = {
     "status": "redeemed",
   },
 };
-
 
 var rewardAnalytics = {
   "success": true,
