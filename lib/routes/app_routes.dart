@@ -21,26 +21,13 @@ class AppRoutes {
   static const String scannerComplete = '/scanner-complete';
   static const String createReward = '/create-reward';
   static const String editReward = '/edit-reward';
- // static const String addReward = '/add-reward';
-  //static const String tabScreen = '/tab-screen';
-  static const String boardingStore = '/boarding-store';
   static const String subscription = '/subscription';
   static const String profileSettings = '/profile-settings';
   static const String changePassword = '/change-password';
   static const String notification = '/notification';
   static const String termsCondition = '/terms';
- // static const String stackScreen = '/stack-screen';
-  // Main Navigation (Bottom Nav parent)
   static const String mainNav = '/main-nav';
-
  static const String reward = '/reward';
-
  static const String editProfile = '/edit-profile';
  static const String recentActivities = '/recent-activities';
-
-  // Bottom Nav items
-  // static const String home = '/home';
-  // static const String analytics = '/analytics';
-  // static const String redeemScanner = '/redeem-scanner';
-  // static const String businessProfile = '/business-profile';
 }

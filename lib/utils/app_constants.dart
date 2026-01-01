@@ -11,9 +11,7 @@ const String businessProfileModelKey = "businessProfileModelKey";
 //SUBSCRIPTION KEY
 const String subscriptionKey = "subscriptionKey";
 //NOTIFICATION SETTINGS KEY
-const String pushNotificationKey = "pushNotificationKey";
-const String donationUpdatesKey = "donationUpdatesKey";
-const String rewardPerksKey = "rewardPerksKey";
+const String notificationSettingsModelKey = "notificationSettingsModelKey";
 
 //REWARD POPUP MENU VALUES
 const String edit = "edit";

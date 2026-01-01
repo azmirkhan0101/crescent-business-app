@@ -81,21 +81,6 @@ class LoginController extends GetxController{
         storage.write( emailKey, emailController.text.trim());//SAVE EMAIL FOR VERIFY NOW SCREEN
         //go to verify now screen
         Get.offNamed( AppRoutes.verifyNow );
-
-        // Uri resendSignupOtpUri = Uri.parse( ApiEndpoints.baseUrl + ApiEndpoints.otpResendSignup );
-        // Map<String, String> payLoad = {
-        //   "email": emailController.text.trim()
-        // };
-        // try{
-        //   //ASYNC BUT DO NOT WAIT
-        //   unawaited(http.post( resendSignupOtpUri, body: payLoad ));
-        // }catch(e){
-        // }
-        // Map<String, dynamic> arguments = {
-        //   emailKey : emailController.text.trim(),
-        //   isSignupKey : true //CONTROLS IF OTP is FOR SIGNUP OR LOGIN
-        // };
-        // Get.offNamed( AppRoutes.otpVerify, arguments: arguments );
       } else if( response.statusCode == 401 ){//WRONG PASSWORD
         showSnackBar(
             title: "Incorrect password!",
@@ -139,7 +124,7 @@ class LoginController extends GetxController{
   }
 
   //UPDATE FCM TOKEN
-  updateFcmToken() async{
+   Future<void> updateFcmToken() async{
 
     try{
       String? token = await FirebaseNotificationService.instance.getToken();

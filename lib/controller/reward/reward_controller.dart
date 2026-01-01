@@ -30,12 +30,9 @@ class RewardController extends GetxController {
 
     getAllRewards();
     scrollController.addListener(() {
-      print("Scroll is working");
       if (isMoreLoading.value || !hasMoreData) return;
-      print("Scroll is very okay");
       // Trigger when user scrolls to 90% of the page
-      if (scrollController.position.pixels >= scrollController.position.maxScrollExtent * 0.9) {
-        print("Yooooooooooooooooo 90 %");
+      if ( scrollController.position.pixels >= scrollController.position.maxScrollExtent * 0.9 ) {
         getAllRewards(isRefresh: false);
       }
     });

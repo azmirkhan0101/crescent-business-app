@@ -33,7 +33,8 @@ class NotificationScreen extends StatelessWidget {
             svgIconPath: "assets/images/Donation.svg",
             isEnabled: controller.isPushNotificationEnabled,
             onChanged: (bool value) {
-              controller.togglePushNotification(value: value);
+              controller.isPushNotificationEnabled = value;
+              controller.changeNotificationSettings();
             },
           ),
           NotificationCard(
@@ -42,7 +43,8 @@ class NotificationScreen extends StatelessWidget {
             svgIconPath: "assets/images/exclusive-brand-reward.svg",
             isEnabled: controller.isDonationUpdatesEnabled,
             onChanged: (bool value) {
-              controller.toggleDonationUpdates(value: value);
+              controller.isDonationUpdatesEnabled = value;
+              controller.changeNotificationSettings();
             },
           ),
           NotificationCard(
@@ -51,7 +53,8 @@ class NotificationScreen extends StatelessWidget {
             svgIconPath: "assets/images/star-filled.svg",
             isEnabled: controller.isRewardPerksEnabled,
             onChanged: (bool value) {
-              controller.toggleRewardPerks(value: value);
+              controller.isRewardPerksEnabled = value;
+              controller.changeNotificationSettings();
             },
           ),
         ],

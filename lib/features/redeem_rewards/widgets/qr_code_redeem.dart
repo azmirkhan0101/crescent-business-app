@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -14,13 +16,20 @@ import 'apply_widget.dart';
 class QRCodeWidget extends StatefulWidget {
    QRCodeWidget({super.key});
 
-  TextEditingController textEditingController = TextEditingController();
-
   @override
   State<QRCodeWidget> createState() => _QRCodeWidgetState();
 }
 
 class _QRCodeWidgetState extends State<QRCodeWidget> {
+
+  late TextEditingController textEditingController;
+
+  @override
+  void initState() {
+
+    textEditingController = TextEditingController();
+    super.initState();
+  }
 
   final RedeemController redeemController = Get.find<RedeemController>();
 
@@ -118,7 +127,10 @@ class _QRCodeWidgetState extends State<QRCodeWidget> {
               ),
               SizedBox(
                 width: 75.w,
-                child: Divider(color: Color(0xFF777777), thickness: 1.w),
+                child: Divider(
+                    color: Color(0xFF777777),
+                    thickness: 1.w
+                ),
               ),
             ],
           ),
@@ -129,7 +141,7 @@ class _QRCodeWidgetState extends State<QRCodeWidget> {
             child: CustomCard(
               child: Center(
                 child: TextField(
-                  controller: widget.textEditingController,
+                  controller: textEditingController,
                   textAlign: TextAlign.center,
                   style: AppTextStyle.mediumStyle.copyWith(
                     color: AppColors.buttonTextColor,
@@ -149,7 +161,7 @@ class _QRCodeWidgetState extends State<QRCodeWidget> {
           ),
           SizedBox(height: 16.h),
           ApplyWidget(onPressed: () {
-            redeemController.redeemReward(code: widget.textEditingController.text.trim(), method: "static-code");
+            redeemController.redeemReward(code: textEditingController.text.trim(), method: "static-code");
           }),
         ],
       ),
@@ -157,13 +169,14 @@ class _QRCodeWidgetState extends State<QRCodeWidget> {
   }
 
   @override
-  void dispose() async{
+  void dispose() {
 
-    await _controller.dispose();
-    widget.textEditingController.dispose();
+    textEditingController.dispose();
+    unawaited( _controller.dispose());
     super.dispose();
   }
 }
+
 
 /// =============================
 /// 🎨 Only Corner Painter

@@ -6,6 +6,7 @@ import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:http/http.dart' as http;
 import 'package:organization/core/show_snackbar.dart';
+import 'package:organization/data/models/notification/notification_settings_model.dart';
 import 'package:organization/routes/app_pages.dart';
 import 'package:organization/utils/api_endpoints.dart';
 
@@ -29,6 +30,8 @@ class ProfileSettingsController extends GetxController {
 
 
   final storage = GetStorage();
+  NotificationSettingsModel? settingsModel;
+
   //LOGO IMAGE URL
   RxString logoImageUrl = "".obs;
   RxString businessName = "".obs;
@@ -65,15 +68,16 @@ class ProfileSettingsController extends GetxController {
   //GET LOGO IMAGE URL AND USER NAME
   getProfileData(){
     BusinessProfileModel? model = BusinessProfileModel.fromJson(storage.read( businessProfileModelKey ));
+    settingsModel = NotificationSettingsModel.fromJson(storage.read( notificationSettingsModelKey ));
     logoImageUrl.value = model.logoImage == null || model.logoImage!.isEmpty
         ? ""
         : "${model.logoImage}";
     businessName.value = model.name;
     businessEmail.value = model.businessEmail;
 
-    isPushNotificationEnabled = storage.read( pushNotificationKey ) ?? true;
-    isDonationUpdatesEnabled = storage.read( donationUpdatesKey ) ?? true;
-    isRewardPerksEnabled = storage.read( rewardPerksKey ) ?? true;
+    isPushNotificationEnabled = settingsModel?.pushNotifications ?? true;
+    isDonationUpdatesEnabled = settingsModel?.donations ?? true;
+    isRewardPerksEnabled = settingsModel?.rewardsAndPerks ?? true;
     }
 
 
@@ -216,22 +220,35 @@ class ProfileSettingsController extends GetxController {
     }
   }
 
-  //TOGGLE PUSH NOTIFICATION
-togglePushNotification({required bool value}){
-    isPushNotificationEnabled = value;
-    storage.write( pushNotificationKey, isPushNotificationEnabled );
-}
+  changeNotificationSettings() async{
 
-  //TOGGLE PUSH NOTIFICATION
-  toggleDonationUpdates({required bool value}){
-    isDonationUpdatesEnabled = value;
-    storage.write( donationUpdatesKey, isDonationUpdatesEnabled );
-  }
+    try{
+      Uri uri = Uri.parse( ApiEndpoints.baseUrl + ApiEndpoints.notificationSettings );
 
-  //TOGGLE PUSH NOTIFICATION
-  toggleRewardPerks({required bool value}){
-    isRewardPerksEnabled = value;
-    storage.write( rewardPerksKey, isRewardPerksEnabled );
+      Map<String, String> headers = {
+        "Authorization" : "Bearer ${storage.read( accessTokenKey )}"
+      };
+
+      NotificationSettingsModel settingsModel = NotificationSettingsModel(
+          pushNotifications: isPushNotificationEnabled,
+          donations: isDonationUpdatesEnabled,
+          rewardsAndPerks: isRewardPerksEnabled
+      );
+
+      http.Response response = await http.patch( uri, body: jsonEncode(settingsModel.toJson()), headers: headers );
+
+      print("Notiifffffffffff: ${response.statusCode}");
+      print("Notifffffff: ${response.body}");
+
+      if( response.statusCode == 200 ){
+
+      }else{
+
+      }
+    }catch(e){
+
+    }
+
   }
 
 }

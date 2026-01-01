@@ -2,8 +2,8 @@ class ApiEndpoints {
 
   //=======================BASE====================================
   //BASE URL
-  static const baseUrl = "http://13.55.115.124:5000/api/v1";
-  //static const imageBaseUrl = "http://13.55.115.124:5000/";
+  static const baseUrl = "https://server.crescentchange.com/api/v1";
+  //static const baseUrl = "http://13.55.115.124:5000/api/v1";
 
   //=======================AUTH====================================
   //LOGIN/SIGNIN
@@ -80,4 +80,6 @@ static const String updateFcmToken = "/auth/update-fcm";
 
 //TERMS AND CONDITIONS
 static const String termsAndConditions = "/content";
+
+static const String notificationSettings = "/notification-settings";
 }

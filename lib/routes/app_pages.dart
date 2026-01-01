@@ -6,7 +6,6 @@ import 'package:organization/features/auth/reset_password_screen.dart';
 import 'package:organization/features/get_started_screen.dart';
 import 'package:organization/features/home/recent_activities.dart';
 import 'package:organization/features/nav_bar/main_navigation_screen.dart';
-import 'package:organization/features/profile/notification_screen.dart';
 import 'package:organization/features/on_boarding/account_creation_screen.dart';
 import 'package:organization/features/on_boarding/business_contact_info_screen.dart';
 import 'package:organization/features/on_boarding/business_info_screen.dart';
@@ -16,15 +15,15 @@ import 'package:organization/features/on_boarding/store_location_screen.dart';
 import 'package:organization/features/on_boarding/upload_logo_screen.dart';
 import 'package:organization/features/on_boarding/verify_now_screen.dart';
 import 'package:organization/features/profile/change_password_screen.dart';
+import 'package:organization/features/profile/notification_screen.dart';
 import 'package:organization/features/profile/profile_settings_screen.dart';
+import 'package:organization/features/profile/terms_condition_screen.dart';
 import 'package:organization/features/reward/edit_reward_screen.dart';
 import 'package:organization/features/reward/reward_screen.dart';
 import 'package:organization/features/splash_screen.dart';
 import 'package:organization/features/subscription/subscription_screen.dart';
-import 'package:organization/features/profile/terms_condition_screen.dart';
 
 import '../../features/profile/edit_profile_screen.dart';
-import '../../features/redeem_rewards/on_boarding_store_screen.dart';
 import '../../features/redeem_rewards/scanner_complete_screen.dart';
 import '../../features/reward/create_reward_screen.dart';
 
@@ -80,12 +79,6 @@ class AppPages {
         name: AppRoutes.getStarted,
         page: (){
           return GetStartedScreen();
-        }
-    ),
-    GetPage(
-        name: AppRoutes.boardingStore,
-        page: (){
-          return OnBoardingStoreScreen();
         }
     ),
     GetPage(
