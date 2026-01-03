@@ -2,6 +2,12 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 	<dict>
+    <key>NSPhotoLibraryAddUsageDescription</key>
+    <string>This app needs permission to save images to your gallery.</string>
+    <key>UIFileSharingEnabled</key>
+    <true/>
+    <key>LSSupportsOpeningDocumentsInPlace</key>
+    <true/>
 		<key>NSCameraUsageDescription</key>
 		<string>This app needs camera access to scan QR codes</string>
 		<key>NSPhotoLibraryUsageDescription</key>
@@ -9,7 +15,7 @@
 		<key>CFBundleDevelopmentRegion</key>
 		<string>$(DEVELOPMENT_LANGUAGE)</string>
 		<key>CFBundleDisplayName</key>
-		<string>My App Flutter</string>
+		<string>Crescent Change Business</string>
 		<key>CFBundleExecutable</key>
 		<string>$(EXECUTABLE_NAME)</string>
 		<key>CFBundleIdentifier</key>
