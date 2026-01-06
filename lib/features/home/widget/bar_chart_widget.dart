@@ -72,7 +72,7 @@ class HomeBarChartWidget extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
                   Text(
-                    "${percentageText} %",
+                    "$percentageText %",
                     style: AppTextStyle.headlineLStyle
                         .copyWith(fontSize: AppSizes.headlineXL),
                   ),

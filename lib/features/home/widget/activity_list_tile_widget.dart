@@ -64,7 +64,7 @@ class ActivityListTileWidget extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               CustomText(
-                text: "${titlePrefix}\"${item.rewardTitle}\"",
+                text: "$titlePrefix\"${item.rewardTitle}\"",
               color: AppColors.blackTextColor,
                 fontWeight: FontWeight.w500,
                 language: false,

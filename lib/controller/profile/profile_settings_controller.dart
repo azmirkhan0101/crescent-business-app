@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:math';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -256,9 +255,6 @@ class ProfileSettingsController extends GetxController {
       );
 
       http.Response response = await http.patch( uri, body: jsonEncode(settingsModel.toJson()), headers: headers );
-
-      print("Notiifffffffffff: ${response.statusCode}");
-      print("Notifffffff: ${response.body}");
 
       if( response.statusCode == 200 ){
         settingsModel = NotificationSettingsModel.fromJson( jsonDecode(response.body)['data']);

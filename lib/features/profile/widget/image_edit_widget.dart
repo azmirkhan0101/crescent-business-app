@@ -30,7 +30,6 @@ class ImageEditWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const double coverHeight = 120;
     const double profileRadius = 55;
 
     return Column(

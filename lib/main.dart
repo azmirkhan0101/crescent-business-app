@@ -10,9 +10,6 @@ import 'firebase_options.dart';
 void main() async{
 
   WidgetsFlutterBinding.ensureInitialized();
-  // ErrorWidget.builder = (FlutterErrorDetails details) {
-  //   return Container(); // empty container instead of warning
-  // };
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );

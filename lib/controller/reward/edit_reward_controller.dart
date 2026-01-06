@@ -286,7 +286,6 @@ class EditRewardController extends GetxController{
       }
 
       var response = await request.send();
-      var responseBody = await response.stream.bytesToString();
 
       if( response.statusCode == 200 ){//REWARD UPDATED
         //GO BACK TO REWARDS SCREEN

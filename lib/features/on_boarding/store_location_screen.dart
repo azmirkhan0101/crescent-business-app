@@ -146,7 +146,7 @@ class StoreLocationScreen extends StatelessWidget {
                 SizedBox(
                   width: 7,
                 ),
-                Expanded(child: Text("${prediction.description ?? ""}"))
+                Expanded(child: Text(prediction.description ?? ""))
               ],
             ),
           );
