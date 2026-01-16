@@ -1,0 +1,57 @@
+login email: narole2449@fantastu.com
+login pass: test123@PASS
+
+
+
+
+location screen:
+temporary array for loction listview
+delete button
+location auto search feature
+
+
+
+signup response
+Signup Success:
+ {
+ "success":true,
+ "message":"Business account created successfully! Please check your email for OTP verification.",
+ "data":{"email":"ajairaco@gmail.com",
+ "businessName":"Azmir",
+ "isProfileCreated":true,
+ "requiresVerification":true
+ }
+ }
+
+
+
+ {"email":"madhobilota.tumi@gmail.com",
+ "password":"asd123ASD@",
+ "category":"Bakery",
+ "name":"Azmir",
+ "tagLine":"assa",
+ "description":"sdac",
+ "businessPhoneNumber":"",
+ "businessEmail":"",
+ "businessWebsite":"",
+ "locations":[],
+ "role":"BUSINESS"
+ }
+
+ {"email":"azmir.azamkhan@gmail.com","password":"asdASD123@","category":"Bakery","name":"Azmir","tagLine":"dad","description":"asdad","businessPhoneNumber":"","businessEmail":"","businessWebsite":"","locations":[],"role":"BUSINESS"}
+
+
+ status codeeeeeeeee: 201
+ I/flutter ( 6911): Response: {"success":true,"message":"Business account created successfully! Please check your email for OTP verification.","data":{"email":"azmir.azamkhan@gmail.com","businessName":"Azmir","isProfileCreated":true,"requiresVerification":true}}
+
+
+ //OTP VERIFIED
+ Status code: 201
+ Response:
+ {"success":true,
+ "message":"OTP verified successfully!",
+ "data":{
+ "accessToken":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5MjUzZWEwOTU5NDMyMDQ2YjQyNzhhZiIsIm5hbWUiOiJVc2VyIiwiaW1hZ2UiOiJodHRwczovL2V4YW1wbGUuY29tL2RlZmF1bHQtYXZhdGFyLnBuZyIsImVtYWlsIjoiYXptaXIuYXphbWtoYW5AZ21haWwuY29tIiwicm9sZSI6IkJVU0lORVNTIiwiaXNQcm9maWxlIjp0cnVlLCJpc0FjdGl2ZSI6dHJ1ZSwic3RhdHVzIjoidmVyaWZpZWQiLCJpYXQiOjE3NjQwNDg2MTgsImV4cCI6MTc2NDY1MzQxOH0.B1ZbuzkOzX3j7nPcn4HibBwPQ16_Elo5Tt9d0_klK1I",
+ "refreshToken":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImF6bWlyLmF6YW1raGFuQGdtYWlsLmNvbSIsImlhdCI6MTc2NDA0ODYxOCwiZXhwIjoxNzk1NTg0NjE4fQ.U8p8JdypX_3s8-ApIZdRZLkSmJ3w-geRB1fEyuLABAA"
+ }
+ }

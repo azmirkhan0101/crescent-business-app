@@ -1,10 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
+import 'package:organization/controller/redeem/redeem_controller.dart';
 import 'package:organization/utils/app_color.dart';
 import '../../../utils/assets_path.dart';
 
 class NFCWidget extends StatelessWidget {
-  const NFCWidget({super.key});
+
+  //NFC IS DISABLED IN THIS VERSION=============================================
+
+  final RedeemController redeemController = Get.find<RedeemController>();
+  NFCWidget({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -30,7 +36,9 @@ class NFCWidget extends StatelessWidget {
               child: Column(
                 children: [
                   GestureDetector(
-                    onTap: () {},
+                    onTap: () {
+                      //redeemController.startNfcRead();
+                    },
                     child: Image.asset(
                       AssetsPath.nfcIcon,
                       height: 48.h,
@@ -41,11 +49,21 @@ class NFCWidget extends StatelessWidget {
                   Text(
                     'Tap to redeem',
                     style: TextStyle(
-                      fontSize: 32.sp,
+                      fontSize: 26.sp,
                       color: AppColors.blackTextColor,
                       fontWeight: FontWeight.w600,
                     ),
                   ),
+                  Obx((){
+                    return Text(
+                      'NFC tag: ',//${redeemController.nfcTag.value}
+                      style: TextStyle(
+                        fontSize: 16.sp,
+                        color: AppColors.blackTextColor,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    );
+                  })
                 ],
               ),
             ),

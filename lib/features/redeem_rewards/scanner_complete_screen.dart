@@ -1,37 +1,49 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:go_router/go_router.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:organization/data/models/redeem/redeemed_model.dart';
 import 'package:organization/features/redeem_rewards/widgets/redeem_complete_card_widget.dart';
 import 'package:organization/features/widgets/custom_asset_image.dart';
 import 'package:organization/utils/assets_path.dart';
 
-import '../../core/routes/route_path.dart';
 import '../../utils/app_color.dart';
 import '../../utils/app_text.dart';
 import '../../utils/app_text_styles.dart';
 import '../widgets/custom_button_widget.dart';
 
 class RedeemScannerCompleteScreen extends StatelessWidget {
-  const RedeemScannerCompleteScreen({super.key});
+  RedeemScannerCompleteScreen({super.key});
+
+  RedeemedRewardModel? model;
 
   @override
   Widget build(BuildContext context) {
 
+    if( Get.arguments is RedeemedRewardModel ){
+      model = Get.arguments as RedeemedRewardModel;
+    }else{
+      model = null;
+    }
 
     return Scaffold(
-
-      bottomNavigationBar: Padding(
-        padding: EdgeInsets.all(16.w),
-        child: CustomButton(
-          buttonTextStyle: GoogleFonts.familjenGrotesk(
-              color: AppColors.buttonTextColor,fontSize: 18.sp,fontWeight: FontWeight.w700),
-          backgroundColor: AppColors.black,
-          textColor: AppColors.white,
-          text: AppText.done,
-          onPressed: () {
-            context.go(RoutesPath.home);
-          },
+      backgroundColor: AppColors.white,
+      bottomNavigationBar: Container(
+        color: Color(0xFFD1FF43),
+        child: SafeArea(
+          child: Padding(
+            padding: EdgeInsets.symmetric( horizontal: 16.w, vertical: 25.h),
+            child: CustomButton(
+              buttonTextStyle: GoogleFonts.familjenGrotesk(
+                  color: AppColors.white,
+                  fontSize: 18.sp,
+                  fontWeight: FontWeight.w700),
+              backgroundColor: AppColors.black,
+              textColor: AppColors.white,
+              text: AppText.done,
+              onPressed: () => Get.back(),
+            ),
+          ),
         ),
       ),
 
@@ -48,13 +60,18 @@ class RedeemScannerCompleteScreen extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   const SizedBox(),
-                  Container(
-                    padding: EdgeInsets.all(8.w),
-                    decoration: const BoxDecoration(
-                      color: Color(0x0DD1FF43),
-                    ),
-                    child: CustomAssetsImage(
-                      assetsPath: AssetsPath.crossIcon,
+                  GestureDetector(
+                    onTap: (){
+                      Get.back();
+                    },
+                    child: Container(
+                      padding: EdgeInsets.all(8.w),
+                      decoration: const BoxDecoration(
+                        color: Color(0x0DD1FF43),
+                      ),
+                      child: CustomAssetsImage(
+                        assetsPath: AssetsPath.crossIcon,
+                      ),
                     ),
                   ),
                 ],
@@ -83,9 +100,13 @@ class RedeemScannerCompleteScreen extends StatelessWidget {
 
               const SizedBox(height: 24),
 
-              RedeemCompleteCardWidget(),
-
-
+              RedeemCompleteCardWidget(
+                title: model?.title ?? "",
+                dateTime: model?.redeemedAt ?? DateTime.now(),
+                redemptionCount: model?.redeemedCount ?? 0,
+                redemptionMethod: model?.redemptionMethod ?? "qr",
+                image: model?.image ?? "",
+              ),
             ],
           ),
         ),

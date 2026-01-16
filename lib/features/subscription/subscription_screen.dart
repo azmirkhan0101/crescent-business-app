@@ -1,16 +1,11 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:get/get_utils/get_utils.dart';
-import 'package:go_router/go_router.dart';
+import 'package:get/get.dart';
+import 'package:organization/controller/subscription/subscription_controller.dart';
 import 'package:organization/features/widgets/custom_text.dart';
 import 'package:organization/utils/app_color.dart';
 
-/// Subscription Page
-///
-/// This page displays subscription plans and features for users to upgrade
-/// their experience with premium features and benefits.
 class SubscriptionPage extends StatefulWidget {
   const SubscriptionPage({super.key});
 
@@ -20,7 +15,9 @@ class SubscriptionPage extends StatefulWidget {
 
 class _SubscriptionPageState extends State<SubscriptionPage> {
   // Selected plan (0 = Free, 1 = 6 Months)
-  int _selectedPlan = 1;
+  int selectedPlan = 0;
+
+  final SubscriptionController controller = Get.find<SubscriptionController>();
 
   @override
   Widget build(BuildContext context) {
@@ -33,20 +30,33 @@ class _SubscriptionPageState extends State<SubscriptionPage> {
           // Content
           SafeArea(
             child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 28.0),
-              child: Column(
-                children: [
-                  // App Bar
-                  _buildAppBar(context),
-                 SizedBox(height: 15.h,),
-                  // Header Section
-                  _buildHeaderSection(),
-                  Spacer(),
-
-                  _buildSubscriptionContent(context),
+              padding: EdgeInsets.symmetric(horizontal: 15.w),
+              child: CustomScrollView(
+                slivers: [
+                  SliverToBoxAdapter(
+                    child: Column(
+                      children: [
+                        _buildAppBar(context),
+                        SizedBox(height: 15.h),
+                        _buildHeaderSection(),
+                      ],
+                    ),
+                  ),
+                  SliverFillRemaining(
+                    hasScrollBody: false,
+                    // Allows content to be smaller than the screen
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      // Pushes child to bottom
+                      children: [
+                        _buildSubscriptionContent(context),
+                        SizedBox(height: 40.h),
+                      ],
+                    ),
+                  ),
                 ],
               ),
-            )
+            ),
           ),
         ],
       ),
@@ -89,23 +99,25 @@ class _SubscriptionPageState extends State<SubscriptionPage> {
       child: Row(
         children: [
           // Back Button
-          IconButton(onPressed: (){
-            Navigator.pop(context);
-          }, icon: Icon(Icons.arrow_back_ios_new_outlined,
-            size: 20,
-            color: AppColors.white,
-
-          )),
+          IconButton(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            icon: Icon(
+              Icons.arrow_back_ios_new_outlined,
+              size: 20,
+              color: AppColors.white,
+            ),
+          ),
 
           // Title
           Expanded(
-            child:CustomText(text: "Subscriptions",
-            fontSize: 24.sp,
+            child: CustomText(
+              text: "Subscriptions",
+              fontSize: 24.sp,
               fontWeight: FontWeight.bold,
               color: AppColors.white,
             ),
-
-
           ),
 
           // Space for symmetry
@@ -115,32 +127,30 @@ class _SubscriptionPageState extends State<SubscriptionPage> {
     );
   }
 
-  /// Build header section with title and description
+  //Build header section with title and description
   Widget _buildHeaderSection() {
     return Column(
       children: [
-
         CustomText(
           textAlign: TextAlign.center,
           maxLines: 2,
           text: "Start making an effortless impact",
-          fontSize: 32.sp,
+          fontSize: 28.sp,
           fontWeight: FontWeight.w600,
           color: AppColors.white,
         ),
-
 
         SizedBox(height: 16.h),
 
         CustomText(
           maxLines: 2,
           textAlign: TextAlign.center,
-          text: "Give your way, grow your impact, unlock little wins as you go.",
-          fontSize: 16.sp,
+          text:
+              "Give your way, grow your impact, unlock little wins as you go.",
+          fontSize: 15.sp,
           fontWeight: FontWeight.w400,
           color: AppColors.white,
         ),
-
       ],
     );
   }
@@ -232,31 +242,15 @@ class _SubscriptionPageState extends State<SubscriptionPage> {
             ),
           ),
         ),
-
         SizedBox(height: 12.h),
-
         // Title
-
         CustomText(
           textAlign: TextAlign.center,
-          text:title,
+          text: title,
           fontSize: 12.sp,
           fontWeight: FontWeight.w400,
           color: Color(0xFFEBE9EC),
         ),
-
-
-        // Text(
-        //   title,
-        //   textAlign: TextAlign.center,
-        //   style: TextStyle(
-        //     fontFamily: DonationFonts.interDisplay,
-        //     fontSize: 12.rfs,
-        //     fontWeight: FontWeight.w400,
-        //     color: const Color(0xFFEBE9EC),
-        //     height: 1.33,
-        //   ),
-        // ),
       ],
     );
   }
@@ -264,30 +258,28 @@ class _SubscriptionPageState extends State<SubscriptionPage> {
   /// Build subscription plans section
   Widget _buildSubscriptionPlans() {
     return Row(
+      spacing: 8.w,
       children: [
         // Free Plan
         Expanded(
           child: _buildPlanCard(
             planIndex: 0,
-            title: 'Free',
-            price: '\$0.00',
-            subtitle: 'Stay on Free Plan',
-            description: 'Stay on Free Plan.',
-            isSelected: _selectedPlan == 0,
+            title: 'Monthly',
+            price: '\$20.00',
+            subtitle: 'Stay on Monthly Plan',
+            description: 'Stay on Monthly Plan.',
+            isSelected: selectedPlan == 0,
           ),
         ),
-
-        SizedBox(width: 8.w),
-
         // 6 Months Plan
         Expanded(
           child: _buildPlanCard(
             planIndex: 1,
             title: '6 Months',
-            price: '\$40.00',
+            price: '\$120.00',
             description: '',
-            features: ['Save 20%.', 'Free 1 Week Trial.'],
-            isSelected: _selectedPlan == 1,
+            features: ['Save 50%.', 'Free 6 month Trial.'],
+            isSelected: selectedPlan == 1,
           ),
         ),
       ],
@@ -307,11 +299,11 @@ class _SubscriptionPageState extends State<SubscriptionPage> {
     return GestureDetector(
       onTap: () {
         setState(() {
-          _selectedPlan = planIndex;
+          selectedPlan = planIndex;
         });
       },
       child: Container(
-        height: 164.h,
+        height: 174.h,
         padding: EdgeInsets.all(16.w),
         decoration: BoxDecoration(
           color: const Color(0xFF000C0B),
@@ -320,89 +312,57 @@ class _SubscriptionPageState extends State<SubscriptionPage> {
               ? Border.all(color: const Color(0xFFD1FF43), width: 2)
               : null,
         ),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            // Price Section
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-
-
-                CustomText(
-
-                  text:title,
-                  fontSize: 16.sp,
-                  fontWeight: FontWeight.bold,
-                  color: AppColors.white
-                ),
-
-
-
-                // Text(
-                //   title,
-                //   style: TextStyle(
-                //     fontFamily: DonationFonts.interDisplay,
-                //     fontSize: 16.rfs,
-                //     fontWeight: FontWeight.bold,
-                //     color: Colors.white,
-                //     height: 1.25,
-                //   ),
-                // ),
-
-                SizedBox(height: 12.h),
-
-                if (subtitle != null)
-                  RichText(
-                    text: TextSpan(
-                      style: TextStyle(
-
-                        fontSize: 20.sp,
-                        fontWeight: FontWeight.w400,
-                        color: Colors.white,
-                        height: 1.2,
-                      ),
-                      children: [
-                        TextSpan(text: price),
-                        const TextSpan(text: ' '),
-                        TextSpan(text: subtitle),
-                      ],
-                    ),
-                  )
-                else
-                  Text(
-                    price,
-                    style: TextStyle(
-                      //fontFamily: DonationFonts.interDisplay,
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              // Price Section
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  CustomText(
+                    text: title,
+                    fontSize: 16.sp,
+                    fontWeight: FontWeight.bold,
+                    color: AppColors.white,
+                  ),
+                  SizedBox(height: 12.h),
+                  CustomText(
+                    text: price,
+                    fontSize: 20.sp,
+                    fontWeight: FontWeight.w400,
+                    color: AppColors.white,
+                  ),
+                  if (subtitle != null)
+                    CustomText(
+                      text: subtitle,
                       fontSize: 20.sp,
                       fontWeight: FontWeight.w400,
-                      color: Colors.white,
-                      height: 1.2,
+                      color: AppColors.white,
                     ),
-                  ),
-              ],
-            ),
-
-            // Features or Description
-            if (features != null && features.isNotEmpty)
-              Column(
-                children: features
-                    .map((feature) => _buildFeatureBullet(feature))
-                    .toList(),
-              )
-            else
-              Text(
-                description,
-                style: TextStyle(
-                 // fontFamily: DonationFonts.interDisplay,
-                  fontSize: 14.sp,
-                  fontWeight: FontWeight.w400,
-                  color: const Color(0xFFEBE9EC),
-                  height: 1.29,
-                ),
+                ],
               ),
-          ],
+
+              // Features or Description
+              if (features != null && features.isNotEmpty)
+                Column(
+                  children: features
+                      .map((feature) => _buildFeatureBullet(feature))
+                      .toList(),
+                )
+              else
+                Text(
+                  description,
+                  style: TextStyle(
+                    fontSize: 14.sp,
+                    fontWeight: FontWeight.w400,
+                    color: const Color(0xFFEBE9EC),
+                    height: 1.29,
+                  ),
+                ),
+            ],
+          ),
         ),
       ),
     );
@@ -446,36 +406,59 @@ class _SubscriptionPageState extends State<SubscriptionPage> {
   /// Build subscribe button
   Widget _buildSubscribeButton(BuildContext context) {
     return SizedBox(
-      width: 263.w,
+      width: double.infinity,
       height: 52.h,
-      child: ElevatedButton(
-        onPressed: () => _handleSubscribe(context),
-        style: ElevatedButton.styleFrom(
-          backgroundColor: const Color(0xFFD1FF43),
-          elevation: 0,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(12.w),
-          ),
-        ),
-        child: Text(
-          'Subscribe',
-          style: TextStyle(
-           // fontFamily: DonationFonts.familjenGrotesk,
-            fontSize: 18.sp,
-            fontWeight: FontWeight.bold,
-            color: const Color(0xFF000C0B),
-            letterSpacing: -0.36,
-          ),
-        ),
+      child: Padding(
+        padding: EdgeInsets.symmetric(horizontal: 25.w),
+        child: Obx(() {
+          final bool subscribed = controller.isSubscribed.value;
+          //final RxBool subscribed = true.obs;
+
+          return ElevatedButton(
+            onPressed: subscribed
+                ? () => _handleSubscribe(context) // disables the button
+                : () => _handleSubscribe(context),
+
+            style: ElevatedButton.styleFrom(
+              backgroundColor: subscribed
+                  ? Colors.grey.shade400 // disabled look
+                  : const Color(0xFFD1FF43),
+              elevation: 0,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(12.w),
+              ),
+            ),
+
+            child: controller.isSubscribing.value
+                ? const SizedBox(
+              height: 22,
+              width: 22,
+              child: CircularProgressIndicator(
+                strokeWidth: 2.5,
+                color: Color(0xFF000C0B),
+              ),
+            )
+                : Text(
+              subscribed ? 'Subscribed' : 'Subscribe',
+              style: TextStyle(
+                fontSize: 18.sp,
+                fontWeight: FontWeight.bold,
+                color: subscribed
+                    ? Colors.grey.shade600
+                    : const Color(0xFF000C0B),
+                letterSpacing: -0.36,
+              ),
+            ),
+          );
+        })
       ),
     );
   }
 
   /// Handle subscribe button press
   void _handleSubscribe(BuildContext context) {
-    // TODO: Implement subscription logic based on selected plan
-    final planName = _selectedPlan == 0 ? 'Free Plan' : '6 Months Plan';
+    String plan = selectedPlan == 0 ? "monthly" : "yearly";
+    controller.subscribe(plan: plan);
 
-    GoRouter.of(context).pop();
   }
 }

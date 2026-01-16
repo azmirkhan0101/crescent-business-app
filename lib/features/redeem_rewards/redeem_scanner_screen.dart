@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:organization/features/redeem_rewards/widgets/nfc_redeem.dart';
+import 'package:get/get.dart';
+import 'package:organization/controller/redeem/redeem_controller.dart';
 import 'package:organization/features/redeem_rewards/widgets/qr_code_redeem.dart';
 import 'package:organization/features/redeem_rewards/widgets/static_code_redeem.dart';
 import 'package:organization/features/widgets/custom_text.dart';
 import 'package:organization/utils/app_color.dart';
-import 'package:organization/utils/app_text_styles.dart';
 
 class RedeemScannerScreen extends StatefulWidget {
   const RedeemScannerScreen({super.key});
@@ -15,11 +15,13 @@ class RedeemScannerScreen extends StatefulWidget {
 }
 
 class _RedeemScannerScreenState extends State<RedeemScannerScreen> {
+
+  final RedeemController controller = Get.find<RedeemController>();
   int _selectedIndex = 0;
 
-  final List<Widget> _tabs = const [
+  final List<Widget> _tabs = [
     QRCodeWidget(),
-    NFCWidget(),
+    //NFCWidget(),
     StaticCodeWidget(),
   ];
 
@@ -59,65 +61,73 @@ class _RedeemScannerScreenState extends State<RedeemScannerScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: true,
       body: Container(
-
         decoration: BoxDecoration(
           gradient: _gradients[_selectedIndex],
         ),
         child: SafeArea(
-          child: Column(
-            children: [
-
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
-                child: Align(
-                  alignment: Alignment.centerLeft,
-                  child: CustomText(text: "Redeem",
-                  color: AppColors.blackTextColor,
-                    fontWeight: FontWeight.w700,
-                    fontSize: 24.sp,
-                    language: true,
+          child: LayoutBuilder(
+            builder: (context, constraints) {
+              return SingleChildScrollView(
+                physics: const ClampingScrollPhysics(),
+                child: ConstrainedBox(
+                  constraints: BoxConstraints(
+                    minHeight: constraints.maxHeight,
                   ),
+                  child: IntrinsicHeight(
+                    child: Column(
+                      mainAxisSize: MainAxisSize.max,
+                      children: [
+                        Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
+                          child: Align(
+                            alignment: Alignment.topLeft,
+                            child: CustomText(
+                              text: "Redeem",
+                              color: AppColors.blackTextColor,
+                              fontWeight: FontWeight.w700,
+                              fontSize: 24.sp,
+                              language: true,
+                            ),
+                          ),
+                        ),
+                        SizedBox(height: 15.h),
 
-
-                  // Text(
-                  //   "Redeem",
-                  //   style: AppTextStyle.headlineLStyle.copyWith(color: AppColors.blackTextColor),
-                  // ),
+                        // Tab Content
+                        Center(child: _tabs[_selectedIndex]),
+                        const Spacer(),
+                        SizedBox(height: 25.h),
+                        /// Custom TabBar
+                        Container(
+                          margin: EdgeInsets.symmetric(horizontal: 20.w, vertical: 12.h),
+                          padding: EdgeInsets.all(4.w),
+                          decoration: BoxDecoration(
+                            color: const Color(0x33FFFFFF),
+                            borderRadius: BorderRadius.circular(12.r),
+                          ),
+                          child: Row(
+                            children: [
+                              _buildTabButton("QR Code", 0),
+                              //_buildTabButton("NFC", 1),
+                              _buildTabButton("Static Code", 1),
+                            ],
+                          ),
+                        ),
+                        SizedBox(height: 90.h),
+                      ],
+                    ),
+                  ),
                 ),
-              ),
-
-              const Spacer(),
-
-
-              Center(child: _tabs[_selectedIndex]),
-
-              const Spacer(),
-
-              ///  Custom TabBar
-              Container(
-                margin: EdgeInsets.symmetric(horizontal: 20.w, vertical: 12.h),
-                padding: EdgeInsets.all(4.w),
-                decoration: BoxDecoration(
-                  color: Color(0x33FFFFFF),
-                  borderRadius: BorderRadius.circular(30.r),
-                ),
-                child: Row(
-                  children: [
-                    _buildTabButton("QR Code", 0),
-                    _buildTabButton("NFC", 1),
-                    _buildTabButton("Static Code", 2),
-                  ],
-                ),
-              ),
-            ],
+              );
+            },
           ),
         ),
       ),
     );
   }
 
-  /// ✅ Tab Button
+  //Tab Button
   Widget _buildTabButton(String text, int index) {
     final bool isSelected = _selectedIndex == index;
 
@@ -125,6 +135,7 @@ class _RedeemScannerScreenState extends State<RedeemScannerScreen> {
       child: GestureDetector(
         onTap: () {
           setState(() {
+            controller.isStaticCodeInvalid.value = false;
             _selectedIndex = index;
           });
         },
@@ -132,7 +143,7 @@ class _RedeemScannerScreenState extends State<RedeemScannerScreen> {
           padding: EdgeInsets.symmetric(vertical: 10.h),
           decoration: BoxDecoration(
             color: isSelected ? Colors.black : Colors.transparent,
-            borderRadius: BorderRadius.circular(25.r),
+            borderRadius: BorderRadius.circular(12.r),
           ),
           alignment: Alignment.center,
           child: Text(

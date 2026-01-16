@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import '../../utils/app_color.dart';
 
+import '../../utils/app_color.dart';
 
 class CustomButton extends StatelessWidget {
   final String text;
@@ -13,38 +13,68 @@ class CustomButton extends StatelessWidget {
   final TextStyle buttonTextStyle;
   final Widget? widget;
 
+  final bool isLoading;
+  final Color loaderColor;
+
   const CustomButton({
     super.key,
-
+    required this.text,
+    required this.buttonTextStyle,
     this.onPressed,
     this.backgroundColor,
     this.textColor,
     this.height,
     this.width,
-
-    this.widget, required this.text, required this.buttonTextStyle,
+    this.widget,
+    this.isLoading = false,
+    this.loaderColor = AppColors.buttonTextColor,
   });
 
   @override
   Widget build(BuildContext context) {
+    // Use your primary color (or passed color) for both states
+    // to prevent the "grey-out" effect during loading.
+    final Color effectiveBgColor = backgroundColor ?? AppColors.primaryColor;
+
     return SizedBox(
-      width: width ?? 263.w,
-      height: height ?? 52.h,
+      width: width?.w,
+      height: height?.h ?? 52.h,
       child: ElevatedButton(
         style: ElevatedButton.styleFrom(
-          backgroundColor: backgroundColor ?? AppColors.primaryColor,
+          backgroundColor: effectiveBgColor,
+          // This prevents the button from turning grey when onPressed is null
+          disabledBackgroundColor: effectiveBgColor,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(12.r),
           ),
           elevation: 0,
         ),
-        onPressed: onPressed,
-        child: widget ??
-            Text(
-              text,
-              style: buttonTextStyle
-
+        // Keep onPressed null to prevent double-taps while loading
+        onPressed: isLoading ? null : onPressed,
+        child: Stack(
+          alignment: Alignment.center,
+          children: [
+            Opacity(
+              opacity: isLoading ? 0 : 1,
+              child: widget ??
+                  Text(
+                    text,
+                    style: buttonTextStyle,
+                  ),
             ),
+            if (isLoading) // Use conditional rendering for cleaner layout
+              SizedBox(
+                height: 20.h,
+                width: 20.h,
+                child: CircularProgressIndicator(
+                  strokeWidth: 2.5,
+                  color: loaderColor,
+                  // Ensure no background color is set on the spinner itself
+                  backgroundColor: Colors.transparent,
+                ),
+              ),
+          ],
+        ),
       ),
     );
   }

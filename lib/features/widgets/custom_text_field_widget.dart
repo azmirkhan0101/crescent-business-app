@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:organization/utils/assets_path.dart';
+import 'package:organization/utils/assets_gen/assets.gen.dart';
 
 import '../../utils/app_color.dart';
 
@@ -11,7 +12,7 @@ class CustomTextField extends StatefulWidget {
     super.key,
     this.inputFormatters,
     this.onFieldSubmitted,
-    this.textEditingController,
+    this.controller,
     this.focusNode,
     this.keyboardType = TextInputType.text,
     this.textInputAction = TextInputAction.next,
@@ -32,11 +33,11 @@ class CustomTextField extends StatefulWidget {
     this.maxLength,
     this.onTap,
     this.isDens = false,
-    this.prefixImagePath,
-    this.suffixImagePath,
+    this.prefixIconPath,
+    this.suffixIconPath,
   });
 
-  final TextEditingController? textEditingController;
+  final TextEditingController? controller;
   final FocusNode? focusNode;
   final TextInputType keyboardType;
   final TextInputAction textInputAction;
@@ -60,9 +61,9 @@ class CustomTextField extends StatefulWidget {
   final VoidCallback? onTap;
   final bool? isDens;
 
-  // 🔹 new parameters for image paths
-  final String? prefixImagePath;
-  final String? suffixImagePath;
+  //new parameters for image
+  final String? prefixIconPath;
+  final String? suffixIconPath;
 
   @override
   State<CustomTextField> createState() => _CustomTextFieldState();
@@ -79,7 +80,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
       inputFormatters: widget.inputFormatters,
       onFieldSubmitted: widget.onFieldSubmitted,
       readOnly: widget.readOnly,
-      controller: widget.textEditingController,
+      controller: widget.controller,
       focusNode: widget.focusNode,
       maxLength: widget.maxLength,
       keyboardType: widget.keyboardType,
@@ -114,37 +115,35 @@ class _CustomTextFieldState extends State<CustomTextField> {
         filled: true,
 
         // 🔹 Prefix Image
-        prefixIcon: widget.prefixImagePath != null
+        prefixIcon: widget.prefixIconPath != null
             ? Padding(
                 padding: EdgeInsets.all(12.w),
-                child: Image.asset(
-                  widget.prefixImagePath!,
+                child: SvgPicture.asset(
+                  widget.prefixIconPath!,
                   width: 20.w,
                   height: 20.h,
                   fit: BoxFit.contain,
                 ),
               )
             : null,
-
-        // 🔹 Suffix Image / Password toggle
         suffixIcon: widget.isPassword
             ? GestureDetector(
                 onTap: toggle,
                 child: Padding(
                   padding: EdgeInsets.all(12.w),
-                  child: Image.asset(
-                    obscureText ? AssetsPath.eyeIcon : AssetsPath.eyeIcon,
+                  child: SvgPicture.asset(
+                    obscureText ? Assets.icons.eye : Assets.icons.eyeHide,
                     width: 20.w,
                     height: 20.h,
                     fit: BoxFit.contain,
                   ),
                 ),
               )
-            : (widget.suffixImagePath != null
+            : (widget.suffixIconPath != null
                   ? Padding(
                       padding: EdgeInsets.all(12.w),
-                      child: Image.asset(
-                        widget.suffixImagePath!,
+                      child: SvgPicture.asset(
+                        widget.suffixIconPath!,
                         width: 20.w,
                         height: 20.h,
                         fit: BoxFit.contain,

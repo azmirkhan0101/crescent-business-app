@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:organization/features/widgets/custom_text.dart';
+
 import '../../../utils/app_color.dart';
-import '../../../utils/app_text_styles.dart';
 
 class ApplyWidget extends StatelessWidget {
   const ApplyWidget({super.key, required this.onPressed});

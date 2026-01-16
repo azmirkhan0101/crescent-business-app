@@ -8,7 +8,18 @@ import 'package:organization/utils/app_text_styles.dart';
 import '../../../utils/app_text.dart';
 
 class PasswordRequirements extends StatefulWidget {
-  const PasswordRequirements({super.key});
+
+  final bool isEightCharacters;
+  final bool isBothCasesPresent;
+  final bool isNumeralPresent;
+  final bool isSpecialCharPresent;
+  const PasswordRequirements({
+    super.key,
+    required this.isEightCharacters,
+    required this.isBothCasesPresent,
+    required this.isNumeralPresent,
+    required this.isSpecialCharPresent
+  });
 
   @override
   State<PasswordRequirements> createState() => _PasswordRequirementsState();
@@ -27,10 +38,10 @@ class _PasswordRequirementsState extends State<PasswordRequirements> {
           color: AppColors.secondaryTextColor,
         ),
         SizedBox(height: 8.h),
-        _buildRequirementItem(AppText.passwordRequirementCharacters, false),
-        _buildRequirementItem(AppText.passwordRequirementLetters, true),
-        _buildRequirementItem(AppText.passwordRequirementNumber, true),
-        _buildRequirementItem(AppText.passwordRequirementSpecial, false),
+        _buildRequirementItem(AppText.passwordRequirementCharacters, widget.isEightCharacters),
+        _buildRequirementItem(AppText.passwordRequirementLetters, widget.isBothCasesPresent),
+        _buildRequirementItem(AppText.passwordRequirementNumber, widget.isNumeralPresent),
+        _buildRequirementItem(AppText.passwordRequirementSpecial, widget.isSpecialCharPresent),
       ],
     );
   }
@@ -41,15 +52,25 @@ class _PasswordRequirementsState extends State<PasswordRequirements> {
       padding: const EdgeInsets.symmetric(vertical: 4.0),
       child: Row(
         children: [
-          Icon(
-            Icons.check_circle,
-            color: isChecked ? Colors.green : Colors.transparent, // ✅ use passed bool
-          ),
+          if( isChecked )
+            Icon(
+              Icons.check_circle_rounded,
+              color: Colors.green,
+            ),
+          if( !isChecked )
+            Icon(
+              Icons.check_circle_outline_rounded,
+              color: Colors.black,
+            ),
           const SizedBox(width: 8),
-          Text(
-            text,
-            style: AppTextStyle.mediumStyle.copyWith(
-              fontSize: AppSizes.smallTSize,
+          Expanded(
+            child: Text(
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
+              text,
+              style: AppTextStyle.mediumStyle.copyWith(
+                fontSize: AppSizes.smallTSize,
+              ),
             ),
           ),
         ],

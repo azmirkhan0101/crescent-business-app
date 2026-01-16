@@ -1,33 +1,40 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:organization/features/widgets/custom_text.dart';
+import 'package:organization/utils/assets_gen/assets.gen.dart';
 
 import '../../../utils/app_color.dart';
 import '../../../utils/app_text_styles.dart';
-
 import '../../widgets/custom_card_widget.dart';
 
 class AnalyticsCardWidget extends StatelessWidget {
+
+  final bool isProfileViewsCard;
+  final String timeLine;
+  final int count;
+  final double percentage;
+  final bool isIncrease;
+
   const AnalyticsCardWidget({
     super.key,
-    required this.topIcon,
-    required this.bottomIcon,
-    required this.title,
-    required this.subtitle,
-    required this.bottomText,
-    required this.bottomEndText,
-    this.topIconColor,
+    required this.isProfileViewsCard,
+    required this.timeLine,
+    required this.count,
+    required this.percentage,
+    required this.isIncrease,
   });
-  final String topIcon;
-  final String bottomIcon;
-  final String bottomEndText;
-  final String title;
-  final String subtitle;
-  final String bottomText;
-  final Color? topIconColor;
+
 
   @override
   Widget build(BuildContext context) {
+
+    String percentageText =
+    percentage % 1 == 0
+        ? percentage.toInt().toString()
+        : percentage.toString();
+
+
     return CustomCard(
       height: 162.h,
       color: AppColors.white,
@@ -35,17 +42,25 @@ class AnalyticsCardWidget extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           /// Top Icon
-          Image.asset(topIcon, color: topIconColor, height: 24.w, width: 24.w),
+          SvgPicture.asset(
+              isProfileViewsCard ? Assets.icons.profileIcon : Assets.icons.clickIcon,
+              //color: topIconColor,
+              height: 24.h,
+              width: 24.w
+          ),
 
           SizedBox(height: 8.h),
 
           /// Title
-          Text(title, style: AppTextStyle.cardTextStyle),
+          Text(
+              isProfileViewsCard ? "Profile Views" : "Website Visits",
+              style: AppTextStyle.cardTextStyle
+          ),
           SizedBox(height: 4.h),
 
-          /// Subtitle
+          //TIMELINE
           Text(
-            subtitle,
+            timeLine,
             style: AppTextStyle.mediumStyle.copyWith(
               fontSize: 12.sp,
               color: Color(0xFF848484),
@@ -58,36 +73,31 @@ class AnalyticsCardWidget extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              CustomText(text: bottomText,
+              //VIEWS COUNT
+              CustomText(
+                text: "$count",
               fontWeight: FontWeight.w700,
                 fontSize: 24.sp,
                 color: AppColors.headlineTColor,
               ),
-
-              // Text(
-              //   bottomText,
-              //   style: AppTextStyle.headlineLStyle.copyWith(fontSize: 24.sp),
-              // ),
               SizedBox(width: 8.w),
               Row(
                 children: [
-
-                  CustomText(text: bottomEndText,
+                  //PERCENTAGE
+                  CustomText(
+                    text: "$percentageText %",
                     fontWeight: FontWeight.w400,
                     fontSize: 14.sp,
                     color: AppColors.blackTextColor,
                     language: false,
                   ),
-
-
-                  // Text(
-                  //   bottomEndText,
-                  //   style: AppTextStyle.mediumStyle.copyWith(
-                  //     color: AppColors.blackTextColor,
-                  //   ),
-                  // ),
                   SizedBox(width: 4.w),
-                  Image.asset(bottomIcon, height: 14.w, width: 14.w),
+                  //INCREASE - DECREASE ICON
+                  SvgPicture.asset(
+                      isIncrease ? Assets.icons.increaseIcon : Assets.icons.decreaseIcon,
+                      height: 14.w,
+                      width: 14.w
+                  ),
                 ],
               ),
             ],

@@ -1,0 +1,23 @@
+import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
+import 'package:organization/data/models/profile/business_profile_model.dart';
+import 'package:organization/utils/app_constants.dart';
+
+class SetupCompleteController extends GetxController{
+  
+  final storage = GetStorage();
+  var model = Rx<BusinessProfileModel?>(null);
+
+  @override
+  void onInit() {
+
+    final profileJson = storage.read( businessProfileModelKey );
+    if( profileJson != null ){
+      model.value = BusinessProfileModel.fromJson( profileJson );
+    }
+
+    super.onInit();
+  }
+
+
+}

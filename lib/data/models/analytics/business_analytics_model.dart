@@ -1,0 +1,65 @@
+import 'redemption_method_model.dart';
+import 'top_rewards_model.dart';
+
+class BusinessAnalyticsModel {
+  final int totalRedemptions;
+  final int profileViews;
+  final double profilePercentage;
+  final bool profileViewsIncrease;
+  final int websiteViews;
+  final double websitePercentage;
+  final bool websiteViewsIncrease;
+  final List<RedemptionMethodModel> methods;
+  final List<TopRewardModel> topRewards;
+
+  BusinessAnalyticsModel({
+    required this.totalRedemptions,
+    required this.profileViews,
+    required this.profilePercentage,
+    required this.profileViewsIncrease,
+    required this.websiteViews,
+    required this.websitePercentage,
+    required this.websiteViewsIncrease,
+    required this.methods,
+    required this.topRewards,
+  });
+
+  factory BusinessAnalyticsModel.fromJson(Map<String, dynamic> json) {
+    var methodsList = json['methods'] as List?;
+    List<RedemptionMethodModel> methods = methodsList != null
+        ? methodsList.map((i) => RedemptionMethodModel.fromJson(i)).toList()
+        : [];
+
+    var topRewardsList = json['topRewards'] as List?;
+    List<TopRewardModel> topRewards = topRewardsList != null
+        ? topRewardsList.map((i) => TopRewardModel.fromJson(i)).toList()
+        : [];
+
+    return BusinessAnalyticsModel(
+      totalRedemptions: json['totalRedemptions'] as int? ?? 0,
+      profileViews: json['profileCurrent'] as int? ?? 0,
+      profilePercentage: (json['profileChange'] as num?)?.toDouble() ?? 0.0,
+      profileViewsIncrease: json['profileIncrease'] as bool? ?? false,
+      websiteViews: json['websiteCurrent'] as int? ?? 0,
+      websitePercentage: (json['websiteChange'] as num?)?.toDouble() ?? 0.0,
+      websiteViewsIncrease: json['websiteIncrease'] as bool? ?? false,
+      methods: methods,
+      topRewards: topRewards,
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'totalRedemptions': totalRedemptions,
+      'profileCurrent': profileViews,
+      'profileChange': profilePercentage,
+      'profileIncrease': profileViewsIncrease,
+      'websiteCurrent': websiteViews,
+      'websiteChange': websitePercentage,
+      'websiteIncrease': websiteViewsIncrease,
+      //Mapping the lists to JSON
+      'methods': methods.map((e) => e.toJson()).toList(),
+      'topRewards': topRewards.map((e) => e.toJson()).toList(),
+    };
+  }
+}

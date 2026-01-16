@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:oktoast/oktoast.dart';
-import 'binding/controller_binder.dart';
-import 'core/routes/app_routes.dart';
+import 'package:organization/routes/app_pages.dart';
+
+import 'binding/initial_binding.dart';
 
 
 class MyApp extends StatelessWidget {
@@ -11,21 +11,18 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return OKToast(
-      child: ScreenUtilInit(
-        designSize: const Size(375, 812),
-        minTextAdapt: true,
-        splitScreenMode: true,
-        builder: (context, child) {
-          return GetMaterialApp.router(
-        //    initialBinding: ControllerBinding(),
-            debugShowCheckedModeBanner: false,
-            routerDelegate: AppRoutes.router.routerDelegate,
-            routeInformationParser: AppRoutes.router.routeInformationParser,
-            routeInformationProvider: AppRoutes.router.routeInformationProvider,
-          );
-        },
-      ),
+    return ScreenUtilInit(
+      designSize: const Size(375, 812),
+      minTextAdapt: true,
+      splitScreenMode: true,
+      builder: (context, child) {
+        return GetMaterialApp(
+          debugShowCheckedModeBanner: false,
+          initialBinding: InitialBinding(),
+          getPages: AppPages.pages,
+          initialRoute: AppRoutes.splashScreen,
+        );
+      },
     );
   }
 }

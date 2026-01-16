@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:organization/features/widgets/custom_text.dart';
 import '../../../utils/app_color.dart';
 import '../../widgets/custom_card_widget.dart';
@@ -22,9 +23,9 @@ class HomeCardWidget extends StatelessWidget {
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [  /// Top Icon
-            Image.asset(
+            SvgPicture.asset(
               topIcon,
-              color: Color(0xFFFE70B7),
+              colorFilter: ColorFilter.mode(Color(0xFFFE70B7), BlendMode.srcIn),
               height: 24.w,
               width: 24.w,
             ),

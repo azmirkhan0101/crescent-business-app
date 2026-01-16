@@ -1,300 +1,256 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:go_router/go_router.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:organization/controller/auth/setup_complete_controller.dart';
+import 'package:organization/features/on_boarding/widgets/animated_setup_background.dart';
 import 'package:organization/features/widgets/custom_asset_image.dart';
-import 'package:organization/features/widgets/custom_text.dart';
 import 'package:organization/features/widgets/info_card_widget.dart';
+import 'package:organization/routes/app_pages.dart';
 import 'package:organization/utils/assets_path.dart';
 
-import '../../core/routes/route_path.dart';
 import '../../utils/app_color.dart';
 import '../../utils/app_text.dart';
 import '../../utils/app_text_styles.dart';
+import '../../utils/assets_gen/assets.gen.dart';
 import '../widgets/custom_button_widget.dart';
+import '../widgets/custom_text.dart';
 
 class BusinessSetupCompleteScreen extends StatelessWidget {
-  const BusinessSetupCompleteScreen({super.key});
+
+  final SetupCompleteController controller = Get.find<SetupCompleteController>();
 
   @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size;
 
     return Scaffold(
-      body: Stack(
-        children: [
-          // Full-screen gradient background
-          Container(
-            height: size.height,
-            width: size.width,
-            decoration: const BoxDecoration(
-              gradient: AppColors.primaryGradient,
+      backgroundColor: const Color(0xFFF7F7F7),
+      body: Obx((){
+        if( controller.model.value == null ){
+          return Center( child: Text("No data found"),);
+        }else{
+          return body();
+        }
+      }),
+    );
+  }
+
+  body(){
+    return Stack(
+      children: [
+        AnimatedGradientBackground(),
+        Column(
+          children: [
+            SizedBox(height: 60.h),
+            Align(
+              alignment: AlignmentGeometry.topRight,
+              child: IconButton(
+                  onPressed: (){
+                Get.offAllNamed( AppRoutes.mainNav );
+              },
+                  icon: Icon(Icons.close)),
             ),
-          ),
+            /// complete icon
+            CustomAssetsImage(
+              assetsPath: AssetsPath.completeIcon,
+              height: 80.h,
+              width: 80.w,
+            ),
+            SizedBox(height: 12),
+            /// complete text
+            CustomText(text:AppText.businessComplete,
+              fontWeight: FontWeight.w700,
+              language: true,
+              fontSize: 20.sp,
+              color: AppColors.headlineTColor,
+            ),
+            Text(
+              AppText.businessDesc,
+              style: AppTextStyle.mediumStyle,
+              textAlign: TextAlign.center,
+            ),
+            SizedBox( height: 20.h,),
+            // Main content scrollable
+            Expanded(
+              child: SingleChildScrollView(
+                child: Padding(
+                  padding: const EdgeInsets.all(16.0),
 
-          // Main content scrollable
-          SingleChildScrollView(
-            child: Padding(
-              padding: const EdgeInsets.all(16.0),
-
-              child: Column(
-                children: [
-                  SizedBox(height: 60.h),
-
-                  /// Close button
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  child: Column(
                     children: [
-                      const SizedBox(),
-                      GestureDetector(
-                        onTap: () {
-                          context.push(RoutesPath.home);
-                        },
-                        child: Container(
-                          padding: EdgeInsets.all(8.w),
-                          decoration: const BoxDecoration(
-                            shape: BoxShape.circle,
-                            color: Color(0xFFF5F4F6),
+                      Container(
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          border: Border.all(
+                            color: const Color(0xFFE2E2E2),
+                            width: 3.w,
                           ),
-                          child: CustomAssetsImage(
-                            assetsPath: AssetsPath.crossIcon,
-                          ),
+                          borderRadius: BorderRadius.circular(12),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Color(0x0D000000),
+                              blurRadius: 6,
+                              offset: const Offset(0, 3),
+                            ),
+                          ],
+                        ),
+                        padding: EdgeInsets.all( 8.h ),
+
+                        //Scrollable card content
+                        child: Column(
+                          children: [
+                            Container(
+                              width: double.infinity,
+                              margin: EdgeInsets.only(bottom: 12.h,),
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(12.r),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Color(0x19000000),
+                                    blurRadius: 8,
+                                    offset: const Offset(0, 4),
+                                  ),
+                                ],
+                              ),
+                              padding: EdgeInsets.all(16.w),
+
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  SizedBox(height: 16.h),
+
+                                  //LOGO
+                                  Container(
+                                    width: 80.w,
+                                    height: 80.w,
+                                    decoration: BoxDecoration(
+                                      color: Colors.white,
+                                      shape: BoxShape.circle,
+                                      border: Border.all(
+                                        width: 0.91.w,
+                                        color: const Color(0xFFE4E4E4),
+                                      ),
+                                    ),
+                                    child: ClipRRect(
+                                      borderRadius: BorderRadius.circular(40.r),
+                                      child: Image.network(
+                                        controller.model.value!.logoImage!,
+                                        fit: BoxFit.cover,
+                                        errorBuilder: (context, error, stack) {
+                                          return Icon(Icons.business, size: 40.r,);
+                                        },
+                                      )
+
+                                    ),
+                                  ),
+                                  //profile texts - NAME, CATEGORY, TAGLINE
+                                  Text(
+                                    controller.model.value!.name,
+                                    style: AppTextStyle.headlineLStyle.copyWith(
+                                      fontSize: 18.sp,
+                                    ),
+                                  ),
+                                  SizedBox(height: 8.h),
+                                  Text(
+                                    controller.model.value!.category,
+                                    style: AppTextStyle.mediumStyle.copyWith(
+                                      fontSize: 13.sp,
+                                      color: const Color(0xFF848484),
+                                    ),
+                                  ),
+                                  SizedBox(height: 8.h),
+                                  Text(
+                                    controller.model.value!.tagline,
+                                    style: AppTextStyle.cardTextStyle.copyWith(
+                                      fontSize: 12.sp,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+
+                            SizedBox(height: 16.h),
+
+                            //card section (row)
+                            Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Expanded(
+                                  child: InfoCard(
+                                    gradientColor1: const Color(0xFFF3EAFE),
+                                    gradientColor2: const Color(0xFFE9D9FB),
+                                    gradientColor3: const Color(0xFFD8C2F6),
+                                    icon: Assets.icons.globe,
+                                    title: AppText.website,
+                                    subtitle: controller.model.value!.businessWebsite,
+                                    iconBgColor: const Color(0xFFE2D4F9),
+                                    iconColor: const Color(0xFF9B6DFF),
+                                  ),
+                                ),
+                                SizedBox(width: 12.w),
+                                Expanded(
+                                  child: InfoCard(
+                                    iconColor: const Color(0xFF4CAF50),
+                                    gradientColor1: const Color(0xFFF0FFD9),
+                                    gradientColor2: const Color(0xFFE6FBCB),
+                                    gradientColor3: const Color(0xFFD2F7A2),
+                                    icon: Assets.icons.call,
+                                    title: AppText.businessPhone,
+                                    subtitle: controller.model.value!.businessPhoneNumber,
+                                    iconBgColor: const Color(0xFFDBF7B6),
+                                  ),
+                                ),
+                              ],
+                            ),
+
+                            SizedBox(height: 16.h),
+
+                            /// bottom info card
+                            InfoCard(
+                              height: 120.h,
+                              width: double.infinity,
+                              gradientColor1: const Color(0xFFFFFFE0),
+                              gradientColor2: const Color(0xFFFFF9D9),
+                              gradientColor3: const Color(0xFFFFF2B0),
+                              icon: Assets.icons.mail,
+                              title: AppText.email,
+                              subtitle: controller.model.value!.businessEmail,
+                              iconBgColor: const Color(0xFFFFF2C2),
+                              iconColor: const Color(0xFFFFC107),
+                            ),
+                            SizedBox( height: 10.h,)
+                          ],
                         ),
                       ),
                     ],
                   ),
-
-                  /// complete icon
-                  CustomAssetsImage(
-                    assetsPath: AssetsPath.complete1Icon,
-                    height: 80.h,
-                    width: 80.w,
-                  ),
-                  const SizedBox(height: 12),
-
-                  /// complete text
-                  CustomText(text:AppText.businessComplete,
-                  fontWeight: FontWeight.w700,
-                    language: true,
-                    fontSize: 20.sp,
-                    color: AppColors.headlineTColor,
-                  ),
-
-                  // Text(
-                  //   AppText.businessComplete,
-                  //   style: AppTextStyle.headlineLStyle.copyWith(
-                  //     fontSize: 20.sp,
-                  //   ),
-                  // ),
-
-                  Text(
-                    AppText.businessDesc,
-                    style: AppTextStyle.mediumStyle,
-                    textAlign: TextAlign.center,
-                  ),
-
-
-                  CustomText(text:   AppText.businessDesc,
-                    fontWeight: FontWeight.w400,
-                    language: true,
-                    fontSize: 14.sp,
-                    color: AppColors.secondaryTextColor,
-                    textAlign: TextAlign.center,
-                  ),
-
-
-
-                  const SizedBox(height: 24),
-                  Container(
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      border: Border(
-                        top: BorderSide(
-                          color: const Color(0xFFDBF881),
-                          width: 3.w,
-                        ),
-                        left: BorderSide(
-                          color: const Color(0xFFDBF881),
-                          width: 3.w,
-                        ),
-                        right: BorderSide(
-                          color: const Color(0xFFDBF881),
-                          width: 3.w,
-                        ),
-                      ),
-                      borderRadius: const BorderRadius.only(
-                        topLeft: Radius.circular(12),
-                        topRight: Radius.circular(12),
-                      ),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Color(0x0D000000),
-                          blurRadius: 6,
-                          offset: const Offset(0, 3),
-                        ),
-                      ],
-                    ),
-                    padding: EdgeInsets.only(left: 8.w, right: 8.w, top: 8.h),
-
-                    /// Scrollable card content
-                    child: Column(
-                      children: [
-                        Container(
-                          width: double.infinity,
-                          margin: EdgeInsets.only(
-                            left: 0,
-                            right: 0,
-                            top: 0,
-                            bottom: 12.h,
-                          ),
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: const BorderRadius.only(
-                              bottomLeft: Radius.circular(12),
-                              bottomRight: Radius.circular(12),
-                            ),
-                            boxShadow: [
-                              BoxShadow(
-                                color: Color(0x19000000),
-                                blurRadius: 8,
-                                offset: const Offset(0, 4), // নিচে shadow
-                              ),
-                            ],
-                          ),
-                          padding: EdgeInsets.all(16.w),
-
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              SizedBox(height: 16.h),
-
-                              /// profile image
-                              Container(
-                                width: 80.w,
-                                height: 80.w,
-                                decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  shape: BoxShape.circle,
-                                  border: Border.all(
-                                    width: 0.91.w,
-                                    color: const Color(0xFFE4E4E4),
-                                  ),
-                                ),
-                                child: ClipRRect(
-                                  borderRadius: BorderRadius.circular(40.r),
-                                  child: Image.asset(
-                                    AssetsPath.businessProfileImage,
-                                    fit: BoxFit.cover,
-                                  ),
-                                ),
-                              ),
-
-                              /// profile texts
-                              Text(
-                                'Sweet Whisk Bakery',
-                                style: AppTextStyle.headlineLStyle.copyWith(
-                                  fontSize: 18.sp,
-                                ),
-                              ),
-                              SizedBox(height: 8.h),
-                              Text(
-                                'Business Category',
-                                style: AppTextStyle.mediumStyle.copyWith(
-                                  fontSize: 13.sp,
-                                  color: const Color(0xFF848484),
-                                ),
-                              ),
-                              SizedBox(height: 8.h),
-                              Text(
-                                'Whipping Up Smiles, One Treat at a Time!',
-                                style: AppTextStyle.cardTextStyle.copyWith(
-                                  fontSize: 12.sp,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-
-                        SizedBox(height: 16.h),
-
-                        /// card section (row)
-                        Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Expanded(
-                              child: InfoCard(
-                                gradientColor1: const Color(0xFFF3EAFE),
-                                gradientColor2: const Color(0xFFE9D9FB),
-                                gradientColor3: const Color(0xFFD8C2F6),
-                                icon: AssetsPath.globeIcon,
-                                title: AppText.website,
-                                subtitle: "(555) 123-4567",
-                                iconBgColor: const Color(0xFFE2D4F9),
-                                iconColor: const Color(0xFF9B6DFF),
-                              ),
-                            ),
-                            SizedBox(width: 12.w),
-                            Expanded(
-                              child: InfoCard(
-                                iconColor: const Color(0xFF4CAF50),
-                                gradientColor1: const Color(0xFFF0FFD9),
-                                gradientColor2: const Color(0xFFE6FBCB),
-                                gradientColor3: const Color(0xFFD2F7A2),
-                                icon: AssetsPath.callIcon,
-                                title: AppText.businessPhone,
-                                subtitle: AppText.enterWebsite,
-                                iconBgColor: const Color(0xFFDBF7B6),
-                              ),
-                            ),
-                          ],
-                        ),
-
-                        SizedBox(height: 16.h),
-
-                        /// bottom info card
-                        InfoCard(
-                          height: 120.h,
-                          width: double.infinity,
-                          gradientColor1: const Color(0xFFFFFFE0),
-                          gradientColor2: const Color(0xFFFFF9D9),
-                          gradientColor3: const Color(0xFFFFF2B0),
-                          icon: AssetsPath.mailIcon,
-                          title: AppText.email,
-                          subtitle: "contact@sweetwhiskbakery.com",
-                          iconBgColor: const Color(0xFFFFF2C2),
-                          iconColor: const Color(0xFFFFC107),
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
+                ),
               ),
             ),
-          ),
-
-          // Bottom button
-          Positioned(
-            bottom: 50.h,
-            left: 0,
-            right: 0,
-            child: Center(
+            SizedBox(height: 15.h,),
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 25),
               child: CustomButton(
+                width: double.infinity,
+                backgroundColor: AppColors.black,
+                textColor: AppColors.black,
+                text: AppText.done,
+
                 buttonTextStyle: GoogleFonts.familjenGrotesk(
                   color: AppColors.white,
                   fontSize: 18.sp,
                   fontWeight: FontWeight.w700,
                 ),
-                backgroundColor: AppColors.black,
-                textColor: AppColors.white,
-                text: AppText.done,
                 onPressed: () {
-                  context.push(RoutesPath.home);
+                  Get.offAllNamed( AppRoutes.mainNav );
                 },
               ),
             ),
-          ),
-        ],
-      ),
+            SizedBox(height: 35.h,)
+          ],
+        ),
+      ],
     );
   }
 }

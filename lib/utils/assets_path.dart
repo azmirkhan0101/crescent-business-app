@@ -1,22 +1,11 @@
 class AssetsPath {
   static const String getStartedImage = "assets/images/get_started_image.png";
-  static const String moonIcon = "assets/icons/moon_icon.png";
-  static const String mailIcon = "assets/icons/Mail.png";
-  static const String lockIcon = "assets/icons/Lock.png";
   static const String infoIcon = "assets/icons/info_icon.png";
-  static const String eyeIcon = "assets/icons/Eye.png";
-  static const String backIcon = "assets/icons/back.png";
   static const String addProfileIcon = "assets/icons/add_profile_icon.png";
   static const String businessCoverImage =
       "assets/images/business_cover_image.png";
   static const String businessProfileImage =
       "assets/images/business_profile_image.png";
-  static const String chartIcon = "assets/icons/chart.png";
-  static const String homeIcon = "assets/icons/home.png";
-  static const String scanQrIcon = "assets/icons/scan_qr_code.png";
-  static const String starEmphasisIcon = "assets/icons/star_emphasis.png";
-  static const String userIcon = "assets/icons/user.png";
-  static const String callIcon = "assets/icons/call.png";
   static const String calenderIcon = "assets/icons/calendar_icon.png";
   static const String documentIcon = "assets/icons/document_icon.png";
   static const String bottomS1Icon = "assets/icons/calendar_icon.png";
@@ -27,20 +16,20 @@ class AssetsPath {
   static const String cloudIcon = "assets/icons/cloud_icon.png";
   static const String linkIcon = "assets/icons/link.png";
   static const String editIcon = "assets/icons/edit.png";
-  static const String globeIcon = "assets/icons/globe.png";
-  static const String locationIcon = "assets/icons/location.png";
   static const String bookMarkIcon = "assets/icons/book_mark.png";
-  static const String clickIcon = "assets/icons/click.png";
   static const String eyeTrackingIcon = "assets/icons/eye_tracking.png";
-  static const String profileIcon = "assets/icons/profile.png";
   static const String contactLess1Icon = "assets/icons/contactless1.png";
+  static const String onlineRewardIcon = "assets/images/online_reward_icon.png";
+  static const String instoreRewardIcon = "assets/images/instore_reward_icon.png";
   static const String qrCodeIcon = "assets/icons/qr_code.png";
+  static const String staticCodeIcon = "assets/images/static_code.png";
+  static const String giftCardIcon = "assets/images/gift_card.png";
+  static const String discountCodeIcon = "assets/images/discount_code.png";
   static const String rankBadgeIcon = "assets/icons/rank_badge.png";
   static const String rankBadge1Icon = "assets/icons/rank_badge1.png";
   static const String rankBadge2Icon = "assets/icons/rank_badge2.png";
-  static const String rocketIcon = "assets/icons/rocket.png";
-  static const String playIcon = "assets/icons/play_icon.png";
-  static const String alertIcon = "assets/icons/alert_icon.png";
+  static const String rewardFreeIcon = "assets/icons/reward_free_icon.png";
+  static const String rewardDiscountIcon = "assets/icons/reward_discount_icon.png";
   static const String completeIcon = "assets/icons/complete.png";
   static const String complete1Icon = "assets/icons/complete1.png";
   static const String loadingStarIcon = "assets/icons/loading_star.png";
@@ -58,19 +47,9 @@ class AssetsPath {
   static const String radioButton = "assets/icons/radio_button_icon.png";
   static const String radioButton1 = "assets/icons/radio_button1.png";
   static const String radioButton2 = "assets/icons/radio_button2.png";
-  static const String autoServiceIcon = "assets/icons/auto_service_icon.png";
-  static const String bakeryIcon = "assets/icons/bakery_icon.png";
-  static const String cafeIcon = "assets/icons/cafe_icon.png";
-  static const String realStoreIcon = "assets/icons/real_store_icon.png";
-  static const String restaurantIcon = "assets/icons/restaurant_icon.png";
-  static const String wellnessIcon = "assets/icons/wellness_icon.png";
-  static const String otherIcon = "assets/icons/other_icon.png";
   static const String pdfIcon = "assets/icons/pdf_icon.png";
   static const String csvIcon = "assets/icons/csv_icon.png";
-  static const String redPlayIcon = "assets/icons/red_play_icon.png";
   static const String export = "assets/icons/export.svg";
   static const String exportPng = "assets/icons/export.png";
-  // image
-  static const String salonImage = "assets/images/salon_image.png";
   static const String stackCardImage = "assets/icons/stack_card_image.png";
 }

@@ -1,21 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:go_router/go_router.dart';
+import 'package:get/get.dart';
 import 'package:organization/features/on_boarding/widgets/onboarding_appbar.dart';
-import 'package:organization/features/on_boarding/widgets/under_button_widget.dart';
+import 'package:organization/features/on_boarding/widgets/bottom_button_widget.dart';
 import 'package:organization/features/widgets/custom_asset_image.dart';
 import 'package:organization/features/widgets/custom_text.dart';
 import 'package:organization/utils/app_text.dart';
 import 'package:organization/utils/assets_path.dart';
+
 import '../../../utils/app_color.dart';
 import '../../../utils/app_size.dart';
-import '../../core/routes/route_path.dart';
+import '../../controller/auth/sign_up_controller.dart';
+import '../../utils/assets_gen/assets.gen.dart';
 import '../widgets/custom_text_field_widget.dart';
 import '../widgets/heading_text_widget.dart';
 import '../widgets/text_field_title_widget.dart';
 
 class AccountCreationScreen extends StatelessWidget {
-  const AccountCreationScreen({super.key});
+
+  final SignUpController controller = Get.find<SignUpController>();
 
   @override
   Widget build(BuildContext context) {
@@ -53,7 +56,8 @@ class AccountCreationScreen extends StatelessWidget {
                   SizedBox(height: AppSizes.paddingSmallH),
                   CustomTextField(
                     hintText: "Enter Email",
-                    prefixImagePath: AssetsPath.mailIcon,
+                    prefixIconPath: Assets.icons.mail,
+                    controller: controller.emailController,
                   ),
                   SizedBox(height: 10.h),
 
@@ -62,8 +66,10 @@ class AccountCreationScreen extends StatelessWidget {
                   SizedBox(height: AppSizes.paddingSmallH),
                   CustomTextField(
                     hintText: "**********",
-                    suffixImagePath: AssetsPath.eyeIcon,
-                    prefixImagePath: AssetsPath.lockIcon,
+                    suffixIconPath: Assets.icons.eye,
+                    prefixIconPath: Assets.icons.lock,
+                    controller: controller.passwordController,
+                    isPassword: true,
                   ),
                 ],
               ),
@@ -106,10 +112,10 @@ class AccountCreationScreen extends StatelessWidget {
         ),
       ),
 
-      /// continue Button
-      bottomNavigationBar: UnderButtonWidget(
+      // continue Button
+      bottomNavigationBar: BottomButtonWidget(
         onPressed: () {
-          context.push(RoutesPath.uploadLogo);
+          controller.accountCreationContinue();
         },
         buttonText: AppText.continueText,
       ),

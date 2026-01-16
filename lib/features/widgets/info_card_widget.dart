@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:organization/utils/app_color.dart';
 import 'package:organization/utils/app_text_styles.dart';
 import '../../utils/app_size.dart';
@@ -57,9 +58,9 @@ class InfoCard extends StatelessWidget {
               shape: BoxShape.circle,
             ),
             child: Center(
-              child: Image.asset(
+              child: SvgPicture.asset(
                 icon,
-                color: iconColor,
+                colorFilter: ColorFilter.mode(iconColor, BlendMode.srcIn),
                 height: 24.h,
                 width: 24.w,
               ),
@@ -79,6 +80,7 @@ class InfoCard extends StatelessWidget {
                 style: AppTextStyle.mediumStyle.copyWith(
                   fontSize: 12.sp,
                   color: AppColors.blackTextColor,
+                  overflow: TextOverflow.ellipsis
                 ),
               ),
             ],

@@ -1,17 +1,41 @@
-import 'package:flutter/material.dart';
+import 'dart:math';
+
 import 'package:fl_chart/fl_chart.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:organization/data/models/home/monthly_stats.dart';
 import 'package:organization/features/widgets/custom_text.dart';
 import 'package:organization/utils/app_size.dart';
 import 'package:organization/utils/app_text_styles.dart';
-import 'package:organization/utils/assets_path.dart';
+import 'package:organization/utils/assets_gen/assets.gen.dart';
+
 import '../../../utils/app_color.dart';
 
 class HomeBarChartWidget extends StatelessWidget {
-  const HomeBarChartWidget({super.key});
+
+  final List<MonthlyStats> stats;
+  final num activityPercentage;
+
+  const HomeBarChartWidget({
+    super.key,
+    required this.stats,
+    required this.activityPercentage
+  });
 
   @override
   Widget build(BuildContext context) {
+
+    String percentageText =
+    activityPercentage % 1 == 0
+        ? activityPercentage.toInt().toString()
+        : activityPercentage.toString();
+
+    final filteredStats = filterMonthlyStats(stats);
+    final rawMax = getMaxValue(filteredStats);
+    final maxY = roundToNiceNumber(rawMax);
+    final interval = calculateInterval(maxY);
+
     return SizedBox(
       height: 343.h,
       child: Card(
@@ -29,8 +53,8 @@ class HomeBarChartWidget extends StatelessWidget {
               // Top Row with icon & title
               Row(
                 children: [
-                  Image.asset(
-                    AssetsPath.dataTrendingIcon,
+                  SvgPicture.asset(
+                    Assets.icons.stats,
                     height: AppSizes.iconS24H,
                     width: AppSizes.iconS24W,
                   ),
@@ -48,19 +72,22 @@ class HomeBarChartWidget extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
                   Text(
-                    '57%',
+                    "${percentageText} %",
                     style: AppTextStyle.headlineLStyle
                         .copyWith(fontSize: AppSizes.headlineXL),
                   ),
                   SizedBox(width: 12.w),
-                  CustomText(
-                    text: "Total activity of dummy data",
-                    fontSize: 12.sp,
-                    fontWeight: FontWeight.w400,
-                    language: false,
-                    color: AppColors.secondaryTextColor,
-                    textAlign: TextAlign.justify,
-                    overflow: TextOverflow.visible,
+                  Expanded(
+                    child: CustomText(
+                      maxLines: 2,
+                      text: "Total activity of monthly redemptions",
+                      fontSize: 12.sp,
+                      fontWeight: FontWeight.w400,
+                      language: false,
+                      color: AppColors.secondaryTextColor,
+                      textAlign: TextAlign.left,
+                      overflow: TextOverflow.ellipsis,
+                    ),
                   ),
                 ],
               ),
@@ -71,91 +98,17 @@ class HomeBarChartWidget extends StatelessWidget {
                 height: 210.h,
                 child: BarChart(
                   BarChartData(
-                    maxY: 60000,
-                    barGroups: [
-                      BarChartGroupData(
-                        x: 0,
-                        barRods: [
-                          BarChartRodData(
-                            toY: 25000,
-                            color: const Color(0xFFFF6F61),
-                            width: 11.43.w,
-                            borderRadius: BorderRadius.circular(5.r),
-                          ),
-                        ],
-                      ),
-                      BarChartGroupData(
-                        x: 1,
-                        barRods: [
-                          BarChartRodData(
-                            toY: 45000,
-                            color: const Color(0xFFFF6F61),
-                            width: 11.43.w,
-                            borderRadius: BorderRadius.circular(5.r),
-                          ),
-                        ],
-                      ),
-                      BarChartGroupData(
-                        x: 2,
-                        barRods: [
-                          BarChartRodData(
-                            toY: 32000,
-                            color: const Color(0xFFFF6F61),
-                            width: 11.43.w,
-                            borderRadius: BorderRadius.circular(5.r),
-                          ),
-                        ],
-                      ),
-                      BarChartGroupData(
-                        x: 3,
-                        barRods: [
-                          BarChartRodData(
-                            toY: 52000,
-                            color: const Color(0xFFFF6F61),
-                            width: 11.43.w,
-                            borderRadius: BorderRadius.circular(5.r),
-                          ),
-                        ],
-                      ),
-                      BarChartGroupData(
-                        x: 4,
-                        barRods: [
-                          BarChartRodData(
-                            toY: 18000,
-                            color: const Color(0xFFFF6F61),
-                            width: 11.43.w,
-                            borderRadius: BorderRadius.circular(5.r),
-                          ),
-                        ],
-                      ),
-                      BarChartGroupData(
-                        x: 5,
-                        barRods: [
-                          BarChartRodData(
-                            toY: 39000,
-                            color: const Color(0xFFFF6F61),
-                            width: 11.43.w,
-                            borderRadius: BorderRadius.circular(5.r),
-                          ),
-                        ],
-                      ),
-                      BarChartGroupData(
-                        x: 6,
-                        barRods: [
-                          BarChartRodData(
-                            toY: 25000,
-                            color: const Color(0xFFFF6F61),
-                            width: 11.43.w,
-                            borderRadius: BorderRadius.circular(5.r),
-                          ),
-                        ],
-                      ),
-                    ],
+                    maxY: maxY.toDouble(),
+                    barGroups: buildBarGroups( filteredStats ),
+                    barTouchData: BarTouchData(
+                      enabled: filteredStats.isNotEmpty,
+                    ),
+                    //DYNAMIC BARS
                     gridData: FlGridData(
                       show: true,
                       drawVerticalLine: false,
                       drawHorizontalLine: true,
-                      horizontalInterval: 10000,
+                      horizontalInterval: interval,
                       getDrawingHorizontalLine: (value) {
                         return FlLine(
                           color: Colors.grey.shade200,
@@ -170,21 +123,32 @@ class HomeBarChartWidget extends StatelessWidget {
                         sideTitles: SideTitles(
                           showTitles: true,
                           reservedSize: 38,
-                          getTitlesWidget: getTitles,
+                          getTitlesWidget: (value, meta){
+                            return getTitles(value, meta, filteredStats);
+                          },
                         ),
                       ),
                       leftTitles: AxisTitles(
                         sideTitles: SideTitles(
                           showTitles: true,
                           reservedSize: 40,
-                          interval: 10000,
-                          getTitlesWidget: leftTitles,
+                          interval: interval,
+                          getTitlesWidget: (value, meta) {
+                            return Text(
+                              value >= 1000
+                                  ? '${(value / 1000).toStringAsFixed(0)}k'
+                                  : value.toInt().toString(),
+                              style: TextStyle(fontSize: 12.sp),
+                            );
+                          },
                         ),
                       ),
                       topTitles:
-                      const AxisTitles(sideTitles: SideTitles(showTitles: false)),
+                      const AxisTitles(
+                          sideTitles: SideTitles(showTitles: false)),
                       rightTitles:
-                      const AxisTitles(sideTitles: SideTitles(showTitles: false)),
+                      const AxisTitles(
+                          sideTitles: SideTitles(showTitles: false)),
                     ),
                     extraLinesData: ExtraLinesData(
                       horizontalLines: [
@@ -206,46 +170,70 @@ class HomeBarChartWidget extends StatelessWidget {
   }
 
   // Bottom Titles (X-axis)
-  static Widget getTitles(double value, TitleMeta meta) {
+  static Widget getTitles(
+      double value,
+      TitleMeta meta,
+      List<MonthlyStats> stats,
+      ) {
     const style = TextStyle(
       color: AppColors.blackTextColor,
       fontFamily: 'inter',
       fontWeight: FontWeight.w400,
       fontSize: 10,
     );
-    Widget text;
-    switch (value.toInt()) {
-      case 0:
-        text = const Text('Jan', style: style);
-        break;
-      case 1:
-        text = const Text('Feb', style: style);
-        break;
-      case 2:
-        text = const Text('Mar', style: style);
-        break;
-      case 3:
-        text = const Text('Apr', style: style);
-        break;
-      case 4:
-        text = const Text('Text', style: style);
-        break;
-      case 5:
-        text = const Text('Text', style: style);
-        break;
-      case 6:
-        text = const Text('Text', style: style);
-        break;
-      default:
-        text = const Text('', style: style);
-        break;
+
+    int index = value.toInt();
+
+    if (index < 0 || index >= stats.length) {
+      return const SizedBox.shrink();
     }
+
+    // Example API month: "JAN", "FEB"
+    final String month = stats[index].month;
+
     return SideTitleWidget(
       space: 8,
       meta: meta,
-      child: text,
+      child: Text(
+        month.substring(0, 3), // JAN → Jan
+        style: style,
+      ),
     );
   }
+
+
+  //Y AXIS MAX VALUE FROM API
+  double getMaxValue(List<MonthlyStats> stats) {
+    if (stats.isEmpty) return 0;
+
+    return stats
+        .map((e) => e.reward)
+        .reduce((a, b) => a > b ? a : b)
+        .toDouble();
+  }
+
+  //ROUND MAX VALUE TO NEAREST 10 POWER
+  num roundToNiceNumber(double value) {
+    if (value < 5) return 5;//MAX VALUE IS AT LEAST 5
+
+    final magnitude = pow(10, (log(value) / ln10).floor());
+    final normalized = value / magnitude;
+
+    if (normalized <= 1) return 1 * magnitude;
+    if (normalized <= 2) return 2 * magnitude;
+    if (normalized <= 5) return 5 * magnitude;
+    return 10 * magnitude;
+  }
+
+  //DYNAMIC INTERVAL OF Y AXIS VALUES
+  double calculateInterval(num maxY, {int steps = 5}) {
+    if (maxY <= 0) return 1; //fallback interval is 1
+    return (maxY / steps).ceilToDouble();
+  }
+
+
+
+
 
   // Left Titles (Y-axis)
   static Widget leftTitles(double value, TitleMeta meta) {
@@ -284,4 +272,38 @@ class HomeBarChartWidget extends StatelessWidget {
     }
     return Text(text, style: style, textAlign: TextAlign.left);
   }
+
+  //DYNAMIC BARCHART GROUP
+  List<BarChartGroupData> buildBarGroups(List<MonthlyStats> stats) {
+    return List.generate(stats.length, (index) {
+      return BarChartGroupData(
+        x: index,
+        barRods: [
+          BarChartRodData(
+            toY: stats[index].reward.toDouble(),
+            color: const Color(0xFFFF6F61),
+            width: 11.43.w,
+            borderRadius: BorderRadius.circular(5.r),
+          ),
+        ],
+      );
+    });
+  }
+
+  //FILTER LATEST SIX MONTH DATA
+  List<MonthlyStats> filterMonthlyStats(List<MonthlyStats> data) {
+
+    if( data.isEmpty ) return data;//SKIP IF DATA IS EMPTY
+
+    final int currentMonthIndex = DateTime.now().month - 1; //0-11
+
+    int startIndex = currentMonthIndex > 5 ? currentMonthIndex - 5 : 0;
+
+    int endIndex = currentMonthIndex + 1;
+
+    return data.sublist( startIndex, endIndex );
+
+  }
+
+
 }

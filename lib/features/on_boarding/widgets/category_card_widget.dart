@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+
 import '../../../utils/app_color.dart';
 import '../../../utils/app_text_styles.dart';
 import '../../../utils/assets_path.dart';
@@ -69,7 +70,7 @@ class CategoryCard extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Image.asset(
-                    category.image,
+                    category.icon,
                     height: 18.h, // bigger when selected
                     width: 16.w,
                   ),

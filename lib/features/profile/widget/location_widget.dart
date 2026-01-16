@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:organization/utils/assets_gen/assets.gen.dart';
 import '../../../utils/app_color.dart';
 import '../../../utils/app_size.dart';
 import '../../../utils/assets_path.dart';
@@ -32,14 +34,16 @@ class LocationWidget extends StatelessWidget {
               child: CustomCard(
                 child: Row(
                   children: [
-                    CustomAssetsImage(assetsPath: AssetsPath.locationIcon),
+                    SvgPicture.asset(Assets.icons.location),
                     SizedBox(width: 8.w),
-                    CustomText(
-                      text: fieldText,
-                      fontSize: 14.sp,
-                      color: AppColors.blackTextColor,
-                      fontWeight: FontWeight.w500,
-                      overflow: TextOverflow.ellipsis,
+                    Expanded(
+                      child: CustomText(
+                        text: fieldText,
+                        fontSize: 14.sp,
+                        color: AppColors.blackTextColor,
+                        fontWeight: FontWeight.w500,
+                        overflow: TextOverflow.ellipsis,
+                      ),
                     ),
                   ],
                 ),

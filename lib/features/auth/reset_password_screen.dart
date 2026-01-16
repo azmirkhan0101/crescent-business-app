@@ -1,26 +1,29 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:go_router/go_router.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:organization/controller/auth/reset_password_controller.dart';
 import 'package:organization/features/auth/widgets/custom_auth_appbar.dart';
 import 'package:organization/features/auth/widgets/password_requirement_widget.dart';
 import 'package:organization/features/auth/widgets/rich_text_widget.dart';
 import 'package:organization/utils/app_text.dart';
-import 'package:organization/utils/assets_path.dart';
+import 'package:organization/utils/assets_gen/assets.gen.dart';
+
 import '../../../utils/app_color.dart';
 import '../../../utils/app_size.dart';
-import '../../core/routes/route_path.dart';
+import '../../routes/app_pages.dart';
 import '../widgets/custom_button_widget.dart';
 import '../widgets/custom_text_field_widget.dart';
 import '../widgets/heading_text_widget.dart';
 
 
 class ResetPasswordScreen extends StatelessWidget {
-  const ResetPasswordScreen({super.key});
+
+  final ResetPasswordController controller = ResetPasswordController();
+  String resetPasswordToken = Get.arguments;
 
   @override
   Widget build(BuildContext context) {
-
 
     return Scaffold(
       backgroundColor: AppColors.white,
@@ -51,9 +54,14 @@ class ResetPasswordScreen extends StatelessWidget {
                   /// Password Field
 
                   CustomTextField(
+                    onChanged: (String value){
+                      controller.checkRequirements(value);
+                    },
                     hintText: "Enter New Password",
-                    suffixImagePath: AssetsPath.eyeIcon,
-                    prefixImagePath: AssetsPath.lockIcon,
+                    suffixIconPath: Assets.icons.eye,
+                    prefixIconPath: Assets.icons.lock,
+                    controller: controller.newPasswordController,
+                    isPassword: true,
                   ),
 
 
@@ -61,9 +69,11 @@ class ResetPasswordScreen extends StatelessWidget {
 
                   SizedBox(height: AppSizes.paddingSmallH),
                   CustomTextField(
-                    hintText: "Confirmed New Password",
-                    suffixImagePath: AssetsPath.eyeIcon,
-                    prefixImagePath: AssetsPath.lockIcon,
+                    hintText: "Confirm New Password",
+                    suffixIconPath: Assets.icons.eye,
+                    prefixIconPath: Assets.icons.lock,
+                    controller: controller.confirmPasswordController,
+                    isPassword: true,
                   ),
 
                   // CustomTextFieldWidget(
@@ -82,7 +92,14 @@ class ResetPasswordScreen extends StatelessWidget {
             SizedBox(height: 20.h),
 
             ///required text
-            PasswordRequirements(),
+            Obx((){
+              return PasswordRequirements(
+                isEightCharacters: controller.isEightCharacters.value,
+                isBothCasesPresent: controller.isBothCasesPresent.value,
+                isNumeralPresent: controller.isNumeralPresent.value,
+                isSpecialCharPresent: controller.isSpecialCharPresent.value,
+              );
+            })
           ],
         ),
       ),
@@ -96,21 +113,37 @@ class ResetPasswordScreen extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            CustomButton(
-              buttonTextStyle: GoogleFonts.familjenGrotesk(
-                  color: AppColors.buttonTextColor,fontSize: 18.sp,fontWeight: FontWeight.w700),
-              text: AppText.resetPasswordButton,
-              onPressed: () {
-                context.push(RoutesPath.categorySelection);
-
-              },
-            ),
+            Center(child:
+            Obx((){
+              return CustomButton(
+                isLoading: controller.isResetLoading.value,
+                text: AppText.resetPasswordButton,
+                onPressed: () {
+                  controller.resetPasswordToken = resetPasswordToken;
+                  controller.resetPassword();
+                },
+                buttonTextStyle: GoogleFonts.familjenGrotesk(
+                  color: AppColors.buttonTextColor,
+                  fontSize: 18.sp,
+                  fontWeight: FontWeight.w700,
+                ),
+              );
+            }),),
+            // CustomButton(
+            //   buttonTextStyle: GoogleFonts.familjenGrotesk(
+            //       color: AppColors.buttonTextColor,fontSize: 18.sp,fontWeight: FontWeight.w700),
+            //   text: AppText.resetPasswordButton,
+            //   onPressed: () {
+            //     controller.resetPasswordToken = resetPasswordToken;
+            //     controller.resetPassword();
+            //   },
+            // ),
             SizedBox(height: AppSizes.paddingMedium),
             RichTextWidget(
               firstText: AppText.changedYourMind,
-              lastText: AppText.login,
+              lastText: "  ${AppText.login}",
               onTap: () {
-               context.push(RoutesPath.signIn);
+               Get.toNamed(AppRoutes.logIn);
               },
             ),
           ],

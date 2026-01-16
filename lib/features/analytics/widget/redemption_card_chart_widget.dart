@@ -1,22 +1,60 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:organization/data/models/analytics/redemption_method_model.dart';
 import 'package:organization/features/widgets/custom_text.dart';
 import 'package:organization/utils/app_color.dart';
 import 'package:organization/utils/app_size.dart';
 import 'package:organization/utils/app_text_styles.dart';
-import 'package:organization/utils/assets_path.dart';
+import 'package:organization/utils/assets_gen/assets.gen.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
 class RedemptionChartWidget extends StatelessWidget {
-  const RedemptionChartWidget({super.key});
+
+  final int? totalRedemptions;
+  final List<RedemptionMethodModel>? methods;
+
+  const RedemptionChartWidget({
+    super.key,
+    required this.totalRedemptions,
+    required this.methods
+  });
 
   @override
   Widget build(BuildContext context) {
+
+    Color qrChartColor = Color(0xFFC4E862);
+    Color nfcChartColor = Color(0xFFC0A4E8);
+    Color codeChartColor = Color(0xFFFF7BD7);
+
+    int qrCount = 0;
+    int nfcCount = 0;
+    int codeCount = 0;
+
+    if( methods != null && methods!.length == 3 ){
+      qrCount = methods![0].count;
+      nfcCount = methods![1].count;
+      codeCount = methods![2].count;
+    }
+
     final List<ChartData> redemptionData = [
-      ChartData('QR', 45, const Color(0xFFC4E862)),
-      ChartData('NFC', 23, const Color(0xFFC0A4E8)),
-      ChartData('Code', 74, const Color(0xFFFF7BD7)),
+      ChartData('QR', qrCount, qrChartColor ),
+      ChartData('NFC', nfcCount, nfcChartColor ),
+      ChartData('Code', codeCount, codeChartColor ),
     ];
+
+    bool hasData = redemptionData.any((e) => e.y > 0);
+
+    final List<ChartData> chartSource = hasData
+        ? redemptionData
+        : [
+      ChartData(
+        'No Data',
+        1,                     // must be > 0
+        Colors.grey.shade300,  // grey color
+      ),
+    ];
+
 
     return SizedBox(
       height: 174.h,
@@ -29,7 +67,7 @@ class RedemptionChartWidget extends StatelessWidget {
           padding: EdgeInsets.all(16.w),
           child: Row(
             children: [
-              /// Left side texts
+              //Left side texts
               Expanded(
                 flex: 2,
                 child: Column(
@@ -38,11 +76,11 @@ class RedemptionChartWidget extends StatelessWidget {
                   children: [
                     Row(
                       children: [
-                        Image.asset(
-                          AssetsPath.scanQrIcon,
+                        SvgPicture.asset(
+                          Assets.icons.scanQrCode,
                           height: AppSizes.iconS24H,
                           width: AppSizes.iconS24W,
-                          color: AppColors.primaryColor,
+                          colorFilter: ColorFilter.mode(AppColors.primaryColor, BlendMode.srcIn),
                         ),
                         SizedBox(width: 5.w),
                         Expanded(
@@ -57,7 +95,7 @@ class RedemptionChartWidget extends StatelessWidget {
                     ),
 
                     Text(
-                      "120",
+                      "${totalRedemptions ?? 0}",
                       style: AppTextStyle.headlineLStyle.copyWith(
                         fontSize: AppSizes.headlineXL,
                       ),
@@ -65,11 +103,11 @@ class RedemptionChartWidget extends StatelessWidget {
                     SizedBox(width: 6.h),
                     Row(
                       children: [
-                        _buildLegendRow('QR', '45', const Color(0xFFC4E862)),
+                        _buildLegendRow('QR', "$qrCount", qrChartColor ),
                         SizedBox(width: 18.w),
-                        _buildLegendRow('NFC', '23', const Color(0xFFC0A4E8)),
+                        _buildLegendRow('NFC', "$nfcCount", nfcChartColor ),
                         SizedBox(width: 18.w),
-                        _buildLegendRow('Code', '74', const Color(0xFFFF7BD7)),
+                        _buildLegendRow('Code', "$codeCount", codeChartColor ),
                       ],
                     ),
                   ],
@@ -84,7 +122,7 @@ class RedemptionChartWidget extends StatelessWidget {
                   margin: EdgeInsets.zero,
                   series: <DoughnutSeries<ChartData, String>>[
                     DoughnutSeries<ChartData, String>(
-                      dataSource: redemptionData,
+                      dataSource: chartSource,
                       xValueMapper: (ChartData data, _) => data.x,
                       yValueMapper: (ChartData data, _) => data.y,
                       pointColorMapper: (ChartData data, _) => data.color,

@@ -1,17 +1,42 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:organization/data/models/analytics/graph_data_model.dart';
+import 'package:organization/data/models/analytics/summary_model.dart';
 import 'package:organization/features/widgets/custom_text.dart';
 import 'package:organization/utils/app_color.dart';
-import 'package:organization/utils/app_text_styles.dart';
+import 'package:organization/utils/assets_gen/assets.gen.dart';
 import 'package:organization/utils/assets_path.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
-class AnalyticsCardChart extends StatelessWidget {
-  const AnalyticsCardChart({super.key});
+class AnalyticsCardChart<T> extends StatelessWidget {
+
+  final List<String> items;
+  final String selectedTitle;
+  final Function(String) onItemSelected;
+  final SummaryModel? summaryModel;
+  final List<GraphDataModel> graphList;
+
+  const AnalyticsCardChart({
+    super.key,
+    required this.items,
+    required this.selectedTitle,
+    required this.onItemSelected,
+    required this.summaryModel,
+    required this.graphList,
+  });
 
   @override
   Widget build(BuildContext context) {
+
+    final filteredStats = filterLatestData( graphList );
+    final rawMax = getMaxValue(filteredStats);
+    final maxY = roundToNiceNumber(rawMax);
+    final interval = calculateInterval(maxY);
+
     return Card(
       color: AppColors.white,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.r)),
@@ -26,7 +51,7 @@ class AnalyticsCardChart extends StatelessWidget {
               // 🔹 Top Row (Image + Title)
               Row(
                 children: [
-                  Image.asset(AssetsPath.dataTrendingIcon, height: 24.h, width: 24.w),
+                  SvgPicture.asset(Assets.icons.stats, height: 24.h, width: 24.w),
                   SizedBox(width: 8.w),
                   Text(
                     "Reward Performance",
@@ -37,59 +62,87 @@ class AnalyticsCardChart extends StatelessWidget {
                   ),
                 ],
               ),
-
               SizedBox(height: 12.h),
-
-              // 🔹 Subtitle Text
-
               CustomText(text: "Select a reward:",
               fontSize: 12.sp,
                 color: const Color(0xFF6E6E6E),
                 fontWeight: FontWeight.w400,
                 language: false,
               ),
-
-
               SizedBox(height: 12.h),
-
               // container with drop down
-              Container(
-                padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 10.h),
-                height: 40.h,
-                width: 311.w,
-                decoration: BoxDecoration(
-                  color: Colors.grey.shade200,
-                  borderRadius: BorderRadius.circular(8.r),
-                ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-
-
-                    Text(
-                      "10% Off Entire Order",
-                      style: GoogleFonts.inter(
-                          fontSize: 14.sp,
-                          fontWeight: FontWeight.w500,
-                          color: AppColors.blackTextColor
-                      ),
-
+              Row(
+                mainAxisSize: MainAxisSize.max,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Expanded(
+                    child: Container(
+                        decoration: BoxDecoration(
+                          color: Colors.grey.shade200,
+                          borderRadius: BorderRadius.circular(10),
+                          boxShadow: [
+                            BoxShadow(
+                              color: const Color(0x199E9E9E),
+                              spreadRadius: 1,
+                              blurRadius: 5,
+                              offset: const Offset(0, 3),
+                            ),
+                          ],
+                        ),
+                        child: DropdownButtonHideUnderline(
+                            child: DropdownButton<String>(
+                              value: selectedTitle,
+                              icon: Icon(
+                                Icons.arrow_drop_down,
+                                color: Colors.black,
+                              ),
+                              style: GoogleFonts.inter(
+                                fontWeight: FontWeight.w400,
+                                color: AppColors.blackTextColor,
+                                fontSize: 14.sp,
+                              ),
+                              onChanged: (String? newValue) {
+                                if( newValue != null ){
+                                  onItemSelected( newValue );
+                                }
+                              },
+                              items:
+                              items.map<DropdownMenuItem<String>>((String value) {
+                                return DropdownMenuItem<String>(
+                                  value: value,
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                      color: const Color(0xFFF2F2F2),
+                                      borderRadius: BorderRadius.circular(12),
+                                    ),
+                                    child: Padding(
+                                      padding: EdgeInsets.symmetric(
+                                        horizontal: 12.0,
+                                        vertical: 8
+                                      ),
+                                      child: Text(value,
+                                      maxLines: 1,
+                                        overflow: TextOverflow.ellipsis,
+                                      ),
+                                    ),
+                                  ),
+                                );
+                              }).toList(),
+                            )
+                        )
                     ),
-                    const Icon(Icons.arrow_drop_down),
-                  ],
-                ),
+                  ),
+                ],
               ),
-
               SizedBox(height: 12.h),
-
               // 🔹 Row (3 items)
               Row(
                 children: [
-                  _buildStatItem(AssetsPath.radioButton, "240 Views"),
+                  _buildStatItem(AssetsPath.radioButton, "${summaryModel?.views ?? 0} Views"),
                   SizedBox(width: 8.w),
-                  _buildStatItem(AssetsPath.radioButton1, "100 Claims"),
+                  _buildStatItem(AssetsPath.radioButton1, "${summaryModel?.claims ?? 0} Claims"),
                   SizedBox(width: 8.w),
-                  _buildStatItem(AssetsPath.radioButton2, "55 Redeems"),
+                  _buildStatItem(AssetsPath.radioButton2, "${summaryModel?.redemptions ?? 0} Redemptions"),
                 ],
               ),
 
@@ -101,15 +154,16 @@ class AnalyticsCardChart extends StatelessWidget {
                 height: 210.h,
                 child: SfCartesianChart(
                   primaryXAxis: NumericAxis(
-                    minimum: 0,
-                    maximum: 7, // 0 + 23..29 = 8 points
+                    minimum: 0,//COMPARE WITH CURRENT DATE
+                    maximum: 9, //MAX 7 || 1
                     interval: 1,
                     majorGridLines: MajorGridLines(
                       width: 1,
                       color: Colors.transparent,
                     ),
                     axisLabelFormatter: (AxisLabelRenderDetails args) {
-                      const labels = ["0", "23", "24", "25", "26", "27", "28", "29"];
+                      //const labels = ["0", "23", "24", "25", "26", "27", "28", "29"];
+                      final labels = dayLabels( filteredStats );
                       int index = args.value.toInt();
                       if (index >= 0 && index < labels.length) {
                         return ChartAxisLabel(labels[index], null);
@@ -117,13 +171,10 @@ class AnalyticsCardChart extends StatelessWidget {
                       return ChartAxisLabel('', null);
                     },
                   ),
-
-
-
                   primaryYAxis: NumericAxis(
                     minimum: 0,
-                    maximum: 250,
-                    interval: 50,
+                    maximum: maxY.toDouble(),
+                    interval: interval,
                     majorGridLines: MajorGridLines(
                       width: 1,
                       color: Colors.grey.shade100,
@@ -139,32 +190,12 @@ class AnalyticsCardChart extends StatelessWidget {
                       ),
                     ],
                   ),
-
-
-
-
-
-
-
-
-
-
-
                   tooltipBehavior: TooltipBehavior(enable: true),
                   legend: const Legend(isVisible: true),
                   series: <CartesianSeries>[
                     /// Views Series (Green)
                     SplineSeries<ChartData, double>(
-                      dataSource: [
-                        ChartData(x: 0, count: 60),
-                        ChartData(x: 1, count: 90),
-                        ChartData(x: 2, count: 120),
-                        ChartData(x: 3, count: 140),
-                        ChartData(x: 4, count: 180),
-                        ChartData(x: 5, count: 160),
-                        ChartData(x: 6, count: 240),
-                        ChartData(x: 7, count: 160),
-                      ],
+                      dataSource: viewsDataSource( filteredStats ),
                       xValueMapper: (data, _) => data.x,
                       yValueMapper: (data, _) => data.count,
                       color: Colors.green,
@@ -174,35 +205,16 @@ class AnalyticsCardChart extends StatelessWidget {
 
                     /// Claims Series (Blue)
                     SplineSeries<ChartData, double>(
-                      dataSource: [
-                        ChartData(x: 0, count: 30),
-                        ChartData(x: 1, count: 40),
-                        ChartData(x: 2, count: 80),
-                        ChartData(x: 3, count: 90),
-                        ChartData(x: 4, count: 30),
-                        ChartData(x: 5, count: 40),
-                        ChartData(x: 6, count: 60),
-                        ChartData(x: 7, count: 100),
-                      ],
+                      dataSource: claimDataSource( filteredStats ),
                       xValueMapper: (data, _) => data.x,
                       yValueMapper: (data, _) => data.count,
                       color: Colors.blue,
                       name: "Claims",
                       splineType: SplineType.natural,
                     ),
-
                     /// Redeems Series (Purple)
                     SplineSeries<ChartData, double>(
-                      dataSource: [
-                        ChartData(x: 0, count: 0),
-                        ChartData(x: 1, count: 30),
-                        ChartData(x: 2, count: 50),
-                        ChartData(x: 3, count: 40),
-                        ChartData(x: 4, count: 10),
-                        ChartData(x: 5, count: 30),
-                        ChartData(x: 6, count: 50),
-                        ChartData(x: 7, count: 60),
-                      ],
+                      dataSource: redeemDataSource( filteredStats ),
                       xValueMapper: (data, _) => data.x,
                       yValueMapper: (data, _) => data.count,
                       color: Colors.purple,
@@ -212,15 +224,6 @@ class AnalyticsCardChart extends StatelessWidget {
                   ],
                 ),
               ),
-
-
-
-
-
-
-
-
-
             ],
           ),
         ),
@@ -240,6 +243,121 @@ class AnalyticsCardChart extends StatelessWidget {
       ],
     );
   }
+
+
+  //Y AXIS MAX VALUE FROM API
+  double getMaxValue(List<GraphDataModel> graphs) {
+    if (graphs.isEmpty) return 0;
+
+    double maxValue = 0;
+
+    for (final graph in graphs) {
+      maxValue = [
+        maxValue,
+        graph.views.toDouble(),
+        graph.claims.toDouble(),
+        graph.redemptions.toDouble(),
+      ].reduce((a, b) => a > b ? a : b);
+    }
+
+    return maxValue;
+  }
+
+  //ROUND MAX VALUE TO NEAREST 10 POWER
+  num roundToNiceNumber(double value) {
+    if (value < 5) return 5;//MAX VALUE IS AT LEAST 5
+
+    final magnitude = pow(10, (log(value) / ln10).floor());
+    final normalized = value / magnitude;
+
+    if (normalized <= 1) return 1 * magnitude;
+    if (normalized <= 2) return 2 * magnitude;
+    if (normalized <= 5) return 5 * magnitude;
+    return 10 * magnitude;
+  }
+
+  //FILTER LATEST SEVEN DAYS DATA
+  List<GraphDataModel> filterLatestData(List<GraphDataModel> data) {
+
+    if( data.isEmpty ) return data;//SKIP IF DATA IS EMPTY
+
+    return data.length <=10
+        ?
+        data
+        :
+        data.sublist( data.length - 10 );
+
+  }
+
+  //DYNAMIC INTERVAL OF Y AXIS VALUES
+  double calculateInterval(num maxY, {int steps = 5}) {
+    if (maxY <= 0) return 1; //fallback interval is 1
+    return (maxY / steps).ceilToDouble();
+  }
+
+  //FILTERED DAYS
+List<String> dayLabels(List<GraphDataModel> graphs){
+
+    List<String> days = [];
+    if( graphs.isEmpty ){
+      return days;
+    }
+    //GET DAYS FROM FILTERED LIST
+    for( final model in graphs ){
+      days.add( "${model.day}" );
+    }
+    return days;
+}
+
+
+//Views DATA SOURCE
+  List<ChartData> viewsDataSource( List<GraphDataModel> filteredGraphs ){
+
+    List<ChartData> viewsDataList = [];
+    if( filteredGraphs.isEmpty ){
+      return viewsDataList;
+    }
+    int x = 0;
+    for( final model in filteredGraphs ){
+      viewsDataList.add( ChartData( x: x.toDouble(), count: model.views.toDouble() ));
+      x++;
+    }
+    return viewsDataList;
+  }
+
+
+//CLAIM DATA SOURCE
+  List<ChartData> claimDataSource( List<GraphDataModel> filteredGraphs ){
+
+    List<ChartData> claimDataList = [];
+    if( filteredGraphs.isEmpty ){
+      return claimDataList;
+    }
+    int x = 0;
+    for( final model in filteredGraphs ){
+      claimDataList.add( ChartData( x: x.toDouble(), count: model.claims.toDouble() ));
+      x++;
+    }
+    return claimDataList;
+  }
+
+
+//REDEEM DATA SOURCE
+List<ChartData> redeemDataSource( List<GraphDataModel> filteredGraphs ){
+
+    List<ChartData> redeemDataList = [];
+    if( filteredGraphs.isEmpty ){
+      return redeemDataList;
+    }
+    int x = 0;
+    for( final model in filteredGraphs ){
+      redeemDataList.add( ChartData( x: x.toDouble(), count: model.redemptions.toDouble() ));
+      x++;
+    }
+    return redeemDataList;
+}
+
+
 }
 
 class ChartData {

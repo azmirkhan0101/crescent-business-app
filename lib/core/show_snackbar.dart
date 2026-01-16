@@ -1,37 +1,16 @@
-import 'package:flutter/material.dart';
+//SHOW SNACKBAR
+import 'dart:ui';
 
-class CustomSnackBar {
-  static void show(
-      BuildContext context, {
-        required String message,
-        Color backgroundColor = Colors.black87,
-        IconData? icon,
-        Duration duration = const Duration(seconds: 2),
-      }) {
-    final snackBar = SnackBar(
-      content: Row(
-        children: [
-          if (icon != null) ...[
-            Icon(icon, color: Colors.white),
-            const SizedBox(width: 8),
-          ],
-          Expanded(
-            child: Text(
-              message,
-              style: const TextStyle(color: Colors.white),
-            ),
-          ),
-        ],
-      ),
+import 'package:get/get_core/src/get_main.dart';
+import 'package:get/get_navigation/src/extension_navigation.dart';
+
+import '../utils/app_color.dart';
+
+showSnackBar({required String title, required String message, required Color backgroundColor, Color textColor = AppColors.white}) {
+  Get.snackbar(
+      title,
+      message,
       backgroundColor: backgroundColor,
-      behavior: SnackBarBehavior.floating,
-      duration: duration,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(12),
-      ),
-      margin: const EdgeInsets.all(16),
-    );
-
-    ScaffoldMessenger.of(context).showSnackBar(snackBar);
-  }
+      colorText: textColor
+  );
 }

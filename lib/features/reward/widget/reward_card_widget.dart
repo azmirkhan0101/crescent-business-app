@@ -1,26 +1,54 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:intl/intl.dart';
 import 'package:organization/features/widgets/custom_asset_image.dart';
 import 'package:organization/utils/app_color.dart';
+import 'package:organization/utils/app_constants.dart';
 import 'package:organization/utils/app_text_styles.dart';
+import 'package:organization/utils/assets_gen/assets.gen.dart';
 import 'package:organization/utils/assets_path.dart';
+import 'package:shimmer/shimmer.dart';
+
 import 'custom_switch.dart';
 
-// ---------------------- Reward Card ----------------------
-enum RewardStatus { active, disabled }
-
 class RewardCard extends StatefulWidget {
+  final String? image;
   final String title;
-  final String assetIcon;
-  final String expiryDate;
+  final DateTime? expiryDate;
   final int redemptions;
+  final bool isActive;
+  final String type;
+
+  //INSTORE REDEMPTIONS
+  final bool isQr;
+  final bool isNfc;
+  final bool isStaticCode;
+
+  //ONLINE REDEMPTIONS
+  final bool isGiftCard;
+  final bool isDiscountCode;
+  final VoidCallback onDeleteClick;
+  final VoidCallback onEditClick;
+  final Function(bool) onStatusChanged;
 
   const RewardCard({
     super.key,
+    this.image,
     required this.title,
     required this.expiryDate,
     required this.redemptions,
-    required this.assetIcon,
+    required this.isActive,
+    required this.type,
+    this.isQr = false,
+    this.isNfc = false,
+    this.isStaticCode = false,
+    this.isGiftCard = false,
+    this.isDiscountCode = false,
+    required this.onDeleteClick,
+    required this.onEditClick,
+    required this.onStatusChanged,
   });
 
   @override
@@ -28,14 +56,29 @@ class RewardCard extends StatefulWidget {
 }
 
 class _RewardCardState extends State<RewardCard> {
-  RewardStatus status = RewardStatus.active; // initial status
+  late String? formattedDate;
+
+  @override
+  void initState() {
+    if (widget.expiryDate != null) {
+      formattedDate =
+          "Expires: ${DateFormat('yyyy-MM-dd').format(widget.expiryDate!)}";
+      //DateTime dateTime = DateTime.parse( widget.expiryDate! );
+      //date = "Expires: ${dateTime.toIso8601String().split('T')[0]}";
+    }
+
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
-    bool isActive = status == RewardStatus.active;
+    String imageUrl = "";
+    if (widget.image != null) {
+      imageUrl = widget.image!;
+    }
 
     return Container(
-      height: 161.h,
+      height: 165.h,
       padding: EdgeInsets.all(12.w),
       decoration: BoxDecoration(
         color: Colors.white,
@@ -52,16 +95,33 @@ class _RewardCardState extends State<RewardCard> {
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisSize: MainAxisSize.min,
         children: [
-
-          /// -------- Title + Popup --------
+          //==============Title + Popup===================
           Row(
             children: [
-              Image.asset(
-                widget.assetIcon, // ✅ fixed
+              Container(
                 height: 24.h,
                 width: 24.w,
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(5.r),
+                  child: CachedNetworkImage(
+                    imageUrl: imageUrl,
+                    fit: BoxFit.cover,
+                    placeholder: (context, url) => Shimmer.fromColors(
+                      baseColor: Colors.grey[300]!,
+                      highlightColor: Colors.grey[100]!,
+                      child: Container(color: Colors.white),
+                    ),
+                    errorWidget: (context, url, error) => Image.asset(
+                      widget.type == typeOnline
+                          ? AssetsPath.onlineRewardIcon
+                          : AssetsPath.instoreRewardIcon,
+                      height: 24.h,
+                      width: 24.w,
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                ),
               ),
-
               SizedBox(width: 8.w),
               Text(
                 widget.title,
@@ -70,13 +130,12 @@ class _RewardCardState extends State<RewardCard> {
                 ),
               ),
               const Spacer(),
-
-              /// Popup menu
+              //Popup menu
               PopupMenuButton<String>(
                 color: AppColors.white,
                 itemBuilder: (context) => [
                   PopupMenuItem(
-                    value: 'edit',
+                    value: edit,
                     child: Row(
                       children: [
                         CustomAssetsImage(
@@ -95,27 +154,28 @@ class _RewardCardState extends State<RewardCard> {
                       ],
                     ),
                   ),
+                  //DUPLICATE OPTION IS DISABLED
+                  // PopupMenuItem(
+                  //   value: duplicate,
+                  //   child: Row(
+                  //     children: [
+                  //       CustomAssetsImage(
+                  //         assetsPath: AssetsPath.duplicateIcon,
+                  //         height: 14.h,
+                  //         width: 14.w,
+                  //       ),
+                  //       SizedBox(width: 8.w),
+                  //       Text(
+                  //         'Duplicate',
+                  //         style: AppTextStyle.cardTextStyle.copyWith(
+                  //           fontSize: 12.sp,
+                  //         ),
+                  //       ),
+                  //     ],
+                  //   ),
+                  // ),
                   PopupMenuItem(
-                    value: 'duplicate',
-                    child: Row(
-                      children: [
-                        CustomAssetsImage(
-                          assetsPath: AssetsPath.duplicateIcon,
-                          height: 14.h,
-                          width: 14.w,
-                        ),
-                        SizedBox(width: 8.w),
-                        Text(
-                          'Duplicate',
-                          style: AppTextStyle.cardTextStyle.copyWith(
-                            fontSize: 12.sp,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  PopupMenuItem(
-                    value: 'delete',
+                    value: delete,
                     child: Row(
                       children: [
                         CustomAssetsImage(
@@ -135,7 +195,16 @@ class _RewardCardState extends State<RewardCard> {
                     ),
                   ),
                 ],
-                onSelected: (value) {},
+                onSelected: (value) {
+                  if (value.compareTo(edit) == 0) {
+                    //EDIT CLICKED
+                    widget.onEditClick();
+                  } else {
+                    //DELETE CLICKED
+                    //DELETE REWARD
+                    widget.onDeleteClick();
+                  }
+                },
               ),
             ],
           ),
@@ -147,13 +216,13 @@ class _RewardCardState extends State<RewardCard> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                'Expires: ${widget.expiryDate}',
+                formattedDate ?? "",
                 style: AppTextStyle.mediumStyle.copyWith(fontSize: 12.sp),
               ),
               Row(
                 children: [
                   Text(
-                    isActive ? 'Active' : 'Disabled',
+                    widget.isActive ? 'Active' : 'Disabled',
                     style: AppTextStyle.mediumStyle.copyWith(
                       fontSize: 12.sp,
                       color: AppColors.blackTextColor,
@@ -164,13 +233,9 @@ class _RewardCardState extends State<RewardCard> {
 
                   // Custom switch
                   CustomSwitch(
-                    value: isActive,
+                    value: widget.isActive,
                     onChanged: (bool newValue) {
-                      setState(() {
-                        status = newValue
-                            ? RewardStatus.active
-                            : RewardStatus.disabled;
-                      });
+                      widget.onStatusChanged(newValue);
                     },
                   ),
                 ],
@@ -215,10 +280,42 @@ class _RewardCardState extends State<RewardCard> {
                       color: AppColors.blackTextColor,
                     ),
                   ),
-                  CustomAssetsImage(
-                    assetsPath: AssetsPath.qrCodeIcon,
-                    height: 24.h,
-                    width: 24.w,
+                  Row(
+                    spacing: 10.w,
+                    children: [
+                      //ONLINE REDEMPTION ICONS
+                      if (widget.isQr) //QR ICON
+                        SvgPicture.asset(
+                          Assets.icons.qrCode2,
+                          height: 24.h,
+                          width: 24.w,
+                        ),
+                      if (widget.isStaticCode) //STATIC CODE
+                        CustomAssetsImage(
+                          assetsPath: AssetsPath.staticCodeIcon,
+                          height: 24.h,
+                          width: 24.w,
+                        ),
+                      if (widget.isNfc) //NFC
+                        SvgPicture.asset(
+                          Assets.icons.nfc2,
+                          height: 24.h,
+                          width: 24.w,
+                        ),
+                      //INSTORE REDEMPTION ICONS
+                      if (widget.isDiscountCode) //DISCOUNT CODE
+                        CustomAssetsImage(
+                          assetsPath: AssetsPath.discountCodeIcon,
+                          height: 24.h,
+                          width: 24.w,
+                        ),
+                      if (widget.isGiftCard) //GIFT CARD
+                        CustomAssetsImage(
+                          assetsPath: AssetsPath.giftCardIcon,
+                          height: 24.h,
+                          width: 24.w,
+                        ),
+                    ],
                   ),
                 ],
               ),

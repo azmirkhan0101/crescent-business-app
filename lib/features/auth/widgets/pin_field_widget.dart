@@ -26,13 +26,14 @@ class PinFieldWidget extends StatelessWidget {
       animationType: AnimationType.fade,
       animationDuration: const Duration(milliseconds: 200),
       enableActiveFill: true,
+      autoDisposeControllers: false,
 
       // ✅ pin theme
       pinTheme: PinTheme(
         shape: PinCodeFieldShape.box,
         borderRadius: BorderRadius.circular(12),
-        fieldHeight: 52,
-        fieldWidth: 52,
+        fieldHeight: 40,
+        fieldWidth: 40,
         activeFillColor: Colors.white,
         inactiveFillColor: Colors.white,
         selectedFillColor: Colors.white,

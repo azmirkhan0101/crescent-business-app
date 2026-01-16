@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:go_router/go_router.dart';
-import '../../../../utils/assets_path.dart';
+import 'package:flutter_svg/svg.dart';
+import 'package:get/get.dart';
+
+import '../../../utils/assets_gen/assets.gen.dart';
 
 class CustomAuthAppbar extends StatelessWidget {
   const CustomAuthAppbar({
@@ -14,7 +16,7 @@ class CustomAuthAppbar extends StatelessWidget {
       children: [
         GestureDetector(
           onTap: (){
-            context.pop();
+            Get.back();
           },
           child: Container(
             height: 40,
@@ -24,8 +26,8 @@ class CustomAuthAppbar extends StatelessWidget {
               color: Color(0xFFF5F4F6),
             ),
             child: Center(
-              child:    Image.asset(
-                AssetsPath.backIcon,
+              child: SvgPicture.asset(
+                Assets.icons.backIcon,
                 height: 20.h,
                 width: 19.w,
               ),
@@ -36,8 +38,8 @@ class CustomAuthAppbar extends StatelessWidget {
         const Spacer(),
 
         /// Asset Image
-        Image.asset(
-          AssetsPath.moonIcon,
+        SvgPicture.asset(
+          Assets.icons.crescentLogo,
           height: 32.h,
           width: 32.w,
         ),

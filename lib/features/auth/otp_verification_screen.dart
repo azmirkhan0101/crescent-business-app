@@ -1,25 +1,28 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:go_router/go_router.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:organization/features/auth/widgets/custom_auth_appbar.dart';
 import 'package:organization/features/auth/widgets/pin_field_widget.dart';
 import 'package:organization/features/auth/widgets/rich_text_widget.dart';
+import 'package:organization/utils/app_constants.dart';
+
 import '../../../utils/app_color.dart';
 import '../../../utils/app_size.dart';
 import '../../../utils/app_text.dart';
 import '../../../utils/app_text_styles.dart';
-import '../../core/routes/route_path.dart';
-import '../../core/show_snackbar.dart';
+import '../../controller/auth/otp_verification_controller.dart';
 import '../widgets/custom_button_widget.dart';
 
 class OtpVerificationScreen extends StatelessWidget {
-  const OtpVerificationScreen({super.key});
+
+  final OtpVerificationController controller = Get.find<OtpVerificationController>();
+  String email = Get.arguments[emailKey];
+  bool isSignup = Get.arguments[isSignupKey];
 
   @override
   Widget build(BuildContext context) {
-    // final controller = Get.find<OtpVerificationController>();
-    final TextEditingController pinController = TextEditingController();
+
     return Scaffold(
       backgroundColor: AppColors.white,
       body: SingleChildScrollView(
@@ -37,30 +40,28 @@ class OtpVerificationScreen extends StatelessWidget {
               children: [
                 Text(AppText.otpHeadline, style: AppTextStyle.headlineLStyle),
                 SizedBox(height: 8.h),
-                Row(
-                  children: [
-                    Text(AppText.otpSubtitle, style: AppTextStyle.mediumStyle),
-                    SizedBox(width: 3.w),
-                    Text(
-                      AppText.emailText,
-                      style: AppTextStyle.mediumStyle.copyWith(
-                        color: AppColors.blackTextColor,
-                        fontWeight: FontWeight.w600,
-                      ),
+                Center(child: Text(AppText.otpSubtitle, style: AppTextStyle.mediumStyle)),
+                Center(
+                  child: Text(
+                    email,
+                    style: AppTextStyle.mediumStyle.copyWith(
+                      color: AppColors.blackTextColor,
+                      fontWeight: FontWeight.w600,
                     ),
-                  ],
+                  ),
                 ),
               ],
             ),
 
-            SizedBox(height: 50.h),
+            SizedBox(height: 30.h),
 
             /// Pin Field
             PinFieldWidget(
-              controller: pinController,
-              //  controller: controller.pinController,
-              length: 5,
-              // onChanged: controller.onPinChanged,
+              controller: controller.otpController,
+              length: 6,
+              onChanged: (val){
+                controller.onOtpChanged(val);
+                },
               onCompleted: (val) => debugPrint("Completed: $val"),
             ),
           ],
@@ -76,30 +77,39 @@ class OtpVerificationScreen extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            /// Reactive Button
-            CustomButton(
-              buttonTextStyle: GoogleFonts.familjenGrotesk(
-                color: AppColors.buttonTextColor,
-                fontSize: 18.sp,
-                fontWeight: FontWeight.w700,
-              ),
-              text: AppText.continueText,
-              onPressed: () {
-                context.push(RoutesPath.resetPassword);
-              },
-            ),
-
+            //Reactive Button
+            Obx((){
+              return CustomButton(
+                isLoading: controller.isOtpVerifying.value,
+                text: AppText.continueText,
+                onPressed: () {
+                  controller.email = email;
+                  controller.isSignup = isSignup;
+                  if( isSignup ){//OTP FOR SIGNUP
+                    controller.submitSignupOtp();
+                  }else{//OTP FOR FORGOT PASSWORD
+                    controller.submitForgotPasswordOtp();
+                  }
+                },
+                buttonTextStyle: GoogleFonts.familjenGrotesk(
+                  color: AppColors.buttonTextColor,
+                  fontSize: 18.sp,
+                  fontWeight: FontWeight.w700,
+                ),
+              );
+            }),
             SizedBox(height: AppSizes.paddingMedium),
             RichTextWidget(
               firstText: "Haven’t receive any code?",
-              lastText: "Resend Code",
+              lastText: "  Resend Code",
               onTap: () {
-                CustomSnackBar.show(
-                  context,
-                  message: "Resend Code",
-                  icon: Icons.check_circle,
-                  backgroundColor: Colors.green,
-                );
+                controller.email = email;
+                controller.isSignup = isSignup;
+                if( isSignup ){
+                  controller.resendSignupOtp();
+                }else{
+                  controller.resendForgotPasswordOTP();
+                }
               },
             ),
           ],
