@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
@@ -8,33 +9,20 @@ import 'package:http/http.dart' as http;
 import 'package:organization/routes/app_pages.dart';
 import 'package:organization/utils/api_endpoints.dart';
 import 'package:organization/utils/app_color.dart';
-import 'dart:async';
-
 import 'package:organization/utils/app_constants.dart';
 
+import '../../core/app_validator.dart';
 import '../../core/show_snackbar.dart';
 import '../../data/models/profile/business_profile_model.dart';
 import '../../services/firebase_notification_service.dart';
 
 class LoginController extends GetxController {
+
   final storage = GetStorage();
   RxBool isLoginLoading = false.obs;
 
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
-
-  bool isEmailValid() {
-    return RegExp(
-      r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$',
-    ).hasMatch(emailController.text.trim());
-  }
-
-  bool isPasswordValid() {
-    final regex = RegExp(
-      r'^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[!@#\$&*~?%^()_\-+=<>.,;:{}\[\]|/]).{8,}$',
-    );
-    return regex.hasMatch(passwordController.text.trim());
-  }
 
   //VALIDATE EMAIL PASSWORD AND THEN LOGIN -> if verified -> go to home -> else -> go to verified screen
   login() async {
@@ -42,12 +30,8 @@ class LoginController extends GetxController {
       return;
     }
 
-    if (!isEmailValid() || !isPasswordValid()) {
-      showSnackBar(
-        title: "Incorrect Credentials!",
-        message: "Please enter email and password correctly.",
-        backgroundColor: AppColors.errorRed,
-      );
+    if (!isEmailValid(email: emailController.text.trim()) || !isPasswordValid(password: passwordController.text.trim())) {
+      incorrectCredentialsSnackBar();
       return;
     }
 

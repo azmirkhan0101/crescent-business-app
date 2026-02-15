@@ -10,6 +10,8 @@ class ApiEndpoints {
   static const login = "/auth/signin/business";
   //SIGNUP
   static const signup = "/auth/business-signup";
+  //REFRESH TOKEN
+  static const refreshToken = "/auth/access-token";
   //VERIFY SIGNUP OTP
   static const otpSignup = "/auth/verify-signup-otp";
   //RESEND SIGNUP OTP
