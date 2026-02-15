@@ -7,7 +7,7 @@ class ApiEndpoints {
 
   //=======================AUTH====================================
   //LOGIN/SIGNIN
-  static const login = "/auth/signin";
+  static const login = "/auth/signin/business";
   //SIGNUP
   static const signup = "/auth/business-signup";
   //VERIFY SIGNUP OTP

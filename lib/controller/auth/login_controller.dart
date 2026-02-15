@@ -63,6 +63,9 @@ class LoginController extends GetxController {
           .post(url, body: credentials)
           .timeout(Duration(seconds: 10));
 
+      print(response.statusCode);
+      print(response.body);
+
       if (response.statusCode == 200) {
         //LOGIN SUCCESSFUL
         Map<String, dynamic> responseData = jsonDecode(response.body);
@@ -98,7 +101,7 @@ class LoginController extends GetxController {
         showSnackBar(
           title: "Account not found!",
           message:
-              "No account found matching this email. Try creating an account.",
+              jsonDecode(response.body)['message'] ?? "No account found matching this email. Try creating an account.",
           backgroundColor: AppColors.errorRed,
         );
       } else {

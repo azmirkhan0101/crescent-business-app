@@ -146,7 +146,6 @@ class RewardScreen extends StatelessWidget {
                     }else{
                       return SizedBox.shrink();
                     }
-
                   }),
                   SizedBox(height: 90.h),
                 ],
