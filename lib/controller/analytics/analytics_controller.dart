@@ -102,6 +102,7 @@ class AnalyticsController extends GetxController {
     };
 
     try {
+      topRewards.value = [];
       http.Response response = await http.get(uri, headers: header);
 
       if (response.statusCode == 200) {

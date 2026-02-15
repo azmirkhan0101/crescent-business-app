@@ -1,15 +1,14 @@
 import 'dart:convert';
-import 'dart:math';
 
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:http/http.dart' as http;
 import 'package:organization/data/models/home/home_stats_model.dart';
 import 'package:organization/data/models/home/monthly_stats.dart';
 import 'package:organization/data/models/home/recent_activity_model.dart';
 import 'package:organization/data/models/profile/business_profile_model.dart';
 import 'package:organization/routes/app_pages.dart';
 import 'package:organization/utils/api_endpoints.dart';
-import 'package:http/http.dart' as http;
 import 'package:organization/utils/app_constants.dart';
 
 class HomeController extends GetxController{
@@ -30,13 +29,11 @@ class HomeController extends GetxController{
 
   bool isSubscriptionExpired(){
     String? subscriptionExpiryDate = storage.read( subscriptionExpiryDateKey );
-    print("Date Stringggggggggg: ${subscriptionExpiryDate}");
-    if( subscriptionExpiryDate == null && storage.read( subscriptionKey) ) return true;
+    if( subscriptionExpiryDate == null && storage.read( subscriptionKey) == false ) return true;
     DateTime expiryDate = DateTime.parse( subscriptionExpiryDate! );
     DateTime nowUtc = DateTime.now().toUtc();
 
     return nowUtc.isAfter( expiryDate );
-
   }
 
 

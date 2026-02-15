@@ -240,7 +240,7 @@ class PlacesSearchField extends StatelessWidget {
               children: [
                 Icon(Icons.location_on),
                 SizedBox(width: 7),
-                Expanded(child: Text("${prediction.description ?? ""}")),
+                Expanded(child: Text(prediction.description ?? "")),
               ],
             ),
           );

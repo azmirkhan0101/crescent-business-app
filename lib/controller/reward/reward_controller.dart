@@ -255,7 +255,6 @@ class RewardController extends GetxController {
       }
 
       var response = await request.send();
-      var responseBody = await response.stream.bytesToString();
 
       if( response.statusCode == 201 ){//REWARD CREATED
         //GO BACK TO REWARDS SCREEN
@@ -378,7 +377,6 @@ class RewardController extends GetxController {
       }
 
       var response = await request.send().timeout(Duration(seconds: 10));
-      var responseBody = await response.stream.bytesToString();
 
       if( response.statusCode == 201 ){//REWARD CREATED
         //GET REWARD LIST -> GO BACK TO REWARDS SCREEN
@@ -441,7 +439,7 @@ class RewardController extends GetxController {
         "isActive": isActive
       };
 
-      http.Response response = await http.patch( uri, body: jsonEncode(payLoad), headers: headers );
+     await http.patch( uri, body: jsonEncode(payLoad), headers: headers );
     }catch(e){
 
     }

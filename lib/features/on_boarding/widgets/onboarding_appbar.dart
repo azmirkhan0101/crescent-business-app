@@ -3,8 +3,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:organization/features/on_boarding/widgets/text_progress_widget.dart';
+
 import '../../../utils/assets_gen/assets.gen.dart';
-import '../../../utils/assets_path.dart';
 
 class OnBoardingAppbarWidget extends StatelessWidget {
   const OnBoardingAppbarWidget({
