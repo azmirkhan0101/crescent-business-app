@@ -1,11 +1,11 @@
 import 'dart:async';
-import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
-import 'package:http/http.dart' as http;
+import 'package:organization/core/api_response.dart';
+import 'package:organization/core/api_service.dart';
 import 'package:organization/routes/app_pages.dart';
 import 'package:organization/utils/api_endpoints.dart';
 import 'package:organization/utils/app_color.dart';
@@ -18,6 +18,7 @@ import '../../services/firebase_notification_service.dart';
 
 class LoginController extends GetxController {
 
+  final ApiService apiService = Get.find<ApiService>();
   final storage = GetStorage();
   RxBool isLoginLoading = false.obs;
 
@@ -35,86 +36,61 @@ class LoginController extends GetxController {
       return;
     }
 
-    try {
-      isLoginLoading.value = true;
-      Map<String, dynamic> credentials = {
-        "email": emailController.text.trim(),
-        "password": passwordController.text.trim(),
-      };
+    isLoginLoading.value = true;
+    Map<String, dynamic> credentials = {
+      "email": emailController.text.trim(),
+      "password": passwordController.text.trim(),
+    };
+    ApiResponse response = await apiService.networkRequest(
+      method: 'POST',
+      isAuthRequired: false,
+      endPoint: ApiEndpoints.login,
+      body: credentials
+    );
 
-      final url = Uri.parse(ApiEndpoints.baseUrl + ApiEndpoints.login);
-      http.Response response = await http
-          .post(url, body: credentials)
-          .timeout(Duration(seconds: 10));
-
-      print(response.statusCode);
-      print(response.body);
-
-      if (response.statusCode == 200) {
-        //LOGIN SUCCESSFUL
-        Map<String, dynamic> responseData = jsonDecode(response.body);
-        saveOtpResponse(responseData);
-        updateFcmToken();
-      } else if (response.statusCode == 400) {
-        //ACCOUNT FOUND, BUT NOT VERIFIED
-        isLoginLoading.value = false;
-        showSnackBar(
-          title: "Account not verified!",
-          message: "Verify your account using the OTP sent to your email.",
-          backgroundColor: AppColors.warningYellow,
-          textColor: AppColors.black,
-        );
-        storage.write(requireVerificationKey, true);
-        storage.write(
-          emailKey,
-          emailController.text.trim(),
-        ); //SAVE EMAIL FOR VERIFY NOW SCREEN
-        //go to verify now screen
-        Get.offNamed(AppRoutes.verifyNow);
-      } else if (response.statusCode == 401) {
-        //WRONG PASSWORD
-        isLoginLoading.value = false;
-        showSnackBar(
-          title: "Incorrect password!",
-          message: "The password you entered is incorrect.",
-          backgroundColor: AppColors.errorRed,
-        );
-      } else if (response.statusCode == 404) {
-        //NO ACCOUNT FOUND IN THAT EMAIL
-        isLoginLoading.value = false;
-        showSnackBar(
-          title: "Account not found!",
-          message:
-              jsonDecode(response.body)['message'] ?? "No account found matching this email. Try creating an account.",
-          backgroundColor: AppColors.errorRed,
-        );
-      } else {
-        isLoginLoading.value = false;
-        showSnackBar(
-          title: "Login Failed!",
-          message: "Please try again.",
-          backgroundColor: AppColors.errorRed,
-        );
-      }
-    } on SocketException {
+    if (response.statusCode == 200) {
+      //LOGIN SUCCESSFUL
+      Map<String, dynamic> responseData = response.data;
+      saveOtpResponse(responseData);
+      updateFcmToken();
+    } else if (response.statusCode == 400) {
+      //ACCOUNT FOUND, BUT NOT VERIFIED
       isLoginLoading.value = false;
       showSnackBar(
-        title: "No internet connection!",
-        message: "Please connect to the internet.",
+        title: "Account not verified!",
+        message: "Verify your account using the OTP sent to your email.",
+        backgroundColor: AppColors.warningYellow,
+        textColor: AppColors.black,
+      );
+      storage.write(requireVerificationKey, true);
+      storage.write(
+        emailKey,
+        emailController.text.trim(),
+      ); //SAVE EMAIL FOR VERIFY NOW SCREEN
+      //go to verify now screen
+      Get.offNamed(AppRoutes.verifyNow);
+    } else if (response.statusCode == 401) {
+      //WRONG PASSWORD
+      isLoginLoading.value = false;
+      showSnackBar(
+        title: "Incorrect password!",
+        message: "The password you entered is incorrect.",
         backgroundColor: AppColors.errorRed,
       );
-    } on TimeoutException {
+    } else if (response.statusCode == 404) {
+      //NO ACCOUNT FOUND IN THAT EMAIL
       isLoginLoading.value = false;
       showSnackBar(
-        title: "Time out!",
-        message: "Please check your internet connection or try again later.",
+        title: "Account not found!",
+        message:
+        response.data['message'] ?? "No account found matching this email. Try creating an account.",
         backgroundColor: AppColors.errorRed,
       );
-    } catch (e) {
+    } else {
       isLoginLoading.value = false;
       showSnackBar(
-        title: "Something went wrong!",
-        message: "Please try again later.",
+        title: "Login Failed!",
+        message: "Please try again.",
         backgroundColor: AppColors.errorRed,
       );
     }
