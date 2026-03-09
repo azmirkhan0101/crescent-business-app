@@ -1,8 +1,7 @@
-import 'dart:convert';
-
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
-import 'package:http/http.dart' as http;
+import 'package:organization/core/api_response.dart';
+import 'package:organization/core/api_service.dart';
 import 'package:organization/core/show_snackbar.dart';
 import 'package:organization/data/models/redeem/redeemed_model.dart';
 import 'package:organization/utils/api_endpoints.dart';
@@ -11,51 +10,57 @@ import 'package:organization/utils/app_color.dart';
 import '../../routes/app_pages.dart';
 import '../../utils/app_constants.dart';
 
-class RedeemController extends GetxController{
-
+class RedeemController extends GetxController {
+  final ApiService apiService = Get.find<ApiService>();
   final storage = GetStorage();
+
   //RxString nfcTag = "".obs;
   RxBool isStaticCodeInvalid = false.obs;
 
   //REDEEM REWARD
-  redeemReward({required String code, required String method}) async{
-
-    if( code.isEmpty ){
-      if( method == "static-code" ){
+  Future<void> redeemReward({
+    required String code,
+    required String method,
+  }) async {
+    if (code.isEmpty) {
+      if (method == "static-code") {
         isStaticCodeInvalid.value = true;
       }
-      showSnackBar(title: "Code required!", message: "Enter codes to redeem.", backgroundColor: AppColors.warningYellow);
+      showSnackBar(
+        title: "Code required!",
+        message: "Enter codes to redeem.",
+        backgroundColor: AppColors.warningYellow,
+      );
       return;
     }
-    
-    try{
-      Uri uri = Uri.parse( ApiEndpoints.baseUrl + ApiEndpoints.redeemReward );
+    final payLoad = {
+      "code": code,
+      "staffAuthId": storage.read(businessAuthIdKey),
+      "method": method,
+    };
 
-      Map<String, String> headers = {
-        "Content-type" : "application/json",
-        "Authorization" : "Bearer ${storage.read( accessTokenKey )}"
-      };
+    ApiResponse response = await apiService.networkRequest(
+      method: "POST",
+      isAuthRequired: true,
+      endPoint: ApiEndpoints.redeemReward,
+      body: payLoad,
+    );
 
-      final payLoad = {
-        "code": code,
-        "staffAuthId": storage.read( businessAuthIdKey ),
-        "method": method
-      };
-
-      http.Response response = await http.post( uri, body: jsonEncode( payLoad ), headers: headers );
-
-      if( response.statusCode == 200 || response.statusCode == 201 ){
-        RedeemedRewardModel redeemedRewardModel = RedeemedRewardModel.fromJson( (jsonDecode( response.body ))['data'] );
-        isStaticCodeInvalid.value = false;
-        Get.toNamed(AppRoutes.scannerComplete, arguments: redeemedRewardModel );
-      }else{
-        if( method == "static-code" ){
-          isStaticCodeInvalid.value = true;
-        }
-        showSnackBar(title: "Invalid codes!", message: "Please enter valid codes and try again.", backgroundColor: AppColors.warningYellow);
+    if (response.statusCode == 200 || response.statusCode == 201) {
+      RedeemedRewardModel redeemedRewardModel = RedeemedRewardModel.fromJson(
+        response.data['data'],
+      );
+      isStaticCodeInvalid.value = false;
+      Get.toNamed(AppRoutes.scannerComplete, arguments: redeemedRewardModel);
+    } else {
+      if (method == "static-code") {
+        isStaticCodeInvalid.value = true;
       }
-    }catch(e){
-      showSnackBar(title: "Something went wrong!", message: "Please check your internet connection and try again.", backgroundColor: AppColors.warningYellow);
+      showSnackBar(
+        title: "Invalid codes!",
+        message: "Please enter valid codes and try again.",
+        backgroundColor: AppColors.warningYellow,
+      );
     }
   }
 
@@ -86,5 +91,4 @@ class RedeemController extends GetxController{
   //     },
   //   );
   // }
-
 }

@@ -1,17 +1,19 @@
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
-import 'package:http/http.dart' as http;
+import 'package:organization/core/api_response.dart';
+import 'package:organization/core/api_service.dart';
 import 'package:organization/routes/app_pages.dart';
 import 'package:organization/utils/api_endpoints.dart';
 
 import '../../core/show_snackbar.dart';
 import '../../utils/app_color.dart';
 
-class ResetPasswordController extends GetxController{
-
+class ResetPasswordController extends GetxController {
+  final ApiService apiService = Get.find<ApiService>();
   final TextEditingController newPasswordController = TextEditingController();
-  final TextEditingController confirmPasswordController = TextEditingController();
+  final TextEditingController confirmPasswordController =
+      TextEditingController();
   final storage = GetStorage();
   RxBool isResetLoading = false.obs;
   late String resetPasswordToken;
@@ -34,80 +36,75 @@ class ResetPasswordController extends GetxController{
     isNumeralPresent.value = value.contains(RegExp(r'[0-9]'));
 
     // 4. Check for special characters
-    isSpecialCharPresent.value =
-        value.contains(RegExp(r'[!@#$%^&*(),.?":{}|<>]'));
+    isSpecialCharPresent.value = value.contains(
+      RegExp(r'[!@#$%^&*(),.?":{}|<>]'),
+    );
   }
 
   //VALIDATE NEW EMAIL
   bool isNewPasswordValid() {
     final regex = RegExp(
-        r'^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[!@#\$&*~?%^()_\-+=<>.,;:{}\[\]|/]).{8,}$'
+      r'^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[!@#\$&*~?%^()_\-+=<>.,;:{}\[\]|/]).{8,}$',
     );
     return regex.hasMatch(newPasswordController.text.trim());
   }
 
-  // bool isConfirmPasswordValid() {
-  //   final regex = RegExp(
-  //       r'^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[!@#\$&*~?%^()_\-+=<>.,;:{}\[\]|/]).{8,}$'
-  //   );
-  //   return regex.hasMatch(confirmPasswordController.text.trim());
-  // }
-
-  resetPassword() async{
-
-    if( isResetLoading.value ){
+  Future<void> resetPassword() async {
+    if (isResetLoading.value) {
       return;
     }
 
-    if( !isNewPasswordValid() ){
+    if (!isNewPasswordValid()) {
       showSnackBar(
-          title: "Password incomplete!",
-          message: "Please enter a valid password!",
-          backgroundColor: AppColors.errorRed
+        title: "Password incomplete!",
+        message: "Please enter a valid password!",
+        backgroundColor: AppColors.errorRed,
       );
       return;
-    }else if( newPasswordController.text.trim() != confirmPasswordController.text.trim() ){
+    } else if (newPasswordController.text.trim() !=
+        confirmPasswordController.text.trim()) {
       showSnackBar(
-          title: "Password not matched",
-          message: "The new password and confirm password are not matched!",
-          backgroundColor: AppColors.errorRed
+        title: "Password not matched",
+        message: "The new password and confirm password are not matched!",
+        backgroundColor: AppColors.errorRed,
       );
       return;
     }
-    //TODO:
-    Uri uri = Uri.parse( ApiEndpoints.baseUrl + ApiEndpoints.resetPassword );
+    isResetLoading.value = true;
+
     Map<String, dynamic> payLoad = {
       "resetPasswordToken": resetPasswordToken,
-      "newPassword": newPasswordController.text.trim()
+      "newPassword": newPasswordController.text.trim(),
     };
 
-    try{
-      isResetLoading.value = true;
-      http.Response response = await http.post( uri, body: payLoad );
+    ApiResponse response = await apiService.networkRequest(
+      method: 'POST',
+      isAuthRequired: false,
+      endPoint: ApiEndpoints.resetPassword,
+      body: payLoad,
+    );
+    isResetLoading.value = false;
 
-      if( response.statusCode == 200 ){
-        showSnackBar(
-            title: "Success!",
-            message: "Password reset was successful!",
-            backgroundColor: AppColors.successGreen
-        );
-        Get.offAndToNamed(AppRoutes.logIn);
-      }else if( response.statusCode == 401 || response.statusCode == 403 ){
-        showSnackBar(
-            title: "Failed!",
-            message: "Session Expired! Please try again with your email.",
-            backgroundColor: AppColors.errorRed
-        );
-        Get.offAndToNamed(AppRoutes.forgotPassword);
-      }
-    }catch(e){
+    if (response.statusCode == 200) {
       showSnackBar(
-          title: "An Error Occurred!",
-          message: "Check your internet connection and try again!",
-          backgroundColor: AppColors.errorRed
+        title: "Success!",
+        message: "Password reset was successful!",
+        backgroundColor: AppColors.successGreen,
       );
-    }finally{
-      isResetLoading.value = false;
+      Get.offAndToNamed(AppRoutes.logIn);
+    } else if (response.statusCode == 401 || response.statusCode == 403) {
+      showSnackBar(
+        title: "Failed!",
+        message: "Session Expired! Please try again with your email.",
+        backgroundColor: AppColors.errorRed,
+      );
+      Get.offAndToNamed(AppRoutes.forgotPassword);
+    } else {
+      showSnackBar(
+        title: "An Error Occurred!",
+        message: "Check your internet connection and try again!",
+        backgroundColor: AppColors.errorRed,
+      );
     }
   }
 }
