@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
@@ -6,16 +5,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
-import 'package:mime/mime.dart';
 import 'package:organization/core/api_response.dart';
 import 'package:organization/core/api_service.dart';
 import 'package:organization/data/models/profile/business_profile_model.dart';
 import 'package:organization/data/models/reward/reward_model.dart';
 import 'package:organization/utils/app_constants.dart';
-import 'package:path_provider/path_provider.dart';
-
-import 'package:http/http.dart' as http;
 import 'package:path/path.dart' as p;
+import 'package:path_provider/path_provider.dart';
 
 import '../../core/show_snackbar.dart';
 import '../../utils/api_endpoints.dart';
@@ -97,7 +93,7 @@ class BusinessProfileController extends GetxController {
   }
 
   //UPDATE BUSINESS PROFILE
-  updateBusinessProfile2() async {
+  updateBusinessProfile() async {
     final Map<String, dynamic> data = {
       "category": editProfileModel.category,
       "name": nameController.text.trim().isEmpty
@@ -149,86 +145,6 @@ class BusinessProfileController extends GetxController {
     }
   }
 
-  updateBusinessProfile() async{
-    final Map<String, dynamic> data = {
-      "category": editProfileModel.category,//CATEGORY UNCHANGED
-      "name": nameController.text.trim().isEmpty ? editProfileModel.name : nameController.text.trim(),
-      "tagLine": taglineController.text.trim().isEmpty ? editProfileModel.tagline : taglineController.text.trim(),
-      "description": descriptionController.text.trim().isEmpty ? editProfileModel.description : descriptionController.text.trim(),
-      "businessPhoneNumber": phoneController.text.trim().isEmpty ? editProfileModel.businessPhoneNumber : phoneController.text.trim(),
-      "businessEmail": emailController.text.trim().isEmpty ? editProfileModel.businessEmail : emailController.text.trim(),
-      "businessWebsite": websiteController.text.trim().isEmpty ? editProfileModel.businessWebsite : websiteController.text.trim(),
-      "locations": locationNames
-    };
-
-    try {
-      final url = Uri.parse( ApiEndpoints.baseUrl + ApiEndpoints.updateProfile );
-      var request = http.MultipartRequest("PATCH", url );
-      request.headers["Authorization"] = "Bearer ${storage.read( accessTokenKey )}";
-      //request.headers["Accept"] = "application/json";
-      // Add text data
-      request.fields["data"] = jsonEncode(data);
-      // Add optional cover image
-      if( coverImage.value != null ){
-
-        final compressedCoverImage = await compressImage( coverImage.value! );
-        if( compressedCoverImage != null ){
-          final mimeType =
-              lookupMimeType(compressedCoverImage.path)?.split('/') ??
-                  ['application', 'octet-stream'];
-
-          request.files.add(
-              await http.MultipartFile.fromPath(
-                "coverImage",
-                compressedCoverImage.path,
-                contentType: http.MediaType(
-                  mimeType[0],
-                  mimeType[1],
-                ),
-              )
-          );
-        }
-
-        // Add optional logo image
-        if( logoImage.value != null ){
-          final compressedLogoImage = await compressImage( logoImage.value! );
-          if( compressedLogoImage != null ) {
-            final mimeType =
-                lookupMimeType(compressedLogoImage.path)?.split('/') ??
-                    ['application', 'octet-stream'];
-
-            request.files.add(
-                await http.MultipartFile.fromPath(
-                  "logoImage",
-                  compressedLogoImage.path,
-                  contentType: http.MediaType(
-                    mimeType[0],
-                    mimeType[1],
-                  ),
-                )
-            );
-          }
-        }
-      }
-      // Send request
-      var streamedResponse = await request.send();
-      var response = await http.Response.fromStream(streamedResponse);
-
-      if( response.statusCode == 200 ){
-        //GO BACK TO PROFILE SCREEN
-        Get.back();
-        showSnackBar(title: "Profile updated", message: "Your profile has been updated!", backgroundColor: AppColors.successGreen);
-        //RELOAD UPDATED PROFILE DATA
-        getUpdatedProfileData();
-      }else{
-        showSnackBar(title: "Error Occurred", message: "Something went wrong. Please try again.", backgroundColor: AppColors.errorRed);
-      }
-    } catch (e) {
-      showSnackBar(title: "No internet", message: "Please check your internet connection and try again.", backgroundColor: AppColors.warningYellow);
-    }
-
-  }
-
   //GET PROFILE DATA USING TOKEN AFTER PROFILE UPDATED
   getUpdatedProfileData() async {
     model.value = null; //NULL WHILE DATA IS LOADING
@@ -275,11 +191,10 @@ class BusinessProfileController extends GetxController {
     final result = await FlutterImageCompress.compressAndGetFile(
       file.absolute.path,
       targetPath,
-      quality: 50,// 0 - 100
+      quality: 50, // 0 - 100
       format: CompressFormat.jpeg,
     );
 
     return result != null ? File(result.path) : null;
   }
-
 }
