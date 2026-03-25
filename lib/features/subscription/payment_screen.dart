@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
-import 'package:organization/controller/subscription/subscription_controller.dart';
+import 'package:organization/controller/subscription/android_subscription_controller.dart';
 import 'package:organization/core/show_snackbar.dart';
 import 'package:organization/utils/app_color.dart';
 import 'package:webview_flutter/webview_flutter.dart';
@@ -25,7 +25,7 @@ class PaymentWebViewScreen extends StatefulWidget {
 }
 
 class _PaymentWebViewScreenState extends State<PaymentWebViewScreen> {
-  SubscriptionController subscriptionController = Get.find<SubscriptionController>();
+  AndroidSubscriptionController subscriptionController = Get.find<AndroidSubscriptionController>();
   late final WebViewController _controller;
   bool _isLoading = true;
   final storage = GetStorage();

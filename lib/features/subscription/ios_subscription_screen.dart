@@ -2,31 +2,31 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
-import 'package:organization/controller/subscription/subscription_controller.dart';
+import 'package:organization/controller/subscription/android_subscription_controller.dart';
+import 'package:organization/controller/subscription/ios_subscription_controller.dart';
 import 'package:organization/features/widgets/custom_text.dart';
+import 'package:organization/routes/app_pages.dart';
 import 'package:organization/utils/app_color.dart';
 
-class SubscriptionPage extends StatefulWidget {
-  const SubscriptionPage({super.key});
+class IosSubscriptionScreen extends StatefulWidget {
+  const IosSubscriptionScreen({super.key});
 
   @override
-  State<SubscriptionPage> createState() => _SubscriptionPageState();
+  State<IosSubscriptionScreen> createState() => _IosSubscriptionScreenState();
 }
 
-class _SubscriptionPageState extends State<SubscriptionPage> {
+class _IosSubscriptionScreenState extends State<IosSubscriptionScreen> {
   // Selected plan (0 = Free, 1 = 6 Months)
   int selectedPlan = 0;
 
-  final SubscriptionController controller = Get.find<SubscriptionController>();
+  final IosSubscriptionController controller = Get.find<IosSubscriptionController>();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Stack(
         children: [
-          // Background Image with Overlay
           _buildBackgroundImage(),
-
           // Content
           SafeArea(
             child: Padding(
@@ -171,6 +171,11 @@ class _SubscriptionPageState extends State<SubscriptionPage> {
 
         // Subscribe Button
         _buildSubscribeButton(context),
+
+        //SizedBox(height: 20.h),
+
+        // Subscription Footer
+        const SubscriptionFooter(),
       ],
     );
   }
@@ -257,12 +262,14 @@ class _SubscriptionPageState extends State<SubscriptionPage> {
 
   /// Build subscription plans section
   Widget _buildSubscriptionPlans() {
-    return Row(
-      spacing: 8.w,
-      children: [
-        // Free Plan
-        Expanded(
-          child: _buildPlanCard(
+    return SizedBox(
+      height: 220,
+      child: SingleChildScrollView(
+        scrollDirection: Axis.horizontal,
+        child: Row(
+        children: [
+          // Free Plan
+          _buildPlanCard(
             planIndex: 0,
             title: 'Monthly',
             price: '\$20.00',
@@ -270,10 +277,8 @@ class _SubscriptionPageState extends State<SubscriptionPage> {
             description: 'Stay on Monthly Plan.',
             isSelected: selectedPlan == 0,
           ),
-        ),
-        // 6 Months Plan
-        Expanded(
-          child: _buildPlanCard(
+          // 6 Months Plan
+          _buildPlanCard(
             planIndex: 1,
             title: '6 Months',
             price: '\$120.00',
@@ -281,8 +286,9 @@ class _SubscriptionPageState extends State<SubscriptionPage> {
             features: ['Save 50%.', 'Free 6 month Trial.'],
             isSelected: selectedPlan == 1,
           ),
-        ),
-      ],
+        ],
+        )
+      ),
     );
   }
 
@@ -296,6 +302,9 @@ class _SubscriptionPageState extends State<SubscriptionPage> {
     List<String>? features,
     required bool isSelected,
   }) {
+
+    double cardWidth = MediaQuery.of(context).size.width - 50;
+
     return GestureDetector(
       onTap: () {
         setState(() {
@@ -303,7 +312,9 @@ class _SubscriptionPageState extends State<SubscriptionPage> {
         });
       },
       child: Container(
+        margin: EdgeInsets.only(right: 16),
         height: 174.h,
+        width: cardWidth,
         padding: EdgeInsets.all(16.w),
         decoration: BoxDecoration(
           color: const Color(0xFF000C0B),
@@ -459,6 +470,70 @@ class _SubscriptionPageState extends State<SubscriptionPage> {
   void _handleSubscribe(BuildContext context) {
     String plan = selectedPlan == 0 ? "monthly" : "yearly";
     controller.subscribe(plan: plan);
+  }
+}
 
+
+class SubscriptionFooter extends StatelessWidget {
+  const SubscriptionFooter({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        SizedBox(height: 15,),
+        TextButton(
+          style: TextButton.styleFrom(
+            backgroundColor: Colors.black54,
+            padding: EdgeInsets.symmetric(horizontal: 25)
+          ),
+          onPressed: (){
+            //TODO: ADD RESTORE PURCHASES
+            //controller.restorePurchases()
+          },
+          child: const CustomText(
+            text: "Restore Purchases",
+            fontSize: 14,
+            fontWeight: FontWeight.w600,
+            color: AppColors.orange,
+          ),
+        ),
+        SizedBox(height: 8.h),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            _footerLink("Privacy Policy", () {
+              //TODO: CHECK PRIVACY POLICY API, CREATE SCREEN, AND ADD LINK
+              Get.toNamed(AppRoutes.termsCondition);
+            }),
+            const CustomText(text: " | ", fontSize: 12),
+            _footerLink("Terms of Service", () {
+              Get.toNamed(AppRoutes.termsCondition);
+            }),
+          ],
+        ),
+        SizedBox(height: 8.h),
+        CustomText(
+          text:
+          "Payment will be charged to your Apple ID account at confirmation of purchase. Subscription automatically renews unless canceled at least 24 hours before the end of the current period.",
+          fontSize: 12,
+          textAlign: TextAlign.center,
+          color: Colors.white,
+          maxLines: 10,
+        ),
+      ],
+    );
+  }
+
+  Widget _footerLink(String text, VoidCallback onTap) {
+    return GestureDetector(
+      onTap: onTap,
+      child: CustomText(
+        text: text,
+        fontSize: 12,
+        fontWeight: FontWeight.w500,
+        color: Colors.blueAccent,
+      ),
+    );
   }
 }

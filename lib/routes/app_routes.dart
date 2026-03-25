@@ -21,7 +21,8 @@ class AppRoutes {
   static const String scannerComplete = '/scanner-complete';
   static const String createReward = '/create-reward';
   static const String editReward = '/edit-reward';
-  static const String subscription = '/subscription';
+  static const String androidSubscription = '/android-subscription';
+  static const String iosSubscription = '/ios-subscription';
   static const String profileSettings = '/profile-settings';
   static const String changePassword = '/change-password';
   static const String notification = '/notification';

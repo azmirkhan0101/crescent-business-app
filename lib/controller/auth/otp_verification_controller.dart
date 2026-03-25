@@ -176,7 +176,12 @@ class OtpVerificationController extends GetxController {
       if (isSubscribed) {
         Get.offAllNamed(AppRoutes.setupComplete);
       } else {
-        Get.offAllNamed(AppRoutes.subscription);
+        bool isAndroid = Platform.isAndroid;
+        if( isAndroid ){
+          Get.offAllNamed(AppRoutes.androidSubscription);
+        }else{
+          Get.offAllNamed(AppRoutes.iosSubscription);
+        }
       }
     } else if (response.statusCode == 401) {
       //ACCESS TOKEN INVALID

@@ -177,7 +177,12 @@ class LoginController extends GetxController {
           message: "You need to subscribe to continue.",
           backgroundColor: AppColors.successGreen,
         );
-        Get.offAllNamed(AppRoutes.subscription);
+        bool isAndroid = Platform.isAndroid;
+        if( isAndroid ){
+          Get.offAllNamed(AppRoutes.androidSubscription);
+        }else{
+          Get.offAllNamed(AppRoutes.iosSubscription);
+        }
       }
     } else if (response.statusCode == 401) {
       storage.erase();

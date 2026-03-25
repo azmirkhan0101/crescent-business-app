@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:organization/core/api_response.dart';
@@ -11,7 +13,7 @@ import '../../data/models/profile/business_profile_model.dart';
 import '../../routes/app_pages.dart';
 import '../../utils/app_constants.dart';
 
-class SubscriptionController extends GetxController {
+class AndroidSubscriptionController extends GetxController {
   final ApiService apiService = Get.find<ApiService>();
 
   @override
@@ -109,7 +111,12 @@ class SubscriptionController extends GetxController {
             message: "You need to subscribe to continue.",
             backgroundColor: AppColors.successGreen,
           );
-          Get.offAllNamed(AppRoutes.subscription);
+          bool isAndroid = Platform.isAndroid;
+          if( isAndroid ){
+            Get.offAllNamed(AppRoutes.androidSubscription);
+          }else{
+            Get.offAllNamed(AppRoutes.iosSubscription);
+          }
         }
       } else if (response.statusCode == 401) {
         //ACCESS TOKEN INVALID

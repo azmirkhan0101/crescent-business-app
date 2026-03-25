@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:organization/core/api_response.dart';
@@ -17,7 +19,12 @@ class HomeController extends GetxController {
   @override
   void onInit() {
     if (isSubscriptionExpired()) {
-      Get.offAllNamed(AppRoutes.subscription);
+      bool isAndroid = Platform.isAndroid;
+      if( isAndroid ){
+        Get.offAllNamed(AppRoutes.androidSubscription);
+      }else{
+        Get.offAllNamed(AppRoutes.iosSubscription);
+      }
       return;
     }
 
