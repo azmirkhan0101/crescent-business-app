@@ -288,7 +288,7 @@ class AnalyticsExporter {
     );
 
     const NotificationDetails platformChannelSpecifics = NotificationDetails(
-      android: androidPlatformChannelSpecifics,
+      android: androidPlatformChannelSpecifics
     );
 
     // Get only the filename for the title
