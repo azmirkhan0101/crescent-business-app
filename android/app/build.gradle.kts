@@ -18,7 +18,7 @@ if (keystorePropertiesFile.exists()) {
 }
 
 android {
-    namespace = "com.raiyanrahmat.crescent_change_business_app"
+    namespace = "com.crescentchange.business"
     compileSdk = 36
     ndkVersion = flutter.ndkVersion
 
@@ -43,7 +43,7 @@ android {
     }
 
     defaultConfig {
-        applicationId = "com.raiyanrahmat.crescent_change_business_app"
+        applicationId = "com.crescentchange.business"
         minSdk = flutter.minSdkVersion
         targetSdk = flutter.targetSdkVersion
         versionCode = flutter.versionCode

@@ -7,9 +7,9 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:899950650260:android:5c5ab07daf3ede457ba581",
+        "mobilesdk_app_id": "1:899950650260:android:2d76bf9af1e85fbe7ba581",
         "android_client_info": {
-          "package_name": "com.raiyanrahmat.crescent_change_business_app"
+          "package_name": "com.crescentchange.business"
         }
       },
       "oauth_client": [],

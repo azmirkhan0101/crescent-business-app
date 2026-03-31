@@ -26,10 +26,7 @@ class DefaultFirebaseOptions {
       case TargetPlatform.android:
         return android;
       case TargetPlatform.iOS:
-        throw UnsupportedError(
-          'DefaultFirebaseOptions have not been configured for ios - '
-          'you can reconfigure this by running the FlutterFire CLI again.',
-        );
+        return ios;
       case TargetPlatform.macOS:
         throw UnsupportedError(
           'DefaultFirebaseOptions have not been configured for macos - '
@@ -54,9 +51,19 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions android = FirebaseOptions(
     apiKey: 'AIzaSyAVUg5XsVvDS4KC90iagvfvG-ASKq8-qOM',
-    appId: '1:899950650260:android:5c5ab07daf3ede457ba581',
+    appId: '1:899950650260:android:2d76bf9af1e85fbe7ba581',
     messagingSenderId: '899950650260',
     projectId: 'crecent-change',
     storageBucket: 'crecent-change.firebasestorage.app',
   );
+
+  static const FirebaseOptions ios = FirebaseOptions(
+    apiKey: 'AIzaSyDNVgbtSj8QcqnPqZXvZlJ_nIOvY5bAxUU',
+    appId: '1:899950650260:ios:123814c0c8f745257ba581',
+    messagingSenderId: '899950650260',
+    projectId: 'crecent-change',
+    storageBucket: 'crecent-change.firebasestorage.app',
+    iosBundleId: 'com.crescentchange.business',
+  );
+
 }
