@@ -7,9 +7,9 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:899950650260:android:2d76bf9af1e85fbe7ba581",
+        "mobilesdk_app_id": "1:899950650260:android:21f4a09a19c9db997ba581",
         "android_client_info": {
-          "package_name": "com.crescentchange.business"
+          "package_name": "com.crescentchange.businessapp"
         }
       },
       "oauth_client": [],
@@ -26,9 +26,9 @@
     },
     {
       "client_info": {
-        "mobilesdk_app_id": "1:899950650260:android:5edef42c7a2e65727ba581",
+        "mobilesdk_app_id": "1:899950650260:android:f5bac42a21ae7f197ba581",
         "android_client_info": {
-          "package_name": "com.raiyanrahmat.cresent_charge_user_app"
+          "package_name": "com.crescentchange.donorapp"
         }
       },
       "oauth_client": [],
