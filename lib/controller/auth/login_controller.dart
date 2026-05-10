@@ -1,11 +1,11 @@
-import 'dart:async';
-import 'dart:convert';
 import 'dart:io';
 
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
-import 'package:http/http.dart' as http;
+import 'package:organization/core/api_response.dart';
+import 'package:organization/core/api_service.dart';
 import 'package:organization/routes/app_pages.dart';
 import 'package:organization/utils/api_endpoints.dart';
 import 'package:organization/utils/app_color.dart';
@@ -14,10 +14,9 @@ import 'package:organization/utils/app_constants.dart';
 import '../../core/app_validator.dart';
 import '../../core/show_snackbar.dart';
 import '../../data/models/profile/business_profile_model.dart';
-import '../../services/firebase_notification_service.dart';
 
 class LoginController extends GetxController {
-
+  final ApiService apiService = Get.find<ApiService>();
   final storage = GetStorage();
   RxBool isLoginLoading = false.obs;
 
@@ -30,91 +29,68 @@ class LoginController extends GetxController {
       return;
     }
 
-    if (!isEmailValid(email: emailController.text.trim()) || !isPasswordValid(password: passwordController.text.trim())) {
+    if (!isEmailValid(email: emailController.text.trim()) ||
+        !isPasswordValid(password: passwordController.text.trim())) {
       incorrectCredentialsSnackBar();
       return;
     }
 
-    try {
-      isLoginLoading.value = true;
-      Map<String, dynamic> credentials = {
-        "email": emailController.text.trim(),
-        "password": passwordController.text.trim(),
-      };
+    isLoginLoading.value = true;
+    Map<String, dynamic> credentials = {
+      "email": emailController.text.trim(),
+      "password": passwordController.text.trim(),
+    };
+    ApiResponse response = await apiService.networkRequest(
+      method: 'POST',
+      isAuthRequired: false,
+      endPoint: ApiEndpoints.login,
+      body: credentials,
+    );
 
-      final url = Uri.parse(ApiEndpoints.baseUrl + ApiEndpoints.login);
-      http.Response response = await http
-          .post(url, body: credentials)
-          .timeout(Duration(seconds: 10));
-
-      print(response.statusCode);
-      print(response.body);
-
-      if (response.statusCode == 200) {
-        //LOGIN SUCCESSFUL
-        Map<String, dynamic> responseData = jsonDecode(response.body);
-        saveOtpResponse(responseData);
-        updateFcmToken();
-      } else if (response.statusCode == 400) {
-        //ACCOUNT FOUND, BUT NOT VERIFIED
-        isLoginLoading.value = false;
-        showSnackBar(
-          title: "Account not verified!",
-          message: "Verify your account using the OTP sent to your email.",
-          backgroundColor: AppColors.warningYellow,
-          textColor: AppColors.black,
-        );
-        storage.write(requireVerificationKey, true);
-        storage.write(
-          emailKey,
-          emailController.text.trim(),
-        ); //SAVE EMAIL FOR VERIFY NOW SCREEN
-        //go to verify now screen
-        Get.offNamed(AppRoutes.verifyNow);
-      } else if (response.statusCode == 401) {
-        //WRONG PASSWORD
-        isLoginLoading.value = false;
-        showSnackBar(
-          title: "Incorrect password!",
-          message: "The password you entered is incorrect.",
-          backgroundColor: AppColors.errorRed,
-        );
-      } else if (response.statusCode == 404) {
-        //NO ACCOUNT FOUND IN THAT EMAIL
-        isLoginLoading.value = false;
-        showSnackBar(
-          title: "Account not found!",
-          message:
-              jsonDecode(response.body)['message'] ?? "No account found matching this email. Try creating an account.",
-          backgroundColor: AppColors.errorRed,
-        );
-      } else {
-        isLoginLoading.value = false;
-        showSnackBar(
-          title: "Login Failed!",
-          message: "Please try again.",
-          backgroundColor: AppColors.errorRed,
-        );
-      }
-    } on SocketException {
+    if (response.statusCode == 200) {
+      //LOGIN SUCCESSFUL
+      Map<String, dynamic> responseData = response.data;
+      saveOtpResponse(responseData);
+      updateFcmToken();
+    } else if (response.statusCode == 400) {
+      //ACCOUNT FOUND, BUT NOT VERIFIED
       isLoginLoading.value = false;
       showSnackBar(
-        title: "No internet connection!",
-        message: "Please connect to the internet.",
+        title: "Account not verified!",
+        message: "Verify your account using the OTP sent to your email.",
+        backgroundColor: AppColors.warningYellow,
+        textColor: AppColors.black,
+      );
+      storage.write(requireVerificationKey, true);
+      storage.write(
+        emailKey,
+        emailController.text.trim(),
+      ); //SAVE EMAIL FOR VERIFY NOW SCREEN
+      //go to verify now screen
+      Get.offNamed(AppRoutes.verifyNow);
+    } else if (response.statusCode == 401) {
+      //WRONG PASSWORD
+      isLoginLoading.value = false;
+      showSnackBar(
+        title: "Incorrect password!",
+        message: "The password you entered is incorrect.",
         backgroundColor: AppColors.errorRed,
       );
-    } on TimeoutException {
+    } else if (response.statusCode == 404) {
+      //NO ACCOUNT FOUND IN THAT EMAIL
       isLoginLoading.value = false;
       showSnackBar(
-        title: "Time out!",
-        message: "Please check your internet connection or try again later.",
+        title: "Account not found!",
+        message:
+            response.data['message'] ??
+            "No account found matching this email. Try creating an account.",
         backgroundColor: AppColors.errorRed,
       );
-    } catch (e) {
+    } else {
       isLoginLoading.value = false;
       showSnackBar(
-        title: "Something went wrong!",
-        message: "Please try again later.",
+        title: "Login Failed!",
+        message: "Please try again.",
         backgroundColor: AppColors.errorRed,
       );
     }
@@ -122,46 +98,31 @@ class LoginController extends GetxController {
 
   //UPDATE FCM TOKEN
   updateFcmToken() async {
-    try {
-      String? token = await FirebaseNotificationService.instance.getToken();
+    String deviceType = "android";
+    late String? token;
 
-      Uri uri = Uri.parse(ApiEndpoints.baseUrl + ApiEndpoints.updateFcmToken);
+    // Detect the device type
+    if (Platform.isAndroid) {
+      deviceType = 'android';
+      token = await FirebaseMessaging.instance.getToken();
+    } else {
+      deviceType = 'ios';
+      token = await FirebaseMessaging.instance.getAPNSToken();
+    }
 
-      Map<String, String> headers = {
-        "Content-Type": "application/json",
-        "Authorization": "Bearer ${storage.read(accessTokenKey)}",
-      };
+    final payLoad = {"fcmToken": token, "deviceType": deviceType};
 
-      String deviceType = "android";
+    ApiResponse response = await apiService.networkRequest(
+      method: 'PATCH',
+      isAuthRequired: true,
+      endPoint: ApiEndpoints.updateFcmToken,
+      body: payLoad
+    );
 
-      // Detect the device type
-      if (Platform.isAndroid) {
-        deviceType = 'android';
-      } else {
-        deviceType = 'ios';
-      }
-
-      final payLoad = {"fcmToken": token, "deviceType": deviceType};
-
-      http.Response response = await http.patch(
-        uri,
-        headers: headers,
-        body: jsonEncode(payLoad),
-      );
-
-      if (response.statusCode == 200 || response.statusCode == 201) {
-        //GET PROFILE AND GO TO MAIN -> HOME
-        getProfileData();
-      } else {
-        isLoginLoading.value = false;
-        storage.erase();
-        showSnackBar(
-          title: "Something went wrong!",
-          message: "Please try again.",
-          backgroundColor: AppColors.errorRed,
-        );
-      }
-    } catch (e) {
+    if (response.statusCode == 200 || response.statusCode == 201) {
+      //GET PROFILE AND GO TO MAIN -> HOME
+      getProfileData();
+    } else {
       isLoginLoading.value = false;
       storage.erase();
       showSnackBar(
@@ -175,64 +136,69 @@ class LoginController extends GetxController {
   //GET PROFILE DATA USING TOKEN AFTER LOGIN SUCCESS
   getProfileData() async {
 
-    try {
-      Uri uri = Uri.parse(ApiEndpoints.baseUrl + ApiEndpoints.getProfile);
+    ApiResponse response = await apiService.networkRequest(
+        method: 'GET',
+        isAuthRequired: true,
+        endPoint: ApiEndpoints.getProfile
+    );
 
-      Map<String, String> headers = {
-        "Content-Type": "application/json",
-        "Authorization": "Bearer ${storage.read(accessTokenKey)}",
-      };
+    isLoginLoading.value = false;
 
-      http.Response response = await http.get(uri, headers: headers);
-      if (response.statusCode == 200) {
-        storage.write(requireVerificationKey, false);
-        //FETCHED PROFILE DATA
-        BusinessProfileModel model = BusinessProfileModel.fromJson(
-          jsonDecode(response.body)['data'],
-        );
-        //SAVE PROFILE DATA IN STORAGE
-        storage.write(businessProfileModelKey, model.toJson());
-        storage.write(businessIdKey, model.businessId,); //SAVING ID SEPARATELY FOR RETRIEVING EASILY, ALSO AVAILABLE IN MODEL
-        storage.write(businessAuthIdKey, model.businessAuthId,); //SAVING AUTH ID SEPARATELY FOR RETRIEVING EASILY, ALSO AVAILABLE IN MODEL
-        //GO TO MAIN -> HOME -> GET HOME DATA, ANALYTICS THERE
-        bool isSubscribed = model.isSubscribed ?? false;
-        storage.write(subscriptionKey, isSubscribed);
-        storage.write(subscriptionExpiryDateKey, model.subscriptionExpiryDate);
-        if (isSubscribed) {
-          showSnackBar(
-            title: "Logged in!",
-            message: "You have successfully logged in.",
-            backgroundColor: AppColors.successGreen,
-          );
-          Get.offAllNamed(AppRoutes.mainNav);
-        } else {
-          showSnackBar(
-            title: "Subscription Required!",
-            message: "You need to subscribe to continue.",
-            backgroundColor: AppColors.successGreen,
-          );
-          Get.offAllNamed(AppRoutes.subscription);
-        }
-      } else if (response.statusCode == 401) {
-        storage.erase();
-        //ACCESS TOKEN INVALID
+    if (response.statusCode == 200) {
+      storage.write(requireVerificationKey, false);
+      //FETCHED PROFILE DATA
+      BusinessProfileModel model = BusinessProfileModel.fromJson(
+          response.data['data']
+      );
+      //SAVE PROFILE DATA IN STORAGE
+      storage.write(businessProfileModelKey, model.toJson());
+      storage.write(
+          businessIdKey,
+          model.businessId
+      ); //SAVING ID SEPARATELY FOR RETRIEVING EASILY, ALSO AVAILABLE IN MODEL
+      storage.write(
+          businessAuthIdKey,
+          model.businessAuthId
+      ); //SAVING AUTH ID SEPARATELY FOR RETRIEVING EASILY, ALSO AVAILABLE IN MODEL
+      //GO TO MAIN -> HOME -> GET HOME DATA, ANALYTICS THERE
+      bool isSubscribed = model.isSubscribed ?? false;
+      storage.write(subscriptionKey, isSubscribed);
+      storage.write(subscriptionExpiryDateKey, model.subscriptionExpiryDate);
+      if (isSubscribed) {
         showSnackBar(
-          title: "Session Expired!",
-          message: "Please try again.",
-          backgroundColor: AppColors.errorRed,
+          title: "Logged in!",
+          message: "You have successfully logged in.",
+          backgroundColor: AppColors.successGreen,
         );
-      }else{
-        storage.erase();
+        Get.offAllNamed(AppRoutes.mainNav);
+      } else {
+        showSnackBar(
+          title: "Subscription Required!",
+          message: "You need to subscribe to continue.",
+          backgroundColor: AppColors.successGreen,
+        );
+        bool isAndroid = Platform.isAndroid;
+        if( isAndroid ){
+          Get.offAllNamed(AppRoutes.androidSubscription);
+        }else{
+          Get.offAllNamed(AppRoutes.iosSubscription);
+        }
       }
-    } catch (e) {
+    } else if (response.statusCode == 401) {
+      storage.erase();
+      //ACCESS TOKEN INVALID
+      showSnackBar(
+        title: "Session Expired!",
+        message: "Please try again.",
+        backgroundColor: AppColors.errorRed,
+      );
+    } else {
       storage.erase();
       showSnackBar(
         title: "Error!",
         message: "Something went wrong. Please try again",
         backgroundColor: AppColors.errorRed,
       );
-    } finally {
-      isLoginLoading.value = false;
     }
   }
 

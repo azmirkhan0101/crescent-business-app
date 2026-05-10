@@ -137,9 +137,12 @@ class ApiService extends GetxService {
     required String endPoint,
     required bool isAuthRequired,
     required Map<String, dynamic> fields,
-    File? image,
+    File? coverImage,
+    File? logoImage,
+    File? rewardImage,
+    File? csvFile,
     int timeout = 20,
-    required String fileKey,
+    String fieldName = "data",
   }) async {
     var result;
     try {
@@ -147,7 +150,7 @@ class ApiService extends GetxService {
 
       var request = http.MultipartRequest( method, uri);
 
-      request.fields["body"] = jsonEncode(fields);
+      request.fields[fieldName] = jsonEncode(fields);
       if( isAuthRequired ){
         Map<String, String> headers = {
           "Content-Type": "application/json",
@@ -156,21 +159,77 @@ class ApiService extends GetxService {
         request.headers.addAll(headers);
       }
 
-      if (image != null) {
-        final compressedImage = await compressImage(image);
+      if( coverImage != null ) {
+        final compressedCoverImage = await compressImage(coverImage);
+        if (compressedCoverImage != null) {
+          final mimeType =
+              lookupMimeType(compressedCoverImage.path)?.split('/') ??
+                  ['application', 'octet-stream'];
+
+          request.files.add(
+              await http.MultipartFile.fromPath(
+                "coverImage",
+                compressedCoverImage.path,
+                contentType: http.MediaType(
+                  mimeType[0],
+                  mimeType[1],
+                ),
+              )
+          );
+        }
+      }
+
+        // Add optional logo image
+        if( logoImage != null ){
+          final compressedLogoImage = await compressImage( logoImage );
+          if( compressedLogoImage != null ) {
+            final mimeType =
+                lookupMimeType(compressedLogoImage.path)?.split('/') ??
+                    ['application', 'octet-stream'];
+
+            request.files.add(
+                await http.MultipartFile.fromPath(
+                  "logoImage",
+                  compressedLogoImage.path,
+                  contentType: http.MediaType(
+                    mimeType[0],
+                    mimeType[1],
+                  ),
+                )
+            );
+          }
+        }
+
+      //REWARD IMAGE
+      if( rewardImage != null ) {
+        final compressedImage = await compressImage(rewardImage);
         if (compressedImage != null) {
           final mimeType =
               lookupMimeType(compressedImage.path)?.split('/') ??
-              ['application', 'octet-stream'];
+                  ['application', 'octet-stream'];
 
           request.files.add(
-            await http.MultipartFile.fromPath(
-              fileKey,
-              compressedImage.path,
-              contentType: http.MediaType(mimeType[0], mimeType[1]),
-            ),
+              await http.MultipartFile.fromPath(
+                "rewardImage",
+                compressedImage.path,
+                contentType: http.MediaType(
+                  mimeType[0],
+                  mimeType[1],
+                ),
+              )
           );
         }
+      }
+
+      if( csvFile != null ){
+        request.files.add(
+          await http.MultipartFile.fromPath(
+            "codesFiles",
+            csvFile.path,
+            contentType: http.MediaType("text", "csv"),
+          ),
+        );
+
       }
 
       // Send request
@@ -186,7 +245,12 @@ class ApiService extends GetxService {
               endPoint: endPoint,
               isAuthRequired: isAuthRequired,
               fields: fields,
-              fileKey: fileKey
+              coverImage: coverImage,
+              logoImage: logoImage,
+              rewardImage: rewardImage,
+              csvFile: csvFile,
+              timeout: timeout,
+              fieldName: fieldName
           );
         } else {
           return ApiResponse(statusCode: 401);
@@ -213,35 +277,29 @@ class ApiService extends GetxService {
   //REFRESH TOKEN
   Future<bool> refreshTokenOnce() async {
     if (_isRefreshing) {
-      print("Isrefreshing");
       return _refreshCompleter?.future ?? Future.value(false);
     }
-
-    print("Refresh start");
 
     _isRefreshing = true;
     _refreshCompleter = Completer<bool>();
 
     try {
       final refreshToken = storage.read(refreshTokenKey);
-      print("Refresh token: $refreshToken");
       if (refreshToken == null) {
-        print("Refresh token is null");
         await _forceLogout();
         _refreshCompleter!.complete(false);
         return false;
       }
 
-      print("refresh token is not null");
-      final response = await http.post(
-        Uri.parse("${ApiEndpoints.baseUrl}${ApiEndpoints.refreshToken}"),
-        headers: {"Content-Type": "application/json"},
-        body: jsonEncode({"refreshToken": refreshToken}),
+      final response = await http.get(
+        Uri.parse(ApiEndpoints.baseUrl + ApiEndpoints.refreshToken),
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": "Bearer $refreshToken"
+        }
       );
 
-      print("Refresh call finish");
       if (response.statusCode == 200) {
-        print("Refresh api call successssssssssssss");
         final data = jsonDecode(response.body);
 
         storage.write(accessTokenKey, data['data']['accessToken']);
@@ -253,13 +311,11 @@ class ApiService extends GetxService {
         _refreshCompleter!.complete(true);
         return true;
       } else {
-        print("refresh api call not success ${response.statusCode} ${response.body}");
         await _forceLogout();
         _refreshCompleter!.complete(false);
         return false;
       }
     } catch (e) {
-      print("Refresh errorrrrrrrrr: $e");
       await _forceLogout();
       if (!_refreshCompleter!.isCompleted) {
         _refreshCompleter!.complete(false);
@@ -280,6 +336,7 @@ class ApiService extends GetxService {
 
 
   //COMPRESS IMAGE
+  //COMPRESS IMAGE
   Future<File?> compressImage(File file) async {
     final dir = await getTemporaryDirectory();
     final targetPath = p.join(
@@ -290,7 +347,7 @@ class ApiService extends GetxService {
     final result = await FlutterImageCompress.compressAndGetFile(
       file.absolute.path,
       targetPath,
-      quality: 50, // 0 - 100
+      quality: 50,// 0 - 100
       format: CompressFormat.jpeg,
     );
 

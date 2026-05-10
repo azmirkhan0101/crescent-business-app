@@ -1,9 +1,8 @@
-import 'dart:convert';
-
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
-import 'package:http/http.dart' as http;
 import 'package:organization/controller/analytics/analytics_exporter.dart';
+import 'package:organization/core/api_response.dart';
+import 'package:organization/core/api_service.dart';
 import 'package:organization/core/show_snackbar.dart';
 import 'package:organization/data/models/analytics/business_analytics_model.dart';
 import 'package:organization/data/models/analytics/graph_data_model.dart';
@@ -19,6 +18,8 @@ import '../../utils/app_constants.dart';
 import '../reward/reward_controller.dart';
 
 class AnalyticsController extends GetxController {
+
+  final ApiService apiService = Get.find<ApiService>();
 
   final RewardController rewardController = Get.find<RewardController>();
 
@@ -90,31 +91,21 @@ class AnalyticsController extends GetxController {
   getBusinessAnalytics() async {
     isTopRewardsLoading.value = true;
 
-    Uri uri = Uri.parse(
-      ApiEndpoints.baseUrl +
-          ApiEndpoints.businessAnalytics(
-            timeFilter: analyticsTimeFilters[currentTimeFilterIndex.value],
-          ),
+    topRewards.value = [];
+    ApiResponse response = await apiService.networkRequest(
+      method: 'GET',
+      isAuthRequired: true,
+      endPoint: ApiEndpoints.businessAnalytics(
+        timeFilter: analyticsTimeFilters[currentTimeFilterIndex.value],
+      ),
     );
-
-    Map<String, String> header = {
-      'Authorization': 'Bearer ${storage.read(accessTokenKey)}',
-    };
-
-    try {
-      topRewards.value = [];
-      http.Response response = await http.get(uri, headers: header);
-
-      if (response.statusCode == 200) {
-        businessAnalyticsModel.value = BusinessAnalyticsModel.fromJson(
-          jsonDecode(response.body)['data'],
-        );
-        methods.value = businessAnalyticsModel.value?.methods ?? [];
-        topRewards.value = businessAnalyticsModel.value?.topRewards ?? [];
-      }
-    } catch (e) {
-    } finally {
-      isTopRewardsLoading.value = false;
+    isTopRewardsLoading.value = false;
+    if (response.statusCode == 200) {
+      businessAnalyticsModel.value = BusinessAnalyticsModel.fromJson(
+          response.data['data']
+      );
+      methods.value = businessAnalyticsModel.value?.methods ?? [];
+      topRewards.value = businessAnalyticsModel.value?.topRewards ?? [];
     }
   }
   
@@ -125,25 +116,18 @@ class AnalyticsController extends GetxController {
   
   //GET REWARD ANALYTICS FOR GRAPH
 getRewardAnalyticsById({required String rewardId}) async{
-    Uri uri = Uri.parse( ApiEndpoints.baseUrl + ApiEndpoints.rewardAnalytics(rewardId: rewardId));
 
-    Map<String, String> header = {
-      'Authorization': 'Bearer ${storage.read(accessTokenKey)}',
-    };
+    ApiResponse response = await apiService.networkRequest(
+      method: 'GET',
+      isAuthRequired: true,
+      endPoint: ApiEndpoints.rewardAnalytics(rewardId: rewardId),
+    );
 
-    try{
-      http.Response response = await http.get( uri, headers: header );
-
-      if( response.statusCode == 200 ){//FETCHED ANALYTICS
-        model.value = RewardAnalyticsModel.fromJson( jsonDecode( response.body )['data'] );
-        summeryModel.value = model.value?.summaryModel;
-        graphs.value = model.value?.graphDataModels ?? [];
-      }
-    }catch(e){
-
+    if( response.statusCode == 200 ){//FETCHED ANALYTICS
+      model.value = RewardAnalyticsModel.fromJson( response.data['data'] );
+      summeryModel.value = model.value?.summaryModel;
+      graphs.value = model.value?.graphDataModels ?? [];
     }
-
-
 }
 
 

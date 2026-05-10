@@ -1,10 +1,9 @@
-import 'dart:convert';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
-import 'package:http/http.dart' as http;
+import 'package:organization/core/api_response.dart';
+import 'package:organization/core/api_service.dart';
 import 'package:organization/core/show_snackbar.dart';
 import 'package:organization/data/models/notification/notification_settings_model.dart';
 import 'package:organization/routes/app_pages.dart';
@@ -23,12 +22,11 @@ class ProfileSettingsController extends GetxController {
 
   @override
   void onInit() {
-
     getProfileData();
     super.onInit();
   }
 
-
+  final ApiService apiService = Get.find<ApiService>();
   final storage = GetStorage();
   NotificationSettingsModel? settingsModel;
 
@@ -41,6 +39,7 @@ class ProfileSettingsController extends GetxController {
   RxBool isPushNotificationEnabled = true.obs;
   RxBool isDonationUpdatesEnabled = true.obs;
   RxBool isRewardPerksEnabled = true.obs;
+
   //SWITCH TOGGLE API CALL LOADING CHECK
   RxBool isPushLoading = false.obs;
   RxBool isDonationLoading = false.obs;
@@ -64,21 +63,23 @@ class ProfileSettingsController extends GetxController {
     isNumeralPresent.value = value.contains(RegExp(r'[0-9]'));
 
     // 4. Check for special characters
-    isSpecialCharPresent.value =
-        value.contains(RegExp(r'[!@#$%^&*(),.?":{}|<>]'));
+    isSpecialCharPresent.value = value.contains(
+      RegExp(r'[!@#$%^&*(),.?":{}|<>]'),
+    );
   }
 
-
   //GET LOGO IMAGE URL AND USER NAME
-  getProfileData(){
-    BusinessProfileModel? model = BusinessProfileModel.fromJson(storage.read( businessProfileModelKey ));
-    final settings = storage.read( notificationSettingsModelKey );
-    if( settings == null ){
+  getProfileData() {
+    BusinessProfileModel? model = BusinessProfileModel.fromJson(
+      storage.read(businessProfileModelKey),
+    );
+    final settings = storage.read(notificationSettingsModelKey);
+    if (settings == null) {
       settingsModel = null;
-    }else{
-      settingsModel = NotificationSettingsModel.fromJson( settings );
+    } else {
+      settingsModel = NotificationSettingsModel.fromJson(settings);
     }
-    if( settings == null ){
+    if (settings == null) {
       getNotificationSettings();
     }
     logoImageUrl.value = model.logoImage == null || model.logoImage!.isEmpty
@@ -90,7 +91,7 @@ class ProfileSettingsController extends GetxController {
     isPushNotificationEnabled.value = settingsModel?.pushNotifications ?? true;
     isDonationUpdatesEnabled.value = settingsModel?.donations ?? true;
     isRewardPerksEnabled.value = settingsModel?.rewardsAndPerks ?? true;
-    }
+  }
 
   //=================CHANGE PASSWORD=======================//
   final TextEditingController currentPassword = TextEditingController();
@@ -128,54 +129,40 @@ class ProfileSettingsController extends GetxController {
       return;
     }
 
-    try {
-      Map<String, dynamic> payload = {
-        "oldPassword": currentPassword.text.trim(),
-        "newPassword": newPassword.text.trim(),
-      };
+    Map<String, dynamic> payload = {
+      "oldPassword": currentPassword.text.trim(),
+      "newPassword": newPassword.text.trim(),
+    };
 
-      Map<String, String> headers = {
-        "Content-Type": "application/json",
-        "Authorization": "Bearer ${storage.read(accessTokenKey)}",
-      };
+    ApiResponse response = await apiService.networkRequest(
+      method: "PATCH",
+      isAuthRequired: true,
+      endPoint: ApiEndpoints.changePassword,
+      body: payload,
+    );
 
-      Uri uri = Uri.parse(ApiEndpoints.baseUrl + ApiEndpoints.changePassword);
-
-      http.Response response = await http.patch(
-        uri,
-        body: jsonEncode(payload),
-        headers: headers,
-      );
-
-      if (response.statusCode == 200) {
-        //PASSWORD CHANGED
-        //SAVE TOKENS
-        saveTokens(jsonDecode(response.body));
-        //GO BACK
-        Get.back();
-        showSnackBar(
-          title: "Password Changed!",
-          message: "Password has been changed successfully.",
-          backgroundColor: AppColors.successGreen,
-        );
-      } else if (response.statusCode == 401) {
-        //CURRENT PASSWORD IS WRONG
-        showSnackBar(
-          title: "Incorrect password!",
-          message: "Current password is wrong.!",
-          backgroundColor: AppColors.errorRed,
-        );
-      } else {
-        showSnackBar(
-          title: "Error Occurred!",
-          message: "Something went wrong. Please try again",
-          backgroundColor: AppColors.errorRed,
-        );
-      }
-    } catch (e) {
+    if (response.statusCode == 200) {
+      //PASSWORD CHANGED
+      //SAVE TOKENS
+      saveTokens(response.data);
+      //GO BACK
+      Get.back();
       showSnackBar(
-        title: "No internet!",
-        message: "Please check your internet connection and try again.",
+        title: "Password Changed!",
+        message: "Password has been changed successfully.",
+        backgroundColor: AppColors.successGreen,
+      );
+    } else if (response.statusCode == 401) {
+      //CURRENT PASSWORD IS WRONG
+      showSnackBar(
+        title: "Incorrect password!",
+        message: "Current password is wrong.!",
+        backgroundColor: AppColors.errorRed,
+      );
+    } else {
+      showSnackBar(
+        title: "Error Occurred!",
+        message: "Something went wrong. Please try again",
         backgroundColor: AppColors.errorRed,
       );
     }
@@ -197,105 +184,92 @@ class ProfileSettingsController extends GetxController {
   }
 
   //DELETE ACCOUNT
-  deleteAccount() async{
+  Future<void> deleteAccount() async {
+    ApiResponse response = await apiService.networkRequest(
+      method: "DELETE",
+      isAuthRequired: true,
+      endPoint: ApiEndpoints.deleteAccount,
+    );
 
-    try{
-      Uri uri = Uri.parse( ApiEndpoints.baseUrl + ApiEndpoints.deleteAccount );
-      Map<String, String> headers = {
-        "Authorization" : "Bearer ${storage.read( accessTokenKey )}"
-      };
-
-      http.Response response = await http.delete( uri, headers: headers );
-
-      if( response.statusCode == 200 ){
-        await storage.erase();
-        Get.offAllNamed( AppRoutes.getStarted );
-        showSnackBar(
-          title: "Account deleted!",
-          message: "Your account has been deleted.",
-          backgroundColor: AppColors.successGreen,
-        );
-      }else{
-        showSnackBar(
-          title: "Error occurred!",
-          message: "Something went wrong. Please try again.",
-          backgroundColor: AppColors.errorRed,
-        );
-      }
-    }catch(e){
+    if (response.statusCode == 200) {
+      await storage.erase();
+      Get.offAllNamed(AppRoutes.getStarted);
       showSnackBar(
-        title: "No internet!",
-        message: "Please check your internet connection.",
+        title: "Account deleted!",
+        message: "Your account has been deleted.",
+        backgroundColor: AppColors.successGreen,
+      );
+    } else {
+      showSnackBar(
+        title: "Error occurred!",
+        message: "Something went wrong. Please try again.",
         backgroundColor: AppColors.errorRed,
       );
     }
   }
 
-  changeNotificationSettings({required int switchNumber}) async{
-
-    try{
-      if( switchNumber == 0 ){//push
-        isPushLoading.value = true;
-      }else if( switchNumber == 1 ){//donation
-        isDonationLoading.value = true;
-      }else{//reward perks
-        isRewardPerksLoading.value = true;
-      }
-      Uri uri = Uri.parse( ApiEndpoints.baseUrl + ApiEndpoints.notificationSettings );
-
-      Map<String, String> headers = {
-        "Content-type" : "application/json",
-        "Authorization" : "Bearer ${storage.read( accessTokenKey )}"
-      };
-
-      NotificationSettingsModel settingsModel = NotificationSettingsModel(
-          pushNotifications:  switchNumber == 0 ? !isPushNotificationEnabled.value : isPushNotificationEnabled.value,
-          donations: switchNumber == 1 ? !isDonationUpdatesEnabled.value : isDonationUpdatesEnabled.value,
-          rewardsAndPerks: switchNumber == 2 ? !isRewardPerksEnabled.value : isRewardPerksEnabled.value
-      );
-
-      http.Response response = await http.patch( uri, body: jsonEncode(settingsModel.toJson()), headers: headers );
-
-      if( response.statusCode == 200 ){
-        settingsModel = NotificationSettingsModel.fromJson( jsonDecode(response.body)['data']);
-        isPushNotificationEnabled.value = settingsModel.pushNotifications;
-        isDonationUpdatesEnabled.value = settingsModel.donations;
-        isRewardPerksEnabled.value = settingsModel.rewardsAndPerks;
-      }else{
-
-      }
-    }catch(e){
-
-    }finally{
-      isPushLoading.value = false;
-      isDonationLoading.value = false;
-      isRewardPerksLoading.value = false;
+  changeNotificationSettings({required int switchNumber}) async {
+    if (switchNumber == 0) {
+      //push
+      isPushLoading.value = true;
+    } else if (switchNumber == 1) {
+      //donation
+      isDonationLoading.value = true;
+    } else {
+      //reward perks
+      isRewardPerksLoading.value = true;
     }
 
+    NotificationSettingsModel settingsModel = NotificationSettingsModel(
+      pushNotifications: switchNumber == 0
+          ? !isPushNotificationEnabled.value
+          : isPushNotificationEnabled.value,
+      donations: switchNumber == 1
+          ? !isDonationUpdatesEnabled.value
+          : isDonationUpdatesEnabled.value,
+      rewardsAndPerks: switchNumber == 2
+          ? !isRewardPerksEnabled.value
+          : isRewardPerksEnabled.value,
+    );
+
+    ApiResponse response = await apiService.networkRequest(
+      method: "PATCH",
+      isAuthRequired: true,
+      endPoint: ApiEndpoints.notificationSettings,
+      body: settingsModel.toJson(),
+    );
+    isPushLoading.value = false;
+    isDonationLoading.value = false;
+    isRewardPerksLoading.value = false;
+
+    if (response.statusCode == 200) {
+      settingsModel = NotificationSettingsModel.fromJson(response.data['data']);
+      isPushNotificationEnabled.value = settingsModel.pushNotifications;
+      isDonationUpdatesEnabled.value = settingsModel.donations;
+      isRewardPerksEnabled.value = settingsModel.rewardsAndPerks;
+    } else {
+      showSnackBar(
+        title: "Error occurred!",
+        message: "Something went wrong. Please try again.",
+        backgroundColor: AppColors.errorRed,
+      );
+    }
   }
 
   //GET NOTIFICATION SETTINGS
-  getNotificationSettings() async{
+  getNotificationSettings() async {
+    ApiResponse response = await apiService.networkRequest(
+      method: "GET",
+      isAuthRequired: true,
+      endPoint: ApiEndpoints.notificationSettings,
+    );
 
-    try{
-      Uri uri = Uri.parse( ApiEndpoints.baseUrl + ApiEndpoints.notificationSettings );
-      Map<String, String> headers = {
-        "Content-type" : "application/json",
-        "Authorization" : "Bearer ${storage.read(accessTokenKey)}"
-      };
-
-      http.Response response = await http.get( uri, headers: headers );
-
-      if( response.statusCode == 200 ) {
-        settingsModel = NotificationSettingsModel.fromJson( jsonDecode( response.body )['data'] );
-        isPushNotificationEnabled.value = settingsModel?.pushNotifications ?? true;
-        isDonationUpdatesEnabled.value = settingsModel?.donations ?? true;
-        isRewardPerksEnabled.value = settingsModel?.rewardsAndPerks ?? true;
-      }
-    }catch(e){
-
+    if (response.statusCode == 200) {
+      settingsModel = NotificationSettingsModel.fromJson(response.data['data']);
+      isPushNotificationEnabled.value =
+          settingsModel?.pushNotifications ?? true;
+      isDonationUpdatesEnabled.value = settingsModel?.donations ?? true;
+      isRewardPerksEnabled.value = settingsModel?.rewardsAndPerks ?? true;
     }
-
   }
-
 }

@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -119,7 +121,12 @@ class _MyProfileScreenState extends State<ProfileSettingsScreen> {
                     title: "Subscriptions",
                     icon: Icons.subscriptions_outlined,
                     onTap: () {
-                      Get.toNamed(AppRoutes.subscription);
+                      bool isAndroid = Platform.isAndroid;
+                      if( isAndroid ){
+                        Get.toNamed(AppRoutes.androidSubscription);
+                      }else{
+                        Get.toNamed(AppRoutes.iosSubscription);
+                      }
                     },
                   ),
                   _buildProfileOption(

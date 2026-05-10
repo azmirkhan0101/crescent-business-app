@@ -1,5 +1,4 @@
 
-
 class BusinessProfileModel{
 
   String category;
