@@ -59,7 +59,7 @@ class RewardController extends GetxController {
 
   //FILTER LOADING CONTROL
   RxBool isFilterLoading = false.obs;
-
+  
   //PAGINATION
   RxBool isMoreLoading = false.obs;
   int currentPage = 1;
