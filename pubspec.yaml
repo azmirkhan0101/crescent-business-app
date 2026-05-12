@@ -3,7 +3,7 @@ description: "A new Flutter project."
 
 publish_to: 'none'
 
-version: 1.0.0+1
+version: 1.0.0+2
 
 environment:
   sdk: ^3.9.2
@@ -60,7 +60,8 @@ dependencies:
   shimmer: ^3.0.0
   vibration: ^3.1.5
   webview_flutter: ^4.13.0
-  in_app_purchase: ^3.2.3
+  purchases_flutter: ^10.0.2
+  purchases_ui_flutter: ^10.0.2
 
 
 

@@ -8,6 +8,7 @@ import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:http/http.dart' as http;
 import 'package:mime/mime.dart';
+import 'package:organization/core/subscription_service.dart';
 import 'package:path/path.dart' as p;
 import 'package:path_provider/path_provider.dart';
 
@@ -33,6 +34,7 @@ class ApiService extends GetxService {
     required String endPoint,
     Map<String, dynamic>? body,
     int timeout = 12,
+    bool shouldPrint = false
   }) async {
     var result;
     var code;
@@ -121,13 +123,15 @@ class ApiService extends GetxService {
     } on TimeoutException {
       return ApiResponse(statusCode: 408);
     } catch (e) {
-      print("🛑 Error: $e");
+      if( shouldPrint ) print("🛑 Error: $e");
       return ApiResponse(statusCode: 500);
     }finally{
-      print("🌐 Endpoint: $endPoint");
-      print("🟢 Code: $code");
-      //developer.log("✅ Result: $result");
-      logPrettyJson(result.toString());
+      if( shouldPrint ){
+        print("🌐 Endpoint: $endPoint");
+        print("🟢 Code: $code");
+        //developer.log("✅ Result: $result");
+        logPrettyJson(result.toString());
+      }
     }
   }
 
@@ -328,6 +332,7 @@ class ApiService extends GetxService {
 
 
   Future<void> _forceLogout() async {
+    await SubscriptionService.to.logoutUser();
     await storage.erase();
     if (Get.currentRoute != AppRoutes.getStarted) {
       Get.offAllNamed(AppRoutes.getStarted);

@@ -13,7 +13,7 @@ import 'package:organization/utils/api_endpoints.dart';
 import 'package:organization/utils/app_constants.dart';
 
 import '../../core/show_snackbar.dart';
-import '../../services/firebase_notification_service.dart';
+import '../../core/subscription_service.dart';
 import '../../utils/app_color.dart';
 
 class OtpVerificationController extends GetxController {
@@ -23,29 +23,22 @@ class OtpVerificationController extends GetxController {
   final storage = GetStorage();
   RxBool isOtpVerifying = false.obs;
   late String email;
-  late bool
-  isSignup; //CHECKS IF SIGNUP VERIFICATION OR FORGOT PASSWORD VERIFICATION
+  late bool isSignup;
 
   void onOtpChanged(String val) {
     isOtpValid.value = val.trim().length == 6;
   }
 
-  //SUBMIT OTP FOR SIGNUP EMAIL VERIFICATION
   void submitSignupOtp() async {
-    if (isOtpVerifying.value) {
-      return;
-    }
-
+    if (isOtpVerifying.value) return;
     if (!isOtpValid.value) {
       Get.snackbar("Error", "Please enter the complete PIN");
       return;
     }
 
     isOtpVerifying.value = true;
-    Map<String, dynamic> payLoad = {
-      "email": email,
-      "otp": otpController.text.trim(),
-    };
+    Map<String, dynamic> payLoad = {"email": email, "otp": otpController.text.trim()};
+
     ApiResponse response = await apiService.networkRequest(
       method: 'POST',
       isAuthRequired: false,
@@ -56,14 +49,9 @@ class OtpVerificationController extends GetxController {
 
     if (response.statusCode == 200 || response.statusCode == 201) {
       if (responseData["success"] == true) {
-        showSnackBar(
-          title: "OTP verified!",
-          message: "OTP Verified Successfully.",
-          backgroundColor: AppColors.successGreen,
-        );
+        showSnackBar(title: "OTP verified!", message: "OTP Verified Successfully.", backgroundColor: AppColors.successGreen);
 
         if (isSignup) {
-          //SIGNUP OTP VERIFIED -> SAVE TOKENS & GET PROFILE DATA TO SHOW IN SETUP COMPLETE SCREEN
           saveOtpResponse(responseData);
           updateFcmToken();
         } else {
@@ -72,50 +60,22 @@ class OtpVerificationController extends GetxController {
         }
       } else {
         isOtpVerifying.value = false;
-        showSnackBar(
-          title: "Verification failed!",
-          message: "OTP verification failed.",
-          backgroundColor: AppColors.errorRed,
-        );
+        showSnackBar(title: "Verification failed!", message: "OTP verification failed.", backgroundColor: AppColors.errorRed);
       }
-    } else if (response.statusCode == 400) {
+    } else if (response.statusCode == 400 || response.statusCode == 401 || response.statusCode == 403) {
       isOtpVerifying.value = false;
-      //OTP NOT MATCHED
-      showSnackBar(
-        title: "Invalid OTP!",
-        message: "The entered OTP is incorrect or has expired.",
-        backgroundColor: AppColors.errorRed,
-      );
-    } else if (response.statusCode == 401 || response.statusCode == 403) {
-      isOtpVerifying.value = false;
-      showSnackBar(
-        title: "Invalid OTP!",
-        message: "The entered OTP is incorrect or has expired.",
-        backgroundColor: AppColors.errorRed,
-      );
+      showSnackBar(title: "Invalid OTP!", message: "The entered OTP is incorrect or has expired.", backgroundColor: AppColors.errorRed);
     } else {
       isOtpVerifying.value = false;
-      showSnackBar(
-        title: "Error!",
-        message: "An error occurred. Please try again.",
-        backgroundColor: AppColors.errorRed,
-      );
+      showSnackBar(title: "Error!", message: "An error occurred. Please try again.", backgroundColor: AppColors.errorRed);
     }
   }
 
-  //UPDATE FCM TOKEN
   updateFcmToken() async {
-    String deviceType = "android";
-
-    late String? token;
-    // Detect the device type
-    if (Platform.isAndroid) {
-      deviceType = 'android';
-      token = await FirebaseMessaging.instance.getToken();
-    } else {
-      deviceType = 'ios';
-      token = await FirebaseMessaging.instance.getAPNSToken();
-    }
+    String deviceType = Platform.isAndroid ? 'android' : 'ios';
+    String? token = Platform.isAndroid
+        ? await FirebaseMessaging.instance.getToken()
+        : await FirebaseMessaging.instance.getAPNSToken();
 
     final payLoad = {"fcmToken": token, "deviceType": deviceType};
 
@@ -127,20 +87,14 @@ class OtpVerificationController extends GetxController {
     );
 
     if (response.statusCode == 200 || response.statusCode == 201) {
-      //GET PROFILE AND GO TO MAIN -> HOME
       getProfileData();
     } else {
       isOtpVerifying.value = false;
       storage.erase();
-      showSnackBar(
-        title: "Something went wrong!",
-        message: "Please try again.",
-        backgroundColor: AppColors.errorRed,
-      );
+      showSnackBar(title: "Something went wrong!", message: "Please try again.", backgroundColor: AppColors.errorRed);
     }
   }
 
-  //GET PROFILE DATA USING TOKEN AFTER SIGNUP OTP VERIFIED
   getProfileData() async {
     ApiResponse response = await apiService.networkRequest(
       method: 'GET',
@@ -148,69 +102,42 @@ class OtpVerificationController extends GetxController {
       endPoint: ApiEndpoints.getProfile,
     );
     isOtpVerifying.value = false;
-    if (response.statusCode == 200) {
-      storage.write(
-        requireVerificationKey,
-        false,
-      ); //VERIFICATION DONE, NOT REQUIRED ANY MORE
-      //FETCHED PROFILE DATA
-      BusinessProfileModel model = BusinessProfileModel.fromJson(
-        response.data['data'],
-      );
-      //SAVE PROFILE DATA IN STORAGE
-      storage.write(businessProfileModelKey, model.toJson());
-      storage.write(
-        businessIdKey,
-        model.businessId,
-      ); //SAVING ID SEPARATELY FOR RETRIEVING EASILY, ALSO AVAILABLE IN MODEL
-      storage.write(
-        businessAuthIdKey,
-        model.businessAuthId,
-      ); //SAVING AUTH ID SEPARATELY FOR RETRIEVING EASILY, ALSO AVAILABLE IN MODEL
-      storage.write(subscriptionExpiryDateKey, model.subscriptionExpiryDate);
-      //GO TO SETUP COMPLETE SCREEN AND FETCH PROFILE DATA THERE
-      //SAVE SUBSCRIPTION IN STORAGE - IF SUBSCRIBED - GO HOME - ELSE GO TO SUBSCRIPTION SCREEN
-      bool isSubscribed = model.isSubscribed ?? false;
 
+    if (response.statusCode == 200) {
+      storage.write(requireVerificationKey, false);
+      BusinessProfileModel model = BusinessProfileModel.fromJson(response.data['data']);
+
+      storage.write(businessProfileModelKey, model.toJson());
+      storage.write(businessIdKey, model.businessId);
+      storage.write(businessAuthIdKey, model.businessAuthId);
+      storage.write(subscriptionExpiryDateKey, model.subscriptionExpiryDate);
+
+      bool isSubscribed = model.isSubscribed ?? false;
       storage.write(subscriptionKey, isSubscribed);
-      if (isSubscribed) {
+
+      // Important: Link RevenueCat identity to new backend user
+      if (model.businessId != null) {
+        await SubscriptionService.to.loginUser(model.businessId!);
+      }
+      await SubscriptionService.to.checkPremiumStatus();
+
+      if (SubscriptionService.to.hasPremium) {
         Get.offAllNamed(AppRoutes.setupComplete);
       } else {
-        bool isAndroid = Platform.isAndroid;
-        if( isAndroid ){
-          Get.offAllNamed(AppRoutes.androidSubscription);
-        }else{
-          Get.offAllNamed(AppRoutes.iosSubscription);
-        }
+        Get.offAllNamed(AppRoutes.paywallScreen);
       }
     } else if (response.statusCode == 401) {
-      //ACCESS TOKEN INVALID
-      showSnackBar(
-        title: "Session Expired!",
-        message: "Please try again.",
-        backgroundColor: AppColors.errorRed,
-      );
+      showSnackBar(title: "Session Expired!", message: "Please try again.", backgroundColor: AppColors.errorRed);
     } else if (response.statusCode == 404) {
-      //ACCESS TOKEN INVALID
-      showSnackBar(
-        title: "Organisation not found!",
-        message: "Try creating an account again.",
-        backgroundColor: AppColors.errorRed,
-      );
+      showSnackBar(title: "Organisation not found!", message: "Try creating an account again.", backgroundColor: AppColors.errorRed);
     } else {
-      showSnackBar(
-        title: "Error!",
-        message: "Something went wrong. Please try again",
-        backgroundColor: AppColors.errorRed,
-      );
+      showSnackBar(title: "Error!", message: "Something went wrong. Please try again", backgroundColor: AppColors.errorRed);
     }
   }
 
-  //SAVE TOKENS IN STORAGE
   void saveOtpResponse(Map<String, dynamic> response) {
     final accessToken = response["data"]["accessToken"];
     final refreshToken = response["data"]["refreshToken"];
-
     storage.write(accessTokenKey, accessToken);
     storage.write(refreshTokenKey, refreshToken);
   }
@@ -295,7 +222,6 @@ class OtpVerificationController extends GetxController {
       Get.snackbar("Error!", "An unexpected error occurred. Please try again.");
     }
   }
-
   //RESEND FORGOT PASSWORD OTP
   void resendForgotPasswordOTP() async {
     String token = storage.read(forgotPasswordTokenKey);
@@ -332,7 +258,7 @@ class OtpVerificationController extends GetxController {
       showSnackBar(
         title: "Already Sent!",
         message:
-            "OTP already sent in your email. Request a new otp after 5 minutes.",
+        "OTP already sent in your email. Request a new otp after 5 minutes.",
         backgroundColor: AppColors.warningYellow,
       );
     } else {

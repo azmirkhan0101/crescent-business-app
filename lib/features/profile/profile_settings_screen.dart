@@ -121,12 +121,13 @@ class _MyProfileScreenState extends State<ProfileSettingsScreen> {
                     title: "Subscriptions",
                     icon: Icons.subscriptions_outlined,
                     onTap: () {
-                      bool isAndroid = Platform.isAndroid;
-                      if( isAndroid ){
-                        Get.toNamed(AppRoutes.androidSubscription);
-                      }else{
-                        Get.toNamed(AppRoutes.iosSubscription);
-                      }
+                      Get.toNamed(AppRoutes.paywallScreen);
+                      // bool isAndroid = Platform.isAndroid;
+                      // if( isAndroid ){
+                      //   Get.toNamed(AppRoutes.androidSubscription);
+                      // }else{
+                      //   Get.toNamed(AppRoutes.iosSubscription);
+                      // }
                     },
                   ),
                   _buildProfileOption(

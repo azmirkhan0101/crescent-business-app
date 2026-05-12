@@ -9,6 +9,7 @@ import 'app.dart';
 import 'package:flutter/material.dart';
 
 import 'core/api_service.dart';
+import 'core/subscription_service.dart';
 import 'firebase_options.dart';
 void main() async{
 
@@ -21,6 +22,7 @@ void main() async{
   await Get.putAsync(() {
     return ApiService().init();
   });
+  Get.putAsync(() => SubscriptionService().init());
   await GetStorage.init();
   runApp( MaterialApp(
       debugShowCheckedModeBanner: false,

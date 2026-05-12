@@ -9,6 +9,7 @@ import 'package:organization/data/models/notification/notification_settings_mode
 import 'package:organization/routes/app_pages.dart';
 import 'package:organization/utils/api_endpoints.dart';
 
+import '../../core/subscription_service.dart';
 import '../../data/models/profile/business_profile_model.dart';
 import '../../utils/app_color.dart';
 import '../../utils/app_constants.dart';
@@ -179,6 +180,7 @@ class ProfileSettingsController extends GetxController {
 
   //LOGOUT
   logOut() async {
+    await SubscriptionService.to.logoutUser();
     await storage.erase();
     Get.offAllNamed(AppRoutes.logIn);
   }

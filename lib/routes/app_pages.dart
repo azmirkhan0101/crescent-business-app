@@ -23,6 +23,7 @@ import 'package:organization/features/reward/reward_screen.dart';
 import 'package:organization/features/splash_screen.dart';
 import 'package:organization/features/subscription/android_subscription_screen.dart';
 import 'package:organization/features/subscription/ios_subscription_screen.dart';
+import 'package:organization/features/subscription/paywall_screen.dart';
 
 import '../../features/profile/edit_profile_screen.dart';
 import '../../features/redeem_rewards/scanner_complete_screen.dart';
@@ -80,6 +81,12 @@ class AppPages {
         name: AppRoutes.iosSubscription,
         page: (){
           return IosSubscriptionScreen();
+        }
+    ),
+    GetPage(
+        name: AppRoutes.paywallScreen,
+        page: (){
+          return PaywallScreen();
         }
     ),
     GetPage(
