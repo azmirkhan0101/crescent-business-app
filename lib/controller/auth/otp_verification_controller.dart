@@ -73,26 +73,31 @@ class OtpVerificationController extends GetxController {
 
   updateFcmToken() async {
     String deviceType = Platform.isAndroid ? 'android' : 'ios';
-    String? token = Platform.isAndroid
-        ? await FirebaseMessaging.instance.getToken()
-        : await FirebaseMessaging.instance.getAPNSToken();
+
+    String? token;
+    if( Platform.isIOS ){
+      String? apnsToken;
+      for( int i = 0; i < 5; i++ ){
+        apnsToken = await FirebaseMessaging.instance.getAPNSToken();
+        if( apnsToken != null ){
+          break;
+        }
+        await Future.delayed(const Duration(seconds: 2));
+      }
+    }
+
+    token = await FirebaseMessaging.instance.getToken();
 
     final payLoad = {"fcmToken": token, "deviceType": deviceType};
 
-    ApiResponse response = await apiService.networkRequest(
+    await apiService.networkRequest(
       method: 'PATCH',
       isAuthRequired: true,
       endPoint: ApiEndpoints.updateFcmToken,
       body: payLoad,
     );
 
-    if (response.statusCode == 200 || response.statusCode == 201) {
-      getProfileData();
-    } else {
-      isOtpVerifying.value = false;
-      storage.erase();
-      showSnackBar(title: "Something went wrong!", message: "Please try again.", backgroundColor: AppColors.errorRed);
-    }
+    getProfileData();
   }
 
   getProfileData() async {
@@ -116,8 +121,8 @@ class OtpVerificationController extends GetxController {
       storage.write(subscriptionKey, isSubscribed);
 
       // Important: Link RevenueCat identity to new backend user
-      if (model.businessId != null) {
-        await SubscriptionService.to.loginUser(model.businessId!);
+      if (model.businessAuthId != null) {
+        await SubscriptionService.to.loginUser(model.businessAuthId);
       }
       await SubscriptionService.to.checkPremiumStatus();
 

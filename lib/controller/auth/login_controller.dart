@@ -74,26 +74,32 @@ class LoginController extends GetxController {
 
   updateFcmToken() async {
     String deviceType = Platform.isAndroid ? 'android' : 'ios';
-    String? token = Platform.isAndroid
-        ? await FirebaseMessaging.instance.getToken()
-        : await FirebaseMessaging.instance.getAPNSToken();
+
+    String? token;
+
+    if( Platform.isIOS ){
+      String? apnsToken;
+      for( int i = 0; i < 5; i++ ){
+        apnsToken = await FirebaseMessaging.instance.getAPNSToken();
+        if( apnsToken != null ){
+          break;
+        }
+        await Future.delayed(const Duration(seconds: 2));
+      }
+    }
+
+    token = await FirebaseMessaging.instance.getToken();
 
     final payLoad = {"fcmToken": token, "deviceType": deviceType};
 
-    ApiResponse response = await apiService.networkRequest(
+    await apiService.networkRequest(
         method: 'PATCH',
         isAuthRequired: true,
         endPoint: ApiEndpoints.updateFcmToken,
         body: payLoad
     );
 
-    if (response.statusCode == 200 || response.statusCode == 201) {
-      getProfileData();
-    } else {
-      isLoginLoading.value = false;
-      storage.erase();
-      showSnackBar(title: "Something went wrong!", message: "Please try again.", backgroundColor: AppColors.errorRed);
-    }
+    getProfileData();
   }
 
   getProfileData() async {
@@ -118,8 +124,8 @@ class LoginController extends GetxController {
       storage.write(subscriptionExpiryDateKey, model.subscriptionExpiryDate);
 
       // Identify the user in RevenueCat using your backend User ID
-      if (model.businessId != null) {
-        await SubscriptionService.to.loginUser(model.businessId!);
+      if (model.businessAuthId != null) {
+        await SubscriptionService.to.loginUser(model.businessAuthId);
       }
 
       // Update our dual-premium state cache
