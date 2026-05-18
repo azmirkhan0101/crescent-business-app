@@ -10,8 +10,6 @@ import 'package:organization/controller/profile/terms_controller.dart';
 import 'package:organization/controller/redeem/redeem_controller.dart';
 import 'package:organization/controller/reward/edit_reward_controller.dart';
 import 'package:organization/controller/reward/reward_controller.dart';
-import 'package:organization/controller/subscription/android_subscription_controller.dart';
-import 'package:organization/controller/subscription/ios_subscription_controller.dart';
 import '../controller/auth/sign_up_controller.dart';
 import '../controller/auth/forgot_pass_controller.dart';
 import '../controller/auth/otp_verification_controller.dart';
@@ -77,14 +75,6 @@ class InitialBinding extends Bindings {
 
     Get.lazyPut<TermsController>((){
       return TermsController();
-    }, fenix: true,);
-
-    Get.lazyPut<AndroidSubscriptionController>((){
-      return AndroidSubscriptionController();
-    }, fenix: true,);
-
-    Get.lazyPut<IosSubscriptionController>((){
-      return IosSubscriptionController();
     }, fenix: true,);
 
   }

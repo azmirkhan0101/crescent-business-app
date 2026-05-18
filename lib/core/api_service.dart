@@ -247,6 +247,7 @@ class ApiService extends GetxService {
       var response = await request.send();
       var responseBody = await response.stream.bytesToString();
       result = responseBody;
+
       if( response.statusCode == 401 && isAuthRequired ) {
         bool isRefreshed = await refreshTokenOnce();
 
@@ -267,6 +268,13 @@ class ApiService extends GetxService {
           return ApiResponse(statusCode: 401);
         }
       }
+
+      //402 - SUBSCRIPTION REQUIRED
+      if( response.statusCode == 402 ){
+        Get.offAllNamed(AppRoutes.paywallScreen);
+        return ApiResponse(statusCode: 402);
+      }
+
       return ApiResponse(
         statusCode: response.statusCode,
         data: jsonDecode(responseBody),

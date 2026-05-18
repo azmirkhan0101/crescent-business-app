@@ -21,8 +21,6 @@ import 'package:organization/features/profile/terms_condition_screen.dart';
 import 'package:organization/features/reward/edit_reward_screen.dart';
 import 'package:organization/features/reward/reward_screen.dart';
 import 'package:organization/features/splash_screen.dart';
-import 'package:organization/features/subscription/android_subscription_screen.dart';
-import 'package:organization/features/subscription/ios_subscription_screen.dart';
 import 'package:organization/features/subscription/paywall_screen.dart';
 
 import '../../features/profile/edit_profile_screen.dart';
@@ -69,18 +67,6 @@ class AppPages {
         name: AppRoutes.notification,
         page: (){
           return NotificationScreen();
-        }
-    ),
-    GetPage(
-        name: AppRoutes.androidSubscription,
-        page: (){
-          return AndroidSubscriptionScreen();
-        }
-    ),
-    GetPage(
-        name: AppRoutes.iosSubscription,
-        page: (){
-          return IosSubscriptionScreen();
         }
     ),
     GetPage(
