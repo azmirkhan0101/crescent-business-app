@@ -114,6 +114,13 @@ class ApiService extends GetxService {
           return ApiResponse(statusCode: 401);
         }
       }
+
+      //402 - SUBSCRIPTION REQUIRED
+      if( response.statusCode == 402 ){
+        Get.offAllNamed(AppRoutes.paywallScreen);
+        return ApiResponse(statusCode: 402);
+      }
+
       return ApiResponse(
         statusCode: response.statusCode,
         data: jsonDecode(response.body),

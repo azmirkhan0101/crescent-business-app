@@ -24,7 +24,7 @@ class LoginController extends GetxController {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
 
-  login() async {
+  Future<void> login() async {
     if (isLoginLoading.value) return;
 
     if (!isEmailValid(email: emailController.text.trim()) ||
@@ -72,7 +72,7 @@ class LoginController extends GetxController {
     }
   }
 
-  updateFcmToken() async {
+  Future<void> updateFcmToken() async {
     String deviceType = Platform.isAndroid ? 'android' : 'ios';
 
     String? token;
@@ -88,7 +88,9 @@ class LoginController extends GetxController {
       }
     }
 
-    token = await FirebaseMessaging.instance.getToken();
+    try{
+      token = await FirebaseMessaging.instance.getToken();
+    }catch(e){}
 
     final payLoad = {"fcmToken": token, "deviceType": deviceType};
 
@@ -102,11 +104,12 @@ class LoginController extends GetxController {
     getProfileData();
   }
 
-  getProfileData() async {
+  Future<void> getProfileData() async {
     ApiResponse response = await apiService.networkRequest(
         method: 'GET',
         isAuthRequired: true,
-        endPoint: ApiEndpoints.getProfile
+        endPoint: ApiEndpoints.getProfile,
+      shouldPrint: true
     );
 
     isLoginLoading.value = false;

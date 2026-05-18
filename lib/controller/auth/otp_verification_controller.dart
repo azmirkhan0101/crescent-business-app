@@ -86,7 +86,9 @@ class OtpVerificationController extends GetxController {
       }
     }
 
-    token = await FirebaseMessaging.instance.getToken();
+    try{
+      token = await FirebaseMessaging.instance.getToken();
+    }catch(e){}
 
     final payLoad = {"fcmToken": token, "deviceType": deviceType};
 

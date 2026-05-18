@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:organization/core/show_snackbar.dart';
+import 'package:organization/utils/app_color.dart';
 import 'package:purchases_ui_flutter/purchases_ui_flutter.dart';
 import 'package:organization/routes/app_pages.dart';
 
@@ -17,6 +19,7 @@ class PaywallScreen extends StatelessWidget {
           await SubscriptionService.to.checkPremiumStatus();
           if (SubscriptionService.to.hasPremium) {
             Get.offAllNamed(AppRoutes.mainNav);
+            showSnackBar(title: "Subscribed!", message: "Your subscription has been successfully completed.", backgroundColor: AppColors.successGreen);
           }
         },
         onRestoreCompleted: (customerInfo) async {
