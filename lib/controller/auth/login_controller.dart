@@ -92,6 +92,8 @@ class LoginController extends GetxController {
       token = await FirebaseMessaging.instance.getToken();
     }catch(e){}
 
+    print("FCM token: $token");
+
     final payLoad = {"fcmToken": token, "deviceType": deviceType};
 
     await apiService.networkRequest(
