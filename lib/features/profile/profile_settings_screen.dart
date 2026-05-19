@@ -5,6 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:organization/controller/profile/profile_settings_controller.dart';
+import 'package:organization/core/show_snackbar.dart';
+import 'package:organization/core/subscription_service.dart';
 import 'package:organization/features/widgets/button_widget.dart';
 import 'package:organization/features/widgets/custom_text.dart';
 import 'package:organization/routes/app_pages.dart';
@@ -121,13 +123,11 @@ class _MyProfileScreenState extends State<ProfileSettingsScreen> {
                     title: "Subscriptions",
                     icon: Icons.subscriptions_outlined,
                     onTap: () {
-                      Get.toNamed(AppRoutes.paywallScreen);
-                      // bool isAndroid = Platform.isAndroid;
-                      // if( isAndroid ){
-                      //   Get.toNamed(AppRoutes.androidSubscription);
-                      // }else{
-                      //   Get.toNamed(AppRoutes.iosSubscription);
-                      // }
+                      if( SubscriptionService.to.isBackendPremium.value ){
+                        showSnackBar(title: "", message: "You already have full access.", backgroundColor: AppColors.successGreen);
+                      }else{
+                        Get.toNamed(AppRoutes.paywallScreen);
+                      }
                     },
                   ),
                   _buildProfileOption(
