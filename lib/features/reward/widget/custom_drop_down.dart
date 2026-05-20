@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:organization/core/context_extension.dart';
 
 class CustomDropdown extends StatefulWidget {
 
@@ -18,6 +20,9 @@ class _CustomDropdownState extends State<CustomDropdown> {
 
   @override
   Widget build(BuildContext context) {
+
+    bool isTab = context.isTab;
+
     return DropdownButtonFormField<String>(
       value: selectedValue,
       decoration: InputDecoration(
@@ -29,7 +34,7 @@ class _CustomDropdownState extends State<CustomDropdown> {
       items: widget.items.map((item) {
         return DropdownMenuItem(
           value: item,
-          child: Text(item),
+          child: Text(item ,style: TextStyle(fontSize: isTab ? 6.sp : null),),
         );
       }).toList(),
       onChanged: (value) {

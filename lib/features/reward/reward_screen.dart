@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:organization/controller/reward/reward_controller.dart';
+import 'package:organization/core/context_extension.dart';
 import 'package:organization/features/reward/widget/filter_button.dart';
 import 'package:organization/features/reward/widget/reward_card_widget.dart';
 import 'package:organization/features/widgets/custom_asset_image.dart';
@@ -21,6 +22,9 @@ class RewardScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
+    bool isTab = context.isTab;
+
     return Scaffold(
       backgroundColor: AppColors.white,
       appBar: AppBar(
@@ -30,7 +34,7 @@ class RewardScreen extends StatelessWidget {
         elevation: 0,
         title: Text(
           "Reward",
-          style: AppTextStyle.headlineLStyle.copyWith(fontSize: 20.sp),
+          style: AppTextStyle.headlineLStyle.copyWith(fontSize: isTab ? 14.sp : 20.sp),
         ),
         actions: [
           IconButton(
@@ -40,7 +44,7 @@ class RewardScreen extends StatelessWidget {
             style: ButtonStyle(
               backgroundColor: WidgetStatePropertyAll(AppColors.grey06),
             ),
-            icon: Icon(Icons.add, color: AppColors.black),
+            icon: Icon(Icons.add, color: AppColors.black, size: isTab ? 40 : null,),
           ),
         ],
       ),
@@ -161,63 +165,65 @@ class RewardScreen extends StatelessWidget {
   noReward(BuildContext context) {
     return SizedBox(
       height: MediaQuery.of(context).size.height * 0.75,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisAlignment: MainAxisAlignment.center,
-        mainAxisSize: MainAxisSize.max,
-        children: [
-          CustomAssetsImage(
-            assetsPath: AssetsPath.stackCardImage,
-            height: 176.h,
-            width: 285.w,
-          ),
-          Text(
-            "Manage Your Rewards",
-            style: AppTextStyle.headlineLStyle.copyWith(fontSize: 18.sp),
-          ),
-          SizedBox(height: 12.h),
-          Padding(
-            padding: EdgeInsets.symmetric(horizontal: 10.w),
-            child: Text(
-              textAlign: TextAlign.center,
-              maxLines: 4,
-              "Track redemptions, edit existing rewards, or add something new to surprise your customers.",
-              style: GoogleFonts.inter(
-                fontWeight: FontWeight.w400,
-                fontSize: 13,
-                color: AppColors.secondaryTextColor,
+      child: Center(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisSize: MainAxisSize.max,
+          children: [
+            CustomAssetsImage(
+              assetsPath: AssetsPath.stackCardImage,
+              height: 176.h,
+              width: 285.w,
+            ),
+            Text(
+              "Manage Your Rewards",
+              style: AppTextStyle.headlineLStyle.copyWith(fontSize: 18.sp),
+            ),
+            SizedBox(height: 12.h),
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 10.w),
+              child: Text(
+                textAlign: TextAlign.center,
+                maxLines: 4,
+                "Track redemptions, edit existing rewards, or add something new to surprise your customers.",
+                style: GoogleFonts.inter(
+                  fontWeight: FontWeight.w400,
+                  fontSize: 13,
+                  color: AppColors.secondaryTextColor,
+                ),
               ),
             ),
-          ),
-          SizedBox(height: 12.h),
-          CustomButton(
-            backgroundColor: const Color(0x26C08FFF),
-            widget: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Icon(Icons.add, size: 23, color: AppColors.buttonTextColor),
-                SizedBox(width: 3.w),
-                Text(
-                  "Add Reward",
-                  style: AppTextStyle.buttonTextStyle.copyWith(
-                    fontSize: 15.sp,
-                    fontWeight: FontWeight.w600,
+            SizedBox(height: 12.h),
+            CustomButton(
+              backgroundColor: const Color(0x26C08FFF),
+              widget: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Icon(Icons.add, size: 23, color: AppColors.buttonTextColor),
+                  SizedBox(width: 3.w),
+                  Text(
+                    "Add Reward",
+                    style: AppTextStyle.buttonTextStyle.copyWith(
+                      fontSize: 15.sp,
+                      fontWeight: FontWeight.w600,
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
+              onPressed: () {
+                Get.toNamed(AppRoutes.createReward);
+              },
+              text: AppText.continueText,
+              buttonTextStyle: GoogleFonts.familjenGrotesk(
+                color: AppColors.buttonTextColor,
+                fontSize: 18.sp,
+                fontWeight: FontWeight.w700,
+              ),
             ),
-            onPressed: () {
-              Get.toNamed(AppRoutes.createReward);
-            },
-            text: AppText.continueText,
-            buttonTextStyle: GoogleFonts.familjenGrotesk(
-              color: AppColors.buttonTextColor,
-              fontSize: 18.sp,
-              fontWeight: FontWeight.w700,
-            ),
-          ),
-          SizedBox(height: 50.h),
-        ],
+            SizedBox(height: 50.h),
+          ],
+        ),
       ),
     );
   }

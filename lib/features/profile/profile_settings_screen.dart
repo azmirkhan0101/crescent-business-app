@@ -13,6 +13,8 @@ import 'package:organization/routes/app_pages.dart';
 import 'package:organization/utils/app_color.dart';
 import 'package:shimmer/shimmer.dart';
 
+import '../../core/context_extension.dart';
+
 class ProfileSettingsScreen extends StatefulWidget {
   const ProfileSettingsScreen({super.key});
 
@@ -26,20 +28,23 @@ class _MyProfileScreenState extends State<ProfileSettingsScreen> {
 
   @override
   Widget build(BuildContext context) {
+
+    bool isTab = context.isTab;
+
     return Scaffold(
       backgroundColor: const Color(0xFFF7F7F7),
       appBar: AppBar(
         forceMaterialTransparency: true,
         centerTitle: true,
         leading: IconButton(
-          icon: Icon(Icons.arrow_back_ios, size: 20.w),
+          icon: Icon(Icons.arrow_back_ios, size: isTab ? 40 : 20.w),
           onPressed: () {
             Get.back();
           },
         ),
         title: CustomText(
           text: 'Profile',
-          fontSize: 18.sp,
+          fontSize: isTab ? 14.sp : 18.sp,
           fontWeight: FontWeight.w700,
           color: AppColors.blackTextColor,
         ),
@@ -58,8 +63,8 @@ class _MyProfileScreenState extends State<ProfileSettingsScreen> {
                   SizedBox(height: 16.h),
 
                   Container(
-                    width: 80.w,
-                    height: 80.h,
+                    width: isTab ? 150 : 80.w,
+                    height: isTab ? 150 : 80.h,
                     decoration: BoxDecoration(
                       color: Colors.white,
                       shape: BoxShape.circle,
@@ -78,7 +83,7 @@ class _MyProfileScreenState extends State<ProfileSettingsScreen> {
                   Obx((){
                     return CustomText(
                       text: controller.businessName.value,
-                      fontSize: 24.sp,
+                      fontSize: isTab ? 14.sp : 24.sp,
                       fontWeight: FontWeight.w500,
                       color: const Color(0xFF000C0B),
                     );
@@ -110,6 +115,7 @@ class _MyProfileScreenState extends State<ProfileSettingsScreen> {
                     onTap: () {
                       Get.toNamed(AppRoutes.notification);
                     },
+                    isTab: isTab
                   ),
 
                   _buildProfileOption(
@@ -118,6 +124,7 @@ class _MyProfileScreenState extends State<ProfileSettingsScreen> {
                     onTap: () {
                       Get.toNamed(AppRoutes.changePassword);
                     },
+                      isTab: isTab
                   ),
                   _buildProfileOption(
                     title: "Subscriptions",
@@ -129,6 +136,7 @@ class _MyProfileScreenState extends State<ProfileSettingsScreen> {
                         Get.toNamed(AppRoutes.paywallScreen);
                       }
                     },
+                      isTab: isTab
                   ),
                   _buildProfileOption(
                     title: "Terms & Conditions",
@@ -136,6 +144,7 @@ class _MyProfileScreenState extends State<ProfileSettingsScreen> {
                     onTap: () {
                       Get.toNamed(AppRoutes.termsCondition);
                     },
+                      isTab: isTab
                   ),
                 ],
               ),
@@ -145,9 +154,10 @@ class _MyProfileScreenState extends State<ProfileSettingsScreen> {
             SizedBox(height: 24.h),
             ButtonWidget(
               label: "Logout",
-            buttonHeight: 45,
+            buttonHeight: isTab ? 80 : 45,
             textColor: Color(0xFFE6283C),
               buttonRadius: 12,
+              fontSize: isTab ? 10 : 16,
               backgroundColor: Color(0xFFFFE6E6),
               borderColor: Color(0xFFE6283C),
               borderWidth: 2,
@@ -158,13 +168,15 @@ class _MyProfileScreenState extends State<ProfileSettingsScreen> {
             SizedBox( height: 20.h,),
             ButtonWidget(
                 label: "Delete Account",
-              buttonHeight: 45,
+              buttonHeight: isTab ? 80 : 45,
               backgroundColor: Color(0xFFE6283C),
               buttonRadius: 12,
+              fontSize: isTab ? 10 : 16,
               onPressed: (){
                   showDeleteDialog();
               },
             ),
+            const SizedBox(height: 40,)
           ],
         ),
       ),
@@ -336,6 +348,7 @@ class _MyProfileScreenState extends State<ProfileSettingsScreen> {
     required String title,
     required IconData icon,
     required VoidCallback onTap,
+    required bool isTab
   }) {
     return GestureDetector(
       onTap: onTap,
@@ -349,17 +362,17 @@ class _MyProfileScreenState extends State<ProfileSettingsScreen> {
           horizontalTitleGap: 12.w,
           contentPadding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 8.h),
 
-          leading: Icon(icon, color: AppColors.black, size: 26.sp),
+          leading: Icon(icon, color: AppColors.black, size: isTab ? 40 : 26.sp),
 
           title: Text(
             title,
-            style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.w500),
+            style: TextStyle(fontSize: isTab ? 10.sp : 16.sp, fontWeight: FontWeight.w500),
           ),
 
           trailing: Icon(
             Icons.arrow_forward_ios,
             color: AppColors.black,
-            size: 18.sp,
+            size: isTab ? 40 : 18.sp,
           ),
         ),
       ),

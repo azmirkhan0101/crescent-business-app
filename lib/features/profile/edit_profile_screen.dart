@@ -8,6 +8,7 @@ import 'package:google_places_flutter/google_places_flutter.dart';
 import 'package:google_places_flutter/model/prediction.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:organization/controller/profile/business_profile_controller.dart';
+import 'package:organization/core/context_extension.dart';
 import 'package:organization/features/profile/widget/image_edit_widget.dart';
 import 'package:organization/features/profile/widget/location_widget.dart';
 import 'package:organization/features/profile/widget/profile_heading_text_widget.dart';
@@ -28,6 +29,9 @@ class EditProfileScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
+    bool isTab = context.isTab;
+
     return Scaffold(
       backgroundColor: const Color(0xFFF7F7F7),
       //app bar
@@ -35,20 +39,20 @@ class EditProfileScreen extends StatelessWidget {
         forceMaterialTransparency: true,
         centerTitle: true,
         leading: IconButton(
-          icon: Icon(Icons.arrow_back_ios, size: 20.w),
+          icon: Icon(Icons.arrow_back_ios, size: isTab ? 40 : 20.w),
           onPressed: () {
             Get.back();
           },
         ),
         title: CustomText(
           text: 'Edit Profile',
-          fontSize: 18.sp,
+          fontSize: isTab ? 14.sp : 18.sp,
           fontWeight: FontWeight.w700,
           color: AppColors.blackTextColor,
         ),
         actions: [
           IconButton(
-            icon: Icon(Icons.done, size: 20.w),
+            icon: Icon(Icons.done, size: isTab ? 40 :  20.w),
             onPressed: () {
               controller.updateBusinessProfile();
             },
@@ -200,9 +204,13 @@ class PlacesSearchField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
+    bool isTab = context.isTab;
+
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 20),
       child: GooglePlaceAutoCompleteTextField(
+        textStyle: TextStyle(fontSize: isTab ? 10.sp : null),
         textInputAction: TextInputAction.done,
         keyboardType: TextInputType.text,
         textEditingController: textEditingController,
@@ -210,6 +218,7 @@ class PlacesSearchField extends StatelessWidget {
         focusNode: focusNode,
         inputDecoration: InputDecoration(
           hintText: "Search your location",
+          hintStyle: TextStyle(fontSize: isTab ? 10.sp : null),
           border: InputBorder.none,
           enabledBorder: InputBorder.none,
         ),
@@ -240,7 +249,7 @@ class PlacesSearchField extends StatelessWidget {
               children: [
                 Icon(Icons.location_on),
                 SizedBox(width: 7),
-                Expanded(child: Text(prediction.description ?? "")),
+                Expanded(child: Text(prediction.description ?? "", style: TextStyle( fontSize: isTab ? 8.sp : null),)),
               ],
             ),
           );

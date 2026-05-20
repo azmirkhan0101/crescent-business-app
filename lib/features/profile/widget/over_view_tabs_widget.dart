@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import 'package:organization/core/context_extension.dart';
 import 'package:organization/data/models/profile/business_profile_model.dart';
 import 'package:organization/features/profile/widget/profile_heading_text_widget.dart';
 import 'package:organization/features/widgets/custom_card_widget.dart';
@@ -22,6 +23,8 @@ class OverviewTab extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
+    bool isTab = context.isTab;
 
     storeLocations.value = model.locations ?? [];
 
@@ -62,7 +65,7 @@ class OverviewTab extends StatelessWidget {
           ),
           SizedBox(height: 12.h),
           InfoCard(
-            height: 120.h,
+            height: isTab ? 200 : 120.h,
             width: double.infinity,
             gradientColor1: Color(0xFFFFFFE0), // 5% opacity
             gradientColor2: Color(0xFFFFF9D9), // 10% opacity
@@ -83,7 +86,7 @@ class OverviewTab extends StatelessWidget {
               textAlign: TextAlign.justify,
               maxLines: null,
               language: false,
-              fontSize: 14.sp,
+              fontSize: isTab ? 12.sp : 14.sp,
               fontWeight: FontWeight.w400,
               color: AppColors.blackTextColor,
             ),
@@ -95,7 +98,7 @@ class OverviewTab extends StatelessWidget {
               shrinkWrap: true,
               itemCount: storeLocations.length,
                 itemBuilder: (context, index){
-              return locationItem(locationName: storeLocations[index]);
+              return locationItem(locationName: storeLocations[index], isTab: isTab);
                 });
           }),
           SizedBox(
@@ -108,9 +111,9 @@ class OverviewTab extends StatelessWidget {
 
 
   //LOCATION ITEM
-locationItem({required String locationName}){
+locationItem({required String locationName, required bool isTab}){
     return CustomCard(
-      height: 52.h,
+      height: isTab ? 80 : 52.h,
       width: double.infinity,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.start,

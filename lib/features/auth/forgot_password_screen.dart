@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:organization/core/context_extension.dart';
 import 'package:organization/features/auth/widgets/custom_auth_appbar.dart';
 import 'package:organization/features/auth/widgets/rich_text_widget.dart';
 import 'package:organization/utils/assets_gen/assets.gen.dart';
@@ -102,7 +103,7 @@ class ForgotPasswordScreen extends StatelessWidget {
                     },
                     buttonTextStyle: GoogleFonts.familjenGrotesk(
                       color: AppColors.buttonTextColor,
-                      fontSize: 18.sp,
+                      fontSize: context.isTab ? 12.sp : 18.sp,
                       fontWeight: FontWeight.w700,
                     ),
                   );

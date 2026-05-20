@@ -6,6 +6,7 @@ import 'package:organization/features/home/widget/activity_list_tile_widget.dart
 import 'package:organization/features/widgets/custom_text.dart';
 import 'package:organization/utils/app_color.dart';
 
+import '../../core/context_extension.dart';
 import '../../data/models/home/recent_activity_model.dart';
 
 class RecentActivities extends StatelessWidget {
@@ -14,13 +15,16 @@ class RecentActivities extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
+    bool isTab = context.isTab;
+
     return Scaffold(
       backgroundColor: AppColors.white,
       appBar: AppBar(
         forceMaterialTransparency: true,
         title: CustomText(text: "Recent Activities",
         fontWeight: FontWeight.w600,
-          fontSize: 18,
+          fontSize: isTab ? 12.sp : 18,
         ),
         centerTitle: true,
         leading: IconButton(
@@ -39,7 +43,7 @@ class RecentActivities extends StatelessWidget {
           child: SingleChildScrollView(
             physics: AlwaysScrollableScrollPhysics(),
             child: Padding(
-              padding: EdgeInsets.all(16.w),
+              padding: EdgeInsets.all( isTab ? 20 : 16.w),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -63,15 +67,15 @@ class RecentActivities extends StatelessWidget {
                             controller.recentActivities.isEmpty) {
                           //NO DATA
                           return Center(
-                            child: Text("No recent activities found."),
+                            child: Text("No recent activities found.", style: TextStyle(fontSize: isTab ? 8.sp : null),),
                           );
                         } else {
-                          return recentActivityList(recentActivities: controller.recentActivities);
+                          return recentActivityList(recentActivities: controller.recentActivities, isTab: isTab);
                         }
                       }),
                     ),
                   ),
-                  SizedBox(height: 80.h),
+                  SizedBox(height: isTab ? 30 : 80.h),
                 ],
               ),
             ),
@@ -85,6 +89,7 @@ class RecentActivities extends StatelessWidget {
   //RECENT ACTIVITY LIST - LIMITED TO 5 ITEMS IN HOME SCREEN
   recentActivityList({
     required List<RecentActivityModel> recentActivities,
+    required bool isTab
   }) {
     return ListView.builder(
       physics: NeverScrollableScrollPhysics(),
@@ -99,7 +104,7 @@ class RecentActivities extends StatelessWidget {
             CustomText(
               text: recentActivities[mainListIndex].title,
               language: false,
-              fontSize: 16.sp,
+              fontSize: isTab ? 12.sp : 16.sp,
               fontWeight: FontWeight.w500,
               color: AppColors.secondaryTextColor,
               textAlign: TextAlign.left,

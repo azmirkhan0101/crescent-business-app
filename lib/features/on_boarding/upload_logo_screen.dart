@@ -68,19 +68,21 @@ class _UploadLogoScreenState extends State<UploadLogoScreen> {
             /// Profile section center of screen
             Expanded(
               child: Center(
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    ProfileAvatar(
-                      assetImage: AssetsPath.addProfileIcon,
-                      selectedImage: selectedImage,
-                      pickImage: () {
-                        _pickImage();
-                      },
-                    ),
-                    SizedBox(height: 10.h),
-                    CustomText(text:"Tap to add your business logo.",fontSize: 14.sp,color: AppColors.secondaryTextColor,fontWeight: FontWeight.w400,),
-                  ],
+                child: SingleChildScrollView(
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      ProfileAvatar(
+                        assetImage: AssetsPath.addProfileIcon,
+                        selectedImage: selectedImage,
+                        pickImage: () {
+                          _pickImage();
+                        },
+                      ),
+                      SizedBox(height: 10.h),
+                      CustomText(text:"Tap to add your business logo.",fontSize: 14.sp,color: AppColors.secondaryTextColor,fontWeight: FontWeight.w400,),
+                    ],
+                  ),
                 ),
               ),
             ),

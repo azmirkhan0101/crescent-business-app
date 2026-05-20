@@ -7,16 +7,17 @@ import '../../widgets/custom_card_widget.dart';
 
 class HomeCardWidget extends StatelessWidget {
   const HomeCardWidget({
-    super.key, required this.topIcon, required this.title, required this.bottomText,
+    super.key, required this.topIcon, required this.title, required this.bottomText, required this.isTab,
   });
   final String topIcon;
   final String title;
   final String bottomText;
+  final bool isTab;
 
   @override
   Widget build(BuildContext context) {
     return CustomCard(
-      height: 162.h,
+      height: isTab ? 310 : 162.h,
       child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -34,7 +35,7 @@ class HomeCardWidget extends StatelessWidget {
             /// Title
             CustomText(text: title,
               fontWeight: FontWeight.w500,
-              fontSize: 16.sp,
+              fontSize: isTab ? 12.sp : 16.sp,
               color: AppColors.blackTextColor,
              language: false,
             ),

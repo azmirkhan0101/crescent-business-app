@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:organization/core/context_extension.dart';
 import 'package:organization/data/models/home/recent_activity_item_model.dart';
 import 'package:organization/features/widgets/custom_text.dart';
 import 'package:organization/utils/app_color.dart';
@@ -11,6 +12,7 @@ class ActivityListTileWidget extends StatelessWidget {
   final RecentActivityItemModel item;
   final int maxLines;
 
+
   const ActivityListTileWidget({
     super.key,
     required this.item,
@@ -19,6 +21,8 @@ class ActivityListTileWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
+    bool isTab = context.isTab;
 
     String iconPath;
     String titlePrefix;
@@ -45,9 +49,9 @@ class ActivityListTileWidget extends StatelessWidget {
       children: [
         //Left icon circle
         Container(
-           height: 44.h,
-          width: 44.w,
-          padding: EdgeInsets.all(10.r),
+           height: isTab ? 60 : 44.h,
+          width: isTab ? 60 : 44.w,
+          padding: EdgeInsets.all( isTab ? 12 : 10.r),
           decoration: BoxDecoration(
             color: item.type == "creation" ? AppColors.successGreen.withOpacity(0.2) : AppColors.errorRed.withOpacity(0.2),
             shape: BoxShape.circle,
@@ -68,7 +72,7 @@ class ActivityListTileWidget extends StatelessWidget {
               color: AppColors.blackTextColor,
                 fontWeight: FontWeight.w500,
                 language: false,
-                fontSize: 14.sp,
+                fontSize: isTab ? 10.sp : 14.sp,
                 maxLines: maxLines,
                 textAlign: TextAlign.left,
               ),
@@ -77,7 +81,7 @@ class ActivityListTileWidget extends StatelessWidget {
                 color: AppColors.secondaryTextColor,
                 fontWeight: FontWeight.w400,
                 language: false,
-                fontSize: 12.sp,
+                fontSize: isTab ? 8.sp : 12.sp,
               ),
             ],
           ),

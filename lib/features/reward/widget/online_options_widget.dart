@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:organization/core/context_extension.dart';
 import 'package:organization/features/widgets/custom_card_widget.dart';
 
 import 'add_discount_codes_section.dart';
@@ -47,11 +48,14 @@ class _OnlineOptionsState extends State<OnlineOptions> {
 
   @override
   Widget build(BuildContext context) {
+
+    bool isTab = context.isTab;
+
     return Column(
       children: [
         /// Discount Code
         CustomCard(
-          height: 52.h,
+          height: isTab ? 80 : 52.h,
           child: CustomCheckbox(
               title: "Discount Code",
               isChecked: widget.discountCode,
@@ -64,7 +68,7 @@ class _OnlineOptionsState extends State<OnlineOptions> {
 
         /// Gift Card
         CustomCard(
-          height: 52.h,
+          height: isTab ? 80 : 52.h,
           child: CustomCheckbox(
               title: "Gift Card",
               isChecked: widget.giftCard,

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:organization/core/context_extension.dart';
 import 'package:organization/utils/assets_gen/assets.gen.dart';
 import '../../../utils/app_color.dart';
 import '../../../utils/app_size.dart';
@@ -23,6 +24,9 @@ class LocationWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
+    bool isTab = context.isTab;
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -34,12 +38,12 @@ class LocationWidget extends StatelessWidget {
               child: CustomCard(
                 child: Row(
                   children: [
-                    SvgPicture.asset(Assets.icons.location),
+                    SvgPicture.asset(Assets.icons.location, height: isTab ? 30 : null,),
                     SizedBox(width: 8.w),
                     Expanded(
                       child: CustomText(
                         text: fieldText,
-                        fontSize: 14.sp,
+                        fontSize: isTab ? 12.sp : 14.sp,
                         color: AppColors.blackTextColor,
                         fontWeight: FontWeight.w500,
                         overflow: TextOverflow.ellipsis,
@@ -53,8 +57,8 @@ class LocationWidget extends StatelessWidget {
             GestureDetector(
               onTap: deleteTap,
               child: Container(
-                width: 52.w,
-                height: 52.w,
+                width: isTab ? 60 : 52.w,
+                height: isTab ? 60 : 52.w,
                 decoration: BoxDecoration(
                   color: Colors.red[50],
                   borderRadius: BorderRadius.circular(12.0),

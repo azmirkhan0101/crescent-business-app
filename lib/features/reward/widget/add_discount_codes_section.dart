@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:organization/core/context_extension.dart';
 
 import '../../../utils/app_color.dart';
 import '../../../utils/app_text_styles.dart';
@@ -20,6 +21,8 @@ class AddDiscountCodesSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
+    bool isTab = context.isTab;
     final titleToShow = fileName ?? "Discount Codes";
 
     return Column(
@@ -31,18 +34,18 @@ class AddDiscountCodesSection extends StatelessWidget {
 
         Text(
           'Upload via .csv or add a URL to the gift card system',
-          style: AppTextStyle.mediumStyle.copyWith(fontSize: 12.sp),
+          style: AppTextStyle.mediumStyle.copyWith(fontSize: isTab ? 8.sp : 12.sp),
         ),
         SizedBox(height: 10.h),
 
         CustomCard(
-          height: 52.h,
+          height: isTab ? 90 : 52.h,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Row(
                 children: [
-                  const Icon(Icons.upload),
+                  Icon(Icons.upload , size: isTab ? 40 : null,),
                   SizedBox(width: 4.w),
 
                   GestureDetector(
@@ -51,7 +54,7 @@ class AddDiscountCodesSection extends StatelessWidget {
                       titleToShow,
                       style: TextStyle(
                         fontWeight: FontWeight.w500,
-                        fontSize: 14.sp,
+                        fontSize: isTab ? 10.sp : 14.sp,
                       ),
                     ),
                   ),
@@ -66,7 +69,7 @@ class AddDiscountCodesSection extends StatelessWidget {
                   IconButton(
                     padding: EdgeInsets.zero,
                     onPressed: onDelete,
-                    icon: const Icon(Icons.delete),
+                    icon: Icon(Icons.delete, size: isTab ? 40 : null,),
                     color: AppColors.errorRed,
                   ),
                 ],

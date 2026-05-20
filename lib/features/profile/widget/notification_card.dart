@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:organization/core/context_extension.dart';
 import 'package:organization/features/widgets/custom_text.dart';
 import 'package:organization/utils/app_color.dart';
 
@@ -24,6 +25,9 @@ class NotificationCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
+    bool isTab = context.isTab;
+
     return Card(
       margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
@@ -35,14 +39,14 @@ class NotificationCard extends StatelessWidget {
         ),
         leading: SvgPicture.asset(
           svgIconPath,
-          width: 28.w,
-          height: 28.h,
+          width: isTab ? 60 : 28.w,
+          height: isTab ? 60 : 28.h,
         ),
         title: CustomText(
           textAlign: TextAlign.start,
           text: title,
           fontWeight: FontWeight.w500,
-          fontSize: 14,
+          fontSize: isTab ? 12.sp : 14,
         ),
         subtitle: CustomText(
           maxLines: 8,
@@ -50,10 +54,10 @@ class NotificationCard extends StatelessWidget {
           text: subtitle,
           fontWeight: FontWeight.w400,
           color: const Color(0xFF808080),
-          fontSize: 14,
+          fontSize: isTab ? 12.sp : 14,
         ),
         trailing: SizedBox(
-          width: 50.w,
+          width: isTab ? 80 : 50.w,
           child: Stack(
             alignment: Alignment.center,
             children: [
@@ -68,8 +72,8 @@ class NotificationCard extends StatelessWidget {
               if (isLoading)
                 Positioned(
                   // If enabled (ON), thumb is on the right. If disabled (OFF), thumb is on the left.
-                  right: isEnabled ? 6.w : null,
-                  left: !isEnabled ? 6.w : null,
+                  right: isEnabled ? isTab ? 20 : 6.w : null,
+                  left: !isEnabled ? isTab ? 20 : 6.w : null,
                   child: SizedBox(
                     width: 14.w,
                     height: 14.w,

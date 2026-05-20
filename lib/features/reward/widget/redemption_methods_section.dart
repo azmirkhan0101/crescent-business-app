@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:organization/features/reward/widget/custom_checkbox.dart';
 
+import '../../../core/context_extension.dart';
 import '../../widgets/custom_card_widget.dart';
 import '../../widgets/text_field_title_widget.dart';
 import 'online_options_widget.dart';
@@ -54,6 +55,9 @@ class _RedemptionMethodsSectionState extends State<RedemptionMethodsSection> {
 
   @override
   Widget build(BuildContext context) {
+
+    bool isTab = context.isTab;
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -97,7 +101,7 @@ class _RedemptionMethodsSectionState extends State<RedemptionMethodsSection> {
                           color: isInStoreSelected ? Colors.white : Colors
                               .black,
                           fontWeight: FontWeight.w600,
-                          fontSize: 14.sp,
+                          fontSize: isTab ? 10.sp : 14.sp,
                         ),
                       ),
                     ),
@@ -131,7 +135,7 @@ class _RedemptionMethodsSectionState extends State<RedemptionMethodsSection> {
                           color: !isInStoreSelected ? Colors.white : Colors
                               .black,
                           fontWeight: FontWeight.w600,
-                          fontSize: 14.sp,
+                          fontSize: isTab ? 10.sp : 14.sp,
                         ),
                       ),
                     ),
@@ -146,7 +150,7 @@ class _RedemptionMethodsSectionState extends State<RedemptionMethodsSection> {
 
         // 🔹 Show widgets depending on tab
         isInStoreSelected ?
-            inStoreOptions()
+            inStoreOptions(isTab)
             : OnlineOptions(
           fileName: widget.fileName,
           onPickFile: widget.onPickFile,
@@ -164,11 +168,11 @@ class _RedemptionMethodsSectionState extends State<RedemptionMethodsSection> {
   }
 
   //INSTORE OPTIONS
-  inStoreOptions() {
+  inStoreOptions(bool isTab) {
     return Column(
       children: [
         CustomCard(
-            height: 52.h,
+            height: isTab ? 80 : 52.h,
             child: CustomCheckbox(
                 title: "QR Code",
                 isChecked: widget.qrCode,
@@ -179,7 +183,7 @@ class _RedemptionMethodsSectionState extends State<RedemptionMethodsSection> {
         ),
         SizedBox(height: 8.h),
         CustomCard(
-          height: 52.h,
+          height: isTab ? 80 : 52.h,
           child: CustomCheckbox(
               title: "NFC Tap",
               isChecked: widget.nfcTap,
@@ -190,7 +194,7 @@ class _RedemptionMethodsSectionState extends State<RedemptionMethodsSection> {
         ),
         SizedBox(height: 8.h),
         CustomCard(
-          height: 52.h,
+          height: isTab ? 80 : 52.h,
           child: CustomCheckbox(
               title: "Static Code",
               isChecked: widget.staticCode,

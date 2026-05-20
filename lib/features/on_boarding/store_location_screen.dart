@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:google_places_flutter/google_places_flutter.dart';
 import 'package:google_places_flutter/model/prediction.dart';
+import 'package:organization/core/context_extension.dart';
 import 'package:organization/features/on_boarding/widgets/onboarding_appbar.dart';
 import 'package:organization/utils/app_text.dart';
 
@@ -26,6 +27,8 @@ class StoreLocationScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
+    bool isTab = context.isTab;
 
     return Scaffold(
       backgroundColor: const Color(0xFFF7F7F7),
@@ -58,7 +61,7 @@ class StoreLocationScreen extends StatelessWidget {
             ),
             SizedBox(height: 50.h),
             //LOCATION AUTOCOMPLETE - GOOGLE PLACES
-            placesAutoCompleteTextField(),
+            placesAutoCompleteTextField(isTab),
             Obx((){
               return ListView.builder(
                   shrinkWrap: true,
@@ -81,21 +84,28 @@ class StoreLocationScreen extends StatelessWidget {
       /// continue Button
       bottomNavigationBar: Padding(
         padding: EdgeInsets.symmetric( horizontal: 25.w, vertical: 30.h ),
-        child: Obx((){
-          return CustomButton(
-            isLoading: controller.isSignupLoading.value,
-            text: AppText.continueText,
-            onPressed: () {
-              controller.businessSignupModel.locations = locationNames;
-              controller.signup();
-            },
-            buttonTextStyle: GoogleFonts.familjenGrotesk(
-              color: AppColors.buttonTextColor,
-              fontSize: 18.sp,
-              fontWeight: FontWeight.w700,
-            ),
-          );
-        }),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Obx((){
+              return CustomButton(
+                isLoading: controller.isSignupLoading.value,
+                width: isTab ? context.fullWidth * 0.5 : null,
+                text: AppText.continueText,
+                onPressed: () {
+                  controller.businessSignupModel.locations = locationNames;
+                  controller.signup();
+                },
+                buttonTextStyle: GoogleFonts.familjenGrotesk(
+                  color: AppColors.buttonTextColor,
+                  fontSize: isTab ? 12.sp : 18.sp,
+                  fontWeight: FontWeight.w700,
+                ),
+              );
+            }),
+          ],
+        ),
       ),
       //
       // BottomButtonWidget(
@@ -108,15 +118,20 @@ class StoreLocationScreen extends StatelessWidget {
     );
   }
 
-  placesAutoCompleteTextField() {
+  Container placesAutoCompleteTextField(bool isTab) {
     return Container(
+      height: isTab ? 80 : null,
       padding: EdgeInsets.symmetric(horizontal: 20),
       child: GooglePlaceAutoCompleteTextField(
         textEditingController: textEditingController,
         googleAPIKey:googleApiKey,
         focusNode: focusNode,
+        textStyle: TextStyle(fontSize: isTab ? 10.sp : null),
         inputDecoration: InputDecoration(
           hintText: "Search your location",
+          hintStyle: TextStyle(
+            fontSize: isTab ? 10.sp : null
+          ),
           border: InputBorder.none,
           enabledBorder: InputBorder.none,
         ),
@@ -146,7 +161,9 @@ class StoreLocationScreen extends StatelessWidget {
                 SizedBox(
                   width: 7,
                 ),
-                Expanded(child: Text(prediction.description ?? ""))
+                Expanded(child: Text(prediction.description ?? "",
+                style: TextStyle(fontSize: isTab ? 10.sp : null),
+                ))
               ],
             ),
           );

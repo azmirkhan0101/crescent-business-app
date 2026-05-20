@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:organization/controller/auth/sign_up_controller.dart';
+import 'package:organization/core/context_extension.dart';
 import 'package:organization/features/on_boarding/widgets/bottom_button_widget.dart';
 import 'package:organization/features/on_boarding/widgets/category_card_widget.dart';
 import 'package:organization/features/on_boarding/widgets/onboarding_appbar.dart';
@@ -25,6 +26,9 @@ class _CategorySelectionScreenState extends State<CategorySelectionScreen> {
 
   @override
   Widget build(BuildContext context) {
+
+    bool isTab = context.isTab;
+
     return Scaffold(
       backgroundColor: const Color(0xFFF7F7F7),
       body: SingleChildScrollView(
@@ -59,7 +63,7 @@ class _CategorySelectionScreenState extends State<CategorySelectionScreen> {
                 crossAxisCount: 2,
                 crossAxisSpacing: 8.w,
                 mainAxisSpacing: 8.h,
-                mainAxisExtent: 90.h,
+                mainAxisExtent: isTab ? 155 : 90.h,
               ),
               itemBuilder: (context, index) {
                 final category = categories[index];

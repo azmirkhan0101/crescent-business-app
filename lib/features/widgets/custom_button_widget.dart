@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import '../../core/context_extension.dart';
 import '../../utils/app_color.dart';
 
 class CustomButton extends StatelessWidget {
@@ -35,10 +36,11 @@ class CustomButton extends StatelessWidget {
     // Use your primary color (or passed color) for both states
     // to prevent the "grey-out" effect during loading.
     final Color effectiveBgColor = backgroundColor ?? AppColors.primaryColor;
+    bool isTab = context.isTab;
 
     return SizedBox(
-      width: width?.w,
-      height: height?.h ?? 52.h,
+      width: isTab ? width : width?.w,
+      height: isTab ? 80 : height?.h ?? 52.h,
       child: ElevatedButton(
         style: ElevatedButton.styleFrom(
           backgroundColor: effectiveBgColor,
@@ -64,8 +66,8 @@ class CustomButton extends StatelessWidget {
             ),
             if (isLoading) // Use conditional rendering for cleaner layout
               SizedBox(
-                height: 20.h,
-                width: 20.h,
+                height: isTab ? 40 : 20.h,
+                width:  isTab ? 40 : 20.h,
                 child: CircularProgressIndicator(
                   strokeWidth: 2.5,
                   color: loaderColor,

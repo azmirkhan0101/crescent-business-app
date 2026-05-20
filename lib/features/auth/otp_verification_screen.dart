@@ -5,6 +5,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:organization/features/auth/widgets/custom_auth_appbar.dart';
 import 'package:organization/features/auth/widgets/pin_field_widget.dart';
 import 'package:organization/features/auth/widgets/rich_text_widget.dart';
+import 'package:organization/features/widgets/custom_text.dart';
 import 'package:organization/utils/app_constants.dart';
 
 import '../../../utils/app_color.dart';
@@ -12,6 +13,7 @@ import '../../../utils/app_size.dart';
 import '../../../utils/app_text.dart';
 import '../../../utils/app_text_styles.dart';
 import '../../controller/auth/otp_verification_controller.dart';
+import '../../core/context_extension.dart';
 import '../widgets/custom_button_widget.dart';
 
 class OtpVerificationScreen extends StatelessWidget {
@@ -22,6 +24,8 @@ class OtpVerificationScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
+    bool isTab = context.isTab;
 
     return Scaffold(
       backgroundColor: AppColors.white,
@@ -38,7 +42,7 @@ class OtpVerificationScreen extends StatelessWidget {
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(AppText.otpHeadline, style: AppTextStyle.headlineLStyle),
+                CustomText(text: AppText.otpHeadline, fontSize: isTab ? 16.sp : 20.sp, fontWeight: FontWeight.w800,),
                 SizedBox(height: 8.h),
                 Center(child: Text(AppText.otpSubtitle, style: AppTextStyle.mediumStyle)),
                 Center(
@@ -58,6 +62,7 @@ class OtpVerificationScreen extends StatelessWidget {
             /// Pin Field
             PinFieldWidget(
               controller: controller.otpController,
+              isTab: isTab,
               length: 6,
               onChanged: (val){
                 controller.onOtpChanged(val);
@@ -93,7 +98,7 @@ class OtpVerificationScreen extends StatelessWidget {
                 },
                 buttonTextStyle: GoogleFonts.familjenGrotesk(
                   color: AppColors.buttonTextColor,
-                  fontSize: 18.sp,
+                  fontSize: isTab ? 12.sp : 18.sp,
                   fontWeight: FontWeight.w700,
                 ),
               );

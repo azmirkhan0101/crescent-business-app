@@ -11,6 +11,7 @@ import 'package:organization/utils/assets_gen/assets.gen.dart';
 import 'package:organization/utils/assets_path.dart';
 import 'package:shimmer/shimmer.dart';
 
+import '../../../core/context_extension.dart';
 import 'custom_switch.dart';
 
 class RewardCard extends StatefulWidget {
@@ -77,9 +78,11 @@ class _RewardCardState extends State<RewardCard> {
       imageUrl = widget.image!;
     }
 
+    bool isTab = context.isTab;
+
     return Container(
-      height: 165.h,
-      padding: EdgeInsets.all(12.w),
+      height: isTab ? 290 : 165.h,
+      padding: EdgeInsets.all( isTab ? 15 : 12.w),
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(12.r),
@@ -98,9 +101,9 @@ class _RewardCardState extends State<RewardCard> {
           //==============Title + Popup===================
           Row(
             children: [
-              Container(
-                height: 24.h,
-                width: 24.w,
+              SizedBox(
+                height: isTab ? 60 : 24.h,
+                width: isTab ? 60 : 24.w,
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(5.r),
                   child: CachedNetworkImage(
@@ -127,6 +130,7 @@ class _RewardCardState extends State<RewardCard> {
                 widget.title,
                 style: AppTextStyle.cardTextStyle.copyWith(
                   fontWeight: FontWeight.w600,
+                  fontSize: isTab ? 10.sp : null
                 ),
               ),
               const Spacer(),
@@ -141,14 +145,14 @@ class _RewardCardState extends State<RewardCard> {
                         CustomAssetsImage(
                           assetsPath: AssetsPath.editIcon,
                           color: AppColors.black,
-                          height: 14.h,
-                          width: 14.w,
+                          height: isTab ? 40 : 14.h,
+                          width: isTab ? 40 : 14.w,
                         ),
                         SizedBox(width: 8.w),
                         Text(
                           'Edit',
                           style: AppTextStyle.cardTextStyle.copyWith(
-                            fontSize: 12.sp,
+                            fontSize: isTab ? 8.sp : 12.sp,
                           ),
                         ),
                       ],
@@ -180,15 +184,15 @@ class _RewardCardState extends State<RewardCard> {
                       children: [
                         CustomAssetsImage(
                           assetsPath: AssetsPath.deleteIcon,
-                          height: 14.h,
-                          width: 14.w,
+                          height: isTab ? 40 : 14.h,
+                          width: isTab ? 40 : 14.w,
                           color: AppColors.blackTextColor,
                         ),
                         SizedBox(width: 8.w),
                         Text(
                           'Delete',
                           style: AppTextStyle.cardTextStyle.copyWith(
-                            fontSize: 12.sp,
+                            fontSize: isTab ? 8.sp : 12.sp,
                           ),
                         ),
                       ],
@@ -217,14 +221,14 @@ class _RewardCardState extends State<RewardCard> {
             children: [
               Text(
                 formattedDate ?? "",
-                style: AppTextStyle.mediumStyle.copyWith(fontSize: 12.sp),
+                style: AppTextStyle.mediumStyle.copyWith(fontSize: isTab ? 8.sp : 12.sp),
               ),
               Row(
                 children: [
                   Text(
                     widget.isActive ? 'Active' : 'Disabled',
                     style: AppTextStyle.mediumStyle.copyWith(
-                      fontSize: 12.sp,
+                      fontSize: isTab ? 8.sp : 12.sp,
                       color: AppColors.blackTextColor,
                       fontWeight: FontWeight.w600,
                     ),
@@ -256,14 +260,14 @@ class _RewardCardState extends State<RewardCard> {
                   Text(
                     "${widget.redemptions}",
                     style: AppTextStyle.headlineLStyle.copyWith(
-                      fontSize: 20.sp,
+                      fontSize: isTab ? 14.sp : 20.sp,
                       fontWeight: FontWeight.w600,
                     ),
                   ),
                   Text(
                     'redemptions',
                     style: AppTextStyle.mediumStyle.copyWith(
-                      fontSize: 12.sp,
+                      fontSize: isTab ? 8.sp : 12.sp,
                       color: AppColors.blackTextColor,
                     ),
                   ),
@@ -276,7 +280,7 @@ class _RewardCardState extends State<RewardCard> {
                   Text(
                     "Redeem via",
                     style: AppTextStyle.mediumStyle.copyWith(
-                      fontSize: 12.sp,
+                      fontSize: isTab ? 8.sp : 12.sp,
                       color: AppColors.blackTextColor,
                     ),
                   ),

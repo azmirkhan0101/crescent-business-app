@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:organization/controller/profile/terms_controller.dart';
+import 'package:organization/core/context_extension.dart';
 
 import '../widgets/custom_text.dart';
 
@@ -31,7 +33,10 @@ class TermsConditionScreen extends StatelessWidget {
           return Center(child: CircularProgressIndicator());
         }else{
           if( controller.htmlData.value.isEmpty ){
-            return Center(child: CustomText(text: "No data found!"));
+            return Center(child: CustomText(
+                text: "No data found!",
+              fontSize: context.isTab ? 12.sp : 16.sp,
+            ));
           }
           return SingleChildScrollView(
               padding: EdgeInsets.all(16),

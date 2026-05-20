@@ -10,6 +10,7 @@ import 'package:organization/utils/assets_gen/assets.gen.dart';
 
 import '../../../utils/app_color.dart';
 import '../../../utils/app_size.dart';
+import '../../core/context_extension.dart';
 import '../../routes/app_pages.dart';
 import '../widgets/custom_button_widget.dart';
 import '../widgets/custom_text.dart';
@@ -32,6 +33,9 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
+
+    bool isTab = context.isTab;
+
     return Scaffold(
       backgroundColor: AppColors.white,
       body: SingleChildScrollView(
@@ -101,7 +105,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           language: false,
                           fontWeight: FontWeight.w400,
                           color: AppColors.blackTextColor,
-                          fontSize: 12.sp,
+                          fontSize: 14.sp,
                         ),
                       ],
                     ),
@@ -120,7 +124,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           language: false,
                           fontWeight: FontWeight.w400,
                           color: AppColors.buttonTextColor,
-                          fontSize: 12.sp,
+                          fontSize: 14.sp,
                         ),
                         Container(
                           height: 1.h,
@@ -155,7 +159,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 },
                 buttonTextStyle: GoogleFonts.familjenGrotesk(
                   color: AppColors.buttonTextColor,
-                  fontSize: 18.sp,
+                  fontSize: isTab ? 12.sp : 18.sp,
                   fontWeight: FontWeight.w700,
                 ),
               );

@@ -6,6 +6,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:organization/controller/reward/reward_controller.dart';
+import 'package:organization/core/context_extension.dart';
 import 'package:organization/features/reward/widget/custom_drop_down.dart';
 import 'package:organization/features/reward/widget/expiry_limit_section.dart';
 import 'package:organization/features/reward/widget/redemption_methods_section.dart';
@@ -45,19 +46,22 @@ class CreateRewardScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
+    bool isTab = context.isTab;
+
     return Scaffold(
       appBar: AppBar(
         forceMaterialTransparency: true,
         elevation: 0,
         leading: IconButton(
-          icon: Icon(Icons.arrow_back_ios, color: Colors.black, size: 20),
+          icon: Icon(Icons.arrow_back_ios, color: Colors.black, size: isTab ? 40 : 20),
           onPressed: () {
             Get.back();
           },
         ),
         title: Text(
           'Create New Reward',
-          style: AppTextStyle.headlineLStyle.copyWith(fontSize: 20.sp),
+          style: AppTextStyle.headlineLStyle.copyWith(fontSize: isTab ? 12.sp : 20.sp),
         ),
         centerTitle: true,
       ),
@@ -71,7 +75,7 @@ class CreateRewardScreen extends StatelessWidget {
               language: true,
               fontWeight: FontWeight.w600,
               color: AppColors.blackTextColor,
-              fontSize: 18.sp,
+              fontSize: isTab ? 12.sp : 18.sp,
             ),
             SizedBox(height: 12.h),
             CustomDropdown(
@@ -165,7 +169,7 @@ class CreateRewardScreen extends StatelessWidget {
                 },
                 buttonTextStyle: GoogleFonts.familjenGrotesk(
                   color: AppColors.buttonTextColor,
-                  fontSize: 18.sp,
+                  fontSize: isTab ? 12.sp : 18.sp,
                   fontWeight: FontWeight.w700,
                 ),
               );

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:organization/core/context_extension.dart';
 
 class CustomText extends StatelessWidget {
   const CustomText({
@@ -38,6 +39,9 @@ class CustomText extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
+    bool isTab = context.isTab;
+
     return Padding(
       padding: EdgeInsets.only(
         left: left,
@@ -52,7 +56,7 @@ class CustomText extends StatelessWidget {
         overflow: overflow,
         style: language == true
             ? GoogleFonts.familjenGrotesk(
-                fontSize: fontSize.sp,
+                fontSize: isTab ? fontSize - 12 : fontSize.sp,
                 fontWeight: fontWeight,
                 color: color,
                 decoration: decoration,
@@ -60,7 +64,7 @@ class CustomText extends StatelessWidget {
                 decorationThickness: 2,
               )
             : GoogleFonts.inter(
-                fontSize: fontSize.sp,
+                fontSize: isTab ? fontSize - 12 : fontSize.sp,
                 fontWeight: fontWeight,
                 color: color,
                 decoration: decoration,

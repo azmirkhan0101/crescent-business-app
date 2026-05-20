@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:organization/core/context_extension.dart';
 import 'package:organization/data/models/reward/reward_model.dart';
 import 'package:organization/features/profile/widget/profile_reward_card_widget.dart';
 
@@ -15,6 +16,9 @@ class RewardsTab extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
+    bool isTab = context.isTab;
+
     return SingleChildScrollView(
       child: Column(
         children: [
@@ -27,7 +31,7 @@ class RewardsTab extends StatelessWidget {
               crossAxisCount: 2,
               mainAxisSpacing: 8.h,
               crossAxisSpacing: 8.w,
-              mainAxisExtent: 150.h,
+              mainAxisExtent: isTab ? 250 : 150.h,
             ),
             itemBuilder: (context, index) {
 

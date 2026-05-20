@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 
+import '../../../core/context_extension.dart';
 import '../../../utils/assets_gen/assets.gen.dart';
 
 class CustomAuthAppbar extends StatelessWidget {
@@ -12,6 +13,9 @@ class CustomAuthAppbar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
+    bool isTab = context.isTab;
+
     return Row(
       children: [
         GestureDetector(
@@ -19,8 +23,8 @@ class CustomAuthAppbar extends StatelessWidget {
             Get.back();
           },
           child: Container(
-            height: 40,
-            width: 40,
+            height: isTab ? 60 : 40,
+            width: isTab ? 60 : 40,
             decoration: const BoxDecoration(
               shape: BoxShape.circle,
               color: Color(0xFFF5F4F6),
@@ -28,8 +32,8 @@ class CustomAuthAppbar extends StatelessWidget {
             child: Center(
               child: SvgPicture.asset(
                 Assets.icons.backIcon,
-                height: 20.h,
-                width: 19.w,
+                height: isTab ? 50 : 20.h,
+                width:  isTab ? 48 : 19.w,
               ),
             ),
           ),
@@ -40,8 +44,8 @@ class CustomAuthAppbar extends StatelessWidget {
         /// Asset Image
         SvgPicture.asset(
           Assets.icons.crescentLogo,
-          height: 32.h,
-          width: 32.w,
+          height: isTab ? 50 : 32.h,
+          width: isTab ? 50 : 32.w,
         ),
       ],
     );

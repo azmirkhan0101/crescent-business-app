@@ -7,6 +7,7 @@ import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:shimmer/shimmer.dart';
 
+import '../../../core/context_extension.dart';
 import '../../../utils/app_color.dart';
 
 class ImageEditWidget extends StatelessWidget {
@@ -31,6 +32,7 @@ class ImageEditWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     const double profileRadius = 55;
+    bool isTab = context.isTab;
 
     return Column(
       children: [
@@ -38,7 +40,7 @@ class ImageEditWidget extends StatelessWidget {
         Stack(
           children: [
     Container(
-    height: 120.h,
+    height: isTab ? 200 : 120.h,
       width: double.infinity,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(16.r),
@@ -54,7 +56,9 @@ class ImageEditWidget extends StatelessWidget {
               right: 12,
               child: _EditIcon(onTap: (){
                 pickImage( true );
-              } ),
+              },
+              iconSize: isTab ? 30 : 20,
+              ),
             ),
           ],
         ),
@@ -67,8 +71,8 @@ class ImageEditWidget extends StatelessWidget {
               alignment: Alignment.bottomRight,
               children: [
                 Container(
-                  width: 100.w,
-                  height: 100.h,
+                  width: isTab ? 160 : 100.w,
+                  height: isTab ? 160 : 100.h,
                   decoration: BoxDecoration(
                     color: Colors.white,
                     shape: BoxShape.circle,
@@ -83,8 +87,8 @@ class ImageEditWidget extends StatelessWidget {
                 ),
                 // PROFILE EDIT ICON
                 _EditIcon(
-                  size: 34,
-                  iconSize: 18,
+                  size: isTab ? 50 : 34,
+                  iconSize: isTab ? 30 : 18,
                   onTap: (){
                     pickImage( false );
                   },

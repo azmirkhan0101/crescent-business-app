@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:organization/core/context_extension.dart';
 import 'package:organization/data/models/analytics/graph_data_model.dart';
 import 'package:organization/data/models/analytics/summary_model.dart';
 import 'package:organization/features/widgets/custom_text.dart';
@@ -32,6 +33,7 @@ class AnalyticsCardChart<T> extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
+    bool isTab = context.isTab;
     final filteredStats = filterLatestData( graphList );
     final rawMax = getMaxValue(filteredStats);
     final maxY = roundToNiceNumber(rawMax);
@@ -51,19 +53,20 @@ class AnalyticsCardChart<T> extends StatelessWidget {
               // 🔹 Top Row (Image + Title)
               Row(
                 children: [
-                  SvgPicture.asset(Assets.icons.stats, height: 24.h, width: 24.w),
+                  SvgPicture.asset(Assets.icons.stats, height: isTab ? 40 : 24.h, width:isTab ? 40 :  24.w),
                   SizedBox(width: 8.w),
                   Text(
                     "Reward Performance",
                     style: TextStyle(
-                      fontSize: 16.sp,
+                      fontSize: isTab ? 12.sp : 16.sp,
                       fontWeight: FontWeight.w600,
                     ),
                   ),
                 ],
               ),
               SizedBox(height: 12.h),
-              CustomText(text: "Select a reward:",
+              CustomText(
+                text: "Select a reward:",
               fontSize: 12.sp,
                 color: const Color(0xFF6E6E6E),
                 fontWeight: FontWeight.w400,
@@ -99,7 +102,7 @@ class AnalyticsCardChart<T> extends StatelessWidget {
                               style: GoogleFonts.inter(
                                 fontWeight: FontWeight.w400,
                                 color: AppColors.blackTextColor,
-                                fontSize: 14.sp,
+                                fontSize: isTab ? 10.sp : 14.sp,
                               ),
                               onChanged: (String? newValue) {
                                 if( newValue != null ){
@@ -138,11 +141,11 @@ class AnalyticsCardChart<T> extends StatelessWidget {
               // 🔹 Row (3 items)
               Row(
                 children: [
-                  _buildStatItem(AssetsPath.radioButton, "${summaryModel?.views ?? 0} Views"),
+                  _buildStatItem(AssetsPath.radioButton, "${summaryModel?.views ?? 0} Views", isTab),
                   SizedBox(width: 8.w),
-                  _buildStatItem(AssetsPath.radioButton1, "${summaryModel?.claims ?? 0} Claims"),
+                  _buildStatItem(AssetsPath.radioButton1, "${summaryModel?.claims ?? 0} Claims", isTab),
                   SizedBox(width: 8.w),
-                  _buildStatItem(AssetsPath.radioButton2, "${summaryModel?.redemptions ?? 0} Redemptions"),
+                  _buildStatItem(AssetsPath.radioButton2, "${summaryModel?.redemptions ?? 0} Redemptions", isTab),
                 ],
               ),
 
@@ -151,9 +154,10 @@ class AnalyticsCardChart<T> extends StatelessWidget {
               // 🔹 Chart (200.h)
               // 🔹 Chart (200.h)
               SizedBox(
-                height: 210.h,
+                height: isTab ? 350 : 210.h,
                 child: SfCartesianChart(
                   primaryXAxis: NumericAxis(
+                    labelStyle: TextStyle(fontSize: 20),
                     minimum: 0,//COMPARE WITH CURRENT DATE
                     maximum: 9, //MAX 7 || 1
                     interval: 1,
@@ -175,6 +179,7 @@ class AnalyticsCardChart<T> extends StatelessWidget {
                     minimum: 0,
                     maximum: maxY.toDouble(),
                     interval: interval,
+                    labelStyle: TextStyle(fontSize: isTab ? 6.sp : null),
                     majorGridLines: MajorGridLines(
                       width: 1,
                       color: Colors.grey.shade100,
@@ -231,14 +236,14 @@ class AnalyticsCardChart<T> extends StatelessWidget {
     );
   }
 
-  Widget _buildStatItem(String assetPath, String text) {
+  Widget _buildStatItem(String assetPath, String text, bool isTab) {
     return Row(
       children: [
-        Image.asset(assetPath, height: 20.h, width: 20.w),
+        Image.asset(assetPath, height: isTab ? 40 : 20.h, width:isTab ? 40 :  20.w),
         SizedBox(width: 2.w),
         Text(
           text,
-          style: TextStyle(fontSize: 12.sp, fontWeight: FontWeight.w500),
+          style: TextStyle(fontSize: isTab ? 10.sp : 12.sp, fontWeight: FontWeight.w500),
         ),
       ],
     );
@@ -319,7 +324,7 @@ List<String> dayLabels(List<GraphDataModel> graphs){
     }
     int x = 0;
     for( final model in filteredGraphs ){
-      viewsDataList.add( ChartData( x: x.toDouble(), count: model.views.toDouble() ));
+      viewsDataList.add( ChartData( x: x.toDouble(), count: model.views.toDouble(), ));
       x++;
     }
     return viewsDataList;
