@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import '../../../core/context_extension.dart';
 import '../../../utils/app_text_styles.dart';
 
 class ProfileHeadingTextWidget extends StatelessWidget {
@@ -9,6 +10,9 @@ class ProfileHeadingTextWidget extends StatelessWidget {
   final String title;
   @override
   Widget build(BuildContext context) {
-    return Text(title,style: AppTextStyle.headlineLStyle.copyWith(fontSize: 16.sp),);
+
+    bool isTab = context.isTab;
+
+    return Text(title,style: AppTextStyle.headlineLStyle.copyWith(fontSize: isTab ? 10.sp : 16.sp),);
   }
 }

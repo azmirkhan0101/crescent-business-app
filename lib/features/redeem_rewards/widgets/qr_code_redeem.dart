@@ -9,6 +9,7 @@ import 'package:organization/features/widgets/custom_card_widget.dart';
 import 'package:organization/utils/app_color.dart';
 import 'package:vibration/vibration.dart';
 
+import '../../../core/context_extension.dart';
 import '../../../utils/app_text_styles.dart';
 import '../../widgets/custom_text.dart';
 import 'apply_widget.dart';
@@ -39,6 +40,9 @@ class _QRCodeWidgetState extends State<QRCodeWidget> {
 
   @override
   Widget build(BuildContext context) {
+
+    bool isTab = context.isTab;
+
     return SingleChildScrollView(
       child: Column(
         mainAxisSize: MainAxisSize.max,
@@ -49,7 +53,7 @@ class _QRCodeWidgetState extends State<QRCodeWidget> {
             text: "Scan QR code",
             color: AppColors.headlineTextColor,
             fontWeight: FontWeight.w600,
-            fontSize: 24.sp,
+            fontSize: isTab ? 16.sp : 24.sp,
             language: true,
           ),
           SizedBox(height: 8.h),
@@ -57,14 +61,14 @@ class _QRCodeWidgetState extends State<QRCodeWidget> {
           CustomText(text: "Please point the camera at the QR Code",
             color: AppColors.blackTextColor,
             fontWeight: FontWeight.w400,
-            fontSize: 14.sp,
+            fontSize: isTab ? 12.sp : 14.sp,
             language: false,
           ),
           SizedBox(height: 24.h),
           //Scanner Box
           SizedBox(
-            width: 190.h,
-            height: 190.w,
+            width: isTab ? 300 : 190.w,
+            height: isTab ? 300 : 190.h,
             child: ClipRRect(
               borderRadius: BorderRadius.circular(16),
               child: Stack(
@@ -121,7 +125,7 @@ class _QRCodeWidgetState extends State<QRCodeWidget> {
                 child: CustomText(text: "Enter code manually",
                   color: AppColors.blackTextColor,
                   fontWeight: FontWeight.w400,
-                  fontSize: 12.sp,
+                  fontSize: isTab ? 14.sp : 12.sp,
                   language: false,
                 ),
               ),
@@ -136,7 +140,7 @@ class _QRCodeWidgetState extends State<QRCodeWidget> {
           ),
           SizedBox(height: 16.h),
           SizedBox(
-            height: 60.h,
+            height: isTab ? 120 : 60.h,
             width: 279.w,
             child: CustomCard(
               child: Center(
@@ -145,11 +149,13 @@ class _QRCodeWidgetState extends State<QRCodeWidget> {
                   textAlign: TextAlign.center,
                   style: AppTextStyle.mediumStyle.copyWith(
                     color: AppColors.buttonTextColor,
+                    fontSize: isTab ? 12.sp : null
                   ),
                   decoration: InputDecoration(
                     hintText: "enter your code here",
                     hintStyle: AppTextStyle.mediumStyle.copyWith(
                       color: AppColors.buttonTextColor.withOpacity(0.6),
+                      fontSize: isTab ? 8.sp : null
                     ),
                     border: InputBorder.none,
                     isDense: true,

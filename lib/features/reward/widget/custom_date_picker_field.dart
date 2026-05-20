@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
+import 'package:organization/core/context_extension.dart';
 import 'package:organization/utils/app_color.dart';
 
 class CustomDatePickerField extends StatefulWidget {
@@ -48,6 +50,9 @@ class _CustomDatePickerFieldState extends State<CustomDatePickerField> {
 
   @override
   Widget build(BuildContext context) {
+
+    bool isTab = context.isTab;
+
     return Card(
       color: AppColors.white,
       shape: RoundedRectangleBorder(
@@ -62,6 +67,7 @@ class _CustomDatePickerFieldState extends State<CustomDatePickerField> {
               : "No date selected",
           style: TextStyle(
             color: selectedDate == null ? Colors.grey : Colors.black,
+            fontSize: isTab ? 10.sp : null
           ),
         ),
         trailing: IconButton(

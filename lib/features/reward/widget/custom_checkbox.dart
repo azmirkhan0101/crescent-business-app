@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:organization/core/context_extension.dart';
 
 import '../../../utils/app_color.dart';
 
@@ -13,6 +14,9 @@ class CustomCheckbox extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
+    bool isTab = context.isTab;
+
     return Row(
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
@@ -28,7 +32,7 @@ class CustomCheckbox extends StatelessWidget {
         SizedBox(width: 8.w),
         Text(//
           title,
-          style: TextStyle(fontWeight: FontWeight.w400, fontSize: 12.sp),
+          style: TextStyle(fontWeight: FontWeight.w400, fontSize: isTab ? 10.sp : 12.sp),
         ),
       ],
     );

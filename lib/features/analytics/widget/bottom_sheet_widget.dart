@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:organization/core/context_extension.dart';
 import 'package:organization/features/widgets/custom_asset_image.dart';
 import 'package:organization/features/widgets/custom_button_widget.dart';
 import 'package:organization/utils/assets_path.dart';
@@ -25,9 +26,12 @@ class _BottomSheetWidgetState extends State<BottomSheetWidget> {
 
   @override
   Widget build(BuildContext context) {
+
+    bool isTab = context.isTab;
+
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 15.h),
-      height: 340.h,
+      height: isTab ? 450 : 340.h,
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: const BorderRadius.vertical(top: Radius.circular(20)),
@@ -38,26 +42,26 @@ class _BottomSheetWidgetState extends State<BottomSheetWidget> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text("Export data", style: AppTextStyle.cardTextStyle),
+              Text("Export data", style: AppTextStyle.cardTextStyle.copyWith(fontSize: isTab ? 10.sp : null)),
               GestureDetector(
                 onTap: (){
                   Get.back(closeOverlays: true);
                 },
-                child: Icon(Icons.close, size: 20.w),
+                child: Icon(Icons.close, size: isTab ? 40 : 20.w),
               ),
             ],
           ),
           SizedBox(height: 8.h),
           Text(
             "Select format for the data you want to export",
-            style: AppTextStyle.mediumStyle,
+            style: AppTextStyle.mediumStyle.copyWith(fontSize: isTab ? 8.sp : null),
           ),
           SizedBox(height: 16.h),
           Row(
             children: [
-              _buildOptionCard(0, "Export .CSV", AssetsPath.bottomS1Icon),
-              SizedBox(width: 16.w),
-              _buildOptionCard(1, "Export .PDF", AssetsPath.bottomS2Icon),
+              _buildOptionCard(0, "Export .CSV", AssetsPath.bottomS1Icon, isTab),
+              SizedBox(width: isTab ? 20 : 16.w),
+              _buildOptionCard(1, "Export .PDF", AssetsPath.bottomS2Icon, isTab),
             ],
           ),
           SizedBox(height: 16.h),
@@ -65,7 +69,7 @@ class _BottomSheetWidgetState extends State<BottomSheetWidget> {
             child: CustomButton(
               buttonTextStyle: GoogleFonts.familjenGrotesk(
                 color: AppColors.buttonTextColor,
-                fontSize: 18.sp,
+                fontSize: isTab ? 10.sp : 18.sp,
                 fontWeight: FontWeight.w700,
               ),
               onPressed: () {
@@ -80,7 +84,7 @@ class _BottomSheetWidgetState extends State<BottomSheetWidget> {
     );
   }
 
-  Widget _buildOptionCard(int index, String title, String iconPath) {
+  Widget _buildOptionCard(int index, String title, String iconPath, bool isTab) {
     bool isSelected = selectedIndex == index;
 
     return Expanded(
@@ -91,7 +95,7 @@ class _BottomSheetWidgetState extends State<BottomSheetWidget> {
           });
         },
         child: Container(
-          padding: EdgeInsets.all(8.w),
+          padding: EdgeInsets.all( isTab ? 8 : 8.w),
           decoration: BoxDecoration(
             color: isSelected ? Color(0x26C08FFF) : AppColors.white,
             borderRadius: BorderRadius.circular(12.r),
@@ -130,15 +134,15 @@ class _BottomSheetWidgetState extends State<BottomSheetWidget> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Container(
-                    padding: EdgeInsets.all(18.w),
+                    padding: EdgeInsets.all( isTab ? 10 : 18.w),
                     decoration: BoxDecoration(
                       color: isSelected ? Color(0x26C08FFF) : Color(0xFFF7F7F7),
                       shape: BoxShape.circle,
                     ),
-                    child: Image.asset(iconPath, height: 18.h, width: 16.w),
+                    child: Image.asset(iconPath, height: isTab ? 40 : 18.h, width: isTab ? 40 : 16.w),
                   ),
                   SizedBox(height: 8.h),
-                  Text(title, style: AppTextStyle.cardTextStyle),
+                  Text(title, style: AppTextStyle.cardTextStyle.copyWith( fontSize: isTab ? 8.sp : null)),
                 ],
               ),
             ],

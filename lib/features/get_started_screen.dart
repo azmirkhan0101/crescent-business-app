@@ -5,6 +5,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:organization/core/context_extension.dart';
 import 'package:organization/features/widgets/custom_asset_image.dart';
 import 'package:organization/features/widgets/custom_button_widget.dart';
 import 'package:organization/features/widgets/custom_text.dart';
@@ -22,6 +23,8 @@ class GetStartedScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
+    bool isTab = context.isTab;
+
     return Scaffold(
       backgroundColor: const Color(0xFFF7F7F7),
       body: SingleChildScrollView(
@@ -38,8 +41,8 @@ class GetStartedScreen extends StatelessWidget {
                 children: [
                   SvgPicture.asset(
                     Assets.icons.crescentLogo,
-                    height: 32.h,
-                    width: 32.w,
+                    height: isTab ? 100 : 32.h,
+                    width: isTab ? 100 : 32.w,
                   ),
                   CustomText(
                     textAlign: TextAlign.justify,
@@ -67,7 +70,7 @@ class GetStartedScreen extends StatelessWidget {
                 fontWeight: FontWeight.w700,
                 language: true,
                 color: AppColors.headlineTColor,
-                fontSize: 28.sp,
+                fontSize: isTab ? 20.sp : 26.sp,
                 textAlign: TextAlign.center,
               ),
               SizedBox(height: 4.h),
@@ -113,30 +116,32 @@ class GetStartedScreen extends StatelessWidget {
 
       ///button and auth text
       bottomNavigationBar: Padding(
-        padding: EdgeInsets.only(bottom: 50.h),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            CustomButton(
-              text: AppText.getStarted,
-              onPressed: () {
-                Get.toNamed(AppRoutes.categorySelection);
-              },
-              buttonTextStyle: GoogleFonts.familjenGrotesk(
-                color: AppColors.buttonTextColor,
-                fontSize: 18.sp,
-                fontWeight: FontWeight.w700,
+        padding: EdgeInsets.only(bottom: isTab ? 20 : 50.h),
+        child: SizedBox(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              CustomButton(
+                text: AppText.getStarted,
+                onPressed: () {
+                  Get.toNamed(AppRoutes.categorySelection);
+                },
+                buttonTextStyle: GoogleFonts.familjenGrotesk(
+                  color: AppColors.buttonTextColor,
+                  fontSize: isTab ? 12.sp : 18.sp,
+                  fontWeight: FontWeight.w700,
+                ),
               ),
-            ),
-            SizedBox(height: 12.h),
-            RichTextWidget(
-              firstText: AppText.alreadyHaveAccount,
-              lastText: AppText.login,
-              onTap: () {
-                Get.toNamed(AppRoutes.logIn);
-              },
-            ),
-          ],
+              SizedBox(height: 12.h),
+              RichTextWidget(
+                firstText: AppText.alreadyHaveAccount,
+                lastText: AppText.login,
+                onTap: () {
+                  Get.toNamed(AppRoutes.logIn);
+                },
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -181,18 +186,18 @@ class _AnimatedLoadingRowState extends State<AnimatedLoadingRow> {
     List<Widget> items = [
       CustomAssetsImage(
         assetsPath: AssetsPath.loadingStarIcon,
-        height: 15.h,
-        width: 15.w,
+        height: context.isTab ? 30 : 15.h,
+        width: context.isTab ? 30 : 15.w,
       ),
       CustomAssetsImage(
         assetsPath: AssetsPath.loadingDotIcon,
-        height: 12.h,
-        width: 12.w,
+        height: context.isTab ? 30 :  12.h,
+        width: context.isTab ? 30 : 12.w,
       ),
       CustomAssetsImage(
         assetsPath: AssetsPath.loadingDotIcon,
-        height: 12.h,
-        width: 12.w,
+        height: context.isTab ? 30 : 12.h,
+        width: context.isTab ? 30 : 12.w,
       ),
     ];
 

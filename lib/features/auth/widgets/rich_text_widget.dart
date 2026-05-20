@@ -2,6 +2,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:organization/core/context_extension.dart';
 import 'package:organization/utils/app_color.dart';
 
 class RichTextWidget extends StatelessWidget {
@@ -18,13 +19,16 @@ class RichTextWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
+    bool isTab = context.isTab;
+
     return RichText(
       text: TextSpan(
         children: [
           TextSpan(
             text: firstText,
             style: GoogleFonts.inter(
-              fontSize: 14.sp,
+              fontSize: isTab ? 12.sp : 14.sp,
               fontWeight: FontWeight.w400,
               color: AppColors.secondaryTextColor
             ),
@@ -33,7 +37,7 @@ class RichTextWidget extends StatelessWidget {
           TextSpan(
             text: lastText,
          style: GoogleFonts.familjenGrotesk(
-           fontSize: 16.sp,
+           fontSize: isTab ? 12.sp : 16.sp,
            fontWeight: FontWeight.w700,
            color: AppColors.headlineTColor
          ),

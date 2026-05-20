@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:organization/core/context_extension.dart';
 
 import '../../../utils/app_color.dart';
 import '../../../utils/app_text_styles.dart';
@@ -21,6 +22,9 @@ class CategoryCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
+    bool isTab = context.isTab;
+
     return GestureDetector(
       onTap: onTap,
       child: Card(
@@ -71,8 +75,8 @@ class CategoryCard extends StatelessWidget {
                 children: [
                   Image.asset(
                     category.icon,
-                    height: 18.h, // bigger when selected
-                    width: 16.w,
+                    height: isTab ? 30 : 18.h, // bigger when selected
+                    width: isTab ? 30 : 16.w,
                   ),
 
                   SizedBox(height: 2.h),

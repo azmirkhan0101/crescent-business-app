@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:shimmer/shimmer.dart';
 
+import '../../../core/context_extension.dart';
 import '../../../utils/app_color.dart';
 import '../../../utils/app_constants.dart';
 import '../../../utils/app_text_styles.dart';
@@ -41,6 +42,8 @@ class ProfileRewardCardWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
+    bool isTab = context.isTab;
+
     String imageUrl = "";
     if( image != null ){
       imageUrl = image!;
@@ -59,8 +62,8 @@ class ProfileRewardCardWidget extends StatelessWidget {
           Row(
             children: [
               Container(
-                height: 24.h,
-                width: 24.w,
+                height: isTab ? 60 : 24.h,
+                width: isTab ? 60 :  24.w,
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(5.r),
                   child: CachedNetworkImage(
@@ -89,7 +92,7 @@ class ProfileRewardCardWidget extends StatelessWidget {
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                   title,
-                  style: AppTextStyle.cardTextStyle.copyWith(fontSize: 14.sp),
+                  style: AppTextStyle.cardTextStyle.copyWith(fontSize: isTab ? 10.sp : 14.sp),
                 ),
               ),
             ],
@@ -100,7 +103,7 @@ class ProfileRewardCardWidget extends StatelessWidget {
             overflow: TextOverflow.ellipsis,
             date ?? "",
             style: AppTextStyle.mediumStyle.copyWith(
-              fontSize: 11.sp,
+              fontSize: isTab ? 8.sp : 11.sp,
               color: Color(0xFF848484),
             ),
           ),
@@ -108,7 +111,7 @@ class ProfileRewardCardWidget extends StatelessWidget {
           Text(
             "Redeem via:",
             style: AppTextStyle.mediumStyle.copyWith(
-              fontSize: 12.sp,
+              fontSize: isTab ? 8.sp : 12.sp,
               color: AppColors.blackTextColor,
             ),
           ),

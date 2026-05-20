@@ -16,11 +16,12 @@ class HomeBarChartWidget extends StatelessWidget {
 
   final List<MonthlyStats> stats;
   final num activityPercentage;
+  final bool isTab;
 
   const HomeBarChartWidget({
     super.key,
     required this.stats,
-    required this.activityPercentage
+    required this.activityPercentage, required this.isTab
   });
 
   @override
@@ -37,7 +38,7 @@ class HomeBarChartWidget extends StatelessWidget {
     final interval = calculateInterval(maxY);
 
     return SizedBox(
-      height: 343.h,
+      height: isTab ? 550 : 343.h,
       child: Card(
         color: AppColors.white,
         shadowColor: Colors.grey.shade200,
@@ -46,7 +47,7 @@ class HomeBarChartWidget extends StatelessWidget {
           borderRadius: BorderRadius.circular(12.r),
         ),
         child: Padding(
-          padding: EdgeInsets.all(16.w),
+          padding: EdgeInsets.all( isTab ? 20 : 16.w),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -55,13 +56,13 @@ class HomeBarChartWidget extends StatelessWidget {
                 children: [
                   SvgPicture.asset(
                     Assets.icons.stats,
-                    height: AppSizes.iconS24H,
-                    width: AppSizes.iconS24W,
+                    height: isTab ? 50 : AppSizes.iconS24H,
+                    width: isTab ? 50 : AppSizes.iconS24W,
                   ),
                   SizedBox(width: 8.w),
                   Text(
                     'Bar Chart',
-                    style: AppTextStyle.cardTextStyle,
+                    style: AppTextStyle.cardTextStyle.copyWith(fontSize: isTab ? 12.sp : null),
                   ),
                 ],
               ),
@@ -74,7 +75,7 @@ class HomeBarChartWidget extends StatelessWidget {
                   Text(
                     "$percentageText %",
                     style: AppTextStyle.headlineLStyle
-                        .copyWith(fontSize: AppSizes.headlineXL),
+                        .copyWith(fontSize: isTab ? 16.sp : AppSizes.headlineXL),
                   ),
                   SizedBox(width: 12.w),
                   Expanded(
@@ -95,11 +96,11 @@ class HomeBarChartWidget extends StatelessWidget {
 
               // Chart Area
               SizedBox(
-                height: 210.h,
+                height: isTab ? 320 : 210.h,
                 child: BarChart(
                   BarChartData(
                     maxY: maxY.toDouble(),
-                    barGroups: buildBarGroups( filteredStats ),
+                    barGroups: buildBarGroups( filteredStats, isTab),
                     barTouchData: BarTouchData(
                       enabled: filteredStats.isNotEmpty,
                     ),
@@ -124,7 +125,7 @@ class HomeBarChartWidget extends StatelessWidget {
                           showTitles: true,
                           reservedSize: 38,
                           getTitlesWidget: (value, meta){
-                            return getTitles(value, meta, filteredStats);
+                            return getTitles(value, meta, filteredStats, isTab);
                           },
                         ),
                       ),
@@ -138,14 +139,14 @@ class HomeBarChartWidget extends StatelessWidget {
                               value >= 1000
                                   ? '${(value / 1000).toStringAsFixed(0)}k'
                                   : value.toInt().toString(),
-                              style: TextStyle(fontSize: 12.sp),
+                              style: TextStyle(fontSize: isTab ? 10.sp : 12.sp),
                             );
                           },
                         ),
                       ),
                       topTitles:
                       const AxisTitles(
-                          sideTitles: SideTitles(showTitles: false)),
+                          sideTitles: SideTitles(showTitles: false,)),
                       rightTitles:
                       const AxisTitles(
                           sideTitles: SideTitles(showTitles: false)),
@@ -174,12 +175,13 @@ class HomeBarChartWidget extends StatelessWidget {
       double value,
       TitleMeta meta,
       List<MonthlyStats> stats,
+      bool isTab
       ) {
-    const style = TextStyle(
+    final style = TextStyle(
       color: AppColors.blackTextColor,
       fontFamily: 'inter',
       fontWeight: FontWeight.w400,
-      fontSize: 10,
+      fontSize: isTab ? 8.sp : 10,
     );
 
     int index = value.toInt();
@@ -274,7 +276,7 @@ class HomeBarChartWidget extends StatelessWidget {
   }
 
   //DYNAMIC BARCHART GROUP
-  List<BarChartGroupData> buildBarGroups(List<MonthlyStats> stats) {
+  List<BarChartGroupData> buildBarGroups(List<MonthlyStats> stats, bool isTab) {
     return List.generate(stats.length, (index) {
       return BarChartGroupData(
         x: index,
@@ -282,7 +284,7 @@ class HomeBarChartWidget extends StatelessWidget {
           BarChartRodData(
             toY: stats[index].reward.toDouble(),
             color: const Color(0xFFFF6F61),
-            width: 11.43.w,
+            width: isTab ? 40 : 11.43.w,
             borderRadius: BorderRadius.circular(5.r),
           ),
         ],

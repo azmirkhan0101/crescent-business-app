@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:organization/core/context_extension.dart';
 
 class CustomSwitch extends StatelessWidget {
   final bool value;
@@ -8,12 +9,15 @@ class CustomSwitch extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
+    bool isTab = context.isTab;
+
     return GestureDetector(
       onTap: () => onChanged(!value),
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 200),
-        width: 36,
-        height: 18,
+        width: isTab ? 60 : 36,
+        height: isTab ? 25 : 18,
         padding: const EdgeInsets.all(2),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(9),

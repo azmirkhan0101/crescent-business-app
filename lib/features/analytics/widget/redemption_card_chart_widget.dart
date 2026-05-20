@@ -9,6 +9,8 @@ import 'package:organization/utils/app_text_styles.dart';
 import 'package:organization/utils/assets_gen/assets.gen.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
+import '../../../core/context_extension.dart';
+
 class RedemptionChartWidget extends StatelessWidget {
 
   final int? totalRedemptions;
@@ -22,6 +24,8 @@ class RedemptionChartWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
+    bool isTab = context.isTab;
 
     Color qrChartColor = Color(0xFFC4E862);
     Color nfcChartColor = Color(0xFFC0A4E8);
@@ -57,14 +61,14 @@ class RedemptionChartWidget extends StatelessWidget {
 
 
     return SizedBox(
-      height: 174.h,
+      height: isTab ? 390 : 174.h,
       child: Card(
         color: AppColors.white,
         margin: EdgeInsets.all(12.w),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(3.r)),
         elevation: 4,
         child: Padding(
-          padding: EdgeInsets.all(16.w),
+          padding: EdgeInsets.all( isTab ? 20 : 16.w),
           child: Row(
             children: [
               //Left side texts
@@ -78,13 +82,14 @@ class RedemptionChartWidget extends StatelessWidget {
                       children: [
                         SvgPicture.asset(
                           Assets.icons.scanQrCode,
-                          height: AppSizes.iconS24H,
-                          width: AppSizes.iconS24W,
+                          height: isTab ? 60 : AppSizes.iconS24H,
+                          width: isTab ? 60 : AppSizes.iconS24W,
                           colorFilter: ColorFilter.mode(AppColors.primaryColor, BlendMode.srcIn),
                         ),
-                        SizedBox(width: 5.w),
+                        SizedBox(width: isTab ? 10 : 5.w),
                         Expanded(
                           child: CustomText(
+                            textAlign: TextAlign.left,
                             text: "Total Redemptions",
                             fontWeight: FontWeight.w500,
                             color: AppColors.blackTextColor,
@@ -97,7 +102,7 @@ class RedemptionChartWidget extends StatelessWidget {
                     Text(
                       "${totalRedemptions ?? 0}",
                       style: AppTextStyle.headlineLStyle.copyWith(
-                        fontSize: AppSizes.headlineXL,
+                        fontSize: isTab ? 22.sp : AppSizes.headlineXL,
                       ),
                     ),
                     SizedBox(width: 6.h),
@@ -116,8 +121,8 @@ class RedemptionChartWidget extends StatelessWidget {
 
               /// Right side chart
               SizedBox(
-                height: 120.w,
-                width: 120.w,
+                height: isTab ? 180 : 120.w,
+                width: isTab ? 180 : 120.w,
                 child: SfCircularChart(
                   margin: EdgeInsets.zero,
                   series: <DoughnutSeries<ChartData, String>>[

@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:organization/utils/app_color.dart';
 import 'package:organization/utils/app_text_styles.dart';
+import '../../core/context_extension.dart';
 import '../../utils/app_size.dart';
 
 class InfoCard extends StatelessWidget {
@@ -35,10 +36,12 @@ class InfoCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    bool isTab = context.isTab;
+
     return Container(
-      height: height ?? 144.h,
+      height: height ?? (isTab ? 200 : 144.h),
       width: width,
-      padding: EdgeInsets.all(AppSizes.padding),
+      padding: EdgeInsets.all( isTab ? 10 : AppSizes.padding),
       decoration: BoxDecoration(
         gradient: LinearGradient(
           colors: [gradientColor1, gradientColor2, gradientColor3],
@@ -51,8 +54,8 @@ class InfoCard extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Container(
-            height: 40.w,
-            width: 40.w,
+            height: isTab ? 80 : 40.w,
+            width: isTab ? 80 : 40.w,
             decoration: BoxDecoration(
               color: iconBgColor,
               shape: BoxShape.circle,
@@ -72,13 +75,13 @@ class InfoCard extends StatelessWidget {
             children: [
               Text(
                 title,
-                style: AppTextStyle.headlineLStyle.copyWith(fontSize: 16.sp),
+                style: AppTextStyle.headlineLStyle.copyWith(fontSize: isTab ? 10.sp : 16.sp),
               ),
               SizedBox(height: 3.h),
               Text(
                 subtitle,
                 style: AppTextStyle.mediumStyle.copyWith(
-                  fontSize: 12.sp,
+                  fontSize: isTab ? 8.sp : 12.sp,
                   color: AppColors.blackTextColor,
                   overflow: TextOverflow.ellipsis
                 ),

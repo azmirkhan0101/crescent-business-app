@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:organization/controller/redeem/redeem_controller.dart';
+import 'package:organization/core/context_extension.dart';
 import 'package:organization/features/redeem_rewards/widgets/qr_code_redeem.dart';
 import 'package:organization/features/redeem_rewards/widgets/static_code_redeem.dart';
 import 'package:organization/features/widgets/custom_text.dart';
@@ -60,6 +61,9 @@ class _RedeemScannerScreenState extends State<RedeemScannerScreen> {
 
   @override
   Widget build(BuildContext context) {
+
+    bool isTab = context.isTab;
+
     return Scaffold(
       resizeToAvoidBottomInset: true,
       body: Container(
@@ -87,7 +91,7 @@ class _RedeemScannerScreenState extends State<RedeemScannerScreen> {
                               text: "Redeem",
                               color: AppColors.blackTextColor,
                               fontWeight: FontWeight.w700,
-                              fontSize: 24.sp,
+                              fontSize: isTab ? 16.sp : 24.sp,
                               language: true,
                             ),
                           ),
@@ -108,9 +112,9 @@ class _RedeemScannerScreenState extends State<RedeemScannerScreen> {
                           ),
                           child: Row(
                             children: [
-                              _buildTabButton("QR Code", 0),
+                              _buildTabButton("QR Code", 0, isTab),
                               //_buildTabButton("NFC", 1),
-                              _buildTabButton("Static Code", 1),
+                              _buildTabButton("Static Code", 1, isTab),
                             ],
                           ),
                         ),
@@ -128,7 +132,7 @@ class _RedeemScannerScreenState extends State<RedeemScannerScreen> {
   }
 
   //Tab Button
-  Widget _buildTabButton(String text, int index) {
+  Widget _buildTabButton(String text, int index, bool isTab) {
     final bool isSelected = _selectedIndex == index;
 
     return Expanded(
@@ -150,7 +154,7 @@ class _RedeemScannerScreenState extends State<RedeemScannerScreen> {
             text,
             style: TextStyle(
               color: isSelected ? Colors.white : Colors.black,
-              fontWeight: FontWeight.w600,
+              fontWeight: FontWeight.w600, fontSize: isTab ? 10.sp : null
             ),
           ),
         ),

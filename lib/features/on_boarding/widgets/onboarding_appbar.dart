@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
+import 'package:organization/core/context_extension.dart';
 import 'package:organization/features/on_boarding/widgets/text_progress_widget.dart';
 
 import '../../../utils/assets_gen/assets.gen.dart';
@@ -20,6 +21,9 @@ class OnBoardingAppbarWidget extends StatelessWidget {
   final Widget? suffix;
   @override
   Widget build(BuildContext context) {
+
+    bool isTab = context.isTab;
+
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
@@ -28,8 +32,8 @@ class OnBoardingAppbarWidget extends StatelessWidget {
             Get.back();
           },
           child: Container(
-            height: 40,
-            width: 40,
+            height: isTab ? 60 : 40,
+            width: isTab ? 60 : 40,
             decoration: const BoxDecoration(
               shape: BoxShape.circle,
               color: Color(0xFFF5F4F6),
@@ -37,8 +41,8 @@ class OnBoardingAppbarWidget extends StatelessWidget {
             child: Center(
               child: SvgPicture.asset(
                 Assets.icons.backIcon,
-                height: 20.h,
-                width: 19.w,
+                height: isTab ? 40 : 20.h,
+                width: isTab ? 40 : 19.w,
               ),
             ),
           ),

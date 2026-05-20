@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:organization/controller/home/home_controller.dart';
+import 'package:organization/core/context_extension.dart';
 import 'package:organization/data/models/home/recent_activity_model.dart';
 import 'package:organization/features/home/widget/activity_list_tile_widget.dart';
 import 'package:organization/features/home/widget/bar_chart_widget.dart';
@@ -24,6 +25,7 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
 
     recentItemCount = 0;
+    bool isTab = context.isTab;
 
     return SafeArea(
       child: Scaffold(
@@ -46,13 +48,14 @@ class HomeScreen extends StatelessWidget {
                     return HomeHeaderWidget(
                       userName: controller.userName.value,
                       profileImageUrl: controller.profileImageUrl.value,
+                      isTab: isTab,
                     );
                   }),
                   Text(
                     "Overview",
                     style: GoogleFonts.familjenGrotesk(
                       color: AppColors.blackTextColor,
-                      fontSize: 20.sp,
+                      fontSize: isTab ? 12.sp : 20.sp,
                       fontWeight: FontWeight.w600,
                     ),
                   ),
@@ -77,13 +80,14 @@ class HomeScreen extends StatelessWidget {
                                 ?.overview
                                 .lastSevenDaysRedeemed ??
                                 0,
-                            percentage: controller.homeStatModel.value?.overview.sevenDaysGrowthPercentage.toDouble() ?? 0.0,
+                            percentage: controller.homeStatModel.value?.overview.sevenDaysGrowthPercentage.toDouble() ?? 0.0, isTab: isTab,
                           );
                         }),
                       ),
                       Expanded(
                         child: Obx((){
                           return HomeCardWidget(
+                            isTab: isTab,
                             topIcon: Assets.icons.activeRewards,
                             title: 'Active Rewards',
                             bottomText:
@@ -103,6 +107,7 @@ class HomeScreen extends StatelessWidget {
                   //bar chart
                   Obx(() {
                     return HomeBarChartWidget(
+                      isTab: isTab,
                       stats: controller.monthlyStats,
                       activityPercentage:
                           controller
@@ -122,7 +127,7 @@ class HomeScreen extends StatelessWidget {
                         "Recent Activity",
                         style: GoogleFonts.familjenGrotesk(
                           color: AppColors.blackTextColor,
-                          fontSize: 20.sp,
+                          fontSize: isTab ? 12.sp : 20.sp,
                           fontWeight: FontWeight.w600,
                         ),
                       ),
@@ -135,7 +140,7 @@ class HomeScreen extends StatelessWidget {
                           fontWeight: FontWeight.w400,
                           color: AppColors.primaryColor,
                           language: false,
-                          fontSize: 14.sp,
+                          fontSize: isTab ? 10.sp : 14.sp,
                         ),
                       ),
                     ],
@@ -152,7 +157,7 @@ class HomeScreen extends StatelessWidget {
                         color: AppColors.white,
                         borderRadius: BorderRadius.circular(12.r),
                       ),
-                      padding: EdgeInsets.all(12.w),
+                      padding: EdgeInsets.all( isTab ? 20 : 12.w),
                       child: Obx(() {
                         if (controller.isRecentActivityLoading.value) {
                           //LOADING
@@ -161,7 +166,7 @@ class HomeScreen extends StatelessWidget {
                             controller.recentActivities.isEmpty) {
                           //NO DATA
                           return Center(
-                            child: Text("No recent activities found."),
+                            child: Text("No recent activities found." , style: TextStyle(fontSize: isTab ? 8.sp : null)),
                           );
                         } else {
                           recentItemCount = 0;

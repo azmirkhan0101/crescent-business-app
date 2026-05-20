@@ -13,11 +13,12 @@ class HomeHeaderWidget extends StatelessWidget {
 
   final String? profileImageUrl;
   final String? userName;
+  final bool isTab;
 
   const HomeHeaderWidget({
     super.key,
     required this.profileImageUrl,
-    required this.userName
+    required this.userName, required this.isTab
   });
 
   @override
@@ -34,8 +35,8 @@ class HomeHeaderWidget extends StatelessWidget {
             child: Row(
               children: [
                 Container(
-                  width: 45.w,
-                  height: 45.h,
+                  width: isTab ? 80 : 45.w,
+                  height: isTab ? 80 : 45.h,
                   decoration: BoxDecoration(
                     color: Colors.white,
                     shape: BoxShape.circle,
@@ -53,7 +54,7 @@ class HomeHeaderWidget extends StatelessWidget {
                     Text(
                       userName == null || userName!.isEmpty ? "User"  : userName!,
                       style: AppTextStyle.headlineLStyle.copyWith(
-                        fontSize: 20.sp,
+                        fontSize: isTab ? 12.sp : 20.sp,
                       ),
                     ),
                   ],
@@ -67,8 +68,8 @@ class HomeHeaderWidget extends StatelessWidget {
               Get.toNamed(AppRoutes.notification);
             },
             child: Container(
-              width: 40.w,
-              height: 40.h,
+              width: isTab ? 80 : 40.w,
+              height: isTab ? 80 : 40.h,
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
                 color: Colors.white,
@@ -91,7 +92,7 @@ class HomeHeaderWidget extends StatelessWidget {
                   Positioned(
                     top: 10,
                     right: 10,
-                    child: CircleAvatar(radius: 4.r, backgroundColor: Colors.red),
+                    child: CircleAvatar(radius: isTab ? 6 : 4.r, backgroundColor: Colors.red),
                   ),
                 ],
               ),

@@ -13,6 +13,7 @@ import 'package:organization/features/reward/widget/online_options_widget.dart';
 import 'package:organization/features/widgets/custom_card_widget.dart';
 import 'package:organization/utils/app_text_styles.dart';
 
+import '../../core/context_extension.dart';
 import '../../utils/app_color.dart';
 import '../../utils/app_text.dart';
 import '../widgets/custom_button_widget.dart';
@@ -25,18 +26,21 @@ class EditRewardScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
+    bool isTab = context.isTab;
+
     return Scaffold(
       appBar: AppBar(
         forceMaterialTransparency: true,
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back_ios, color: Colors.black, size: 20),
+          icon:  Icon(Icons.arrow_back_ios, color: Colors.black, size: isTab ? 40 : 20),
           onPressed: () {
             Get.back();
           },
         ),
         title: Text(
           'Edit Reward',
-          style: AppTextStyle.headlineLStyle.copyWith(fontSize: 20.sp),
+          style: AppTextStyle.headlineLStyle.copyWith(fontSize: isTab ? 14.sp : 20.sp),
         ),
         centerTitle: true,
       ),
@@ -49,7 +53,7 @@ class EditRewardScreen extends StatelessWidget {
             Text(
               'Reward Details',
               style: TextStyle(
-                fontSize: 16.sp,
+                fontSize: isTab ? 12.sp : 16.sp,
                 fontWeight: FontWeight.w600,
                 color: AppColors.blackTextColor,
               ),
@@ -94,7 +98,7 @@ class EditRewardScreen extends StatelessWidget {
                       CustomButton(
                         height: 40,
                         buttonTextStyle: AppTextStyle.buttonTextStyle.copyWith(
-                          fontSize: 12.sp,
+                          fontSize: isTab ? 10.sp : 12.sp,
                           fontWeight: FontWeight.w600,
                         ),
 
@@ -109,7 +113,7 @@ class EditRewardScreen extends StatelessWidget {
                       CustomButton(
                         height: 40,
                         buttonTextStyle: AppTextStyle.buttonTextStyle.copyWith(
-                          fontSize: 12.sp,
+                          fontSize: isTab ? 10.sp : 12.sp,
                           fontWeight: FontWeight.w600,
                           color: AppColors.white
                         ),
@@ -149,7 +153,7 @@ class EditRewardScreen extends StatelessWidget {
             ),
             Obx((){
               if( controller.isInstore.value ){
-                return inStoreOptions();
+                return inStoreOptions(isTab);
               }else{
                 String fileName = controller.csvFileName.value;
                 if( fileName.isEmpty ){
@@ -188,7 +192,7 @@ class EditRewardScreen extends StatelessWidget {
                 },
                 buttonTextStyle: GoogleFonts.familjenGrotesk(
                   color: AppColors.buttonTextColor,
-                  fontSize: 18.sp,
+                  fontSize: isTab ? 12.sp :  18.sp,
                   fontWeight: FontWeight.w700,
                 ),
               );
@@ -290,12 +294,12 @@ class EditRewardScreen extends StatelessWidget {
 
 
   //INSTORE OPTIONS
-  inStoreOptions() {
+  inStoreOptions(bool isTab) {
     return Column(
       children: [
         Obx((){
           return CustomCard(
-              height: 52.h,
+              height: isTab ? 80 : 52.h,
               child: CustomCheckbox(
                   title: "QR Code",
                   isChecked: controller.qrCode.value,
@@ -308,7 +312,7 @@ class EditRewardScreen extends StatelessWidget {
         SizedBox(height: 8.h),
         Obx((){
           return CustomCard(
-              height: 52.h,
+              height: isTab ? 80 : 52.h,
               child: CustomCheckbox(
                   title: "NFC Tap",
                   isChecked: controller.nfcTap.value,
@@ -321,7 +325,7 @@ class EditRewardScreen extends StatelessWidget {
         SizedBox(height: 8.h),
         Obx((){
           return CustomCard(
-              height: 52.h,
+              height: isTab ? 80 : 52.h,
               child: CustomCheckbox(
                   title: "Static Code",
                   isChecked: controller.staticCode.value,

@@ -6,6 +6,8 @@ import 'package:image_picker/image_picker.dart';
 import 'package:organization/utils/app_color.dart';
 import 'package:shimmer/shimmer.dart';
 
+import '../../../core/context_extension.dart';
+
 class BusinessProfileWidget extends StatefulWidget {
   final String? coverImageUrl;
   final String? logoImageUrl;
@@ -48,13 +50,16 @@ class _BusinessProfileWidgetState extends State<BusinessProfileWidget> {
 
   @override
   Widget build(BuildContext context) {
+
+    bool isTab = context.isTab;
+
     return Stack(
       clipBehavior: Clip.none,
       alignment: Alignment.topCenter,
       children: [
         /// ---------------- COVER ----------------
         Container(
-          height: 120.h,
+          height: isTab ? 220 : 120.h,
           width: double.infinity,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(16.r),
@@ -86,8 +91,8 @@ class _BusinessProfileWidgetState extends State<BusinessProfileWidget> {
             alignment: Alignment.center,
             children: [
               Container(
-                width: 80.w,
-                height: 80.h,
+                width: isTab ? 150 : 80.w,
+                height: isTab ? 150 : 80.h,
                 decoration: BoxDecoration(
                   color: Colors.white,
                   shape: BoxShape.circle,

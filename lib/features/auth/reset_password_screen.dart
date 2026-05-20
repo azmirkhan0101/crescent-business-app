@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:organization/controller/auth/reset_password_controller.dart';
+import 'package:organization/core/context_extension.dart';
 import 'package:organization/features/auth/widgets/custom_auth_appbar.dart';
 import 'package:organization/features/auth/widgets/password_requirement_widget.dart';
 import 'package:organization/features/auth/widgets/rich_text_widget.dart';
@@ -124,7 +125,7 @@ class ResetPasswordScreen extends StatelessWidget {
                 },
                 buttonTextStyle: GoogleFonts.familjenGrotesk(
                   color: AppColors.buttonTextColor,
-                  fontSize: 18.sp,
+                  fontSize: context.isTab ? 12.sp : 18.sp,
                   fontWeight: FontWeight.w700,
                 ),
               );

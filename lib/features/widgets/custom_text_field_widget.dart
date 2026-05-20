@@ -5,6 +5,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:organization/utils/assets_gen/assets.gen.dart';
 
+import '../../core/context_extension.dart';
 import '../../utils/app_color.dart';
 
 class CustomTextField extends StatefulWidget {
@@ -74,6 +75,9 @@ class _CustomTextFieldState extends State<CustomTextField> {
 
   @override
   Widget build(BuildContext context) {
+
+    bool isTab = context.isTab;
+
     return TextFormField(
       onTap: widget.onTap,
       autovalidateMode: AutovalidateMode.onUserInteraction,
@@ -89,7 +93,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
       style:
           widget.inputTextStyle ??
           GoogleFonts.inter(
-            fontSize: 14.sp,
+            fontSize: isTab ? 10.sp : 14.sp,
             fontWeight: FontWeight.w500,
             color: AppColors.blackTextColor,
           ),
@@ -107,7 +111,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
         hintStyle:
             widget.hintStyle ??
             GoogleFonts.inter(
-              fontSize: 14.sp,
+              fontSize: isTab ? 10.sp : 14.sp,
               fontWeight: FontWeight.w500,
               color: AppColors.hintTextColor,
             ),

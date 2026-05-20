@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:organization/core/context_extension.dart';
 import 'package:organization/utils/app_color.dart';
 import 'package:organization/utils/app_text_styles.dart';
 
@@ -16,6 +17,7 @@ class StaticCodeWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
+    bool isTab = context.isTab;
     final RedeemController controller = Get.find<RedeemController>();
 
     return Column(
@@ -25,11 +27,12 @@ class StaticCodeWidget extends StatelessWidget {
           "Enter Redeem Code",
           style: AppTextStyle.headlineLStyle.copyWith(
             fontWeight: FontWeight.w600,
+            fontSize: isTab ? 12.sp : null
           ),
         ),
         SizedBox(height: 150.h),
         SizedBox(
-          height: 70.h,
+          height: isTab ? 120 : 70.h,
           width: 279.w,
           child: CustomCard(
             child: Center(

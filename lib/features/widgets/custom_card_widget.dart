@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:organization/core/context_extension.dart';
 import 'package:organization/utils/app_color.dart';
 
 class CustomCard extends StatelessWidget {
@@ -22,6 +23,7 @@ class CustomCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
     return Card(
 
       color: color ?? AppColors.white,
@@ -38,7 +40,7 @@ class CustomCard extends StatelessWidget {
        // height: height,
         height: height ,
         width: width,
-        padding: padding ?? EdgeInsets.all(16.w),
+        padding: padding ?? EdgeInsets.all( context.isTab ? 20 : 16.w),
         alignment: alignment, //
         child: child,
       ),

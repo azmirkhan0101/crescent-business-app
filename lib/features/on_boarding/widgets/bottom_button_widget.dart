@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:organization/core/context_extension.dart';
 import '../../../utils/app_color.dart';
 import '../../widgets/custom_button_widget.dart';
 
@@ -14,6 +15,9 @@ class BottomButtonWidget extends StatelessWidget {
   final String buttonText;
   @override
   Widget build(BuildContext context) {
+
+    bool isTab = context.isTab;
+
     return Padding(
       padding: EdgeInsets.only(bottom: 20.h),
       child: Row(
@@ -22,7 +26,7 @@ class BottomButtonWidget extends StatelessWidget {
           CustomButton(
             buttonTextStyle: GoogleFonts.familjenGrotesk(
               color: AppColors.buttonTextColor,
-              fontSize: 18.sp,
+              fontSize: isTab ? 12.sp : 18.sp,
               fontWeight: FontWeight.w700,
             ),
             text: buttonText,

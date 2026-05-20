@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:organization/core/context_extension.dart';
 import 'package:organization/features/widgets/custom_asset_image.dart';
 import 'package:organization/utils/app_color.dart';
 import 'package:organization/utils/app_text_styles.dart';
@@ -20,6 +21,9 @@ class UploadImageSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
+    bool isTab = context.isTab;
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -79,14 +83,14 @@ class UploadImageSection extends StatelessWidget {
                     const SizedBox(height: 5),
                     Text(
                       'Tap to upload',
-                      style:AppTextStyle.mediumStyle.copyWith(fontWeight: FontWeight.w600,color: AppColors.blackTextColor),
+                      style:AppTextStyle.mediumStyle.copyWith(fontWeight: FontWeight.w600,color: AppColors.blackTextColor, fontSize:  isTab ? 8.sp : null),
                     ),
                   ],
                 ),
               ),
                Text(
                 'PNG, JPG (max size 2 MB)',
-                style:AppTextStyle.mediumStyle.copyWith(fontSize: 12.sp,color: Color(0xFF777777)),
+                style:AppTextStyle.mediumStyle.copyWith(fontSize: isTab ? 8.sp : 12.sp,color: Color(0xFF777777)),
               ),
                SizedBox(height: 10),
               //divider========================
@@ -103,7 +107,7 @@ class UploadImageSection extends StatelessWidget {
                     child: Text(
                       'Or',
                       style: AppTextStyle.mediumStyle.copyWith(
-                        fontSize: 12.sp,
+                        fontSize: isTab ? 8.sp : 12.sp,
                         color: const Color(0xFF777777),
                       ),
                     ),
@@ -139,7 +143,7 @@ class UploadImageSection extends StatelessWidget {
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                   style: TextStyle(
-                    fontSize: 16.sp,
+                    fontSize: isTab ? 10.sp : 16.sp,
                     fontWeight: FontWeight.w600,
                     color: AppColors.buttonTextColor,
                   ),

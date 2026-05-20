@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:organization/features/widgets/custom_text.dart';
 import 'package:organization/utils/assets_gen/assets.gen.dart';
 
@@ -14,13 +15,14 @@ class HomeAnalyticsCard extends StatelessWidget {
   final int count;
   final double percentage;
   final bool isIncrease;
+  final bool isTab;
 
   const HomeAnalyticsCard({
     super.key,
     required this.timeLine,
     required this.count,
     required this.percentage,
-    required this.isIncrease,
+    required this.isIncrease, required this.isTab,
   });
 
 
@@ -34,7 +36,7 @@ class HomeAnalyticsCard extends StatelessWidget {
 
 
     return CustomCard(
-      height: 162.h,
+      height: isTab ? 310 : 162.h,
       color: AppColors.white,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -43,8 +45,8 @@ class HomeAnalyticsCard extends StatelessWidget {
           SvgPicture.asset(
             Assets.icons.scanQrCode,
               colorFilter: ColorFilter.mode(Color(0xFFC08FFF), BlendMode.srcIn),
-              height: 24.h,
-              width: 24.w
+              height: isTab ? 50 : 24.h,
+              width: isTab ? 50 : 24.w
           ),
 
           SizedBox(height: 8.h),
@@ -52,7 +54,11 @@ class HomeAnalyticsCard extends StatelessWidget {
           /// Title
           Text(
               'Redemptions',
-              style: AppTextStyle.cardTextStyle
+              style: GoogleFonts.inter(
+                fontWeight: FontWeight.w500,
+                fontSize: isTab ? 10.sp : 16.sp,
+                color: AppColors.blackTextColor,
+              )
           ),
           SizedBox(height: 4.h),
 
@@ -60,7 +66,7 @@ class HomeAnalyticsCard extends StatelessWidget {
           Text(
             timeLine,
             style: AppTextStyle.mediumStyle.copyWith(
-              fontSize: 12.sp,
+              fontSize: isTab ? 8.sp:  12.sp,
               color: Color(0xFF848484),
             ),
           ),

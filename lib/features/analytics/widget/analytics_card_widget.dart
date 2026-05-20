@@ -4,6 +4,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:organization/features/widgets/custom_text.dart';
 import 'package:organization/utils/assets_gen/assets.gen.dart';
 
+import '../../../core/context_extension.dart';
 import '../../../utils/app_color.dart';
 import '../../../utils/app_text_styles.dart';
 import '../../widgets/custom_card_widget.dart';
@@ -29,6 +30,8 @@ class AnalyticsCardWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
+    bool isTab = context.isTab;
+
     String percentageText =
     percentage % 1 == 0
         ? percentage.toInt().toString()
@@ -36,7 +39,7 @@ class AnalyticsCardWidget extends StatelessWidget {
 
 
     return CustomCard(
-      height: 162.h,
+      height: isTab ? 300 : 162.h,
       color: AppColors.white,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -45,8 +48,8 @@ class AnalyticsCardWidget extends StatelessWidget {
           SvgPicture.asset(
               isProfileViewsCard ? Assets.icons.profileIcon : Assets.icons.clickIcon,
               //color: topIconColor,
-              height: 24.h,
-              width: 24.w
+              height: isTab ? 40 : 24.h,
+              width: isTab ? 40 : 24.w
           ),
 
           SizedBox(height: 8.h),
@@ -54,7 +57,7 @@ class AnalyticsCardWidget extends StatelessWidget {
           /// Title
           Text(
               isProfileViewsCard ? "Profile Views" : "Website Visits",
-              style: AppTextStyle.cardTextStyle
+              style: AppTextStyle.cardTextStyle.copyWith(fontSize: isTab ? 10.sp : null)
           ),
           SizedBox(height: 4.h),
 
@@ -62,7 +65,7 @@ class AnalyticsCardWidget extends StatelessWidget {
           Text(
             timeLine,
             style: AppTextStyle.mediumStyle.copyWith(
-              fontSize: 12.sp,
+              fontSize: isTab ? 8.sp : 12.sp,
               color: Color(0xFF848484),
             ),
           ),

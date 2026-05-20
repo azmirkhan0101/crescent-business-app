@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:organization/controller/profile/profile_settings_controller.dart';
+import 'package:organization/core/context_extension.dart';
 import 'package:organization/features/auth/widgets/custom_auth_appbar.dart';
 import 'package:organization/features/widgets/text_field_title_widget.dart';
 
@@ -159,7 +160,7 @@ class ChangePasswordScreen extends StatelessWidget {
             Center(
               child: CustomButton(
                 buttonTextStyle: GoogleFonts.familjenGrotesk(
-                    color: AppColors.buttonTextColor,fontSize: 18.sp,fontWeight: FontWeight.w700),
+                    color: AppColors.buttonTextColor,fontSize: context.isTab ? 12.sp : 18.sp,fontWeight: FontWeight.w700),
                 text: "Save",
                 onPressed: () {
                   controller.changePassword();

@@ -4,6 +4,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:organization/controller/analytics/analytics_controller.dart';
+import 'package:organization/core/context_extension.dart';
 import 'package:organization/features/analytics/widget/analytics_card_widget.dart';
 import 'package:organization/features/analytics/widget/analytics_chart_widget.dart';
 import 'package:organization/features/analytics/widget/bottom_sheet_widget.dart';
@@ -22,6 +23,9 @@ class AnalyticsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
+    bool isTab = context.isTab;
+
     return SafeArea(
       child: Scaffold(
         extendBody: true,
@@ -49,7 +53,7 @@ class AnalyticsScreen extends StatelessWidget {
                       'Analytics',
                       style: GoogleFonts.familjenGrotesk(
                         fontWeight: FontWeight.bold,
-                        fontSize: 20,
+                        fontSize: isTab ? 12.sp : 20,
                         color: AppColors.headlineTColor,
                       ),
                     ),
@@ -72,6 +76,7 @@ class AnalyticsScreen extends StatelessWidget {
                           child: DropdownButtonHideUnderline(
                               child: Obx((){
                                 return DropdownButton<String>(
+                                  dropdownColor: Colors.white,
                                   value: controller.selectedTimeline.value,
                                   icon: const Icon(
                                     Icons.keyboard_arrow_down,
@@ -94,7 +99,7 @@ class AnalyticsScreen extends StatelessWidget {
                                         padding: const EdgeInsets.symmetric(
                                           horizontal: 12.0,
                                         ),
-                                        child: Text(value),
+                                        child: Text(value, style: TextStyle(fontSize: isTab ? 8.sp : null),),
                                       ),
                                     );
                                   }).toList(),
@@ -110,7 +115,7 @@ class AnalyticsScreen extends StatelessWidget {
                             style: ButtonStyle(
                                 backgroundColor: WidgetStatePropertyAll(AppColors.white),
                                 elevation: WidgetStatePropertyAll(4), shadowColor: WidgetStatePropertyAll(Color(0x199E9E9E))),
-                            icon: Icon(Icons.upload, size: 20, color: AppColors.black,)
+                            icon: Icon(Icons.upload, size: isTab ? 35 : 20, color: AppColors.black,)
                         ),
                       ],
                     ),
@@ -180,14 +185,14 @@ class AnalyticsScreen extends StatelessWidget {
                         children: [
                           SvgPicture.asset(
                             Assets.icons.topRewards,
-                            height: 24.h,
-                            width: 24.w,
+                            height: isTab ? 40 :  24.h,
+                            width: isTab ? 40 : 24.w,
                           ),
                           SizedBox(width: 8.w),
                           CustomText(
                             text: "Top Rewards",
                             fontWeight: FontWeight.w500,
-                            fontSize: 14.sp,
+                            fontSize: isTab ? 12.sp : 14.sp,
                             color: AppColors.blackTextColor,
                           ),
                         ],
@@ -199,7 +204,7 @@ class AnalyticsScreen extends StatelessWidget {
                           return Center(
                             child: Padding(
                               padding: EdgeInsets.symmetric( vertical: 15.h),
-                              child: Text( "No top rewards found", style: TextStyle(color: AppColors.black),),
+                              child: Text( "No top rewards found", style: TextStyle(color: AppColors.black, fontSize: isTab ? 8.sp : null),),
                             ),
                           );
                         }else{
@@ -220,7 +225,7 @@ class AnalyticsScreen extends StatelessWidget {
 
 
   //TOP REWARD LIST
-  topRewardList(BuildContext context){
+  ListView topRewardList(BuildContext context){
     return ListView.builder(
       shrinkWrap: true,
       itemCount: controller.topRewards.length,

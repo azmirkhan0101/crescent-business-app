@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:organization/core/context_extension.dart';
 
 class ProfileAvatar extends StatefulWidget {
 
@@ -19,11 +20,14 @@ class _ProfileAvatarState extends State<ProfileAvatar> {
 
   @override
   Widget build(BuildContext context) {
+
+    bool isTab = context.isTab;
+
     return Stack(
       children: [
         Container(
-          height: 140.w,
-          width: 140.w,
+          height: isTab ? 180 : 140.w,
+          width: isTab ? 180 : 140.w,
           decoration: BoxDecoration(
             shape: BoxShape.circle,
             border: Border.all(color: Colors.grey.shade300, width: 2),
@@ -54,8 +58,8 @@ class _ProfileAvatarState extends State<ProfileAvatar> {
           child: GestureDetector(
             onTap: widget.pickImage,
             child: Container(
-              height: 32.w,
-              width: 32.w,
+              height: isTab ? 60 : 32.w,
+              width: isTab ? 60 : 32.w,
               decoration: const BoxDecoration(
                 color: Colors.black,
                 shape: BoxShape.circle,
