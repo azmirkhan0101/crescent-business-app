@@ -4,6 +4,7 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:organization/core/api_response.dart';
 import 'package:organization/core/api_service.dart';
 import 'package:organization/routes/app_pages.dart';
@@ -15,6 +16,7 @@ import '../../core/app_validator.dart';
 import '../../core/show_snackbar.dart';
 import '../../core/subscription_service.dart';
 import '../../data/models/profile/business_profile_model.dart';
+import '../../services/google_signin_service.dart';
 
 class LoginController extends GetxController {
   final ApiService apiService = Get.find<ApiService>();
@@ -24,6 +26,7 @@ class LoginController extends GetxController {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
 
+  //=================RAW LOGIN=====================
   Future<void> login() async {
     if (isLoginLoading.value) return;
 
@@ -72,6 +75,23 @@ class LoginController extends GetxController {
     }
   }
 
+  //================GOOGLE SIGN IN==================
+  Future<void> loginWithGoogle() async{
+    GoogleSigninService authService = GoogleSigninService();
+    try{
+      GoogleSignInAccount signInAccount = await authService.signInWithGoogle();
+      GoogleSignInAuthentication signInAuthentication = authService.getAuthTokens( signInAccount );
+    }catch(e){
+      print("Google auth error: $e");
+    }
+  }
+
+  String? getHighResImageUrl(String? url) {
+    if (url == null) return null;
+    return url.replaceAll('s96-c', 's500-c');
+  }
+
+  //=====================FCM UPDATE================
   Future<void> updateFcmToken() async {
     String deviceType = Platform.isAndroid ? 'android' : 'ios';
 
@@ -106,6 +126,7 @@ class LoginController extends GetxController {
     getProfileData();
   }
 
+  //===============GET PROFILE=====================
   Future<void> getProfileData() async {
     ApiResponse response = await apiService.networkRequest(
         method: 'GET',
@@ -153,6 +174,7 @@ class LoginController extends GetxController {
     }
   }
 
+  //==========================SAVE TOKENS==========
   void saveOtpResponse(Map<String, dynamic> response) {
     final accessToken = response["data"]["accessToken"];
     final refreshToken = response["data"]["refreshToken"];

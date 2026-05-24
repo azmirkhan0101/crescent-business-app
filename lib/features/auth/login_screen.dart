@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:organization/controller/auth/login_controller.dart';
@@ -105,7 +106,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           language: false,
                           fontWeight: FontWeight.w400,
                           color: AppColors.blackTextColor,
-                          fontSize: 14.sp,
+                          fontSize: 12.sp,
                         ),
                       ],
                     ),
@@ -124,7 +125,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           language: false,
                           fontWeight: FontWeight.w400,
                           color: AppColors.buttonTextColor,
-                          fontSize: 14.sp,
+                          fontSize: 12.sp,
                         ),
                         Container(
                           height: 1.h,
@@ -164,6 +165,61 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
               );
             }),
+            const SizedBox(height: 20,),
+            //===================GOOGLE APPLE LOGIN========================
+            Row(
+              mainAxisSize: MainAxisSize.max,
+              mainAxisAlignment: MainAxisAlignment.center,
+              spacing: 15,
+              children: [
+                GestureDetector(
+                  onTap: () {
+                    controller.loginWithGoogle();
+                  },
+                  child: Container(
+                    width: 40,
+                    height: 40,
+                    padding: const EdgeInsets.all(6),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(12),
+                      color: Colors.white,
+                      shape: BoxShape.rectangle,
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withValues(alpha: 0.08),
+                          spreadRadius: 1,
+                          blurRadius: 10,
+                          offset: const Offset(0, 4),
+                        ),
+                      ],
+                    ),
+                    child: SvgPicture.asset("assets/icons/google.svg"),
+                  ),
+                ),
+                GestureDetector(
+                  onTap: () {},
+                  child: Container(
+                    width: 40,
+                    height: 40,
+                    padding: const EdgeInsets.all(6),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(12),
+                      color: Colors.white,
+                      shape: BoxShape.rectangle,
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withValues(alpha: 0.08),
+                          spreadRadius: 1,
+                          blurRadius: 10,
+                          offset: const Offset(0, 4),
+                        ),
+                      ],
+                    ),
+                    child: SvgPicture.asset("assets/icons/apple.svg"),
+                  ),
+                ),
+              ],
+            ),
             SizedBox(height: AppSizes.paddingMedium),
             RichTextWidget(
               firstText: AppText.dontHaveAccount,

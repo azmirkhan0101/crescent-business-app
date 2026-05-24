@@ -2,7 +2,8 @@ class ApiEndpoints {
 
   //=======================BASE====================================
   //BASE URL
-  static const baseUrl = "https://server.crescentchange.com/api/v1";
+  //static const baseUrl = "https://server.crescentchange.com/api/v1";
+  static const baseUrl = "http://10.10.20.42:5000/api/v1";
   //static const baseUrl = "http://13.55.115.124:5000/api/v1";
 
   //=======================AUTH====================================
