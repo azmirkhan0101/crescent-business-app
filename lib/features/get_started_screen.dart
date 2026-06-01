@@ -15,10 +15,13 @@ import 'package:organization/utils/app_text.dart';
 import 'package:organization/utils/assets_gen/assets.gen.dart';
 
 import '../../utils/assets_path.dart';
+import '../controller/auth/login_controller.dart';
 import 'auth/widgets/rich_text_widget.dart';
 
 class GetStartedScreen extends StatelessWidget {
-  const GetStartedScreen({super.key});
+  GetStartedScreen({super.key});
+
+  final LoginController controller = Get.find<LoginController>();
 
   @override
   Widget build(BuildContext context) {
@@ -131,6 +134,61 @@ class GetStartedScreen extends StatelessWidget {
                   fontSize: isTab ? 12.sp : 18.sp,
                   fontWeight: FontWeight.w700,
                 ),
+              ),
+              SizedBox(height: 12.h),
+              //===================GOOGLE APPLE LOGIN========================
+              Row(
+                mainAxisSize: MainAxisSize.max,
+                mainAxisAlignment: MainAxisAlignment.center,
+                spacing: 30,
+                children: [
+                  GestureDetector(
+                    onTap: () {
+                      controller.loginWithGoogle();
+                    },
+                    child: Container(
+                      width: 45,
+                      height: 45,
+                      padding: const EdgeInsets.all(6),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(12),
+                        color: Colors.white,
+                        shape: BoxShape.rectangle,
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black.withValues(alpha: 0.08),
+                            spreadRadius: 1,
+                            blurRadius: 10,
+                            offset: const Offset(0, 4),
+                          ),
+                        ],
+                      ),
+                      child: SvgPicture.asset("assets/icons/google.svg"),
+                    ),
+                  ),
+                  GestureDetector(
+                    onTap: () {},
+                    child: Container(
+                      width: 45,
+                      height: 45,
+                      padding: const EdgeInsets.all(6),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(12),
+                        color: Colors.white,
+                        shape: BoxShape.rectangle,
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black.withValues(alpha: 0.08),
+                            spreadRadius: 1,
+                            blurRadius: 10,
+                            offset: const Offset(0, 4),
+                          ),
+                        ],
+                      ),
+                      child: SvgPicture.asset("assets/icons/apple.svg"),
+                    ),
+                  ),
+                ],
               ),
               SizedBox(height: 12.h),
               RichTextWidget(

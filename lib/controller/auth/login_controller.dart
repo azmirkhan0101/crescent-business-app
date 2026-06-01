@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -49,8 +50,7 @@ class LoginController extends GetxController {
     );
 
     if (response.statusCode == 200) {
-      Map<String, dynamic> responseData = response.data;
-      saveOtpResponse(responseData);
+      saveOtpResponse(response.data);
       updateFcmToken();
     } else if (response.statusCode == 400) {
       isLoginLoading.value = false;
@@ -65,24 +65,105 @@ class LoginController extends GetxController {
       Get.offNamed(AppRoutes.verifyNow);
     } else if (response.statusCode == 401) {
       isLoginLoading.value = false;
-      showSnackBar(title: "Incorrect password!", message: "The password you entered is incorrect.", backgroundColor: AppColors.errorRed);
+      showSnackBar(
+        title: "Incorrect password!",
+        message: "The password you entered is incorrect.",
+        backgroundColor: AppColors.errorRed,
+      );
     } else if (response.statusCode == 404) {
       isLoginLoading.value = false;
-      showSnackBar(title: "Account not found!", message: response.data['message'] ?? "No account found matching this email. Try creating an account.", backgroundColor: AppColors.errorRed);
+      showSnackBar(
+        title: "Account not found!",
+        message:
+            response.data['message'] ??
+            "No account found matching this email. Try creating an account.",
+        backgroundColor: AppColors.errorRed,
+      );
     } else {
       isLoginLoading.value = false;
-      showSnackBar(title: "Login Failed!", message: "Please try again.", backgroundColor: AppColors.errorRed);
+      showSnackBar(
+        title: "Login Failed!",
+        message: "Please try again.",
+        backgroundColor: AppColors.errorRed,
+      );
     }
   }
 
   //================GOOGLE SIGN IN==================
-  Future<void> loginWithGoogle() async{
-    GoogleSigninService authService = GoogleSigninService();
-    try{
-      GoogleSignInAccount signInAccount = await authService.signInWithGoogle();
-      GoogleSignInAuthentication signInAuthentication = authService.getAuthTokens( signInAccount );
-    }catch(e){
-      print("Google auth error: $e");
+  Future<void> loginWithGoogle() async {
+    try {
+      isLoginLoading.value = true;
+
+      final GoogleSigninService googleSignInService = GoogleSigninService();
+
+      final GoogleSignInAccount account = await googleSignInService
+          .signInWithGoogle();
+
+      final GoogleSignInAuthentication auth = googleSignInService.getAuthTokens(
+        account
+      );
+
+      final AuthCredential authCredential = GoogleAuthProvider.credential( idToken: auth.idToken );
+
+      final UserCredential userCredential = await FirebaseAuth.instance.signInWithCredential( authCredential );
+      String? firebaseIdToken = await userCredential.user?.getIdToken();
+      print("Firebase ID Token: $firebaseIdToken");
+      if( firebaseIdToken == null ){
+        throw Exception("Failed to retrieve Firebase ID Token.");
+      }
+
+      //TODO: 1. Send `googleAuthData` to your backend API here manually.
+      Map<String, dynamic> credentials = {
+        "role": "BUSINESS",
+        "firebaseIdToken": firebaseIdToken
+      };
+      ApiResponse response = await apiService.networkRequest(
+        method: 'POST',
+        isAuthRequired: false,
+        endPoint: ApiEndpoints.socialLogin,
+        body: credentials
+      );
+      print("Payload for Backend: $credentials");
+
+      print("Social auth code: ${response.statusCode}");
+      print("Social auth response: ${response.data}");
+
+      if( response.statusCode == 200 || response.statusCode == 201 ){
+        bool requiresProfile = response.data['data']['requiresProfile'];
+        print("Requires profile = $requiresProfile");
+
+        if( requiresProfile ){
+          //TODO: PROFILE SETUP
+        }else{
+          saveOtpResponse(response.data);
+          updateFcmToken();
+        }
+      }else{
+        showApiSnackBar(statusCode: response.statusCode, data: response.data );
+      }
+
+      // 4. Send `googleAuthData` to your backend API here manually.
+      // Example:
+      // final response = await yourBackendApi.login(googleAuthData);
+      // if (response.statusCode == 200) {
+      //   Get.offAllNamed('/home');
+      // }
+    } on GoogleSignInException catch (e) {
+      print("Google Sign-In Error Code: ${e.code}");
+      print("Description: ${e.description}");
+      print("Details: ${e.details}");
+
+      if (e.code != GoogleSignInExceptionCode.canceled) {
+        showSnackBar(
+            title: "Authentication Error",
+            message: e.description ?? "Google Sign-In was not successful.",
+            backgroundColor: AppColors.errorRed
+        );
+      }
+    } catch (e) {
+      errorSnackBar();
+    }finally{
+      isLoginLoading.value = false;
     }
   }
 
@@ -97,30 +178,30 @@ class LoginController extends GetxController {
 
     String? token;
 
-    if( Platform.isIOS ){
+    if (Platform.isIOS) {
       String? apnsToken;
-      for( int i = 0; i < 5; i++ ){
+      for (int i = 0; i < 5; i++) {
         apnsToken = await FirebaseMessaging.instance.getAPNSToken();
-        if( apnsToken != null ){
+        if (apnsToken != null) {
           break;
         }
         await Future.delayed(const Duration(seconds: 2));
       }
     }
 
-    try{
+    try {
       token = await FirebaseMessaging.instance.getToken();
-    }catch(e){}
+    } catch (e) {}
 
     print("FCM token: $token");
 
     final payLoad = {"fcmToken": token, "deviceType": deviceType};
 
     await apiService.networkRequest(
-        method: 'PATCH',
-        isAuthRequired: true,
-        endPoint: ApiEndpoints.updateFcmToken,
-        body: payLoad
+      method: 'PATCH',
+      isAuthRequired: true,
+      endPoint: ApiEndpoints.updateFcmToken,
+      body: payLoad,
     );
 
     getProfileData();
@@ -129,17 +210,19 @@ class LoginController extends GetxController {
   //===============GET PROFILE=====================
   Future<void> getProfileData() async {
     ApiResponse response = await apiService.networkRequest(
-        method: 'GET',
-        isAuthRequired: true,
-        endPoint: ApiEndpoints.getProfile,
-      shouldPrint: true
+      method: 'GET',
+      isAuthRequired: true,
+      endPoint: ApiEndpoints.getProfile,
+      shouldPrint: true,
     );
 
     isLoginLoading.value = false;
 
     if (response.statusCode == 200) {
       storage.write(requireVerificationKey, false);
-      BusinessProfileModel model = BusinessProfileModel.fromJson(response.data['data']);
+      BusinessProfileModel model = BusinessProfileModel.fromJson(
+        response.data['data'],
+      );
 
       storage.write(businessProfileModelKey, model.toJson());
       storage.write(businessIdKey, model.businessId);
@@ -159,18 +242,23 @@ class LoginController extends GetxController {
 
       // Proceed if backend OR RC is active
       if (SubscriptionService.to.hasPremium) {
-        showSnackBar(title: "Logged in!", message: "You have successfully logged in.", backgroundColor: AppColors.successGreen);
+        showSnackBar(
+          title: "Logged in!",
+          message: "You have successfully logged in.",
+          backgroundColor: AppColors.successGreen,
+        );
         Get.offAllNamed(AppRoutes.mainNav);
       } else {
-        showSnackBar(title: "Subscription Required!", message: "Your free premium has expired. Please subscribe.", backgroundColor: AppColors.warningYellow);
+        showSnackBar(
+          title: "Subscription Required!",
+          message: "Your free premium has expired. Please subscribe.",
+          backgroundColor: AppColors.warningYellow,
+        );
         Get.offAllNamed(AppRoutes.paywallScreen);
       }
-    } else if (response.statusCode == 401) {
+    } else{
       storage.erase();
-      showSnackBar(title: "Session Expired!", message: "Please try again.", backgroundColor: AppColors.errorRed);
-    } else {
-      storage.erase();
-      showSnackBar(title: "Error!", message: "Something went wrong. Please try again", backgroundColor: AppColors.errorRed);
+      showApiSnackBar(statusCode: response.statusCode, data: response.data);
     }
   }
 

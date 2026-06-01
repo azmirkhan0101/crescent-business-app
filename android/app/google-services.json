@@ -12,7 +12,28 @@
           "package_name": "com.crescentchange.businessapp"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "279971282218-d8rmf0ines2bv1ptlucu6755h9qgr0tj.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.crescentchange.businessapp",
+            "certificate_hash": "39a7ed2f6c55753d97e9edd5ff517ce0e830d13a"
+          }
+        },
+        {
+          "client_id": "279971282218-p54akokagg73l3tiqiu7hv1bshm4174n.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.crescentchange.businessapp",
+            "certificate_hash": "9e7c1c312283d70622b0ca758342be2b4c7bbe6f"
+          }
+        },
+        {
+          "client_id": "279971282218-kbv6uk6nr362lgca2u1c3scoph5p713c.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyBtYbM_8J9kYgQljNOd5ek_JPBimh4rynU"
@@ -20,7 +41,55 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "279971282218-kbv6uk6nr362lgca2u1c3scoph5p713c.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "279971282218-h2an2l9086tshdqj9jgofhtqdbs61ol8.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.crescentchange.donorapp"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:279971282218:android:439868f63b898bfe87b253",
+        "android_client_info": {
+          "package_name": "com.crescentchange.donorapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "279971282218-kbv6uk6nr362lgca2u1c3scoph5p713c.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBtYbM_8J9kYgQljNOd5ek_JPBimh4rynU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "279971282218-kbv6uk6nr362lgca2u1c3scoph5p713c.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "279971282218-h2an2l9086tshdqj9jgofhtqdbs61ol8.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.crescentchange.donorapp"
+              }
+            }
+          ]
         }
       }
     }

@@ -1,6 +1,7 @@
 //SHOW SNACKBAR
 import 'dart:ui';
 
+import 'package:flutter/material.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_navigation/src/extension_navigation.dart';
 import 'package:organization/utils/app_color.dart';
@@ -11,6 +12,43 @@ void showSnackBar({required String title, required String message, required Colo
       message,
       backgroundColor: backgroundColor,
       colorText: textColor
+  );
+}
+
+void showApiSnackBar({
+  required int? statusCode,
+  dynamic data,
+  String? msg
+}) {
+  String title;
+  Color backgroundColor;
+
+  String message = msg ?? (data?['message']?.toString().trim().isNotEmpty == true
+      ? data['message']
+      : "Something went wrong. Please try again.");
+
+  if (statusCode == null) {
+    title = "Error";
+    backgroundColor = Colors.grey;
+  } else if (statusCode >= 200 && statusCode < 300) {
+    title = "Success";
+    backgroundColor = Colors.green;
+  } else if (statusCode >= 400 && statusCode < 500) {
+    title = "Attention";
+    backgroundColor = Colors.orange;
+  } else if (statusCode >= 500) {
+    title = "Failed";
+    backgroundColor = Colors.red;
+  } else {
+    title = "Error";
+    backgroundColor = Colors.grey;
+  }
+
+  Get.snackbar(
+      title,
+      message,
+      backgroundColor: backgroundColor,
+      colorText: Colors.white
   );
 }
 

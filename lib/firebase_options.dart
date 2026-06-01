@@ -63,6 +63,8 @@ class DefaultFirebaseOptions {
     messagingSenderId: '279971282218',
     projectId: 'crescent-change-a7f3e',
     storageBucket: 'crescent-change-a7f3e.firebasestorage.app',
+    androidClientId: '279971282218-d8rmf0ines2bv1ptlucu6755h9qgr0tj.apps.googleusercontent.com',
+    iosClientId: '279971282218-rbuo2s2m1lkeoa69jm5jlllmu6kutdh6.apps.googleusercontent.com',
     iosBundleId: 'com.crescentchange.businessapp',
   );
 

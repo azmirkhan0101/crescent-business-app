@@ -33,7 +33,7 @@ class ApiService extends GetxService {
     required bool isAuthRequired,
     required String endPoint,
     Map<String, dynamic>? body,
-    int timeout = 12,
+    int timeout = 25,
     bool shouldPrint = false
   }) async {
     var result;

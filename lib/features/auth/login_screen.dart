@@ -170,15 +170,15 @@ class _LoginScreenState extends State<LoginScreen> {
             Row(
               mainAxisSize: MainAxisSize.max,
               mainAxisAlignment: MainAxisAlignment.center,
-              spacing: 15,
+              spacing: 30,
               children: [
                 GestureDetector(
                   onTap: () {
                     controller.loginWithGoogle();
                   },
                   child: Container(
-                    width: 40,
-                    height: 40,
+                    width: 45,
+                    height: 45,
                     padding: const EdgeInsets.all(6),
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(12),
@@ -199,8 +199,8 @@ class _LoginScreenState extends State<LoginScreen> {
                 GestureDetector(
                   onTap: () {},
                   child: Container(
-                    width: 40,
-                    height: 40,
+                    width: 45,
+                    height: 45,
                     padding: const EdgeInsets.all(6),
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(12),
