@@ -17,6 +17,7 @@ import '../../core/subscription_service.dart';
 import '../../utils/app_color.dart';
 
 class OtpVerificationController extends GetxController {
+
   final ApiService apiService = Get.find<ApiService>();
   final TextEditingController otpController = TextEditingController();
   var isOtpValid = false.obs;
@@ -71,7 +72,7 @@ class OtpVerificationController extends GetxController {
     }
   }
 
-  updateFcmToken() async {
+  Future<void> updateFcmToken() async {
     String deviceType = Platform.isAndroid ? 'android' : 'ios';
 
     String? token;
@@ -101,10 +102,10 @@ class OtpVerificationController extends GetxController {
       body: payLoad,
     );
 
-    getProfileData();
+    await getProfileData();
   }
 
-  getProfileData() async {
+  Future<void> getProfileData() async {
     ApiResponse response = await apiService.networkRequest(
       method: 'GET',
       isAuthRequired: true,

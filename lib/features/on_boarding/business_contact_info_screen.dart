@@ -32,21 +32,23 @@ class BusinessContactInfoScreen extends StatelessWidget {
           children: [
             SizedBox(height: 60.h),
             OnBoardingAppbarWidget(
-              suffix:GestureDetector(
-                onTap: (){//SKIP NUMBER AND EMAIL - WEBSITE IS MUST
-                  if( controller.isValidWebsiteUrl() ){
-                    controller.businessSignupModel.businessPhoneNumber = "";
-                    controller.businessSignupModel.businessEmail = "";
-                    Get.toNamed(AppRoutes.storeLocation);
-                  }else{
-                    showSnackBar(
-                        title: "Business website required",
-                        message: "A valid business website is required.",
-                        backgroundColor: AppColors.warningYellow
-                    );
-                  }
-                },
-                  child: CustomText(text: AppText.skip,fontSize: 14.sp,color: AppColors.secondaryTextColor,fontWeight: FontWeight.w400,)),
+              // suffix:GestureDetector(
+              //   onTap: (){
+              //     //SKIP NUMBER AND EMAIL - WEBSITE IS MUST
+              //     if( controller.isValidWebsiteUrl() ){
+              //       controller.businessSignupModel.businessPhoneNumber = "";
+              //       controller.businessSignupModel.businessEmail = "";
+              //       Get.toNamed(AppRoutes.storeLocation);
+              //     }else{
+              //       showSnackBar(
+              //           title: "Business website required",
+              //           message: "A valid business website is required.",
+              //           backgroundColor: AppColors.warningYellow
+              //       );
+              //     }
+              //   },
+              //     child: CustomText(text: AppText.skip,fontSize: 14.sp,color: AppColors.secondaryTextColor,fontWeight: FontWeight.w400,)
+              // ),
               totalSteps: 6,
               currentStep: 5,
               title: "Contact",

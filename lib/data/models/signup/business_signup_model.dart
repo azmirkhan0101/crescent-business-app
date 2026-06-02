@@ -52,7 +52,7 @@ class BusinessSignupModel{
       "businessEmail": businessEmail,
       "businessWebsite": businessWebsite,
       "locations": locations,
-      "role": "BUSINESS",
+      "role": "BUSINESS"
     };
   }
 

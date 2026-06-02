@@ -156,6 +156,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 isLoading: controller.isLoginLoading.value,
                 text: "Login",
                 onPressed: () {
+                  controller.deActivateSocialLogin();
                   controller.login();
                 },
                 buttonTextStyle: GoogleFonts.familjenGrotesk(
@@ -174,6 +175,7 @@ class _LoginScreenState extends State<LoginScreen> {
               children: [
                 GestureDetector(
                   onTap: () {
+                    controller.activateSocialLogin();
                     controller.loginWithGoogle();
                   },
                   child: Container(
@@ -197,7 +199,9 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                 ),
                 GestureDetector(
-                  onTap: () {},
+                  onTap: () {
+                    controller.activateSocialLogin();
+                  },
                   child: Container(
                     width: 45,
                     height: 45,

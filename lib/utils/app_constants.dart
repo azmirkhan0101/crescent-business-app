@@ -1,4 +1,5 @@
 //GET STORAGE KEYS
+const String isSocialAuthKey = "isSocialAuthKey";
 const String isSignupKey = "isSignupKey";
 const String emailKey = "emailKey";
 const String businessIdKey = "businessIdKey";

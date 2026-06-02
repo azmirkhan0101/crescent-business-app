@@ -27,6 +27,16 @@ class LoginController extends GetxController {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
 
+  //===============ACTIVATE SOCIAL LOGIN=================
+  Future<void> activateSocialLogin() async{
+    await storage.write( isSocialAuthKey, true );
+  }
+
+  //=================DEACTIVATE SOCIAL LOGIN=============
+  Future<void> deActivateSocialLogin() async{
+    await storage.write( isSocialAuthKey, false );
+  }
+
   //=================RAW LOGIN=====================
   Future<void> login() async {
     if (isLoginLoading.value) return;
@@ -112,10 +122,10 @@ class LoginController extends GetxController {
         throw Exception("Failed to retrieve Firebase ID Token.");
       }
 
-      //TODO: 1. Send `googleAuthData` to your backend API here manually.
       Map<String, dynamic> credentials = {
         "role": "BUSINESS",
-        "firebaseIdToken": firebaseIdToken
+        "firebaseIdToken": firebaseIdToken,
+        "displayName": account.displayName ?? "Unknown"
       };
       ApiResponse response = await apiService.networkRequest(
         method: 'POST',
@@ -123,6 +133,7 @@ class LoginController extends GetxController {
         endPoint: ApiEndpoints.socialLogin,
         body: credentials
       );
+      print("Endpoint: ${ApiEndpoints.socialLogin}");
       print("Payload for Backend: $credentials");
 
       print("Social auth code: ${response.statusCode}");
@@ -130,12 +141,12 @@ class LoginController extends GetxController {
 
       if( response.statusCode == 200 || response.statusCode == 201 ){
         bool requiresProfile = response.data['data']['requiresProfile'];
+        saveOtpResponse(response.data);
         print("Requires profile = $requiresProfile");
 
         if( requiresProfile ){
-          //TODO: PROFILE SETUP
+          Get.offAllNamed(AppRoutes.categorySelection);
         }else{
-          saveOtpResponse(response.data);
           updateFcmToken();
         }
       }else{
@@ -201,7 +212,7 @@ class LoginController extends GetxController {
       method: 'PATCH',
       isAuthRequired: true,
       endPoint: ApiEndpoints.updateFcmToken,
-      body: payLoad,
+      body: payLoad
     );
 
     getProfileData();
@@ -213,7 +224,7 @@ class LoginController extends GetxController {
       method: 'GET',
       isAuthRequired: true,
       endPoint: ApiEndpoints.getProfile,
-      shouldPrint: true,
+      shouldPrint: true
     );
 
     isLoginLoading.value = false;

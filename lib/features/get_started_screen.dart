@@ -127,6 +127,7 @@ class GetStartedScreen extends StatelessWidget {
               CustomButton(
                 text: AppText.getStarted,
                 onPressed: () {
+                  controller.deActivateSocialLogin();
                   Get.toNamed(AppRoutes.categorySelection);
                 },
                 buttonTextStyle: GoogleFonts.familjenGrotesk(
@@ -144,6 +145,7 @@ class GetStartedScreen extends StatelessWidget {
                 children: [
                   GestureDetector(
                     onTap: () {
+                      controller.activateSocialLogin();
                       controller.loginWithGoogle();
                     },
                     child: Container(
@@ -167,7 +169,9 @@ class GetStartedScreen extends StatelessWidget {
                     ),
                   ),
                   GestureDetector(
-                    onTap: () {},
+                    onTap: () {
+                      controller.activateSocialLogin();
+                    },
                     child: Container(
                       width: 45,
                       height: 45,

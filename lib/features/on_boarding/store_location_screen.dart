@@ -46,7 +46,11 @@ class StoreLocationScreen extends StatelessWidget {
               suffix: GestureDetector(
                 onTap: () {
                   controller.businessSignupModel.locations = [];
-                  controller.signup();
+                  if( controller.checkSocialAuth() ){
+                    controller.setupBusinessProfile();
+                  }else{
+                    controller.signup();
+                  }
                 },
                 child:CustomText(text: AppText.skip,fontSize: 14.sp,color: AppColors.secondaryTextColor,fontWeight: FontWeight.w400,),
               ),
@@ -95,7 +99,11 @@ class StoreLocationScreen extends StatelessWidget {
                 text: AppText.continueText,
                 onPressed: () {
                   controller.businessSignupModel.locations = locationNames;
-                  controller.signup();
+                  if( controller.checkSocialAuth() ){
+                    controller.setupBusinessProfile();
+                  }else{
+                    controller.signup();
+                  }
                 },
                 buttonTextStyle: GoogleFonts.familjenGrotesk(
                   color: AppColors.buttonTextColor,
@@ -174,4 +182,3 @@ class StoreLocationScreen extends StatelessWidget {
     );
   }
 }
-

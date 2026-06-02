@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:organization/controller/auth/otp_verification_controller.dart';
 import 'package:organization/core/api_response.dart';
 import 'package:organization/core/api_service.dart';
 import 'package:organization/data/models/signup/business_signup_model.dart';
@@ -29,6 +30,11 @@ class SignUpController extends GetxController {
   final storage = GetStorage();
   RxBool isSignupLoading = false.obs;
 
+  //================CHECK SOCIAL AUTH===================
+  bool checkSocialAuth(){
+    return storage.read( isSocialAuthKey ) ?? false;
+  }
+
   //VALIDATE INFORMATION OF BUSINESS INFO
   void validateBusinessInfo() async {
     if (nameController.text.trim().isEmpty ||
@@ -44,7 +50,17 @@ class SignUpController extends GetxController {
     businessSignupModel.name = nameController.text.trim();
     businessSignupModel.tagline = taglineController.text.trim();
     businessSignupModel.description = descriptionController.text.trim();
-    Get.toNamed(AppRoutes.accountCreation);
+
+    //AUTH FLOW CONTROL IF SOCIAL LOGIN
+    //SKIP EMAIL PASS IN ACCOUNT CREATION SCREEN IF SOCIAL AUTH
+    bool isSocialAuth = storage.read( isSocialAuthKey ) ?? false;
+    if( isSocialAuth ){
+      businessSignupModel.email = "";
+      businessSignupModel.password = "";
+      Get.toNamed(AppRoutes.uploadLogo);
+    }else{
+      Get.toNamed(AppRoutes.accountCreation);
+    }
   }
 
   //VALIDATE INFORMATION OF ACCOUNT CREATION- EMAIL, PASSWORD
@@ -63,6 +79,7 @@ class SignUpController extends GetxController {
 
   //BUSINESS PHONE NUMBER VALIDATION
   bool validatePhoneNumber() {
+    //if( businessPhoneController.text.trim().isEmpty ) return true;//bypass if field is empty
     final regex = RegExp(
       r'^\+?1?\d{9,15}$',
     ); // Supports optional country code and 9-15 digits
@@ -71,6 +88,7 @@ class SignUpController extends GetxController {
 
   //BUSINESS PHONE NUMBER VALIDATION
   bool validateBusinessEmail() {
+    //if( businessEmailController.text.trim().isEmpty ) return true;//bypass if field is empty
     return RegExp(
       r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$',
     ).hasMatch(businessEmailController.text.trim());
@@ -78,7 +96,7 @@ class SignUpController extends GetxController {
 
   //BUSINESS WEBSITE VALIDATION
   bool isValidWebsiteUrl() {
-    if (businessWebsiteController.text.trim().isEmpty) return false;
+    //if (businessWebsiteController.text.trim().isEmpty) return false;
 
     final uri = Uri.tryParse(businessWebsiteController.text.trim());
 
@@ -182,6 +200,28 @@ class SignUpController extends GetxController {
     }
   }
 
+  //===========UPDATE BUSINESS PROFILE ON SOCIAL AUTH============
+  Future<void> setupBusinessProfile() async {
+    isSignupLoading.value = true;
+    ApiResponse response = await apiService.multipartRequest(
+        method: "PATCH",
+        endPoint: ApiEndpoints.updateProfile,
+        isAuthRequired: true,
+        fields: businessSignupModel.toJson(),
+        logoImage: businessSignupModel.logo,
+    );
+
+
+
+    if (response.statusCode == 200 || response.statusCode == 201 ) {
+      final OtpVerificationController otpController = Get.find<OtpVerificationController>();
+      await otpController.updateFcmToken();
+    } else {
+      showApiSnackBar(statusCode: response.statusCode, data: response.data);
+    }
+    isSignupLoading.value = false;
+  }
+
   @override
   void onClose() {
     emailController.dispose();
@@ -192,7 +232,6 @@ class SignUpController extends GetxController {
     nameController.dispose();
     taglineController.dispose();
     descriptionController.dispose();
-
     super.onClose();
   }
 }
