@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -198,9 +200,12 @@ class _LoginScreenState extends State<LoginScreen> {
                     child: SvgPicture.asset("assets/icons/google.svg"),
                   ),
                 ),
+                //==================APPLE LOGIN IF IOS====================
+                if( Platform.isIOS )
                 GestureDetector(
                   onTap: () {
                     controller.activateSocialLogin();
+                    controller.loginWithApple();
                   },
                   child: Container(
                     width: 45,

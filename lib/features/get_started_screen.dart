@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -168,9 +169,12 @@ class GetStartedScreen extends StatelessWidget {
                       child: SvgPicture.asset("assets/icons/google.svg"),
                     ),
                   ),
+                  //====================APPLE LOGIN IF IPHONE==============
+                  if( Platform.isIOS )
                   GestureDetector(
                     onTap: () {
                       controller.activateSocialLogin();
+                      controller.loginWithApple();
                     },
                     child: Container(
                       width: 45,

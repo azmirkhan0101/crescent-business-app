@@ -64,6 +64,8 @@ dependencies:
   purchases_ui_flutter: ^10.0.2
   google_sign_in: ^7.2.0
   firebase_auth: ^6.5.1
+  sign_in_with_apple: ^7.0.1
+  crypto: ^3.0.7
 
 
 

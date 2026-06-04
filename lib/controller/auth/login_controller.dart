@@ -1,5 +1,8 @@
+import 'dart:convert';
 import 'dart:io';
+import 'dart:math';
 
+import 'package:crypto/crypto.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
@@ -12,6 +15,7 @@ import 'package:organization/routes/app_pages.dart';
 import 'package:organization/utils/api_endpoints.dart';
 import 'package:organization/utils/app_color.dart';
 import 'package:organization/utils/app_constants.dart';
+import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 
 import '../../core/app_validator.dart';
 import '../../core/show_snackbar.dart';
@@ -152,13 +156,6 @@ class LoginController extends GetxController {
       }else{
         showApiSnackBar(statusCode: response.statusCode, data: response.data );
       }
-
-      // 4. Send `googleAuthData` to your backend API here manually.
-      // Example:
-      // final response = await yourBackendApi.login(googleAuthData);
-      // if (response.statusCode == 200) {
-      //   Get.offAllNamed('/home');
-      // }
     } on GoogleSignInException catch (e) {
       print("Google Sign-In Error Code: ${e.code}");
       print("Description: ${e.description}");
@@ -176,6 +173,130 @@ class LoginController extends GetxController {
     }finally{
       isLoginLoading.value = false;
     }
+  }
+
+  //==================APPLE SIGN IN=================
+  Future<void> loginWithApple() async {
+    // Only attempt Apple Sign-In on iOS devices
+    if (!Platform.isIOS) {
+      showSnackBar(
+          title: "Platform Error",
+          message: "Apple Sign-In is only supported on iOS devices.",
+          backgroundColor: AppColors.errorRed
+      );
+      return;
+    }
+
+    try {
+      isLoginLoading.value = true;
+
+      // 1. Generate secure nonces required for Firebase Apple Sign-In verification
+      final String rawNonce = _generateNonce();
+      final String hashedNonce = _sha256ofString(rawNonce);
+
+      // 2. Request credential from Apple
+      final AuthorizationCredentialAppleID appleCredential = await SignInWithApple.getAppleIDCredential(
+        scopes: [
+          AppleIDAuthorizationScopes.email,
+          AppleIDAuthorizationScopes.fullName,
+        ],
+        nonce: hashedNonce,
+      );
+
+      // 3. Construct OAuth credentials for Firebase
+      // Passing both rawNonce and authorizationCode ensures stable backend verification
+      final AuthCredential authCredential = OAuthProvider("apple.com").credential(
+        idToken: appleCredential.identityToken,
+        rawNonce: rawNonce,
+        accessToken: appleCredential.authorizationCode,
+      );
+
+      // 4. Authenticate user with Firebase
+      final UserCredential userCredential = await FirebaseAuth.instance.signInWithCredential(authCredential);
+
+      String? firebaseIdToken = await userCredential.user?.getIdToken();
+      print("Firebase ID Token: $firebaseIdToken");
+      if (firebaseIdToken == null) {
+        throw Exception("Failed to retrieve Firebase ID Token.");
+      }
+
+      // 5. Safely parse Name & Email
+      // (Apple only sends email/name on first auth; subsequent times are read from Firebase)
+      String email = appleCredential.email ?? userCredential.user?.email ?? "";
+      if (email.isEmpty) {
+        throw Exception("Failed to retrieve user email from Apple Sign-In.");
+      }
+
+      String displayName = "Unknown";
+      if (appleCredential.givenName != null) {
+        displayName = "${appleCredential.givenName} ${appleCredential.familyName ?? ''}".trim();
+      } else if (userCredential.user?.displayName != null && userCredential.user!.displayName!.isNotEmpty) {
+        displayName = userCredential.user!.displayName!;
+      }
+
+      // 6. Build Payload with 'BUSINESS' role to match your Google flow
+      Map<String, dynamic> credentials = {
+        "role": "BUSINESS",
+        "firebaseIdToken": firebaseIdToken,
+        "displayName": displayName
+      };
+
+      ApiResponse response = await apiService.networkRequest(
+          method: 'POST',
+          isAuthRequired: false,
+          endPoint: ApiEndpoints.socialLogin,
+          body: credentials
+      );
+
+      print("Endpoint: ${ApiEndpoints.socialLogin}");
+      print("Payload for Backend: $credentials");
+      print("Social auth code: ${response.statusCode}");
+      print("Social auth response: ${response.data}");
+
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        bool requiresProfile = response.data['data']['requiresProfile'];
+        saveOtpResponse(response.data);
+        print("Requires profile = $requiresProfile");
+
+        if (requiresProfile) {
+          Get.offAllNamed(AppRoutes.categorySelection);
+        } else {
+          updateFcmToken();
+        }
+      } else {
+        showApiSnackBar(statusCode: response.statusCode, data: response.data);
+      }
+
+    } on SignInWithAppleAuthorizationException catch (e) {
+      print("Apple Sign-In Error Code: ${e.code}");
+      print("Message: ${e.message}");
+
+      if (e.code != AuthorizationErrorCode.canceled) {
+        showSnackBar(
+            title: "Authentication Error",
+            message: e.message,
+            backgroundColor: AppColors.errorRed
+        );
+      }
+    } catch (e) {
+      errorSnackBar();
+    } finally {
+      isLoginLoading.value = false;
+    }
+  }
+
+  // Helper method: Generates a cryptographically secure random nonce
+  String _generateNonce([int length = 32]) {
+    const charset = '0123456789ABCDEFGHIJKLMNOPQRSTUVXYZabcdefghijklmnopqrstuvwxyz-._';
+    final random = Random.secure();
+    return List.generate(length, (_) => charset[random.nextInt(charset.length)]).join();
+  }
+
+  // Helper method: Returns the sha256 hash of the input in hex notation
+  String _sha256ofString(String input) {
+    final bytes = utf8.encode(input);
+    final digest = sha256.convert(bytes);
+    return digest.toString();
   }
 
   String? getHighResImageUrl(String? url) {
