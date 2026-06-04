@@ -6,10 +6,10 @@
 *.env
 
 # Local testing / dev-only files
-##z_test.dart
+z_test.dart
 commands.txt
 strings.txt
-##text.txt
+text.txt
 lib/tool/
 
 # Keystore & signing files
