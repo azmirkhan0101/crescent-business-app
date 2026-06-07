@@ -151,9 +151,16 @@ class AnalyticsExporter {
     bool isBytes = false,
   }) async {
     try {
+      // 1. Run a quick cleanup of old exports before creating a new one
+      await clearOldExportCache();
+
       // 1. Get the temporary directory (Requires 0 permissions on both Android and iOS)
       final tempDir = await getTemporaryDirectory();
-      final tempFile = File("${tempDir.path}/$fileName");
+      final exportDir = Directory("${tempDir.path}/exports");
+      if (!await exportDir.exists()) {
+        await exportDir.create(recursive: true);
+      }
+      final tempFile = File("${exportDir.path}/$fileName");
 
       // 2. Write the generated content to the temporary file
       if (isBytes) {
@@ -174,15 +181,15 @@ class AnalyticsExporter {
         //   message: 'File saved successfully.',
         //   backgroundColor: AppColors.successGreen,
         // );
-        _showNotification(finalPath);
+        _showNotification(tempFile.path, fileName);
       } else {
         debugPrint("User cancelled the save dialog");
+        // 4. Clean up the temporary file from cache
+        if (await tempFile.exists()) {
+          await tempFile.delete();
+        }
       }
 
-      // 4. Clean up the temporary file from cache
-      if (await tempFile.exists()) {
-        await tempFile.delete();
-      }
     } catch (e) {
       debugPrint('Error exporting file: $e');
       showSnackBar(
@@ -249,18 +256,34 @@ class AnalyticsExporter {
   }
 
   Future<void> _openDownloadedFile(String filePath) async {
+    // Crucial: Give the OS a brief moment (500ms) to bring your app fully into the
+    // foreground and bind its window token before launching the external file viewer intent.
+    await Future.delayed(const Duration(milliseconds: 500));
+
+    final file = File(filePath);
+    if (!await file.exists()) {
+      showSnackBar(
+        title: "File not found",
+        message: "The temporary file could not be located.",
+        backgroundColor: AppColors.errorRed,
+      );
+      return;
+    }
+
     final result = await OpenFilex.open(filePath);
 
     if (result.type != ResultType.done) {
       showSnackBar(
         title: "Cannot open file",
-        message: "Try opening from your device file manager.",
+        // Exposing result.message tells you exactly what went wrong natively
+        // (e.g., if the device lacks a PDF viewer app entirely)
+        message: result.message,
         backgroundColor: AppColors.warningYellow,
       );
     }
   }
 
-  void _showNotification(String path) async {
+  void _showNotification(String path, String fileName) async {
     const AndroidNotificationDetails androidPlatformChannelSpecifics =
         AndroidNotificationDetails(
           'export_channel_id',
@@ -284,15 +307,36 @@ class AnalyticsExporter {
       iOS: darwinPlatformChannelSpecifics, //Link iOS platform details
     );
 
-    // Get only the filename for the title
-    String fileName = path.split('/').last;
-
     await _notificationsPlugin.show(
       0, // Notification ID
       'File Saved Successfully',
-      fileName, // The body shows the filename
+      fileName,
       platformChannelSpecifics,
       payload: path, // Path passed so tapping opens the file on both platforms
     );
+  }
+
+  //Deletes cached exports older than 24 hours
+  Future<void> clearOldExportCache() async {
+    try {
+      final tempDir = await getTemporaryDirectory();
+      final exportDir = Directory('${tempDir.path}/exports');
+
+      if (await exportDir.exists()) {
+        final now = DateTime.now();
+        await for (final file in exportDir.list()) {
+          if (file is File) {
+            final lastModified = await file.lastModified();
+            if (now
+                .difference(lastModified)
+                .inHours > 6) {
+              await file.delete();
+            }
+          }
+        }
+      }
+    } catch (e) {
+      debugPrint('Error clearing export cache: $e');
+    }
   }
 }
