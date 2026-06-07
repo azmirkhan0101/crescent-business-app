@@ -189,7 +189,6 @@ class AnalyticsExporter {
           await tempFile.delete();
         }
       }
-
     } catch (e) {
       debugPrint('Error exporting file: $e');
       showSnackBar(
@@ -215,6 +214,13 @@ class AnalyticsExporter {
           // Set to false to request permissions on-demand later
           requestBadgePermission: false,
           requestSoundPermission: false,
+          defaultPresentAlert: true,
+          defaultPresentBadge: true,
+          defaultPresentSound: true,
+          defaultPresentBanner:
+              true, // Required to show foreground banners on iOS 14+
+          defaultPresentList:
+              true, // Required to show in notification center on iOS 14+
         );
 
     final InitializationSettings initializationSettings =
@@ -300,6 +306,8 @@ class AnalyticsExporter {
           presentAlert: true, // Display the banner on screen
           presentBadge: true, // Update the application badge
           presentSound: true, // Play default sound
+          presentBanner: true, // Forces the heads-up banner to pop up
+          presentList: true, // Places it in the list when pulled down
         );
 
     final NotificationDetails platformChannelSpecifics = NotificationDetails(
@@ -327,9 +335,7 @@ class AnalyticsExporter {
         await for (final file in exportDir.list()) {
           if (file is File) {
             final lastModified = await file.lastModified();
-            if (now
-                .difference(lastModified)
-                .inHours > 6) {
+            if (now.difference(lastModified).inHours > 6) {
               await file.delete();
             }
           }
