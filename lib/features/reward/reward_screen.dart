@@ -134,7 +134,7 @@ class RewardScreen extends StatelessWidget {
                         controller.rewards.isEmpty) {
                       return SizedBox(
                         height: MediaQuery.of(context).size.height * 0.7,
-                        child: Center(child: Text("No rewards found!")),
+                        child: Center(child: Text("No rewards found!", style: isTab ? TextStyle(fontSize: 12.sp) : null,)),
                       );
                     } else {
                       return rewardList(context: context);

@@ -44,7 +44,7 @@ class _MyProfileScreenState extends State<ProfileSettingsScreen> {
         ),
         title: CustomText(
           text: 'Profile',
-          fontSize: isTab ? 14.sp : 18.sp,
+          fontSize: isTab ? 16.sp : 18.sp,
           fontWeight: FontWeight.w700,
           color: AppColors.blackTextColor,
         ),
@@ -80,10 +80,11 @@ class _MyProfileScreenState extends State<ProfileSettingsScreen> {
                       })
                     ),
                   ),
+                  const SizedBox(height: 10,),
                   Obx((){
                     return CustomText(
                       text: controller.businessName.value,
-                      fontSize: isTab ? 14.sp : 24.sp,
+                      fontSize: isTab ? 16.sp : 24.sp,
                       fontWeight: FontWeight.w500,
                       color: const Color(0xFF000C0B),
                     );
@@ -94,7 +95,7 @@ class _MyProfileScreenState extends State<ProfileSettingsScreen> {
                   Obx((){
                     return CustomText(
                       text: controller.businessEmail.value,
-                      fontSize: 12.sp,
+                      fontSize: isTab ? 14.sp : 12.sp,
                       fontWeight: FontWeight.w400,
                       color: Colors.grey,
                     );
@@ -154,7 +155,7 @@ class _MyProfileScreenState extends State<ProfileSettingsScreen> {
             SizedBox(height: 24.h),
             ButtonWidget(
               label: "Logout",
-            buttonHeight: isTab ? 80 : 45,
+            buttonHeight: isTab ? 50 : 45,
             textColor: Color(0xFFE6283C),
               buttonRadius: 12,
               fontSize: isTab ? 10 : 16,
@@ -168,7 +169,7 @@ class _MyProfileScreenState extends State<ProfileSettingsScreen> {
             SizedBox( height: 20.h,),
             ButtonWidget(
                 label: "Delete Account",
-              buttonHeight: isTab ? 80 : 45,
+              buttonHeight: isTab ? 50 : 45,
               backgroundColor: Color(0xFFE6283C),
               buttonRadius: 12,
               fontSize: isTab ? 10 : 16,

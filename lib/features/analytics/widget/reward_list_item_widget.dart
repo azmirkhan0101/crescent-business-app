@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:organization/core/context_extension.dart';
 import 'package:organization/features/widgets/custom_asset_image.dart';
 import 'package:organization/utils/assets_gen/assets.gen.dart';
 
@@ -23,6 +24,9 @@ class RewardListItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
+    bool isTab = context.isTab;
+
     return Container(
       height: 36.h,
       padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 8.h),
@@ -61,8 +65,8 @@ class RewardListItem extends StatelessWidget {
               const SizedBox(width: 4.0),
               SvgPicture.asset(
                 Assets.icons.increaseIcon,
-                height: 14.h,
-                width: 14.w,
+                height: isTab ? 35 : 14.h,
+                width: isTab ? 35 : 14.w,
               ),
             ],
           ),

@@ -145,8 +145,8 @@ class _RewardCardState extends State<RewardCard> {
                         CustomAssetsImage(
                           assetsPath: AssetsPath.editIcon,
                           color: AppColors.black,
-                          height: isTab ? 40 : 14.h,
-                          width: isTab ? 40 : 14.w,
+                          height: isTab ? 25 : 14.h,
+                          width: isTab ? 25 : 14.w,
                         ),
                         SizedBox(width: 8.w),
                         Text(

@@ -140,7 +140,7 @@ class HomeScreen extends StatelessWidget {
                           fontWeight: FontWeight.w400,
                           color: AppColors.primaryColor,
                           language: false,
-                          fontSize: isTab ? 10.sp : 14.sp,
+                          fontSize: 14.sp,
                         ),
                       ),
                     ],

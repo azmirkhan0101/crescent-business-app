@@ -49,7 +49,7 @@ class HomeHeaderWidget extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text('Welcome Back!', style: AppTextStyle.mediumStyle),
+                    Text('Welcome Back!', style: isTab ? TextStyle(fontSize: 12.sp) : AppTextStyle.mediumStyle),
                     SizedBox(height: 2.h),
                     Text(
                       userName == null || userName!.isEmpty ? "User"  : userName!,

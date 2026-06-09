@@ -35,7 +35,7 @@ class HomeCardWidget extends StatelessWidget {
             /// Title
             CustomText(text: title,
               fontWeight: FontWeight.w500,
-              fontSize: isTab ? 12.sp : 16.sp,
+              fontSize: isTab ? 14.sp : 16.sp,
               color: AppColors.blackTextColor,
              language: false,
             ),

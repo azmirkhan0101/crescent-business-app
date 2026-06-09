@@ -108,11 +108,11 @@ class RedemptionChartWidget extends StatelessWidget {
                     SizedBox(width: 6.h),
                     Row(
                       children: [
-                        _buildLegendRow('QR', "$qrCount", qrChartColor ),
+                        _buildLegendRow('QR', "$qrCount", qrChartColor, isTab ),
                         SizedBox(width: 18.w),
-                        _buildLegendRow('NFC', "$nfcCount", nfcChartColor ),
+                        _buildLegendRow('NFC', "$nfcCount", nfcChartColor, isTab ),
                         SizedBox(width: 18.w),
-                        _buildLegendRow('Code', "$codeCount", codeChartColor ),
+                        _buildLegendRow('Code', "$codeCount", codeChartColor, isTab ),
                       ],
                     ),
                   ],
@@ -146,7 +146,7 @@ class RedemptionChartWidget extends StatelessWidget {
   }
 
   /// Legend builder
-  Widget _buildLegendRow(String title, String value, Color color) {
+  Widget _buildLegendRow(String title, String value, Color color, bool isTab) {
     return Padding(
       padding: EdgeInsets.symmetric(vertical: 2.h),
       child: Row(
@@ -164,7 +164,7 @@ class RedemptionChartWidget extends StatelessWidget {
             children: [
 
               CustomText(text: title,
-              fontSize: 12.sp,
+              fontSize: isTab ? 14.sp : 12.sp,
                 color: AppColors.secondaryTextColor,
                 fontWeight: FontWeight.w400,
                 language: false,
@@ -179,7 +179,7 @@ class RedemptionChartWidget extends StatelessWidget {
               //
 
               CustomText(text: value,
-                fontSize: 12.sp,
+                fontSize: isTab ? 14.sp : 12.sp,
                 color: AppColors.blackTextColor,
                 fontWeight: FontWeight.w600,
                 language: false,

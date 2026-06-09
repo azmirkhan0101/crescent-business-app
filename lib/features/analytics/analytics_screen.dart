@@ -192,7 +192,7 @@ class AnalyticsScreen extends StatelessWidget {
                           CustomText(
                             text: "Top Rewards",
                             fontWeight: FontWeight.w500,
-                            fontSize: isTab ? 12.sp : 14.sp,
+                            fontSize: isTab ? 14.sp : 14.sp,
                             color: AppColors.blackTextColor,
                           ),
                         ],
@@ -204,7 +204,7 @@ class AnalyticsScreen extends StatelessWidget {
                           return Center(
                             child: Padding(
                               padding: EdgeInsets.symmetric( vertical: 15.h),
-                              child: Text( "No top rewards found", style: TextStyle(color: AppColors.black, fontSize: isTab ? 8.sp : null),),
+                              child: Text( "No top rewards found", style: TextStyle(color: AppColors.black, fontSize: isTab ? 10.sp : null),),
                             ),
                           );
                         }else{

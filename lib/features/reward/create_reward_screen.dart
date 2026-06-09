@@ -75,7 +75,7 @@ class CreateRewardScreen extends StatelessWidget {
               language: true,
               fontWeight: FontWeight.w600,
               color: AppColors.blackTextColor,
-              fontSize: isTab ? 12.sp : 18.sp,
+              fontSize: isTab ? 15.sp : 18.sp,
             ),
             SizedBox(height: 12.h),
             CustomDropdown(

@@ -24,7 +24,7 @@ class RecentActivities extends StatelessWidget {
         forceMaterialTransparency: true,
         title: CustomText(text: "Recent Activities",
         fontWeight: FontWeight.w600,
-          fontSize: isTab ? 12.sp : 18,
+          fontSize: isTab ? 14.sp : 18,
         ),
         centerTitle: true,
         leading: IconButton(

@@ -86,7 +86,7 @@ class OverviewTab extends StatelessWidget {
               textAlign: TextAlign.justify,
               maxLines: null,
               language: false,
-              fontSize: isTab ? 12.sp : 14.sp,
+              fontSize: isTab ? 14.sp : 14.sp,
               fontWeight: FontWeight.w400,
               color: AppColors.blackTextColor,
             ),

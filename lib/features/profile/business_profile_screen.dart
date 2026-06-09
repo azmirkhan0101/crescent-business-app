@@ -34,7 +34,7 @@ class BusinessProfileScreen extends StatelessWidget {
           title: CustomText(
             text: "Business Profile",
             fontWeight: FontWeight.w700,
-            fontSize: isTab ? 14.sp : 20.sp,
+            fontSize: isTab ? 16.sp : 20.sp,
             color: AppColors.blackTextColor,
           ),
           actions: [
@@ -138,8 +138,8 @@ class BusinessProfileScreen extends StatelessWidget {
                   OverviewTab(model: controller.model.value!),
                   Obx(() {
                     if (controller.rewards.isEmpty) {
-                      return const Center(
-                        child: Text("No rewards found!"),
+                      return Center(
+                        child: Text("No rewards found!", style: isTab ? TextStyle(fontSize: 12.sp) : null,),
                       );
                     } else {
                       return RewardsTab(

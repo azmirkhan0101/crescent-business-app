@@ -24,9 +24,14 @@ class _CustomDropdownState extends State<CustomDropdown> {
     bool isTab = context.isTab;
 
     return DropdownButtonFormField<String>(
+      dropdownColor: Colors.white,
+      //itemHeight: isTab ? 150 : null,
       value: selectedValue,
       decoration: InputDecoration(
+        contentPadding: EdgeInsets.all(20),
         labelText: "Select Category",
+        labelStyle: isTab ? TextStyle(fontSize: 25) : null,
+        hintStyle: isTab ? TextStyle(fontSize: 25) : null,
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12),
         ),
@@ -34,7 +39,7 @@ class _CustomDropdownState extends State<CustomDropdown> {
       items: widget.items.map((item) {
         return DropdownMenuItem(
           value: item,
-          child: Text(item ,style: TextStyle(fontSize: isTab ? 6.sp : null),),
+          child: Text(item ,style: TextStyle(fontSize: isTab ? 10.sp : null),),
         );
       }).toList(),
       onChanged: (value) {

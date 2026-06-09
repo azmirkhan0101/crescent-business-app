@@ -181,8 +181,8 @@ class _LoginScreenState extends State<LoginScreen> {
                     controller.loginWithGoogle();
                   },
                   child: Container(
-                    width: 45,
-                    height: 45,
+                    width: isTab ? 60 : 45,
+                    height: isTab ? 60 : 45,
                     padding: const EdgeInsets.all(6),
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(12),
@@ -208,8 +208,8 @@ class _LoginScreenState extends State<LoginScreen> {
                     controller.loginWithApple();
                   },
                   child: Container(
-                    width: 45,
-                    height: 45,
+                    width: isTab ? 60 : 45,
+                    height: isTab ? 60 : 45,
                     padding: const EdgeInsets.all(6),
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(12),

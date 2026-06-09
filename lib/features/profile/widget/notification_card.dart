@@ -46,7 +46,7 @@ class NotificationCard extends StatelessWidget {
           textAlign: TextAlign.start,
           text: title,
           fontWeight: FontWeight.w500,
-          fontSize: isTab ? 12.sp : 14,
+          fontSize: isTab ? 14.sp : 14,
         ),
         subtitle: CustomText(
           maxLines: 8,
@@ -54,7 +54,7 @@ class NotificationCard extends StatelessWidget {
           text: subtitle,
           fontWeight: FontWeight.w400,
           color: const Color(0xFF808080),
-          fontSize: isTab ? 12.sp : 14,
+          fontSize: isTab ? 14.sp : 14,
         ),
         trailing: SizedBox(
           width: isTab ? 80 : 50.w,
