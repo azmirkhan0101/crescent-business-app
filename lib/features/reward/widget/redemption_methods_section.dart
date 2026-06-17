@@ -182,17 +182,17 @@ class _RedemptionMethodsSectionState extends State<RedemptionMethodsSection> {
             )
         ),
         SizedBox(height: 8.h),
-        CustomCard(
-          height: isTab ? 80 : 52.h,
-          child: CustomCheckbox(
-              title: "NFC Tap",
-              isChecked: widget.nfcTap,
-              onChanged: (isChecked){
-                widget.onNfcTapChanged( isChecked ?? false );
-              }
-          )
-        ),
-        SizedBox(height: 8.h),
+        // CustomCard(
+        //   height: isTab ? 80 : 52.h,
+        //   child: CustomCheckbox(
+        //       title: "NFC Tap",
+        //       isChecked: widget.nfcTap,
+        //       onChanged: (isChecked){
+        //         widget.onNfcTapChanged( isChecked ?? false );
+        //       }
+        //   )
+        // ),
+        // SizedBox(height: 8.h),
         CustomCard(
           height: isTab ? 80 : 52.h,
           child: CustomCheckbox(

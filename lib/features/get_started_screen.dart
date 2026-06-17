@@ -139,65 +139,65 @@ class GetStartedScreen extends StatelessWidget {
               ),
               SizedBox(height: 12.h),
               //===================GOOGLE APPLE LOGIN========================
-              Row(
-                mainAxisSize: MainAxisSize.max,
-                mainAxisAlignment: MainAxisAlignment.center,
-                spacing: 30,
-                children: [
-                  GestureDetector(
-                    onTap: () {
-                      controller.activateSocialLogin();
-                      controller.loginWithGoogle();
-                    },
-                    child: Container(
-                      width: isTab ? 60 : 45,
-                      height: isTab ? 60 : 45,
-                      padding: const EdgeInsets.all(6),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(12),
-                        color: Colors.white,
-                        shape: BoxShape.rectangle,
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.black.withValues(alpha: 0.08),
-                            spreadRadius: 1,
-                            blurRadius: 10,
-                            offset: const Offset(0, 4),
-                          ),
-                        ],
-                      ),
-                      child: SvgPicture.asset("assets/icons/google.svg"),
-                    ),
-                  ),
-                  //====================APPLE LOGIN IF IPHONE==============
-                  if( Platform.isIOS )
-                  GestureDetector(
-                    onTap: () {
-                      controller.activateSocialLogin();
-                      controller.loginWithApple();
-                    },
-                    child: Container(
-                      width: isTab ? 60 : 45,
-                      height: isTab ? 60 : 45,
-                      padding: const EdgeInsets.all(6),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(12),
-                        color: Colors.white,
-                        shape: BoxShape.rectangle,
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.black.withValues(alpha: 0.08),
-                            spreadRadius: 1,
-                            blurRadius: 10,
-                            offset: const Offset(0, 4),
-                          ),
-                        ],
-                      ),
-                      child: SvgPicture.asset("assets/icons/apple.svg"),
-                    ),
-                  ),
-                ],
-              ),
+              // Row(
+              //   mainAxisSize: MainAxisSize.max,
+              //   mainAxisAlignment: MainAxisAlignment.center,
+              //   spacing: 30,
+              //   children: [
+              //     GestureDetector(
+              //       onTap: () {
+              //         controller.activateSocialLogin();
+              //         controller.loginWithGoogle();
+              //       },
+              //       child: Container(
+              //         width: isTab ? 60 : 45,
+              //         height: isTab ? 60 : 45,
+              //         padding: const EdgeInsets.all(6),
+              //         decoration: BoxDecoration(
+              //           borderRadius: BorderRadius.circular(12),
+              //           color: Colors.white,
+              //           shape: BoxShape.rectangle,
+              //           boxShadow: [
+              //             BoxShadow(
+              //               color: Colors.black.withValues(alpha: 0.08),
+              //               spreadRadius: 1,
+              //               blurRadius: 10,
+              //               offset: const Offset(0, 4),
+              //             ),
+              //           ],
+              //         ),
+              //         child: SvgPicture.asset("assets/icons/google.svg"),
+              //       ),
+              //     ),
+              //     //====================APPLE LOGIN IF IPHONE==============
+              //     if( Platform.isIOS )
+              //     GestureDetector(
+              //       onTap: () {
+              //         controller.activateSocialLogin();
+              //         controller.loginWithApple();
+              //       },
+              //       child: Container(
+              //         width: isTab ? 60 : 45,
+              //         height: isTab ? 60 : 45,
+              //         padding: const EdgeInsets.all(6),
+              //         decoration: BoxDecoration(
+              //           borderRadius: BorderRadius.circular(12),
+              //           color: Colors.white,
+              //           shape: BoxShape.rectangle,
+              //           boxShadow: [
+              //             BoxShadow(
+              //               color: Colors.black.withValues(alpha: 0.08),
+              //               spreadRadius: 1,
+              //               blurRadius: 10,
+              //               offset: const Offset(0, 4),
+              //             ),
+              //           ],
+              //         ),
+              //         child: SvgPicture.asset("assets/icons/apple.svg"),
+              //       ),
+              //     ),
+              //   ],
+              // ),
               SizedBox(height: 12.h),
               RichTextWidget(
                 firstText: AppText.alreadyHaveAccount,
