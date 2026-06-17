@@ -15,7 +15,9 @@ import 'package:organization/features/on_boarding/store_location_screen.dart';
 import 'package:organization/features/on_boarding/upload_logo_screen.dart';
 import 'package:organization/features/on_boarding/verify_now_screen.dart';
 import 'package:organization/features/profile/change_password_screen.dart';
+import 'package:organization/features/profile/manage_subscription_screen.dart';
 import 'package:organization/features/profile/notification_screen.dart';
+import 'package:organization/features/profile/privacy_policy_screen.dart';
 import 'package:organization/features/profile/profile_settings_screen.dart';
 import 'package:organization/features/profile/terms_condition_screen.dart';
 import 'package:organization/features/reward/edit_reward_screen.dart';
@@ -52,6 +54,12 @@ class AppPages {
         }
     ),
     GetPage(
+        name: AppRoutes.privacyPolicy,
+        page: (){
+          return PrivacyPolicyScreen();
+        }
+    ),
+    GetPage(
         name: AppRoutes.termsCondition,
         page: (){
           return TermsConditionScreen();
@@ -67,6 +75,12 @@ class AppPages {
         name: AppRoutes.notification,
         page: (){
           return NotificationScreen();
+        }
+    ),
+    GetPage(
+        name: AppRoutes.manageSubscriptionScreen,
+        page: (){
+          return ManageSubscriptionScreen();
         }
     ),
     GetPage(

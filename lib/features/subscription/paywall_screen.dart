@@ -14,6 +14,10 @@ class PaywallScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: PaywallView(
+        displayCloseButton: true,
+        onDismiss: (){
+          Navigator.of(context).pop();
+        },
         offering: null, // Loads the default active offering and paywall configured in RC dashboard
         onPurchaseCompleted: (customerInfo, storeTransaction) async {
           await SubscriptionService.to.checkPremiumStatus();

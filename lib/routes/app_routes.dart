@@ -4,8 +4,11 @@ class AppRoutes {
 
   AppRoutes._();
 
+  //======================ONBOARDING================
   static const String splashScreen = '/splash-screen';
   static const String getStarted = '/get-started';
+
+  //======================AUTH======================
   static const String logIn = '/log-in';
   static const String resetPassword = '/reset-password';
   static const String verifyNow = '/verify-now';
@@ -18,13 +21,19 @@ class AppRoutes {
   static const String uploadLogo = '/upload-logo';
   static const String setupComplete = '/setup-complete';
   static const String categorySelection = '/category-selection';
+
+  //======================CORE=======================
   static const String scannerComplete = '/scanner-complete';
   static const String createReward = '/create-reward';
   static const String editReward = '/edit-reward';
+
+  //====================PROFILE AND SETTINGS==========
+  static const String manageSubscriptionScreen = '/manage-subscription_screen';
   static const String paywallScreen = '/paywall-screen';
   static const String profileSettings = '/profile-settings';
   static const String changePassword = '/change-password';
   static const String notification = '/notification';
+  static const String privacyPolicy = '/privacy-policy';
   static const String termsCondition = '/terms';
   static const String mainNav = '/main-nav';
  static const String reward = '/reward';

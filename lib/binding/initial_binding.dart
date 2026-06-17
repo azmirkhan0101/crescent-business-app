@@ -5,6 +5,7 @@ import 'package:organization/controller/auth/setup_complete_controller.dart';
 import 'package:organization/controller/auth/verify_now_controller.dart';
 import 'package:organization/controller/home/home_controller.dart';
 import 'package:organization/controller/nav/main_nav_controller.dart';import 'package:organization/controller/profile/business_profile_controller.dart';
+import 'package:organization/controller/profile/privacy_controller.dart';
 import 'package:organization/controller/profile/profile_settings_controller.dart';
 import 'package:organization/controller/profile/terms_controller.dart';
 import 'package:organization/controller/redeem/redeem_controller.dart';
@@ -75,6 +76,10 @@ class InitialBinding extends Bindings {
 
     Get.lazyPut<TermsController>((){
       return TermsController();
+    }, fenix: true,);
+
+    Get.lazyPut<PrivacyController>((){
+      return PrivacyController();
     }, fenix: true,);
 
   }

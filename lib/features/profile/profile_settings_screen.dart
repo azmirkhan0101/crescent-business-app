@@ -128,14 +128,10 @@ class _MyProfileScreenState extends State<ProfileSettingsScreen> {
                       isTab: isTab
                   ),
                   _buildProfileOption(
-                    title: "Subscriptions",
+                    title: " Manage Subscriptions",
                     icon: Icons.subscriptions_outlined,
                     onTap: () {
-                      if( SubscriptionService.to.isBackendPremium.value ){
-                        showSnackBar(title: "", message: "You already have full access.", backgroundColor: AppColors.successGreen);
-                      }else{
-                        Get.toNamed(AppRoutes.paywallScreen);
-                      }
+                      Get.toNamed(AppRoutes.manageSubscriptionScreen);
                     },
                       isTab: isTab
                   ),

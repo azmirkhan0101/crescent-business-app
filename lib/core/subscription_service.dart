@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:purchases_flutter/purchases_flutter.dart';
@@ -97,6 +98,52 @@ class SubscriptionService extends GetxService {
       isRevenueCatPremium.value = true;
     } else {
       isRevenueCatPremium.value = false;
+    }
+  }
+
+  Future<void> restorePurchase(BuildContext context) async {
+    // 1. Show a "loading" SnackBar or loading indicator if you prefer.
+    // For simplicity, we will just show the result after the async operation completes.
+
+    try {
+      // Attempt to restore purchases
+      CustomerInfo customerInfo = await Purchases.restorePurchases();
+
+      // 2. Check if the user actually has any active entitlements now
+      if (customerInfo.entitlements.active.isNotEmpty) {
+        // Success: Purchases restored and they have active premium features
+        if (context.mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text('Purchases successfully restored!'),
+              backgroundColor: Colors.green,
+              duration: Duration(seconds: 3),
+            ),
+          );
+        }
+      } else {
+        // Partial Success: The sync worked, but they don't actually own any premium items
+        if (context.mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text('Restoration complete, but no active purchases were found.'),
+              backgroundColor: Colors.orange,
+              duration: Duration(seconds: 4),
+            ),
+          );
+        }
+      }
+    } catch (e) {
+      // 3. Handle errors (e.g., network issues, user canceled, invalid store configuration)
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Failed to restore purchases: ${e.toString()}'),
+            backgroundColor: Colors.red,
+            duration: const Duration(seconds: 4),
+          ),
+        );
+      }
     }
   }
 }
