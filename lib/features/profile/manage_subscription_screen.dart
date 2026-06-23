@@ -93,8 +93,9 @@ class _PaywallScreenState extends State<ManageSubscriptionScreen> {
                   physics: const BouncingScrollPhysics(),
                   children: [
                     _buildFeatureCard(
-                      title: 'Access all features',
-                      subtitle: '• Access to all premium features without limits',
+                      title: 'Unlimited Access to all features',
+                      subtitle: '- Create unlimited rewards',
+                      subtitle2: '- Export your analytics as pdf and csv',
                     ),
                   ],
                 ),
@@ -177,7 +178,7 @@ class _PaywallScreenState extends State<ManageSubscriptionScreen> {
                   backgroundColor: isSubscribed ? const Color(0xFFABABAB) : const Color(0xFFB062D6), // Vibrant purple
                   onPressed: (){
                       if( isSubscribed ){
-                        return;
+                        //return;
                       }
                       Get.toNamed(AppRoutes.paywallScreen);
                   },
@@ -210,7 +211,7 @@ class _PaywallScreenState extends State<ManageSubscriptionScreen> {
   }
 
   // Helper builder for the feature/benefit card
-  Widget _buildFeatureCard({required String title, required String subtitle}) {
+  Widget _buildFeatureCard({required String title, required String subtitle, required String subtitle2}) {
     bool isTab = context.isTab;
     return Container(
       width: MediaQuery.of(context).size.width * 0.85,
@@ -231,6 +232,10 @@ class _PaywallScreenState extends State<ManageSubscriptionScreen> {
           const SizedBox(height: 4),
           Text(
             subtitle,
+            style: TextStyle(color: Colors.grey[600], fontSize: isTab ? 10.sp : 13),
+          ),
+          Text(
+            subtitle2,
             style: TextStyle(color: Colors.grey[600], fontSize: isTab ? 10.sp : 13),
           ),
         ],
