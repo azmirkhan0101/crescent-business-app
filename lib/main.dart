@@ -26,9 +26,6 @@ void main() async{
   Get.putAsync(() => SubscriptionService().init());
   await GetStorage.init();
 
-  String? token = await FirebaseMessaging.instance.getToken();
-  print("FCM Token: $token");
-
   runApp( MaterialApp(
       debugShowCheckedModeBanner: false,
       home: MyApp()) );
