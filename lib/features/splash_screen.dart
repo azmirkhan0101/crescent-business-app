@@ -23,7 +23,6 @@ class SplashScreen extends StatelessWidget {
 
     // Read the token and verification status
     final String? token = storage.read( accessTokenKey );
-    print("Tokennnnnnnnnnnnnnnnnnn: $token");
     //final String? email = storage.read( emailKey );
     final bool verificationRequired = storage.read( requireVerificationKey ) ?? false;
 

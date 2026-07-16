@@ -1,10 +1,11 @@
 import 'dart:convert';
+import 'dart:io';
+
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:get/get.dart';
-import 'dart:io';
 
 class FirebaseNotificationService {
   FirebaseNotificationService._();
@@ -19,11 +20,9 @@ class FirebaseNotificationService {
   Future<void> initialize() async {
     try {
       await _requestPermission();
+      await _configureForegroundPresentation(); // Prevent native double popups
       await _initializeLocalNotifications();
       await _createNotificationChannel();
-
-      final token = await getToken();
-      debugPrint('FCM Token: $token');
 
       _setupMessageHandlers();
 
@@ -42,22 +41,34 @@ class FirebaseNotificationService {
         sound: true,
       );
       debugPrint('Notification permission status: ${settings.authorizationStatus}');
-    } else if (Platform.isAndroid && (await _firebaseMessaging.getNotificationSettings()).authorizationStatus != AuthorizationStatus.authorized) {
+    } else if (Platform.isAndroid &&
+        (await _firebaseMessaging.getNotificationSettings()).authorizationStatus !=
+            AuthorizationStatus.authorized) {
       // Android 13+
       await _firebaseMessaging.requestPermission();
     }
   }
 
+  /// Force Firebase to turn off native UI banners in foreground so local notifications take control cleanly
+  Future<void> _configureForegroundPresentation() async {
+    await _firebaseMessaging.setForegroundNotificationPresentationOptions(
+      alert: false, // Turn off native alert UI popup when app is open
+      badge: true,
+      sound: true,
+    );
+  }
+
   /// Initialize local notifications
   Future<void> _initializeLocalNotifications() async {
-    final androidSettings = AndroidInitializationSettings('@mipmap/ic_launcher');
-    final iosSettings = DarwinInitializationSettings(
+    // Standard monochrome status icon to prevent solid white squares on Android
+    const androidSettings = AndroidInitializationSettings('ic_stat_notification');
+    const iosSettings = DarwinInitializationSettings(
       requestAlertPermission: true,
       requestBadgePermission: true,
       requestSoundPermission: true,
     );
 
-    final initSettings = InitializationSettings(
+    const initSettings = InitializationSettings(
       android: androidSettings,
       iOS: iosSettings,
     );
@@ -74,7 +85,7 @@ class FirebaseNotificationService {
       const androidChannel = AndroidNotificationChannel(
         'default_channel',
         'Default Notifications',
-        description: 'General notifications for Crescent Charge',
+        description: 'General notifications for Crescent Change',
         importance: Importance.high,
       );
       await _localNotifications
@@ -102,28 +113,27 @@ class FirebaseNotificationService {
 
   /// Show local notification
   Future<void> _showLocalNotification(RemoteMessage message) async {
-    final androidDetails = AndroidNotificationDetails(
+    const androidDetails = AndroidNotificationDetails(
       'default_channel',
       'Default Notifications',
-      channelDescription: 'General notifications for Crescent Charge',
+      channelDescription: 'General notifications for Crescent Change',
       importance: Importance.high,
       priority: Priority.high,
       showWhen: true,
-      icon: '@mipmap/ic_launcher',
+      icon: 'ic_stat_notification', // Fixed drawable resource pointer
     );
 
-    final iosDetails = DarwinNotificationDetails(
+    const iosDetails = DarwinNotificationDetails(
       presentAlert: true,
       presentBadge: true,
       presentSound: true,
     );
 
-    final notificationDetails =
-    NotificationDetails(android: androidDetails, iOS: iosDetails);
+    const notificationDetails = NotificationDetails(android: androidDetails, iOS: iosDetails);
 
     await _localNotifications.show(
       message.hashCode,
-      message.notification?.title ?? 'Crescent Charge',
+      message.notification?.title ?? 'Crescent Change',
       message.notification?.body ?? '',
       notificationDetails,
       payload: jsonEncode(message.data),
@@ -208,38 +218,6 @@ class FirebaseNotificationService {
 /// Background handler must be a top-level function
 @pragma('vm:entry-point')
 Future<void> firebaseMessagingBackgroundHandler(RemoteMessage message) async {
-  debugPrint('Background message: ${message.messageId}');
-  debugPrint('Title: ${message.notification?.title}');
-  debugPrint('Body: ${message.notification?.body}');
-  debugPrint('Data: ${message.data}');
-
-  // Optional: show local notification even in background
-  final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
-  FlutterLocalNotificationsPlugin();
-
-  const androidDetails = AndroidNotificationDetails(
-    'default_channel',
-    'Default Notifications',
-    channelDescription: 'General notifications for Crescent Charge',
-    importance: Importance.high,
-    priority: Priority.high,
-    showWhen: true,
-  );
-
-  const iosDetails = DarwinNotificationDetails(
-    presentAlert: true,
-    presentBadge: true,
-    presentSound: true,
-  );
-
-  const notificationDetails =
-  NotificationDetails(android: androidDetails, iOS: iosDetails);
-
-  await flutterLocalNotificationsPlugin.show(
-    message.hashCode,
-    message.notification?.title ?? 'Crescent Charge',
-    message.notification?.body ?? '',
-    notificationDetails,
-    payload: jsonEncode(message.data),
-  );
+  debugPrint('Background message received: ${message.messageId}');
+  // Silent background handler. The OS automatically draws the system banner for data or notifications.
 }
